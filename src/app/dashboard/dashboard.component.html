@@ -3,17 +3,23 @@
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div>
-              <table class="table table-striped w-100">
+          <table class="table table-striped w-100">
 
-                <tbody>
-                <div *ngIf="currentTenant">  
-                <tr *ngFor="let grant of currentTenant.grants; let i = index">
-                  <th scope="row"><span class="fake-link">{{i+1}}</span></th>
-                  <td><span class="fake-link">{{grant.name}}</span></td>
-                </tr>
+            <tbody>
+            <div *ngIf="currentTenant">
+              <div class="card-group mt-4">
+                <div class="card" *ngFor="let grant of currentTenant.grants; let i = index">
+                  <div class="card-header">
+                    <div class="card-title">{{grant.name}}</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-text">{{grant.description}}</div>
+                  </div>
                 </div>
-                </tbody>
-              </table>
+              </div>
+            </div>
+            </tbody>
+          </table>
         </div>
 
       </div>
