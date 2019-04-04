@@ -6,10 +6,12 @@
               <table class="table table-striped w-100">
 
                 <tbody>
+                <div *ngIf="currentTenant">  
                 <tr *ngFor="let grant of currentTenant.grants; let i = index">
                   <th scope="row"><span class="fake-link">{{i+1}}</span></th>
                   <td><span class="fake-link">{{grant.name}}</span></td>
                 </tr>
+                </div>
                 </tbody>
               </table>
         </div>

@@ -30,10 +30,14 @@ export class DashboardComponent implements OnInit {
     };
 
     const url = '/api/users/' + userId + '/dashboard';
-    this.http.get<Tenant>(url, httpOptions).subscribe((tenants: Tenant) => {
+    this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
       console.log(tenants);
-      this.currentTenant = tenants;
-      localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
+      this.tenants = tenants;
+      if(this.tenants.tenants && this.tenants.tenants.length > 0){
+          this.currentTenant = this.tenants.tenants[0];
+          localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
+      }
+
     });
   }
 }
