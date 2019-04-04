@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../model/user';
+import {Tenant, Tenants} from '../model/dahsboard';
 
 
 @Component({
@@ -11,6 +12,8 @@ import { User } from '../model/user';
 export class DashboardComponent implements OnInit {
 
   user: User;
+  tenants: Tenants;
+  currentTenant: Tenant;
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -27,9 +30,10 @@ export class DashboardComponent implements OnInit {
     };
 
     const url = '/api/users/' + userId + '/dashboard';
-    this.http.get<User>(url, httpOptions).subscribe((user: User) => {
-      console.log(user);
-      this.user = user;
+    this.http.get<Tenant>(url, httpOptions).subscribe((tenants: Tenant) => {
+      console.log(tenants);
+      this.currentTenant = tenants;
+      localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
     });
   }
 }

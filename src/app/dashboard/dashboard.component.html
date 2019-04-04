@@ -4,32 +4,13 @@
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div>
               <table class="table table-striped w-100">
-                <thead class="thead-light">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Created On</th>
-                  <th scope="col">Created By</th>
-                </tr>
-                </thead>
-                <tbody *ngIf="user && user.organization; else noRfp">
-                <tr *ngFor="let rfp of user.organization.rfps; let i = index">
+
+                <tbody>
+                <tr *ngFor="let grant of currentTenant.grants; let i = index">
                   <th scope="row"><span class="fake-link">{{i+1}}</span></th>
-                  <td><span class="fake-link">{{rfp.title}}</span></td>
-                  <td>{{rfp.description}}</td>
-                  <td>{{rfp.createdAt | date : 'shortDate'}}</td>
-                  <td>{{rfp.createdBy}}</td>
+                  <td><span class="fake-link">{{grant.name}}</span></td>
                 </tr>
                 </tbody>
-                <ng-template #noRfp>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td>--- No Exisitng RFP Found --- </td>
-                    <td></td>
-                  </tr>
-                </ng-template>
               </table>
         </div>
 
