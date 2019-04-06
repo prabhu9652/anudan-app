@@ -4,6 +4,10 @@ export class Grant {
   description: string;
   createdAt: Date;
   createdBy: string;
+  status?: string;
+  subStatus?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export class Tenant {

@@ -33,11 +33,10 @@ export class DashboardComponent implements OnInit {
     this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
       console.log(tenants);
       this.tenants = tenants;
-      if(this.tenants.tenants && this.tenants.tenants.length > 0){
+      if (this.tenants.tenants && this.tenants.tenants.length > 0) {
           this.currentTenant = this.tenants.tenants[0];
           localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
       }
-
     });
   }
 }
