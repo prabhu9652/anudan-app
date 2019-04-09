@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import * as jQuery from 'jquery';
 
 import {User} from '../model/user';
+import {AppComponent} from '../app.component';
 
 
 @Component({
@@ -14,6 +15,7 @@ import {User} from '../model/user';
 })
 export class LoginComponent implements OnInit {
 
+
   user: User;
   headers: HttpHeaders;
   loginForm = new FormGroup({
@@ -21,7 +23,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent) {
   }
 
   ngOnInit() {
@@ -67,12 +69,7 @@ export class LoginComponent implements OnInit {
 
         localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
         localStorage.setItem('USER_ID', '' + this.user.id);
-        console.log(localStorage.getItem('AUTH_TOKEN'));
-        console.log(localStorage.getItem('USER_ID'));
-        // console.log(resp.body);
 
-
-        console.log(this.user);
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
           this.router.navigate(['/dashboard']);
         } else {

@@ -10,11 +10,21 @@
               <div class="card-group mt-4">
                 <div class="card" *ngFor="let grant of currentTenant.grants; let i = index">
                   <div class="card-header">
-                    <div class="card-title">{{grant.name}}</div>
-                    <div class="card-title"><small>Start Date: </small>{{grant.startDate | date:'dd-MMM-yyyy'}} <small>End Date: </small>{{grant.endDate | date:'dd-MMM-yyyy'}}</div>
+                    <div class="card-title"><strong>{{grant.name.toLocaleUpperCase()}}</strong></div>
+                    <div class="card-title"><small>Start Date: </small>{{grant.startDate | date:'dd-MMM-yyyy'}}</div>
+                    <div class="card-title"><small>End Date: </small>{{grant.endDate | date:'dd-MMM-yyyy'}}</div>
+                    <div class="card-title"><small>Status: </small>{{grant.status.toLocaleUpperCase()}}</div>
                   </div>
                   <div class="card-body">
                     <div class="card-text">{{grant.description}}</div>
+                  </div>
+                  <div class="card-footer">
+                    <div *ngFor="let action of grant.actionAuthority.permissions">
+                      <button class="btn btn-sm btn-primary" id="{{action}}">{{action}}</button>
+                    </div>
+                  <div *ngFor="let flow of grant.flowAuthority">
+                    <button class="btn btn-sm btn-success" id="{{flow.action}}">{{flow.action}}</button>
+                  </div>
                   </div>
                 </div>
               </div>

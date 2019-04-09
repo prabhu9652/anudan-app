@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../model/user';
 import {Tenant, Tenants} from '../model/dahsboard';
+import {AppComponent} from '../app.component';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class DashboardComponent implements OnInit {
   user: User;
   tenants: Tenants;
   currentTenant: Tenant;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private appComponent: AppComponent) { }
 
   ngOnInit() {
     this.fetchDashboard(localStorage.getItem('USER_ID'));
@@ -28,6 +29,8 @@ export class DashboardComponent implements OnInit {
         'Authorization': localStorage.getItem('AUTH_TOKEN')
       })
     };
+
+    this.appComponent.loggedIn = true;
 
     const url = '/api/users/' + userId + '/dashboard';
     this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {

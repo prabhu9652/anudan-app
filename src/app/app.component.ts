@@ -11,7 +11,8 @@ import {AppConfig} from './model/app-config';
 })
 export class AppComponent {
 
-  loggedIn = false;
+
+  loggedIn = localStorage.getItem('AUTH_TOKEN') === null ? false : true;
 
   title = 'anudan.org';
   public appConfig: AppConfig = {
@@ -30,6 +31,12 @@ export class AppComponent {
 
   ngOnInit() {
     this.initAppUI();
+    const isLocal = this.isLocalhost();
+    if ( this.loggedIn ) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   isLocalhost() {
@@ -89,6 +96,14 @@ export class AppComponent {
   grateeRegistration() {
     console.log('grantee login');
     this.router.navigate(['/grantee/registration']);
+  }
+
+  logout() {
+    localStorage.removeItem('AUTH_TOKEN');
+    localStorage.removeItem('USER_ID');
+    localStorage.removeItem('X-TENANT-CODE');
+    this.loggedIn = false;
+    this.router.navigate(['/']);
   }
 
 }
