@@ -4,7 +4,6 @@ import { User } from '../model/user';
 import {Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,6 +19,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.fetchDashboard(localStorage.getItem('USER_ID'));
   }
+
 
   fetchDashboard(userId: string) {
     const httpOptions = {

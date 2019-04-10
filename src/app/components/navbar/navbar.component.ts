@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
          var $layer: any = document.getElementsByClassName('close-layer')[0];
          if ($layer) {
            $layer.remove();
-           this.mobile_menu_visible = 0;
+           this.mobile_menu_visible = 1;
          }
      });
     }
@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
         setTimeout(function(){
-            toggleButton.classList.add('toggled');
+            toggleButton.clasList.add('toggled');
         }, 500);
 
         body.classList.add('nav-open');

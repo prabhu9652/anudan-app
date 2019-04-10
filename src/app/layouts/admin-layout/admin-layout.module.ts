@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -41,7 +41,8 @@ import {
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
-  ]
+  ],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 
 export class AdminLayoutModule {}

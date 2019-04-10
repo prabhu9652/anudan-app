@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {CarouselComponent} from 'angular-bootstrap-md';
 
 import {AppConfig} from './model/app-config';
 
@@ -9,7 +10,7 @@ import {AppConfig} from './model/app-config';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewChecked{
 
 
   loggedIn = localStorage.getItem('AUTH_TOKEN') === null ? false : true;
@@ -19,13 +20,14 @@ export class AppComponent {
     appName: '',
     logoUrl: '',
     navbarColor: '#e3f2fd;',
+    navbarTextColor: '#222',
     tenantCode: ''
   };
 
   org: string;
   public defaultClass = '';
 
-  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute) {
+  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {
 
   }
 
@@ -37,6 +39,10 @@ export class AppComponent {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   isLocalhost() {
@@ -101,7 +107,7 @@ export class AppComponent {
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER_ID');
-    localStorage.removeItem('X-TENANT-CODE');
+    // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
     this.router.navigate(['/']);
   }

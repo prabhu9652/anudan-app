@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.loginForm.value);
-    this.signIn(31);
+    this.signIn();
   }
 
   get emailId() {
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  signIn(userId: number) {
+  signIn() {
     console.log(localStorage.getItem('X-TENANT-CODE'));
     const httpOptions = {
       headers: new HttpHeaders({

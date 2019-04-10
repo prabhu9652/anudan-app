@@ -1,6 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light" [style.padding]="'0'">
+  <div [style.width]="'100%'" [style.background-color]="appConfig.navbarColor">
   <span *ngIf="appConfig.logoUrl; else elseBlock" class="navbar-brand mb-0 h1"><a href="/"><img
       width="85px" src="{{appConfig.logoUrl}}"></a></span>
 
@@ -19,13 +20,14 @@
     <ng-template #registrationButton>
       <ul class="navbar-nav pull-right">
         <li class="nav-item">
-          <button type="button" class="btn btn-default btn-sm btn-link text-black-50"
+          <button type="button" class="btn btn-sm btn-link" [style.color]="appConfig.navbarTextColor"
                   (click)="grateeRegistration()">
-            <span class="glyphicon glyphicon-log-out"></span> Seeking Grants? Sign up now!
+            Seeking Grants? Sign up now!
           </button>
         </li>
       </ul>
     </ng-template>
+  </div>
 </nav>
 <div class="container  h-100">
   <div class="row align-items-center h-100">
