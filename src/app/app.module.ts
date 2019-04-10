@@ -24,12 +24,14 @@ import {
   AgmCoreModule
 } from '@agm/core';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
+import { GrantComponent } from './grant/grant.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    GrantComponent
   ],
   imports: [
     BrowserAnimationsModule,

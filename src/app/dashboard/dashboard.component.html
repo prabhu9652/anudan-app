@@ -28,7 +28,7 @@
                   <div class="card-footer">
                     <div *ngIf="grant.actionAuthority">
                       <div *ngFor="let action of grant.actionAuthority.permissions">
-                        <button class="btn btn-sm btn-primary" id="{{action}}">{{action}}</button>
+                        <button class="btn btn-sm btn-primary" (click)="manageGrant(grant)" id="{{action}}">{{action}}</button>
                       </div>
                     </div>
                     <div *ngFor="let flow of grant.flowAuthority">
