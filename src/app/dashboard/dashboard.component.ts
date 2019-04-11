@@ -3,6 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../model/user';
 import {Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+
+import { DataService } from "../data.service";
+import { Grant } from '../model/dahsboard'
+
 
 @Component({
   selector: 'app-dashboard',
@@ -14,10 +19,15 @@ export class DashboardComponent implements OnInit {
   user: User;
   tenants: Tenants;
   currentTenant: Tenant;
-  constructor(private http: HttpClient, private appComponent: AppComponent) { }
+  constructor(private http: HttpClient,
+     private appComponent: AppComponent,
+     private router: Router,
+    private route: ActivatedRoute,
+    private data: DataService) { }
 
   ngOnInit() {
     this.fetchDashboard(localStorage.getItem('USER_ID'));
+
   }
 
 
@@ -41,5 +51,11 @@ export class DashboardComponent implements OnInit {
           localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
       }
     });
+  }
+
+  manageGrant(grant: Grant){
+    console.log("Clicked Manage Grant");
+    this.data.changeMessage(grant);
+    this.router.navigate(['grant']);
   }
 }
