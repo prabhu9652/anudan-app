@@ -1,48 +1,54 @@
 <div class="container-fluid text-left">
-  <h2>{{currentGrant.name}}</h2>
-  <p>
-    {{currentGrant.description}}
-  </p>
-  <div *ngFor="let flow of currentGrant.flowAuthority">
-    <button class="btn btn-sm btn-success"
-            id="{{flow.action}}">{{flow.action}}</button>
-  </div>
-  <hr>
-  <strong>KPIs</strong>
+  <div *ngIf="currentGrant.actionAuthority.permissions.includes('VIEW')">
+    <h3>{{currentGrant.name}}</h3>
+    <b>{{currentGrant.statusName}}</b>
+    <p>{{currentGrant.description}}</p>
+    <div *ngFor="let flow of currentGrant.flowAuthority">
+      <button class="btn btn-sm btn-success"
+              id="{{flow.action}}">{{flow.action}}</button>
+    </div>
+    <div class="row" *ngFor="let kpi of currentGrant.kpis">
+      <div class="col-lg-12 bg-info text-white">
+        <i class="fa fa-cog text-white"></i> <b>{{kpi.title}}</b>
+      </div>
+      <div class="col-lg-12">
+        <table width="100%">
+          <tr>
+          <td width="50%"><small><b>Submit By Date</b></small></td>
+          <td align="center" width="50%"><small><b>Goal/Target to Achieve</b></small></td>
+          </tr>
+        </table>
+        <div class="row" *ngFor="let quantKpi of kpi.qunatitativeKpis">
+          <div class="col-lg-12">
+            <table width="100%">
+              <tr>
+                <td width="50%"><small>{{quantKpi.submitByDate | date:'dd-MMMM-yyyy'}}</small></td>
+                <td align="center" width="50%"><small>{{quantKpi.goal}}</small></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" *ngFor="let qualKpi of kpi.qualitativeKpis">
+          <div class="col-lg-12">
+            <table width="100%">
+              <tr>
+                <td width="50%">
+                  <small>{{qualKpi.submitByDate | date:'dd-MMMM-yyyy'}}</small>
+                </td>
+                <td width="50%" align="">
+                  <small class="text-left">{{qualKpi.goal}}</small>
+                </td>
+              </tr>
+            </table>
 
-  <div *ngFor="let kpi of currentGrant.kpis" class="row">
-    <div *ngIf="kpi.kpiType==='QUANTITATIVE'" class="col-sm-12 col-lg-6">
-      <small><strong>{{kpi.title}}</strong></small>
-    </div>
-    <div *ngIf="kpi.kpiType==='QUALITATIVE'" class="col-sm-12 col-lg-12">
-      <small><strong>{{kpi.title}}</strong></small>
-    </div>
-    <div *ngIf="kpi.kpiType==='QUANTITATIVE'" class="col-sm-12 col-lg-6">
-      <div *ngFor="let kpiData of kpi.qunatitativeKpis" class="row">
-        <div class="col-sm-6">
-          <small>{{kpiData.goal}}</small>
-        </div>
-        <div class="col-sm-6">
-          <small>
-            <input value="{{kpiData.actuals}}">
-          </small>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="kpi.kpiType==='QUALITATIVE'" class="col-sm-12 col-lg-12">
-      <div *ngIf="kpi.qualitativeKpis.length">
-        <div *ngFor="let kpiData of kpi.qualitativeKpis" class="row">
-          <div class="col-sm-12 col-lg-12">
-            <small>Q. {{kpiData.goal}}</small>
-          </div>
-          <div class="col-sm-12 col-lg-12">
-            <small>
-              <textarea value="{{kpiData.actuals}}" class="w-100"></textarea>
-            </small>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="currentGrant.actionAuthority.permissions.includes('MANAGE')">
+
   </div>
 </div>
 
