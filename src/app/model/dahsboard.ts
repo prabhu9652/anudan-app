@@ -62,7 +62,7 @@ export class Grant {
   grantorOrganization: GrantorOrganization;
   name: string;
   description: string;
-  status: string;
+  statusName: string;
   startDate: Date;
   endDate: Date;
   kpis: Kpi[];
