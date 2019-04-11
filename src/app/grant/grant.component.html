@@ -1,9 +1,51 @@
-<br>
-<br><br><br><br><br><br>
-<p>
-  {{currentGrant.name}}
-</p>
+<div class="container-fluid text-left">
+  <h2>{{currentGrant.name}}</h2>
+  <p>
+    {{currentGrant.description}}
+  </p>
+  <div *ngFor="let flow of currentGrant.flowAuthority">
+    <button class="btn btn-sm btn-success"
+            id="{{flow.action}}">{{flow.action}}</button>
+  </div>
+  <hr>
+  <strong>KPIs</strong>
 
-<p>
-  {{currentGrant.description}}
-</p>
+  <div *ngFor="let kpi of currentGrant.kpis" class="row">
+    <div *ngIf="kpi.kpiType==='QUANTITATIVE'" class="col-sm-12 col-lg-6">
+      <small><strong>{{kpi.title}}</strong></small>
+    </div>
+    <div *ngIf="kpi.kpiType==='QUALITATIVE'" class="col-sm-12 col-lg-12">
+      <small><strong>{{kpi.title}}</strong></small>
+    </div>
+    <div *ngIf="kpi.kpiType==='QUANTITATIVE'" class="col-sm-12 col-lg-6">
+      <div *ngFor="let kpiData of kpi.qunatitativeKpis" class="row">
+        <div class="col-sm-6">
+          <small>{{kpiData.goal}}</small>
+        </div>
+        <div class="col-sm-6">
+          <small>
+            <input value="{{kpiData.actuals}}">
+          </small>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="kpi.kpiType==='QUALITATIVE'" class="col-sm-12 col-lg-12">
+      <div *ngIf="kpi.qualitativeKpis.length">
+        <div *ngFor="let kpiData of kpi.qualitativeKpis" class="row">
+          <div class="col-sm-12 col-lg-12">
+            <small>Q. {{kpiData.goal}}</small>
+          </div>
+          <div class="col-sm-12 col-lg-12">
+            <small>
+              <textarea value="{{kpiData.actuals}}" class="w-100"></textarea>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

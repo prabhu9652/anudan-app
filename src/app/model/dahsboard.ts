@@ -28,6 +28,14 @@ export class QunatitativeKpi {
   submitByDate: Date;
 }
 
+export class QualitativeKpi {
+  id: number;
+  goal: string;
+  actuals: string;
+  status: string;
+  submitByDate: Date;
+}
+
 export class Kpi {
   id: number;
   title: string;
@@ -40,6 +48,7 @@ export class Kpi {
   createdAt: Date;
   createdBy: string;
   qunatitativeKpis: QunatitativeKpi[];
+  qualitativeKpis: QualitativeKpi[];
 }
 
 export class FlowAuthority {

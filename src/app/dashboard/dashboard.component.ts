@@ -53,8 +53,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  manageGrant(grant: Grant){
-    console.log("Clicked Manage Grant");
+  manageGrant(grant: Grant) {
+    console.log('Clicked Manage Grant');
     this.data.changeMessage(grant);
     this.router.navigate(['grant']);
   }
