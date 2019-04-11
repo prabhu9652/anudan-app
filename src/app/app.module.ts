@@ -19,19 +19,21 @@ import {MapsComponent} from './maps/maps.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {
   AgmCoreModule
 } from '@agm/core';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
-import { GrantComponent } from './grant/grant.component';
+import {GrantComponent} from './grant/grant.component';
+import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    GrantComponent
+    GrantComponent,
+    KpisubmissionComponent
   ],
   imports: [
     BrowserAnimationsModule,

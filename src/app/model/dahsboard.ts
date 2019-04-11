@@ -24,16 +24,20 @@ export class QunatitativeKpi {
   id: number;
   goal: number;
   actuals: number;
-  status: string;
+  statusName: string;
   submitByDate: Date;
+  flowAuthority: FlowAuthority[];
+  actionAuthority: ActionAuthority;
 }
 
 export class QualitativeKpi {
   id: number;
   goal: string;
   actuals: string;
-  status: string;
+  statusName: string;
   submitByDate: Date;
+  flowAuthority: FlowAuthority[];
+  actionAuthority: ActionAuthority;
 }
 
 export class Kpi {

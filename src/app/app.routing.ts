@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
 import { GrantComponent } from './grant/grant.component';
+import { KpisubmissionComponent } from './kpisubmission/kpisubmission.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -16,6 +17,14 @@ const routes: Routes = [
      path: '',
      component: GrantComponent
     }]
+  },
+  {path: 'kpisubmission',
+    component: AdminLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: KpisubmissionComponent
+      }]
   },
   {path: '', redirectTo : '/login', pathMatch: 'full'},
   {
