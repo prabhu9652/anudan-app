@@ -20,7 +20,7 @@
                       {{grant.endDate | date:'dd-MMM-yyyy'}}</div>
                     <div class="card-title">
                       <small>Status:</small>
-                      {{grant.statusName.toLocaleUpperCase()}}</div>
+                      {{grant.statusName.toLocaleUpperCase() + (grant.substatus==undefined?'': '/'+ grant.substatus)}}</div>
                   </div>
                   <div class="card-body">
                     <div class="card-text">{{grant.description}}</div>

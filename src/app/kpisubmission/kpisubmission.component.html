@@ -1,18 +1,29 @@
 <div class="container-fluid text-left mt-5">
   <h3>{{currentGrant.name}}</h3>
-  <div *ngIf="quantitativeKpisToSubmit">
-
-    <button class="btn btn-sm btn-success mb-3">{{quantitativeKpisToSubmit[0].kpiAction}}</button>
-    <div class="row">
-      <div class="col-sm-12 col-lg-6"><b>KPI</b></div>
-      <div class="col-sm-12 col-lg-4"><b>Goal/Target</b></div>
-      <div class="col-sm-12 col-lg-2"><b>Achieved</b></div>
+    <div *ngIf="quantitativeKpisToSubmit || qualitativeKpisToSubmit">
+      <div *ngFor="let act of actions" class="btn-group">
+        <button class="btn btn-primary" (click)="submitKpis(act.toStateId)">{{act.action}}</button>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-6"><b>KPI</b></div>
+        <div class="col-sm-12 col-lg-4"><b>Goal/Target</b></div>
+        <div class="col-sm-12 col-lg-2"><b>Achieved</b></div>
+      </div>
+      <hr>
+      <div class="row" *ngFor="let kpiData of quantitativeKpisToSubmit">
+        <div class="col-sm-12 col-lg-6">{{kpiData.kpiDataTitle}}</div>
+        <div class="col-sm-12 col-lg-2">{{kpiData.kpiDataGoal}}</div>
+        <div class="col-sm-12 col-lg-2"><input
+            id="data_id_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" value="{{kpiData.kpiDataActuals}}" class="form-control text-center">
+        </div>
+        <div class="col-sm-12 col-lg-2"><i class="fa fa-newspaper-o"></i></div>
+      </div>
+      <div class="row" *ngFor="let kpiData of qualitativeKpisToSubmit">
+        <div class="col-sm-12 col-lg-12">{{kpiData.kpiDataTitle}}</div>
+        <div class="col-sm-12 col-lg-12"><textarea
+            id="data_id_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+            class="form-control w-100">{{kpiData.kpiDataActuals}}</textarea></div>
+      </div>
     </div>
-    <div class="row" *ngFor="let kpiData of quantitativeKpisToSubmit">
-      <div class="col-sm-12 col-lg-6">{{kpiData.kpiDataTitle}}</div>
-      <div class="col-sm-12 col-lg-4">{{kpiData.kpiDataGoal}}</div>
-      <div class="col-sm-12 col-lg-2"><input id="data_id_{{kpiData.kpiDataId}}"></div>
-    </div>
-  </div>
 </div>
 

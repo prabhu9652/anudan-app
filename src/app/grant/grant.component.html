@@ -11,56 +11,10 @@
     <button class="btn btn-sm btn-primary" (click)="viewKpisToSubmit()">Submit Kpis</button>
     </div>
     <div class="row" *ngFor="let kpi of currentGrant.kpis">
-      <div class="col-lg-12 bg-info text-white">
-        <i class="fa fa-cog text-white"></i> <b>{{kpi.title}}</b>
+      <div class="col-lg-12 ">
+        <i class="fa fa-chevron-right text-light"></i>{{kpi.title}}<small> ({{kpi.frequency}})</small>
       </div>
-      <div class="col-lg-12">
-        <table width="100%">
-          <tr>
-          <td width="40%"><small><b>Submit By Date</b></small></td>
-          <td align="center" width="40%"><small><b>Goal/Target to Achieve</b></small></td>
-          <td align="center" ><small><b>Status</b></small></td>
-          </tr>
-        </table>
-        <div class="row" *ngFor="let quantKpi of kpi.qunatitativeKpis">
-          <div class="col-lg-12">
-            <table width="100%">
-              <tr>
-                <td width="40%"><small>{{quantKpi.submitByDate | date:'dd-MMM-yyyy'}}</small></td>
-                <td align="center" width="40%"><small>{{quantKpi.goal}}</small></td>
-                <td align="center">
-                  <small>{{quantKpi.statusName}}</small>
-                  <div *ngFor="let qk of quantKpi.flowAuthority">
-                    <a>{{qk.action}}</a>
-                  </div>
-                </td>
-              </tr>
-            </table>
 
-          </div>
-        </div>
-        <div class="row" *ngFor="let qualKpi of kpi.qualitativeKpis">
-          <div class="col-lg-12">
-            <table width="100%">
-              <tr>
-                <td width="40%">
-                  <small>{{qualKpi.submitByDate | date:'dd-MMMM-yyyy'}}</small>
-                </td>
-                <td width="40%" align="">
-                  <small class="text-left">{{qualKpi.goal}}</small>
-                </td>
-                <td align="center">
-                  <small>{{qualKpi.statusName}}</small>
-                  <div *ngFor="let qk of qualKpi.flowAuthority">
-                    <a>{{qk.action}}</a>
-                  </div>
-                </td>
-              </tr>
-            </table>
-
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 

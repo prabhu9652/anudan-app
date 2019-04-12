@@ -76,6 +76,7 @@ export class Grant {
   name: string;
   description: string;
   statusName: string;
+  substatus: '';
   startDate: Date;
   endDate: Date;
   kpis: Kpi[];
