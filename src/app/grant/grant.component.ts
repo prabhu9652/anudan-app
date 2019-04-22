@@ -12,24 +12,20 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 export class GrantComponent implements OnInit {
 
   hasKpisToSubmit: boolean;
+  kpiSubmissionTitle: string;
   currentGrant: Grant;
   constructor(private data: DataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.data.currentMessage.subscribe(grant => this.currentGrant = grant);
     for (const singleKpi of this.currentGrant.kpis) {
-        for (const singleQuantKpi of singleKpi.qunatitativeKpis) {
-          if (singleQuantKpi.flowAuthority) {
+        for (const singleSubmission of singleKpi.submissions) {
+          if (singleSubmission.flowAuthority) {
             this.hasKpisToSubmit = true;
+            this.kpiSubmissionTitle = singleSubmission.title;
             break;
           }
         }
-      for (const singleQualKpi of singleKpi.qualitativeKpis) {
-        if (singleQualKpi.flowAuthority) {
-          this.hasKpisToSubmit = true;
-          break;
-        }
-      }
         if (this.hasKpisToSubmit) {
           break;
         }
@@ -38,5 +34,9 @@ export class GrantComponent implements OnInit {
 
   viewKpisToSubmit() {
     this.router.navigate(['kpisubmission']);
+  }
+
+  goToHome() {
+    this.router.navigate(['dashboard']);
   }
 }

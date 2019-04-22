@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-transparent  navbar-fixed fixed-top p-0">
+    <div class="container-fluid" [style.background-color]="appComponent.appConfig.navbarColor" [style.color]="appComponent.appConfig.navbarTextColor">
         <div class="navbar-wrapper">
-          <!--<a class="navbar-brand" href="#">{{getTitle()}}</a>-->
+          <img style="width: 100px;" class="p-2" [src]="appComponent.appConfig.logoUrl">
         </div>
         <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
@@ -30,8 +30,8 @@
                 </li>-->
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons">notifications</i>
-                        <span class="notification">5</span>
+                        <small><i class="material-icons">notifications</i></small>
+                        <small><span class="notification">5</span></small>
                         <p>
                             <span class="d-lg-none d-md-block">Some Actions</span>
                         </p>
@@ -45,13 +45,10 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#pablo">
-                        <i class="material-icons">person</i>
-                        <p>
-                            <span class="d-lg-none d-md-block">Account</span>
-                        </p>
-                    </a>
+                    <b>{{user.lastName+', '+user.firstName + ' ('+user.role.name+')'}}</b>
                 </li>
+
+                <li *ngIf="user"><a class="btn btn-sm btn-default text-white" (click)="appComponent.logout()" title="Logout"><i class="fa fa-sign-out text-white"></i>Logout</a></li>
             </ul>
         </div>
     </div>

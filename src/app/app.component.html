@@ -1,34 +1,4 @@
 <!--The content below is only a placeholder and can be replaced.-->
-
-<nav class="navbar navbar-light" [style.padding]="'0'">
-  <div [style.width]="'100%'" [style.background-color]="appConfig.navbarColor">
-  <span *ngIf="appConfig.logoUrl; else elseBlock" class="navbar-brand mb-0 h1"><a href="/"><img
-      width="85px" src="{{appConfig.logoUrl}}"></a></span>
-
-  <ng-template #elseBlock>
-    <span class="navbar-brand mb-0 h1"><a href="/"> <img width="85px" src=""></a></span>
-  </ng-template>
-
-    <ul class="navbar-nav pull-right" *ngIf="loggedIn; else registrationButton">
-      <li class="nav-item active">
-        <button type="button" class="btn btn-default btn-sm" (click)="logout()">
-          <span class="glyphicon glyphicon-log-out"></span> Log out
-        </button>
-      </li>
-    </ul>
-
-    <ng-template #registrationButton>
-      <ul class="navbar-nav pull-right">
-        <li class="nav-item">
-          <button type="button" class="btn btn-sm btn-link" [style.color]="appConfig.navbarTextColor"
-                  (click)="grateeRegistration()">
-            Seeking Grants? Sign up now!
-          </button>
-        </li>
-      </ul>
-    </ng-template>
-  </div>
-</nav>
 <div class="container  h-100">
   <div class="row align-items-center h-100">
     <div class="col align-self-center d-flex justify-content-center" style="text-align:center">

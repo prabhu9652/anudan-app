@@ -1,19 +1,37 @@
-<div class="container-fluid text-left">
+<div class="container text-left mt-5 px-5 py-5">
   <div *ngIf="currentGrant.actionAuthority.permissions.includes('VIEW')">
-    <h3>{{currentGrant.name}}</h3>
-    <b>{{currentGrant.statusName}}</b>
-    <p>{{currentGrant.description}}</p>
-    <div *ngFor="let flow of currentGrant.flowAuthority">
-      <button class="btn btn-sm btn-success"
-              id="{{flow.action}}">{{flow.action}}</button>
-    </div>
-    <div *ngIf="hasKpisToSubmit">
-    <button class="btn btn-sm btn-primary" (click)="viewKpisToSubmit()">Submit Kpis</button>
-    </div>
-    <div class="row" *ngFor="let kpi of currentGrant.kpis">
-      <div class="col-lg-12 ">
-        <i class="fa fa-chevron-right text-light"></i>{{kpi.title}}<small> ({{kpi.frequency}})</small>
+    <h5>{{currentGrant.name}}</h5>
+    <div class="badge badge-success">{{currentGrant.statusName}}</div>
+    <div class="btn-group-lg">
+      <div *ngFor="let flow of currentGrant.flowAuthority">
+        <button class="btn btn-sm btn-success"
+                id="{{flow.action}}">{{flow.action}}</button>
       </div>
+      <div *ngIf="hasKpisToSubmit">
+        <button class="btn btn-primary" (click)="viewKpisToSubmit()">Submit {{kpiSubmissionTitle}} KPIs</button>
+      </div>
+      <a class="btn btn-link" (click)="goToHome()">Cancel</a>
+    </div>
+    <div class="accordion" id="accordionExample">
+      <ng-container *ngFor="let kpi of currentGrant.kpis">
+        <div class="card mb-0">
+          <div class="card-header" id="heading_{{kpi.id}}">
+            <h5 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse"
+                      [attr.data-target]="'#collapse_'+kpi.id">{{kpi.title}}</button>
+            </h5>
+          </div>
+        </div>
+        <div id="collapse_{{kpi.id}}" class="collapse bg-light"
+             [attr.aria-labelledby]="'heading_'+kpi.id"
+             data-parent="#accordionExample">
+          <div class="card-body">
+            <div *ngFor="let submission of kpi.submissions">
+              <p>{{submission.submissionStatus.name}}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
 
     </div>
   </div>

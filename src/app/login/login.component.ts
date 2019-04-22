@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
 
         localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
-        localStorage.setItem('USER_ID', '' + this.user.id);
+        localStorage.setItem('USER', '' + JSON.stringify(this.user));
 
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
           this.router.navigate(['/dashboard']);

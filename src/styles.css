@@ -1,7 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 
-html,body{
+html, body {
   height: 100%;
   background-color: #fff;
   font-size: 0.95em;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+
+.container {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar .nav {
+  margin-top: 0;
+}
+
+.navbar .navbar-toggler .navbar-toggler-icon{
+  background-color: #fff !important;
+}
+
+.navbar-expand-lg .navbar-toggler {
+  display: block !important;
+}
+
+@media (min-width: 6000px) {
+  .sidebar .nav {
+    margin-top: 100px;
+  }
+
+
 }

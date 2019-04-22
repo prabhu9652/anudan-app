@@ -1,22 +1,23 @@
-<div class="container-fluid text-left mt-5">
-  <h3>{{currentGrant.name}}</h3>
+<div class="container-fluid text-left mt-5 pt-5 pl-2 pr-2 pb-2">
+  <h5>{{currentGrant.name}}</h5>
     <div *ngIf="quantitativeKpisToSubmit || qualitativeKpisToSubmit">
-      <div *ngFor="let act of actions" class="btn-group">
-        <button class="btn btn-primary" (click)="submitKpis(act.toStateId)">{{act.action}}</button>
+      <div *ngFor="let act of actions" class="btn-group-lg">
+        <button class="btn btn-primary btn-floating float-right" (click)="submitKpis(act.toStateId)">{{act.action}}</button>
       </div>
       <div class="row">
-        <div class="col-sm-12 col-lg-6"><b>KPI</b></div>
-        <div class="col-sm-12 col-lg-4"><b>Goal/Target</b></div>
-        <div class="col-sm-12 col-lg-2"><b>Achieved</b></div>
+        <div class="col-sm-6 col-lg-6"><b>KPI</b></div>
+        <div class="col-sm-2 col-lg-4"><b>Goal/Target</b></div>
+        <div class="col-sm-2 col-lg-2"><b>Achieved</b></div>
+        <div class="col-sm-2 col-lg-2"><b></b></div>
       </div>
       <hr>
       <div class="row" *ngFor="let kpiData of quantitativeKpisToSubmit">
-        <div class="col-sm-12 col-lg-6">{{kpiData.kpiDataTitle}}</div>
-        <div class="col-sm-12 col-lg-2">{{kpiData.kpiDataGoal}}</div>
-        <div class="col-sm-12 col-lg-2"><input
+        <div class="col-sm-6 col-lg-6">{{kpiData.kpiDataTitle}}</div>
+        <div class="col-sm-2 col-lg-2">{{kpiData.kpiDataGoal}}</div>
+        <div class="col-sm-2 col-lg-2"><input
             id="data_id_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" value="{{kpiData.kpiDataActuals}}" class="form-control text-center">
         </div>
-        <div class="col-sm-12 col-lg-2"><i class="fa fa-newspaper-o"></i></div>
+        <div class="col-sm-2 col-lg-2"><i class="fa fa-newspaper-o"></i></div>
       </div>
       <div class="row" *ngFor="let kpiData of qualitativeKpisToSubmit">
         <div class="col-sm-12 col-lg-12">{{kpiData.kpiDataTitle}}</div>

@@ -72,7 +72,16 @@
   // override BS and keep the border-color normal/grey so that overlaid focus animation draws attention
   .form-control {
     // underline animation color on focus
-    $underline-background-image: none;
+    $underline-background-image: linear-gradient(
+        to top,
+        $label-color-focus 2px,
+        fade-out($label-color-focus, 1) 2px
+      ),
+      linear-gradient(
+        to top,
+        $line-color 1px,
+        fade-out($line-color, 1) 1px
+      );
     $underline-background-image-invalid: linear-gradient(
         to top,
         $bmd-invalid-underline 2px,

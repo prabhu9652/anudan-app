@@ -16,28 +16,67 @@ export class GrantorOrganization {
   hostUrl: string;
   imageName: string;
   navbarColor: string;
+  navbarTextColor: string;
   rfps: any[];
   type: string;
 }
 
-export class QunatitativeKpi {
+export class StatePermission {
+  id: number;
+  permission: string;
+  createdAt: Date;
+  createdBy: string;
+}
+
+export class GrantStatus {
+  id: number;
+  name: string;
+  terminal: boolean;
+  statePermissions: StatePermission[];
+  createdAt: Date;
+  createdBy: string;
+}
+
+export class SubmissionStatus {
+  id: number;
+  name: string;
+  terminal: boolean;
+  statePermissions: any[];
+  createdAt: Date;
+  createdBy: string;
+}
+
+export class GrantQuantitativeKpiData {
   id: number;
   goal: number;
   actuals: number;
-  statusName: string;
-  submitByDate: Date;
-  flowAuthority: FlowAuthority[];
-  actionAuthority: ActionAuthority;
 }
 
-export class QualitativeKpi {
+export class GrantQualitativeKpiData {
   id: number;
   goal: string;
-  actuals: string;
-  statusName: string;
+}
+
+export class FlowAuthority {
+  id: number;
+  fromStateId: number;
+  fromName: string;
+  toStateId: number;
+  toName: string;
+  action: string;
+}
+
+export class Submission {
   submitByDate: Date;
+  submissionStatus: SubmissionStatus;
+  grantQuantitativeKpiData: GrantQuantitativeKpiData[];
+  grantQualitativeKpiData: GrantQualitativeKpiData[];
+  title: string;
+  statusName: string;
+  createdAt: Date;
+  createdBy: string;
   flowAuthority: FlowAuthority[];
-  actionAuthority: ActionAuthority;
+  id: number;
 }
 
 export class Kpi {
@@ -51,17 +90,7 @@ export class Kpi {
   kpiType: string;
   createdAt: Date;
   createdBy: string;
-  qunatitativeKpis: QunatitativeKpi[];
-  qualitativeKpis: QualitativeKpi[];
-}
-
-export class FlowAuthority {
-  id: number;
-  fromStateId: number;
-  fromName: string;
-  toStateId: number;
-  toName: string;
-  action: string;
+  submissions: Submission[];
 }
 
 export class ActionAuthority {
@@ -75,12 +104,13 @@ export class Grant {
   grantorOrganization: GrantorOrganization;
   name: string;
   description: string;
+  grantStatus: GrantStatus;
   statusName: string;
   substatus: '';
   startDate: Date;
   endDate: Date;
   kpis: Kpi[];
-  flowAuthority: FlowAuthority[];
+  flowAuthority: any[];
   actionAuthority: ActionAuthority;
 }
 

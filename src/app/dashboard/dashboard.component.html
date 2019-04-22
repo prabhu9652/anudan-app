@@ -3,44 +3,42 @@
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div>
-            <h3>Grants</h3>
+          <h3>Grants</h3>
+
+          <div *ngIf="currentTenant">
+            <div class="card-group mt-4">
 
 
-            <div *ngIf="currentTenant">
-              <div class="card-group mt-4">
-                <div class="card" *ngFor="let grant of currentTenant.grants; let i = index">
-                  <div class="card-header">
-                    <div class="card-title"><strong>{{grant.name.toLocaleUpperCase()}}</strong>
-                    </div>
-                    <div class="card-title">
-                      <small>Start Date:</small>
-                      {{grant.startDate | date:'dd-MMM-yyyy'}}</div>
-                    <div class="card-title">
-                      <small>End Date:</small>
-                      {{grant.endDate | date:'dd-MMM-yyyy'}}</div>
-                    <div class="card-title">
-                      <small>Status:</small>
-                      {{grant.statusName.toLocaleUpperCase() + (grant.substatus==undefined?'': '/'+ grant.substatus)}}</div>
+              <a class="card flex-row flex-wrap p-4"
+                   *ngFor="let grant of currentTenant.grants; let i = index"
+                   (click)="manageGrant(grant)">
+
+                <div class="row no-gutters">
+                  <div class="col-auto text-center">
+                    <img [src]="'api/app/images/'+grant.grantorOrganization.imageName"
+                         class="img-fluid" alt="">
                   </div>
-                  <div class="card-body">
-                    <div class="card-text">{{grant.description}}</div>
-                  </div>
-                  <div class="card-footer">
-                    <div *ngIf="grant.actionAuthority">
-                      <div *ngFor="let action of grant.actionAuthority.permissions">
-                        <button class="btn btn-sm btn-primary" (click)="manageGrant(grant)" id="{{action}}">{{action}}</button>
+                  <div class="col">
+                    <div class="card-block px-2 py-2">
+                      <div class="card-title text-left"><strong>{{grant.name}}</strong></div>
+                      <p class="text-left"><span class="badge badge-success ">{{grant.grantStatus.name}}</span></p>
+
+                      <p class="text-left"><strong
+                          class="font-weight-bolder">{{grant.startDate | date}}</strong> to <strong
+                          class="font-weight-bolder">{{grant.endDate | date}}</strong></p>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-12 col-lg-12 text-left">
+                          <div *ngIf="hasKpisToSubmit"><i class="material-icons text-rose">error_outline</i>Upcoming submissions for {{kpiSubmissionTitle}}. <b>Due date </b> <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div></div>
+                        </div>
                       </div>
-                    </div>
-                    <div *ngFor="let flow of grant.flowAuthority">
-                      <button class="btn btn-sm btn-success"
-                              id="{{flow.action}}">{{flow.action}}</button>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
+          </div>
         </div>
-
       </div>
     </div>
   </div>

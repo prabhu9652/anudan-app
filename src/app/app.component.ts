@@ -1,7 +1,7 @@
 import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {CarouselComponent} from 'angular-bootstrap-md';
+import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
 
@@ -16,6 +16,7 @@ export class AppComponent implements AfterViewChecked{
   loggedIn = localStorage.getItem('AUTH_TOKEN') === null ? false : true;
 
   title = 'anudan.org';
+  loggedInUser: User;
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -32,6 +33,7 @@ export class AppComponent implements AfterViewChecked{
   }
 
   ngOnInit() {
+    this.loggedInUser = localStorage.getItem('USER') === 'undefined' ? {} : JSON.parse(localStorage.getItem('USER'));
     this.initAppUI();
     const isLocal = this.isLocalhost();
     if ( this.loggedIn ) {
@@ -106,7 +108,7 @@ export class AppComponent implements AfterViewChecked{
 
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
-    localStorage.removeItem('USER_ID');
+    localStorage.removeItem('USER');
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
     this.router.navigate(['/']);
