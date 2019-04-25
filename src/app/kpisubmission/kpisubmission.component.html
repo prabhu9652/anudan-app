@@ -1,30 +1,80 @@
 <div class="container-fluid text-left mt-5 pt-5 pl-2 pr-2 pb-2">
-  <h5>{{currentGrant.name}}</h5>
-    <div *ngIf="quantitativeKpisToSubmit || qualitativeKpisToSubmit">
-      <div *ngFor="let act of actions" class="btn-group-lg">
-        <button class="btn btn-primary btn-floating float-right" (click)="submitKpis(act.toStateId)">{{act.action}}</button>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 col-lg-6"><b>KPI</b></div>
-        <div class="col-sm-2 col-lg-4"><b>Goal/Target</b></div>
-        <div class="col-sm-2 col-lg-2"><b>Achieved</b></div>
-        <div class="col-sm-2 col-lg-2"><b></b></div>
-      </div>
-      <hr>
-      <div class="row" *ngFor="let kpiData of quantitativeKpisToSubmit">
-        <div class="col-sm-6 col-lg-6">{{kpiData.kpiDataTitle}}</div>
-        <div class="col-sm-2 col-lg-2">{{kpiData.kpiDataGoal}}</div>
-        <div class="col-sm-2 col-lg-2"><input
-            id="data_id_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" value="{{kpiData.kpiDataActuals}}" class="form-control text-center">
+  <h5>{{currentSubmission.grant.name}}</h5>
+  <div *ngIf="quantitativeKpisToSubmit || qualitativeKpisToSubmit">
+    <div *ngFor="let act of actions" class="btn-group">
+      <button class="btn btn-sm btn-primary"
+              (click)="submitKpis(act.toStateId)">{{act.name}}</button>
+    </div>
+    <h4 class="text-center">Reporting for {{currentSubmission.title}}</h4>
+    <div class="row bg-dark text-white">
+      <div class="col-sm-6 col-lg-6"><b>KPI</b></div>
+      <div class="col-sm-2 col-lg-2 text-center"><b>Goal/Target</b></div>
+      <div class="col-sm-2 col-lg-2 text-center"><b>Achieved</b></div>
+      <div class="col-sm-2 col-lg-2"><b></b></div>
+    </div>
+    <ul>
+      <li class="row" *ngFor="let kpiData of quantitativeKpisToSubmit">
+        <div class="col-sm-6 col-lg-6"><b>{{kpiData.kpiDataTitle}}</b></div>
+        <div class="col-sm-2 col-lg-2 text-center">{{kpiData.kpiDataGoal}}</div>
+        <div class="col-sm-2 col-lg-2 text-center">
+          <input *ngIf="currentSubmission.actionAuthorities.permissions.includes('MANAGE')"
+                 id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+                 value="{{kpiData.kpiDataActuals}}" class="form-control text-center">
+          <input *ngIf="currentSubmission.actionAuthorities.permissions.includes('VIEW')"
+                 id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+                 value="{{kpiData.kpiDataActuals}}" class="form-control text-center" readonly>
         </div>
         <div class="col-sm-2 col-lg-2"><i class="fa fa-newspaper-o"></i></div>
-      </div>
-      <div class="row" *ngFor="let kpiData of qualitativeKpisToSubmit">
-        <div class="col-sm-12 col-lg-12">{{kpiData.kpiDataTitle}}</div>
-        <div class="col-sm-12 col-lg-12"><textarea
-            id="data_id_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
-            class="form-control w-100">{{kpiData.kpiDataActuals}}</textarea></div>
-      </div>
-    </div>
+      </li>
+    </ul>
+    <ul>
+      <li class="row" *ngFor="let kpiData of qualitativeKpisToSubmit">
+        <div class="col-sm-12 col-lg-12"><b>{{kpiData.kpiDataTitle}}</b></div>
+        <div class="col-sm-12 col-lg-12">
+          <textarea *ngIf="currentSubmission.actionAuthorities.permissions.includes('MANAGE')"
+                    id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+                    class="form-control w-100">{{kpiData.kpiDataActuals}}</textarea>
+          <textarea *ngIf="currentSubmission.actionAuthorities.permissions.includes('VIEW')"
+                    id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+                    class="form-control w-100" readonly>{{kpiData.kpiDataActuals}}</textarea>
+        </div>
+      </li>
+    </ul>
+    <ul>
+      <li class="row" *ngFor="let kpiData of documentKpisToSubmit">
+        <div class="col-sm-12 col-lg-12"><b>{{kpiData.kpiDataTitle}}</b></div>
+        <div class="col-sm-12 col-lg-12">
+          <div>
+            <a *ngIf="kpiData.kpiDataActuals" target="_blank"
+               href="/api/submission/{{currentSubmission.id}}/kpi/{{kpiData.kpiDataGrantKpiId}}/file">
+              {{kpiData.kpiDataActuals}}
+              <i *ngIf="kpiData.kpiDocType==='pdf'"
+                 class="fa fa-file-pdf-o text-rose"></i>
+              <i *ngIf="kpiData.kpiDocType==='jpg'" class="fa fa-file-image-o"></i>
+              <i *ngIf="kpiData.kpiDocType==='jpeg'" class="fa fa-file-image-o"></i>
+              <i *ngIf="kpiData.kpiDocType==='png'" class="fa fa-file-image-o"></i>
+              <i *ngIf="kpiData.kpiDocType==='doc'" class="fa fa-file"></i>
+            </a>
+          </div>
+          <label
+              *ngIf="kpiData.kpiDataActuals && currentSubmission.actionAuthorities.permissions.includes('MANAGE')"
+              for="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">Upload
+            new file</label>
+          <label class="btn btn-sm btn-secondary text-white"
+                 *ngIf="!kpiData.kpiDataActuals && currentSubmission.actionAuthorities.permissions.includes('MANAGE')"
+                 for="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">Upload
+            file</label>
+          <input style="visibility: hidden"
+                 id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+                 type="file" (change)="docChangeListener($event)">
+          <input type="hidden"
+                 id="doc_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+          <input type="hidden"
+                 id="file_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+        </div>
+
+      </li>
+    </ul>
+  </div>
 </div>
 

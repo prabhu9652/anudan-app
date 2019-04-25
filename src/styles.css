@@ -26,6 +26,20 @@ html, body {
   display: block !important;
 }
 
+.submission-header{
+  cursor: pointer;
+  text-transform: none;
+}
+
+.submission-header:hover{
+  background-color: #f3F3F3;
+}
+
+.submission-title{
+  display: flex;
+  align-items: center;
+}
+
 @media (min-width: 6000px) {
   .sidebar .nav {
     margin-top: 100px;

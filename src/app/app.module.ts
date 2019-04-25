@@ -1,4 +1,5 @@
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
@@ -20,6 +21,7 @@ import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
+import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
   AgmCoreModule
 } from '@agm/core';
@@ -37,6 +39,7 @@ import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
   ],
   imports: [
     BrowserAnimationsModule,
+    BrowserModule,
     ReactiveFormsModule,
     HttpModule,
     ComponentsModule,
@@ -46,6 +49,15 @@ import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
+    }),
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#C7E596',
+      animationDuration: 300
     })
   ],
   providers: [],

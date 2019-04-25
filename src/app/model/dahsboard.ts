@@ -1,124 +1,138 @@
 export class Organization {
-  id: number;
-  name: string;
-  code: string;
-  createdAt: Date;
-  createdBy: string;
-  type: string;
-}
+    id: number;
+    name: string;
+    code: string;
+    createdAt: Date;
+    createdBy: string;
+    type: string;
+  }
 
-export class GrantorOrganization {
-  id: number;
-  name: string;
-  code: string;
-  createdAt: Date;
-  createdBy: string;
-  hostUrl: string;
-  imageName: string;
-  navbarColor: string;
-  navbarTextColor: string;
-  rfps: any[];
-  type: string;
-}
+  export class GrantorOrganization {
+    id: number;
+    name: string;
+    code: string;
+    createdAt: Date;
+    createdBy: string;
+    hostUrl: string;
+    imageName: string;
+    navbarColor: string;
+    navbarTextColor: string;
+    rfps: any[];
+    type: string;
+  }
 
-export class StatePermission {
-  id: number;
-  permission: string;
-  createdAt: Date;
-  createdBy: string;
-}
+  export class StatePermission {
+    id: number;
+    permission: string;
+    createdAt: Date;
+    createdBy: string;
+  }
 
-export class GrantStatus {
-  id: number;
-  name: string;
-  terminal: boolean;
-  statePermissions: StatePermission[];
-  createdAt: Date;
-  createdBy: string;
-}
+  export class WorkflowStatus {
+    id: number;
+    name: string;
+    displayName: string;
+    terminal: boolean;
+    statePermissions: StatePermission[];
+    createdAt: Date;
+    createdBy: string;
+  }
 
-export class SubmissionStatus {
-  id: number;
-  name: string;
-  terminal: boolean;
-  statePermissions: any[];
-  createdAt: Date;
-  createdBy: string;
-}
+  export class SubmissionStatus {
+    id: number;
+    name: string;
+    displayName: string;
+    terminal: boolean;
+    statePermissions: any[];
+    createdAt: Date;
+    createdBy: string;
+  }
 
-export class GrantQuantitativeKpiData {
-  id: number;
-  goal: number;
-  actuals: number;
-}
+  export class GrantKpi {
+    id: number;
+    title: string;
+    description: string;
+    scheduled: boolean;
+    periodicity: number;
+    frequency: string;
+    kpiType: string;
+    createdAt: Date;
+    createdBy: string;
+  }
 
-export class GrantQualitativeKpiData {
+  export class QuantitiaveKpisubmission {
+    id: number;
+    goal: number;
+    actuals: number;
+    grantKpi: GrantKpi;
+  }
+
+  export class QualitativeKpiSubmission {
+    id: number;
+    goal: string;
+    actuals: string;
+    grantKpi: GrantKpi;
+  }
+
+export class DocumentKpiSubmission {
   id: number;
   goal: string;
+  actuals: string;
+  grantKpi: GrantKpi;
+  type: string;
 }
 
-export class FlowAuthority {
-  id: number;
-  fromStateId: number;
-  fromName: string;
-  toStateId: number;
-  toName: string;
-  action: string;
-}
+  export class FlowAuthority {
+    id: number;
+    fromStateId: number;
+    fromName: string;
+    toStateId: number;
+    toName: string;
+    action: string;
+  }
 
-export class Submission {
-  submitByDate: Date;
-  submissionStatus: SubmissionStatus;
-  grantQuantitativeKpiData: GrantQuantitativeKpiData[];
-  grantQualitativeKpiData: GrantQualitativeKpiData[];
-  title: string;
-  statusName: string;
-  createdAt: Date;
-  createdBy: string;
-  flowAuthority: FlowAuthority[];
-  id: number;
-}
+  export class Submission {
+    id: number;
+    grant: Grant;
+    title: string;
+    submitBy: Date;
+    submissionStatus: SubmissionStatus;
+    quantitiaveKpisubmissions: QuantitiaveKpisubmission[];
+    qualitativeKpiSubmissions: QualitativeKpiSubmission[];
+    documentKpiSubmissions: DocumentKpiSubmission[];
+    createdAt: Date;
+    createdBy: string;
+    flowAuthorities: FlowAuthority[];
+    actionAuthorities: ActionAuthorities;
+  }
 
-export class Kpi {
-  id: number;
-  title: string;
-  description: string;
-  scheduled: boolean;
-  periodicity: number;
-  frequency: string;
-  status: string;
-  kpiType: string;
-  createdAt: Date;
-  createdBy: string;
-  submissions: Submission[];
-}
+  export class ActionAuthorities {
+    permissions: string[];
+    id: number;
+  }
 
-export class ActionAuthority {
-  permissions: string[];
-  id: number;
-}
+  export class Grant {
+    id: number;
+    organization: Organization;
+    grantorOrganization: GrantorOrganization;
+    name: string;
+    description: string;
+    grantStatus: WorkflowStatus;
+    substatus: WorkflowStatus
+    statusName: string;
+    startDate: Date;
+    endDate: Date;
+    submissions: Submission[];
+    actionAuthorities: ActionAuthorities;
+    flowAuthorities: any[];
+  }
 
-export class Grant {
-  id: number;
-  organization: Organization;
-  grantorOrganization: GrantorOrganization;
-  name: string;
-  description: string;
-  grantStatus: GrantStatus;
-  statusName: string;
-  substatus: '';
-  startDate: Date;
-  endDate: Date;
-  kpis: Kpi[];
-  flowAuthority: any[];
-  actionAuthority: ActionAuthority;
-}
+  export class Tenant {
+    name: string;
+    grants: Grant[];
+  }
 
-export class Tenant {
-  name: string;
-  grants: Grant[];
-}
+  export class Tenants {
+    tenants: Tenant[];
+  }
 
-export class Tenants {
-  tenants: Tenant[];
-}

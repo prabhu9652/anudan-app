@@ -1,33 +1,87 @@
 <div class="container text-left mt-5 px-5 py-5">
-  <div *ngIf="currentGrant.actionAuthority.permissions.includes('VIEW')">
+  <div *ngIf="currentGrant.actionAuthorities.permissions.includes('VIEW')">
     <h5>{{currentGrant.name}}</h5>
-    <div class="badge badge-success">{{currentGrant.statusName}}</div>
-    <div class="btn-group-lg">
+    <div class="badge badge-success">{{currentGrant.grantStatus.displayName}}</div>
+    <hr>
+    <div class="btn-group">
       <div *ngFor="let flow of currentGrant.flowAuthority">
         <button class="btn btn-sm btn-success"
                 id="{{flow.action}}">{{flow.action}}</button>
       </div>
-      <div *ngIf="hasKpisToSubmit">
-        <button class="btn btn-primary" (click)="viewKpisToSubmit()">Submit {{kpiSubmissionTitle}} KPIs</button>
-      </div>
-      <a class="btn btn-link" (click)="goToHome()">Cancel</a>
+
+
+      <a class="btn btn-sm btn-primary" (click)="goToHome()">Cancel</a>
     </div>
     <div class="accordion" id="accordionExample">
-      <ng-container *ngFor="let kpi of currentGrant.kpis">
+      <ng-container *ngFor="let submission of currentGrant.submissions">
         <div class="card mb-0">
-          <div class="card-header" id="heading_{{kpi.id}}">
-            <h5 class="mb-0">
-              <button class="btn btn-link" type="button" data-toggle="collapse"
-                      [attr.data-target]="'#collapse_'+kpi.id">{{kpi.title}}</button>
-            </h5>
+          <div class="card-header" id="heading_{{submission.id}}">
+            <div class="row">
+              <div class="col-sm-9">
+                <b class="mb-0 submission-header">
+
+                  <div data-toggle="collapse" [attr.data-target]="'#collapse_'+submission.id">
+                    Submission
+                    for {{submission.title}} | Submit By: {{submission.submitBy | date}} |
+                    Status: {{submission.submissionStatus.displayName}}</div>
+                </b>
+              </div>
+              <div class="col-sm-3 text-right">
+                <button *ngIf="submission.flowAuthorities" class="btn btn-sm btn-primary"
+                        (click)="viewKpisToSubmit(submission.id)">View Submissions
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="collapse_{{kpi.id}}" class="collapse bg-light"
-             [attr.aria-labelledby]="'heading_'+kpi.id"
+        <div id="collapse_{{submission.id}}" class="collapse"
+             [attr.aria-labelledby]="'heading_'+submission.id"
              data-parent="#accordionExample">
           <div class="card-body">
-            <div *ngFor="let submission of kpi.submissions">
-              <p>{{submission.submissionStatus.name}}</p>
+            <div *ngFor="let quantKpi of submission.quantitiaveKpisubmissions">
+
+              <div class="row border-bottom">
+                <div class="col-sm-8 submission-title"><b>{{quantKpi.grantKpi.title}}</b></div>
+                <div class="col-sm-2 text-center">
+                  <circle-progress
+                      [percent]="quantKpi.actuals*100/quantKpi.goal"
+                      [backgroundStrokeWidth]="5"
+                      [backgroundPadding]="0"
+                      [radius]="35"
+                      [space]="-1"
+                      [outerStrokeWidth]="10"
+                      [outerStrokeColor]="'#3de033'"
+                      [outerStrokeLinecap]="'square'"
+                      [innerStrokeColor]="'#828282'"
+                      [titleFontSize]="15"
+                      [animateTitle]=false
+                      [animationDuration]="100"
+                      [subtitle]="'/'+ quantKpi.goal"
+                      [showUnits]=false
+                  ></circle-progress>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let qualKpi of submission.qualitativeKpiSubmissions">
+              <div class="row">
+                <div class="col-sm-12"><b>{{qualKpi.grantKpi.title}}</b></div>
+                <div class="col-sm-12 mb-5 border-left">{{qualKpi.actuals}}</div>
+              </div>
+            </div>
+            <div *ngFor="let docKpi of submission.documentKpiSubmissions">
+              <div class="row">
+                <div class="col-sm-12"><b>{{docKpi.grantKpi.title}}</b></div>
+                <div class="col-sm-12 mb-5">
+                  <a *ngIf="docKpi.actuals" target="_blank"
+                     href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file">
+                    <i *ngIf="docKpi.type==='pdf'"
+                       class="fa fa-2x fa-file-pdf-o text-rose"></i><span> {{docKpi.actuals}}</span>
+                    <i *ngIf="docKpi.type==='jpg'" class="fa fa-2x fa-file-image-o"></i>
+                    <i *ngIf="docKpi.type==='jpeg'" class="fa fa-file-image-o"></i>
+                    <i *ngIf="docKpi.type==='png'" class="fa fa-file-image-o"></i>
+                    <i *ngIf="docKpi.type==='doc'" class="fa fa-file"></i>
+                  </a></div>
+              </div>
             </div>
           </div>
         </div>
@@ -36,7 +90,7 @@
     </div>
   </div>
 
-  <div *ngIf="currentGrant.actionAuthority.permissions.includes('MANAGE')">
+  <div *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')">
 
   </div>
 </div>

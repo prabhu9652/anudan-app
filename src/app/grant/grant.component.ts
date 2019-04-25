@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
-import {Grant, Kpi} from '../model/dahsboard'
+import { GrantDataService } from '../grant.data.service';
+import {Grant} from '../model/dahsboard'
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {SubmissionDataService} from '../submission.data.service';
 
 
 @Component({
@@ -14,25 +15,27 @@ export class GrantComponent implements OnInit {
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
   currentGrant: Grant;
-  constructor(private data: DataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private data: GrantDataService, private route: ActivatedRoute, private router: Router, private submissionDataService: SubmissionDataService) { }
 
   ngOnInit() {
     this.data.currentMessage.subscribe(grant => this.currentGrant = grant);
-    for (const singleKpi of this.currentGrant.kpis) {
-        for (const singleSubmission of singleKpi.submissions) {
-          if (singleSubmission.flowAuthority) {
-            this.hasKpisToSubmit = true;
-            this.kpiSubmissionTitle = singleSubmission.title;
-            break;
-          }
-        }
-        if (this.hasKpisToSubmit) {
-          break;
-        }
+
+    for (const submission of this.currentGrant.submissions){
+      if (submission.flowAuthorities) {
+        this.hasKpisToSubmit = true;
+        this.kpiSubmissionTitle = submission.title;
+        break;
+      }
     }
   }
 
-  viewKpisToSubmit() {
+  viewKpisToSubmit(submissionId: number) {
+    for ( const submission of this.currentGrant.submissions) {
+        if (submission.id === submissionId){
+          this.submissionDataService.changeMessage(submission);
+          break;
+        }
+    }
     this.router.navigate(['kpisubmission']);
   }
 

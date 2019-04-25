@@ -4,7 +4,7 @@ import {User} from '../model/user';
 import {Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {DataService} from '../data.service';
+import {GrantDataService} from '../grant.data.service';
 import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
 
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
               private appComponent: AppComponent,
               private router: Router,
               private route: ActivatedRoute,
-              private data: DataService) {
+              private data: GrantDataService) {
   }
 
   ngOnInit() {
@@ -56,18 +56,14 @@ export class DashboardComponent implements OnInit {
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
 
         for (const grant of this.currentTenant.grants) {
-          for (const singleKpi of grant.kpis) {
-            for (const singleSubmission of singleKpi.submissions) {
-              if (singleSubmission.flowAuthority) {
-                this.hasKpisToSubmit = true;
-                this.kpiSubmissionDate = singleSubmission.submitByDate;
-                this.kpiSubmissionTitle = singleSubmission.title
-                break;
-              }
-            }
-            if (this.hasKpisToSubmit) {
+          for (const submission of grant.submissions) {
+            if (submission.flowAuthorities) {
+              this.hasKpisToSubmit = true;
               break;
             }
+          }
+          if (this.hasKpisToSubmit){
+            break;
           }
         }
       }

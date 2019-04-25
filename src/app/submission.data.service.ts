@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Grant } from './model/dahsboard'
+import {Grant, Submission} from './model/dahsboard'
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class SubmissionDataService {
 
-  private messageSource = new BehaviorSubject<Grant>(null);
+  private messageSource = new BehaviorSubject<Submission>(null);
   currentMessage = this.messageSource.asObservable();
 
   constructor() { }
 
-  changeMessage(message: Grant) {
+  changeMessage(message: Submission) {
     this.messageSource.next(message)
   }
 

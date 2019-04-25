@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import * as jQuery from 'jquery';
 
-import {User} from '../model/user';
+import {Role, User} from '../model/user';
 import {AppComponent} from '../app.component';
 
 
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     const user: User = {
       username: this.emailId.value,
       password: this.password.value,
-      role: 'USER'
+      role: 'user'
     };
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
 

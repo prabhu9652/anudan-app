@@ -1,7 +1,7 @@
 <div class="sidebar-wrapper">
   <ul class="nav">
     <li *ngIf="isMobileMenu()" class="p-1 nav-item bg-info">
-      <a class="nav-link">
+      <a class="nav-link" (click)="showProfile()">
         <i class="material-icons text-white">person</i>
         <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName
         + ', ' + appComponent.loggedInUser.firstName + ' (' + appComponent.loggedInUser.role.name
