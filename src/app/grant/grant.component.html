@@ -43,10 +43,10 @@
                 <div class="col-sm-8 submission-title"><b>{{quantKpi.grantKpi.title}}</b></div>
                 <div class="col-sm-2 text-center">
                   <circle-progress
-                      [percent]="quantKpi.actuals*100/quantKpi.goal"
                       [backgroundStrokeWidth]="5"
+                      [percent]="quantKpi.actuals * 100 / quantKpi.goal"
                       [backgroundPadding]="0"
-                      [radius]="35"
+                      [radius]="40"
                       [space]="-1"
                       [outerStrokeWidth]="10"
                       [outerStrokeColor]="'#3de033'"
@@ -54,8 +54,9 @@
                       [innerStrokeColor]="'#828282'"
                       [titleFontSize]="15"
                       [animateTitle]=false
+                      [title]="[quantKpi.actuals]"
                       [animationDuration]="100"
-                      [subtitle]="'/'+ quantKpi.goal"
+                      [subtitle]="['---',quantKpi.goal]"
                       [showUnits]=false
                   ></circle-progress>
                 </div>
