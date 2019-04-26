@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {User} from '../model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ErrorMessage} from '../model/error-message';
+import {AppComponent} from '../app.component';
 declare var $: any;
 
 @Component({
@@ -12,7 +13,7 @@ declare var $: any;
 export class UserProfileComponent implements OnInit {
 
   user: User;
-  constructor(private http: HttpClient, private elem: ElementRef) {}
+  constructor(private http: HttpClient, private elem: ElementRef, private appComp: AppComponent) {}
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('USER'));
@@ -61,6 +62,26 @@ export class UserProfileComponent implements OnInit {
           $(changePwdModalElem).modal('hide');
         });
       }
+    });
+  }
+
+
+  updateProfile() {
+    console.log(this.user);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+
+    const url = '/api/users/';
+    this.http.put(url, this.user, httpOptions).subscribe((user: User) => {
+
+      localStorage.removeItem('USER');
+      localStorage.setItem('USER', JSON.stringify(user));
+      this.appComp.loggedInUser = user;
     });
   }
 }
