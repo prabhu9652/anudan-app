@@ -1,7 +1,7 @@
 <div class="container text-left mt-5 px-5 py-5">
   <div *ngIf="currentGrant.actionAuthorities.permissions.includes('VIEW')">
     <h5>{{currentGrant.name}}</h5>
-    <div class="badge badge-success">{{currentGrant.grantStatus.displayName}}</div>
+    <span class="badge badge-success">{{currentGrant.grantStatus.displayName}}</span>/<span class="badge badge-dark text-white">{{currentGrant.substatus.displayName}}</span>
     <hr>
     <div class="btn-group">
       <div *ngFor="let flow of currentGrant.flowAuthority">
