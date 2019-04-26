@@ -40,6 +40,15 @@ html, body {
   align-items: center;
 }
 
+.nav-header{
+  display: flex;
+  align-items: center;
+}
+
+.form-control{
+  border: none;
+}
+
 @media (min-width: 6000px) {
   .sidebar .nav {
     margin-top: 100px;

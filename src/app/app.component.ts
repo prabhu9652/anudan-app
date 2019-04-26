@@ -114,4 +114,12 @@ export class AppComponent implements AfterViewChecked{
     this.router.navigate(['/']);
   }
 
+  goToHome() {
+    this.router.navigate(['dashboard']);
+  }
+
+  goToGrantSummary() {
+    this.router.navigate(['grant']);
+  }
+
 }

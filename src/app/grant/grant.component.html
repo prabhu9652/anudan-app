@@ -9,8 +9,7 @@
                 id="{{flow.action}}">{{flow.action}}</button>
       </div>
 
-
-      <a class="btn btn-sm btn-primary" (click)="goToHome()">Cancel</a>
+      <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i class="fa fa-home mr-2"></i>Home</a>
     </div>
     <div class="accordion" id="accordionExample">
       <ng-container *ngFor="let submission of currentGrant.submissions">

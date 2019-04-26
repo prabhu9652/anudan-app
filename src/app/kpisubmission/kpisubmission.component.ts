@@ -7,6 +7,9 @@ import {ElementRef} from '@angular/core';
 import {KpiSubmissionData} from '../model/KpiSubmissionData';
 import {SubmissionDataService} from '../submission.data.service';
 import {Action} from '../model/action';
+import {AppComponent} from '../app.component';
+
+declare var $: any;
 
 @Component({
   selector: 'app-kpisubmission',
@@ -20,13 +23,15 @@ export class KpisubmissionComponent implements OnInit {
   qualitativeKpisToSubmit: Array<any> = [];
   documentKpisToSubmit: Array<any> = [];
   actions: Array<Action> = [];
+  noteId: string;
 
 
   constructor(private http: HttpClient,
               private submissionDataService: SubmissionDataService,
               private grantDataService: GrantDataService,
               private router: Router,
-              private elem: ElementRef) {
+              private elem: ElementRef,
+              private appComp: AppComponent) {
   }
 
   ngOnInit(): void {
@@ -51,7 +56,8 @@ export class KpisubmissionComponent implements OnInit {
           'kpiType': quantKpi.grantKpi.kpiType,
           'kpiDataTitle': quantKpi.grantKpi.title,
           'kpiDataGoal': quantKpi.goal,
-          'kpiDataActuals': quantKpi.actuals
+          'kpiDataActuals': quantKpi.actuals,
+          'kpiDataNote': quantKpi.note
         }
         this.quantitativeKpisToSubmit.push(kpiData);
       }
@@ -62,7 +68,8 @@ export class KpisubmissionComponent implements OnInit {
           'kpiType': qualKpi.grantKpi.kpiType,
           'kpiDataTitle': qualKpi.grantKpi.title,
           'kpiDataGoal': qualKpi.goal,
-          'kpiDataActuals': qualKpi.actuals
+          'kpiDataActuals': qualKpi.actuals,
+          'kpiDataNote': qualKpi.note
         }
         this.qualitativeKpisToSubmit.push(kpiData);
       }
@@ -75,11 +82,22 @@ export class KpisubmissionComponent implements OnInit {
           'kpiDataTitle': docKpi.grantKpi.title,
           'kpiDataGoal': docKpi.goal,
           'kpiDataActuals': docKpi.actuals,
-          'kpiDocType': docKpi.type
+          'kpiDocType': docKpi.type,
+          'kpiDataNote': docKpi.note
         }
         this.documentKpisToSubmit.push(kpiData);
       }
     }
+
+    $('#notesModal').on('show.bs.modal', function (event) {
+      const triggerElem = $(event.relatedTarget);
+      const noteId = triggerElem.data('whatever');
+      const noteValHolderElem = $('#note_' + noteId);
+      const modal = $(this);
+      console.log('>>>>>>' + noteValHolderElem);
+      modal.find('#message-text').val(noteValHolderElem.val());
+      modal.find('#noteId').val(noteId)
+    })
   }
 
   submitKpis(toStateId: number) {
@@ -101,6 +119,11 @@ export class KpisubmissionComponent implements OnInit {
       data.submissionId = Number(idComponents[2]);
       data.type = idComponents[3];
       data.kpiDataId = Number(idComponents[4]);
+
+      const noteElemId = e.id.replace('data_id', '#note');
+      const noteElem = this.elem.nativeElement.querySelector(noteElemId);
+      data.note = noteElem.value;
+
       if (idComponents[3] === 'DOCUMENT') {
         const docElemId = e.id.replace('data_id', '#doc_id');
         const docElem = this.elem.nativeElement.querySelector(docElemId);
@@ -116,7 +139,6 @@ export class KpisubmissionComponent implements OnInit {
       data.toStatusId = Number(toStateId);
       submissionData.push(data);
     }
-
 
 
     const url = '/api/user/' + user.id + '/grant/kpi';
@@ -135,15 +157,31 @@ export class KpisubmissionComponent implements OnInit {
     const myReader: FileReader = new FileReader();
     const docElemId = inputValue.id.replace('data_id', '#doc_id');
     const fileElemId = inputValue.id.replace('data_id', '#file_id');
+    const docTitleElemId = inputValue.id.replace('data_id', '#doc_title');
     myReader.onloadend = (e) => {
-        const docElem = this.elem.nativeElement.querySelector(docElemId);
-        const fileElem = this.elem.nativeElement.querySelector(fileElemId);
-        fileElem.value = file.name;
-        docElem.value = myReader.result.toString();
+      const docElem = this.elem.nativeElement.querySelector(docElemId);
+      const fileElem = this.elem.nativeElement.querySelector(fileElemId);
+      fileElem.value = file.name;
+      docElem.value = myReader.result.toString();
+      $(docTitleElemId).html($(docTitleElemId).html() + ' [' + file.name + ']');
     };
 
 
     myReader.readAsDataURL(file);
+  }
+
+  saveNote() {
+    const idHolder = this.elem.nativeElement.querySelector('#noteId');
+    const messageElem = this.elem.nativeElement.querySelector('#message-text');
+    const noteValHolder = this.elem.nativeElement.querySelector('#note_' + idHolder.value);
+    noteValHolder.value = messageElem.value;
+    const iconElem = this.elem.nativeElement.querySelector('#icon_' + idHolder.value);
+    if (messageElem.value.trim().length > 0) {
+      iconElem.classList.add('text-primary');
+    } else {
+      iconElem.classList.remove('text-primary');
+    }
+    $('#notesModal').modal('hide');
   }
 
   private _contains(a, obj) {

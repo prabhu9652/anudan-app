@@ -6,6 +6,7 @@ import * as jQuery from 'jquery';
 
 import {Role, User} from '../model/user';
 import {AppComponent} from '../app.component';
+import {AccessCredentials} from '../model/access-credentials';
 
 
 @Component({
@@ -55,7 +56,7 @@ export class LoginComponent implements OnInit {
 
 
     const url = '/api/authenticate';
-    const user: User = {
+    const user: AccessCredentials = {
       username: this.emailId.value,
       password: this.password.value,
       role: 'user'

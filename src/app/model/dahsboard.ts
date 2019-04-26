@@ -65,6 +65,7 @@ export class Organization {
     goal: number;
     actuals: number;
     grantKpi: GrantKpi;
+    note: string
   }
 
   export class QualitativeKpiSubmission {
@@ -72,6 +73,7 @@ export class Organization {
     goal: string;
     actuals: string;
     grantKpi: GrantKpi;
+    note: string;
   }
 
 export class DocumentKpiSubmission {
@@ -80,6 +82,7 @@ export class DocumentKpiSubmission {
   actuals: string;
   grantKpi: GrantKpi;
   type: string;
+  note: string;
 }
 
   export class FlowAuthority {

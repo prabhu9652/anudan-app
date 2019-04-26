@@ -6,4 +6,5 @@ export class KpiSubmissionData {
   fileName: string;
   fileType: string;
   toStatusId: number;
+  note: string;
 }
