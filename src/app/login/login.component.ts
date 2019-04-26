@@ -70,6 +70,7 @@ export class LoginComponent implements OnInit {
 
         localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
         localStorage.setItem('USER', '' + JSON.stringify(this.user));
+        this.appComponent.loggedInUser = this.user;
 
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
           this.router.navigate(['/dashboard']);
@@ -91,6 +92,10 @@ export class LoginComponent implements OnInit {
 
   showPopover(message: string) {
     console.log(message);
+  }
+
+  signup() {
+    this.router.navigate(['registration'])
   }
 
 }

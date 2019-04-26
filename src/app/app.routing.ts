@@ -7,9 +7,11 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 import { GrantComponent } from './grant/grant.component';
 import { KpisubmissionComponent } from './kpisubmission/kpisubmission.component';
+import {RegistrationComponent} from './registration/registration.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent},
   {path: 'grant',
    component: AdminLayoutComponent,
    children: [

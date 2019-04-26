@@ -28,6 +28,7 @@ import {
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {GrantComponent} from './grant/grant.component';
 import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
+import {RegistrationComponent} from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
     AdminLayoutComponent,
     LoginComponent,
     GrantComponent,
-    KpisubmissionComponent
+    KpisubmissionComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserAnimationsModule,

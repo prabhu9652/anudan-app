@@ -71,8 +71,7 @@ export class UserProfileComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
       })
     };
 
