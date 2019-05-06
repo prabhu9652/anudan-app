@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
               break;
             }
           }
-          if (this.hasKpisToSubmit){
+          if (this.hasKpisToSubmit) {
             break;
           }
         }

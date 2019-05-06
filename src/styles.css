@@ -49,6 +49,19 @@ html, body {
   border: none;
 }
 
+.holder{
+  height: 200px;
+  overflow-y: scroll;
+}
+
+.h-0{
+  height: 0;
+}
+.chat-text{
+  min-width: 100px;
+  border-radius: 4px;
+}
+
 @media (min-width: 6000px) {
   .sidebar .nav {
     margin-top: 100px;

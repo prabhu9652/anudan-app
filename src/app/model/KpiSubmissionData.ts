@@ -6,5 +6,12 @@ export class KpiSubmissionData {
   fileName: string;
   fileType: string;
   toStatusId: number;
-  note: string;
+  notes: Array<string>;
+  files: Array<UploadFile>;
+}
+
+export class UploadFile {
+  fileName: string;
+  fileType: string;
+  value: string;
 }

@@ -72,15 +72,21 @@
               <div class="row">
                 <div class="col-sm-12"><b>{{docKpi.grantKpi.title}}</b></div>
                 <div class="col-sm-12 mb-5">
-                  <a *ngIf="docKpi.actuals" target="_blank"
-                     href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file">
-                    <i *ngIf="docKpi.type==='pdf'"
-                       class="fa fa-2x fa-file-pdf-o text-rose"></i><span> {{docKpi.actuals}}</span>
-                    <i *ngIf="docKpi.type==='jpg'" class="fa fa-2x fa-file-image-o"></i>
-                    <i *ngIf="docKpi.type==='jpeg'" class="fa fa-file-image-o"></i>
-                    <i *ngIf="docKpi.type==='png'" class="fa fa-file-image-o"></i>
-                    <i *ngIf="docKpi.type==='doc'" class="fa fa-file"></i>
-                  </a></div>
+                  <ng-container *ngFor="let doc of docKpi.submissionDocs">
+                    <a target="_blank"
+                       href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file/{{doc.id}}">
+                      <p>
+                        <i *ngIf="doc.fileType==='pdf'"
+                           class="fa fa-2x fa-file-pdf-o text-rose"></i>
+                        <i *ngIf="doc.fileType==='jpg'" class="fa fa-2x fa-file-image-o"></i>
+                        <i *ngIf="doc.fileType==='jpeg'" class="fa fa-2x fa-file-image-o"></i>
+                        <i *ngIf="doc.fileType==='png'" class="fa fa-2x fa-file-image-o"></i>
+                        <i *ngIf="doc.fileType==='doc'" class="fa fa-2x fa-file"></i>
+                        {{doc.fileName}}
+                      </p>
+                    </a>
+                  </ng-container>
+                  </div>
               </div>
             </div>
           </div>
