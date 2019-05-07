@@ -108,14 +108,15 @@ export class KpisubmissionComponent implements OnInit {
       $('#chatPlaceHolder').empty();
       for (const noteMsg of noteValHolderElem) {
         const tempNoteMsg = $(noteMsg).clone();
+        $(tempNoteMsg).removeClass('note_history_' + noteId);
         $('#chatPlaceHolder').append($(tempNoteMsg));
       }
-      for (const noteMsg of newnoteValHolderElem) {
+      /*for (const noteMsg of newnoteValHolderElem) {
         $('#chatPlaceHolder').append('<p class="mr-0 mb-0 text-right"><b>Me</b><span class="text-light"><small>'
             + new Date().toLocaleDateString()
             + '</small></span></p> <div class="text-right mx-1 mt-0 mb-1 pt-0 px-2 chat-text"><span> '
             + $(noteMsg).html() + ' </span></div>');
-      }
+      }*/
       modal.find('#noteId').attr('data-value', noteId);
     });
 

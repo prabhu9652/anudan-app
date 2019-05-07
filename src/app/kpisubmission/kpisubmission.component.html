@@ -98,7 +98,7 @@
         <ng-container *ngFor="let note of kpiData.kpiDataNotes">
           <div class="invisible h-0">
             <div
-                id="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+                class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
               <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">
                 <p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
@@ -181,7 +181,7 @@
         <ng-container *ngFor="let note of kpiData.kpiDataNotes">
           <div class="invisible h-0">
             <div
-                id="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+                class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
               <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">
                 <p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
