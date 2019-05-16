@@ -54,6 +54,9 @@ html, body {
   overflow-y: scroll;
 }
 
+.btn-google{
+  background-color: #c23321;
+}
 .h-0{
   height: 0;
 }

@@ -29,6 +29,23 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {GrantComponent} from './grant/grant.component';
 import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
 import {RegistrationComponent} from './registration/registration.component';
+import {SocialLoginModule, AuthServiceConfig} from 'ng-social-login-module';
+import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
+
+const config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider('788882936832-lr47bt54r71ldb866e63gklpgi1cjujd.apps.googleusercontent.com')
+  },
+  {
+    id: LinkedinLoginProvider.PROVIDER_ID,
+    provider: new LinkedinLoginProvider('LinkedIn-client-Id')
+  }
+], true);
+
+export function provideConfig() {
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -60,9 +77,16 @@ import {RegistrationComponent} from './registration/registration.component';
       outerStrokeColor: '#78C000',
       innerStrokeColor: '#C7E596',
       animationDuration: 300
-    })
+    }),
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
+  ],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })

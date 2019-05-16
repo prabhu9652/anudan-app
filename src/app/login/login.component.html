@@ -44,8 +44,10 @@
 
 
             <button id="btn-signin" class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">Sign In</button>
-
           </form>
+          <div class="btn btn-sm btn-social btn-google" (click)="signInWithGoogle()">
+            <span class="fa fa-google"></span>
+          </div>
           <div class="card-footer text-center">
               <div class="text-center w-100" (click)="signup()">Seeking grants? Sign up now!</div>
           </div>
@@ -54,5 +56,9 @@
     </div>
   </div>
 </div>
-
+<script>
+  $(document).ready(function () {
+    console.log("LOGIN PAGE");
+  });
+</script>
 <!-- </div> -->

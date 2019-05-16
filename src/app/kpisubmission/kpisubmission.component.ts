@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
 import {Grant, Submission, Tenants} from '../model/dahsboard';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ElementRef} from '@angular/core';
-import {KpiSubmissionData, UploadFile} from '../model/KpiSubmissionData';
+import {KpiSubmissionData, SubmissionData, UploadFile} from '../model/KpiSubmissionData';
 import {SubmissionDataService} from '../submission.data.service';
 import {Action} from '../model/action';
 import {AppComponent} from '../app.component';
@@ -26,6 +26,9 @@ export class KpisubmissionComponent implements OnInit {
   documentKpisToSubmit: Array<any> = [];
   actions: Array<Action> = [];
   loading = false;
+  hasAttachments = false;
+
+  @ViewChild('submissionNotesModal') submissionNotesModal: ElementRef;
 
 
   constructor(private http: HttpClient,
@@ -46,6 +49,7 @@ export class KpisubmissionComponent implements OnInit {
           const a = new Action();
           a.toStateId = fa.toStateId;
           a.name = fa.action;
+          a.noteRequired = fa.noteRequired;
           if (!this.actions.some(e => e.name === a.name)) {
             this.actions.push(a);
           }
@@ -60,7 +64,8 @@ export class KpisubmissionComponent implements OnInit {
           'kpiDataGoal': quantKpi.goal,
           'kpiDataActuals': quantKpi.actuals,
           'kpiDataNote': quantKpi.note,
-          'kpiDataNotes': quantKpi.notesHistory
+          'kpiDataNotes': quantKpi.notesHistory,
+          'kpiDataFiles': quantKpi.submissionDocs
         };
         this.quantitativeKpisToSubmit.push(kpiData);
       }
@@ -73,8 +78,8 @@ export class KpisubmissionComponent implements OnInit {
           'kpiDataGoal': qualKpi.goal,
           'kpiDataActuals': qualKpi.actuals,
           'kpiDataNote': qualKpi.note,
-          'kpiDataNotes': qualKpi.notesHistory
-
+          'kpiDataNotes': qualKpi.notesHistory,
+          'kpiDataFiles': qualKpi.submissionDocs
         };
         this.qualitativeKpisToSubmit.push(kpiData);
       }
@@ -98,7 +103,7 @@ export class KpisubmissionComponent implements OnInit {
 
     $('#notesModal').on('show.bs.modal', function (event) {
       const triggerElem = $(event.relatedTarget);
-      const noteId = triggerElem.data('whatever');
+      const noteId = triggerElem.attr('data-whatever');
       const noteValHolderElem = $('.note_history_' + noteId);
       const newnoteValHolderElem = $('#note_' + noteId).children();
       const idSplice = noteId.split('_');
@@ -111,12 +116,12 @@ export class KpisubmissionComponent implements OnInit {
         $(tempNoteMsg).removeClass('note_history_' + noteId);
         $('#chatPlaceHolder').append($(tempNoteMsg));
       }
-      /*for (const noteMsg of newnoteValHolderElem) {
+      for (const noteMsg of newnoteValHolderElem) {
         $('#chatPlaceHolder').append('<p class="mr-0 mb-0 text-right"><b>Me</b><span class="text-light"><small>'
             + new Date().toLocaleDateString()
             + '</small></span></p> <div class="text-right mx-1 mt-0 mb-1 pt-0 px-2 chat-text"><span> '
             + $(noteMsg).html() + ' </span></div>');
-      }*/
+      }
       modal.find('#noteId').attr('data-value', noteId);
     });
 
@@ -124,6 +129,49 @@ export class KpisubmissionComponent implements OnInit {
       $('.holder').animate({scrollTop: $('#chatPlaceHolder').height()}, 0);
     });
 
+    /*$('#submissionNotesModal').on('show.bs.modal', function (event) {
+      const modal = $(this);
+      const triggerElem = $(event.relatedTarget);
+      const noteId = triggerElem.data('whatever');
+      modal.find('#submissionNoteId').attr('data-value', noteId);
+    });*/
+
+    $('#attachmentsModal').on('show.bs.modal', function (event) {
+      const elId =  $(event.relatedTarget).data('whatever');
+      $('#attachmentId').val(elId);
+      $('#attachmentsPlaceHolder').empty();
+
+      const fileElems = $('#kpi_doc_placeholder_' + elId).children();
+      for (let cn = 0; cn < fileElems.length; cn++) {
+        let extIcon = 'fa-file-image text-primary';
+        switch ($(fileElems[cn]).attr('id').substr($(fileElems[cn]).attr('id').lastIndexOf('.') + 1)) {
+          case 'pdf':
+            extIcon = 'fa-file-pdf text-danger';
+            break;
+          case 'doc':
+            extIcon = 'fa-file-word text-primary';
+            break;
+          case 'docx':
+            extIcon = 'fa-file-word text-primary';
+            break;
+          case 'xls':
+            extIcon = 'fa-file-excel text-success';
+            break;
+          case 'xlsx':
+            extIcon = 'fa-file-excel text-success';
+            break;
+        }
+
+        $('#attachmentsPlaceHolder').append('<div class=" container row">'
+            + '<div name="fileName" class="col-sm-11 col-lg-11 text-left" id="'
+            + $(fileElems[cn]).attr('id') + '">'
+            + '<i class="fa ' + extIcon + ' mr-1"></i> '
+            + $(fileElems[cn]).attr('id') + '</div><div class="col-sm-1 col-lg-1"><i class="fa fa-minus text-primary ml-2"></i></div></div>');
+      }
+
+      $(this).find('#fileSelector').val('');
+
+    });
 
     $('.removeNoteItem').on('click', function (event) {
       console.log(event);
@@ -133,6 +181,15 @@ export class KpisubmissionComponent implements OnInit {
 
   submitKpis(event: Event, toStateId: number) {
     const btn = event.srcElement;
+    const noteRequired = $(btn).attr('data-value');
+    console.log('##########' + noteRequired);
+    if (noteRequired === 'true') {
+      const submissionModal = this.submissionNotesModal.nativeElement;
+      const el = $(submissionModal).find('#submissionNoteId');
+      $(el).attr('data-value', $(btn) .data('whatever'));
+      $(submissionModal).modal('show');
+      return;
+    }
     $(btn).append('<i id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin" ></i>');
     this.loading = true;
     const user = JSON.parse(localStorage.getItem('USER'));
@@ -146,19 +203,21 @@ export class KpisubmissionComponent implements OnInit {
 
 
     const elements = this.elem.nativeElement.querySelectorAll('[id^="data_id_"]');
-    const submissionData: Array<KpiSubmissionData> = [];
+    const kpiSubmissionData: Array<KpiSubmissionData> = [];
+    const submissionData = new SubmissionData();
+
     for (const e of elements) {
       const idComponents = e.id.split('_');
-      const data = new KpiSubmissionData();
-      data.submissionId = Number(idComponents[2]);
-      data.type = idComponents[3];
-      data.kpiDataId = Number(idComponents[4]);
+      const kpiData = new KpiSubmissionData();
+      kpiData.submissionId = Number(idComponents[2]);
+      kpiData.type = idComponents[3];
+      kpiData.kpiDataId = Number(idComponents[4]);
 
       const noteElemId = e.id.replace('data_id', '#note');
       const noteElem = this.elem.nativeElement.querySelector(noteElemId);
-      data.notes = new Array();
+      kpiData.notes = new Array();
       for (const el of $(noteElem).children()) {
-        data.notes.push($(el).html());
+        kpiData.notes.push($(el).html());
       }
 
 
@@ -168,45 +227,74 @@ export class KpisubmissionComponent implements OnInit {
         const fileElemId = e.id.replace('data_id', '#doc_placeholder');
         const fileElem = this.elem.nativeElement.querySelector(fileElemId);
         const fileElementsList = $(fileElem).children('[name="fileName"]');
-        data.files = new Array<UploadFile>();
+        kpiData.files = new Array<UploadFile>();
         for (let el = 0; el < fileElementsList.length; el++) {
           const file = new UploadFile();
           file.fileName = $(fileElementsList[el]).attr('id');
           file.fileType = file.fileName.substr(file.fileName.lastIndexOf('.') + 1);
           const msg = $(fileElementsList[el]).children('div').html();
           file.value = msg.substr(msg.indexOf(',') + 1);
-          data.files.push(file);
+          kpiData.files.push(file);
         }
       } else {
-        data.value = e.value;
+        kpiData.value = e.value;
+        const fileElemId = e.id.replace('data_id', '#kpi_doc_placeholder');
+        const fileElem = this.elem.nativeElement.querySelector(fileElemId);
+        const fileElementsList = $(fileElem).children('[name="fileName"]');
+        kpiData.files = new Array<UploadFile>();
+        for (let el = 0; el < fileElementsList.length; el++) {
+          const file = new UploadFile();
+          file.fileName = $(fileElementsList[el]).attr('id');
+          file.fileType = file.fileName.substr(file.fileName.lastIndexOf('.') + 1);
+          const msg = $(fileElementsList[el]).children('div').html();
+          file.value = msg.substr(msg.indexOf(',') + 1);
+          kpiData.files.push(file);
+        }
       }
 
-      data.toStatusId = Number(toStateId);
-      submissionData.push(data);
+      kpiData.toStatusId = Number(toStateId);
+      kpiSubmissionData.push(kpiData);
     }
 
+    submissionData.id = this.currentSubmission.id;
+    submissionData.notes = [];
+    submissionData.kpiSubmissionData = kpiSubmissionData;
 
-    const url = '/api/user/' + user.id + '/grant/kpi';
+
+    let url = '/api/user/' + user.id + '/grant/kpi';
     this.http.put(url, submissionData, httpOptions).subscribe((grant: Grant) => {
-      this.loading = false;
+      /*this.loading = false;
       this.grantDataService.changeMessage(grant);
-      this.router.navigate(['grant']);
+      this.router.navigate(['grant']);*/
+
+      url = '/api/user/' + user.id + '/grant/' + this.currentSubmission.grant.id;
+      this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+        this.loading = false;
+        this.grantDataService.changeMessage(updatedGrant);
+        this.router.navigate(['grant']);
+      });
     });
   }
 
-  docChangeListener($event): void {
+  docChangeListener($event, type: string, forKPIAttachments: boolean): void {
     this.loading = true;
-    this.readThis($event.target);
+    this.readThis($event, type, forKPIAttachments);
+    this.hasAttachments = true;
   }
 
-  readThis(inputValue: any): void {
-    if (inputValue.files.length <= 0) {
+  readThis(inputValue: any, type: string, forKPIAttachments: boolean): void {
+    if (inputValue.target.files.length <= 0) {
       return;
     } else {
-      for (const file of inputValue.files) {
+      for (const file of inputValue.target.files) {
         this.loading = true;
         const myReader: FileReader = new FileReader();
-        const docTitleElemId = inputValue.id.replace('data_id', '#doc_placeholder');
+        let docTitleElemId = '#' + type + '_';
+        if (forKPIAttachments) {
+          docTitleElemId = docTitleElemId + $('#attachmentId').val();
+        } else {
+          docTitleElemId = docTitleElemId + inputValue.target.id.replace('data_id_', '');
+        }
 
         myReader.onloadstart = () => {
           // spinnerElem.classList.add('fa', 'fa-spinner', 'fa-spin');
@@ -237,10 +325,25 @@ export class KpisubmissionComponent implements OnInit {
               extIcon = 'fa-file-excel text-success';
               break;
           }
-          $(docTitleElemId).append('<div name="fileName" class="col-sm-10 col-lg-10" id="' + thisFile.name +
-              '"><i class="fa ' + extIcon + ' mr-1"></i> ' +
-              thisFile.name + '<div style="visibility: hidden;height: 0;">' +
-              thisFile.data + '</div></div><div class="col-sm-2 col-lg-2"><i class="fa fa-minus text-primary ml-2"></i></div>');
+
+
+          if (forKPIAttachments) {
+            $('#doc_icon_' + $('#attachmentId').val()).addClass('text-primary');
+            $('#attachmentsPlaceHolder').append('<div class=" container row">'
+                + '<div name="fileName" class="col-sm-11 col-lg-11 text-left" id="'
+                + thisFile.name + '">'
+                + '<i class="fa ' + extIcon + ' mr-1"></i> '
+                + thisFile.name + '</div><div class="col-sm-1 col-lg-1"><i class="fa fa-minus text-primary ml-2"></i></div></div>');
+
+            $(docTitleElemId).append('<div name="fileName" class="col-sm-10 col-lg-10" id="'
+                + thisFile.name + '"><div style="visibility: hidden;height: 0;">' +
+                thisFile.data + '</div></div>');
+          } else {
+            $(docTitleElemId).append('<div name="fileName" class="col-sm-10 col-lg-10" id="' + thisFile.name +
+                '"><i class="fa ' + extIcon + ' mr-1"></i> ' +
+                thisFile.name + '<div style="visibility: hidden;height: 0;">' +
+                thisFile.data + '</div></div><div class="col-sm-2 col-lg-2"><i class="fa fa-minus text-primary ml-2"></i></div>');
+          }
 
         };
         myReader.readAsDataURL(file);
@@ -250,10 +353,10 @@ export class KpisubmissionComponent implements OnInit {
 
   }
 
-  saveNote() {
-    const idHolder = this.elem.nativeElement.querySelector('#noteId');
+  saveNote(modal: string, selector: string, placeholder: string) {
+    const idHolder = this.elem.nativeElement.querySelector('#' + selector);
     // const messageElem = this.elem.nativeElement.querySelector('#message-text');
-    const noteEntriesHolder = this.elem.nativeElement.querySelector('#note_' + $(idHolder).attr('data-value'));
+    const noteEntriesHolder = this.elem.nativeElement.querySelector('#' + placeholder + '_' + $(idHolder).attr('data-value'));
     const msgEntries = $(idHolder).children();
 
     // noteEntriesHolder.value = messageElem.value;
@@ -266,15 +369,19 @@ export class KpisubmissionComponent implements OnInit {
     } else {
       iconElem.classList.remove('text-primary');
     }*/
-    $('#notesModal').modal('hide');
+    $('#' + modal).modal('hide');
+    if (placeholder === 'submissionNote' && $('#submissionBtn_' + $(idHolder).attr('data-value')).attr('data-value') === 'false') {
+      $('#submissionBtn' + $(idHolder).attr('data-value')).click();
+    }
   }
 
-  addNote(evnt, user: User) {
+  addNote(evnt, selector: string, placeholder: string, user: User) {
     if (evnt.key === 'Enter') {
-      const idHolder = this.elem.nativeElement.querySelector('#noteId');
-      $(idHolder).append('<p id="note_item_' + $(idHolder).data('value') + '">' + evnt.target.value + '</p>');
 
-      $('#chatPlaceHolder').append('<div id="note_item_' + $(idHolder).data('value')
+      const idHolder = this.elem.nativeElement.querySelector('#' + selector);
+      $(idHolder).append('<p id="note_item_' + $(idHolder).attr('data-value') + '">' + evnt.target.value + '</p>');
+
+      $('#' + placeholder).append('<div id="note_item_' + $(idHolder).attr('data-value')
           + '_entry"><p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span class="text-light"><small> '
           + new Date().toLocaleDateString() + '</small></span></p>'
           + '<div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"></i><span>'
@@ -282,6 +389,11 @@ export class KpisubmissionComponent implements OnInit {
           + '</span></div></div>');
       evnt.target.value = '';
       $('.holder').animate({scrollTop: $('#chatPlaceHolder').height()}, 1000);
+      console.log($(idHolder).attr('data-value'));
+      $('#icon_' + $(idHolder).attr('data-value')).addClass('text-primary');
+      if (selector === 'submissionNoteId') {
+        $('#submissionBtn_' + $(idHolder).attr('data-value')).attr('data-value', false);
+      }
     }
   }
 

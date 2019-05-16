@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-import * as jQuery from 'jquery';
 
 import {Role, User} from '../model/user';
 import {AppComponent} from '../app.component';
 import {AccessCredentials} from '../model/access-credentials';
 
+import {AuthService} from 'ng-social-login-module';
+import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
+import {SocialUser} from 'ng-social-login-module';
 
 @Component({
   selector: 'app-login',
@@ -16,24 +18,53 @@ import {AccessCredentials} from '../model/access-credentials';
 })
 export class LoginComponent implements OnInit {
 
-
   user: User;
+  provider: string;
+  socialUser: SocialUser;
   headers: HttpHeaders;
+  loggedIn: boolean;
   loginForm = new FormGroup({
     emailId: new FormControl('', Validators.email),
     password: new FormControl(''),
   });
 
-  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent) {
+  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent, private authService: AuthService) {
+  }
+
+  signInWithGoogle(): void {
+
+    this.provider = GoogleLoginProvider.PROVIDER_ID;
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((userData) => {
+      this.socialUser = userData;
+      this.loggedIn = (this.socialUser != null);
+      const user: AccessCredentials = {
+        username: this.socialUser.email,
+        password: '',
+        provider: this.provider,
+        role: 'user'
+      };
+      this.signIn(user);
+    });
+    /*this.authService.authState.subscribe((socialUser) => {
+      console.log(socialUser);
+      t
+    });*/
   }
 
   ngOnInit() {
+
   }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.loginForm.value);
-    this.signIn();
+    const user: AccessCredentials = {
+      username: this.emailId.value,
+      password: this.password.value,
+      provider: 'ANUDAN',
+      role: 'user'
+    };
+    this.signIn(user);
   }
 
   get emailId() {
@@ -44,7 +75,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  signIn() {
+  signIn(user: AccessCredentials) {
     console.log(localStorage.getItem('X-TENANT-CODE'));
     const httpOptions = {
       headers: new HttpHeaders({
@@ -56,11 +87,7 @@ export class LoginComponent implements OnInit {
 
 
     const url = '/api/authenticate';
-    const user: AccessCredentials = {
-      username: this.emailId.value,
-      password: this.password.value,
-      role: 'user'
-    };
+
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
 
         const keys = resp.headers.keys();

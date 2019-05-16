@@ -10,6 +10,11 @@ export class KpiSubmissionData {
   files: Array<UploadFile>;
 }
 
+export class SubmissionData {
+  id: number;
+  notes: string[];
+  kpiSubmissionData: Array<KpiSubmissionData>;
+}
 export class UploadFile {
   fileName: string;
   fileType: string;

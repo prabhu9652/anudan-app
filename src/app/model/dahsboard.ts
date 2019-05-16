@@ -76,6 +76,7 @@ export class QuantitiaveKpisubmission {
   grantKpi: GrantKpi;
   note: string;
   notesHistory: Note[];
+  submissionDocs: Doc[];
 }
 
 export class QualitativeKpiSubmission {
@@ -85,6 +86,7 @@ export class QualitativeKpiSubmission {
   grantKpi: GrantKpi;
   note: string;
   notesHistory: Note[];
+  submissionDocs: Doc[];
 }
 
 export class Doc {
@@ -112,6 +114,7 @@ export class FlowAuthority {
   toStateId: number;
   toName: string;
   action: string;
+  noteRequired: boolean;
 }
 
 export class Submission {

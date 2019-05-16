@@ -7,10 +7,11 @@
         class="fa fa-files-o mr-2"></i>Grant Summary</a>
 
     <div *ngFor="let act of actions" class="btn-group">
-      <button class="btn btn-sm btn-primary"
+      <button id="submissionBtn_{{act.toStateId}}" class="btn btn-sm btn-primary" [attr.data-value]="act.noteRequired" [attr.data-whatever] = "act.toStateId"
               (click)="submitKpis($event, act.toStateId)">{{act.name}}</button>
     </div>
     <hr>
+    <div id="submissionNote_{{currentSubmission.id}}" class="invisible h-0"></div>
     <h4 class="text-center">Reporting for {{currentSubmission.title}}</h4>
     <div class="row bg-dark text-white mx-2 py-2 mb-2">
       <div class="col-sm-6 col-lg-6"><b>KPI</b></div>
@@ -32,15 +33,25 @@
       <div class="col-sm-2 col-lg-2">
         <a data-toggle="modal" data-target="#notesModal"
            [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId">
-          <i title="Notes" *ngIf="kpiData.kpiDataNote"
+          <i title="Notes" *ngIf="kpiData.kpiDataNotes.length > 0"
              id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="fa fa-newspaper-o text-primary"></i>
-          <i title="Notes" *ngIf="!kpiData.kpiDataNote"
+          <i title="Notes" *ngIf="kpiData.kpiDataNotes.length ===0 "
              id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="fa fa-newspaper-o"></i>
-
-          <i class="fa fa-paperclip ml-2" title="Attachments"></i>
         </a>
+        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" *ngIf="kpiData.kpiDataFiles.length === 0" data-toggle="modal" data-target="#attachmentsModal"
+           [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId"
+           class="fa fa-paperclip ml-2" title="Attachments"></i>
+        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" *ngIf="kpiData.kpiDataFiles.length > 0" data-toggle="modal" data-target="#attachmentsModal"
+           [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId"
+           class="fa fa-paperclip ml-2 text-primary" title="Attachments"></i>
+        <div class="row invisible h-0"
+             id="kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+          <ng-container *ngFor="let kpiFile of kpiData.kpiDataFiles">
+            <div class="col-sm-10 col-lg-10" id="{{kpiFile.fileName}}"></div>
+          </ng-container>
+        </div>
         <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="invisible h-0">
         </div>
@@ -49,7 +60,8 @@
             <div
                 class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
               <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span
+                <p class="mr-0 mb-0 text-right"><b
+                    class="bg-secondary p-1 rounded text-white">Me</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
                 <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>
@@ -57,7 +69,8 @@
           </span></div>
               </ng-container>
               <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-left"><b class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
+                <p class="mr-0 mb-0 text-left"><b
+                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
                 + note.postedBy.lastName}}</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
@@ -89,9 +102,16 @@
           <i title="Notes" *ngIf="!kpiData.kpiDataNote"
              id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="fa fa-newspaper-o"></i>
-
-          <i class="fa fa-paperclip ml-2" title="Attachments"></i>
         </a>
+        <i data-toggle="modal" data-target="#attachmentsModal"
+           [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId"
+           class="fa fa-paperclip ml-2" title="Attachments"></i>
+        <div class="row"
+             id="kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
+          <ng-container *ngFor="let kpiFile of kpiData.kpiDataFiles">
+            <div name="fileName" class="col-sm-10 col-lg-10" id="{{kpiFile.fileName}}"></div>
+          </ng-container>
+        </div>
         <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="invisible h-0">
         </div>
@@ -100,7 +120,8 @@
             <div
                 class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
               <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span
+                <p class="mr-0 mb-0 text-right"><b
+                    class="bg-secondary p-1 rounded text-white">Me</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
                 <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>
@@ -108,7 +129,8 @@
           </span></div>
               </ng-container>
               <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-left"><b class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
+                <p class="mr-0 mb-0 text-left"><b
+                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
                 + note.postedBy.lastName}}</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
@@ -127,16 +149,16 @@
       <div class="col-sm-3 col-lg-3">
         <div>
           <ng-container *ngFor="let doc of kpiData.kpiFiles">
-          <a target="_blank"
-             href="/api/submission/{{currentSubmission.id}}/kpi/{{kpiData.kpiDataGrantKpiId}}/file/{{doc.id}}">
-            {{doc.fileName}}
-            <i *ngIf="doc.fileType==='pdf'"
-               class="fa fa-file-pdf-o text-rose"></i>
-            <i *ngIf="doc.fileType==='jpg'" class="fa fa-file-image-o"></i>
-            <i *ngIf="doc.fileType==='jpeg'" class="fa fa-file-image-o"></i>
-            <i *ngIf="doc.fileType==='png'" class="fa fa-file-image-o"></i>
-            <i *ngIf="doc.fileType==='doc'" class="fa fa-file"></i>
-          </a>
+            <a target="_blank"
+               href="/api/submission/{{currentSubmission.id}}/kpi/{{kpiData.kpiDataGrantKpiId}}/file/{{doc.id}}">
+              {{doc.fileName}}
+              <i *ngIf="doc.fileType==='pdf'"
+                 class="fa fa-file-pdf-o text-rose"></i>
+              <i *ngIf="doc.fileType==='jpg'" class="fa fa-file-image-o"></i>
+              <i *ngIf="doc.fileType==='jpeg'" class="fa fa-file-image-o"></i>
+              <i *ngIf="doc.fileType==='png'" class="fa fa-file-image-o"></i>
+              <i *ngIf="doc.fileType==='doc'" class="fa fa-file"></i>
+            </a>
           </ng-container>
         </div>
         <label
@@ -149,7 +171,8 @@
           files<i id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>
         <input style="visibility: hidden"
                id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
-               type="file" (change)="docChangeListener($event)" [multiple]="true">
+               type="file" (change)="docChangeListener($event,'doc_placeholder', false)"
+               [multiple]="true">
         <input type="hidden"
                id="doc_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
         <input type="hidden"
@@ -171,9 +194,6 @@
           <i title="Notes" *ngIf="!kpiData.kpiDataNote"
              id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="fa fa-newspaper-o"></i>
-
-          <i class="fa fa-paperclip ml-2" title="Attachments"></i>
-
         </a>
         <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="invisible h-0">
@@ -183,7 +203,8 @@
             <div
                 class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">
               <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span
+                <p class="mr-0 mb-0 text-right"><b
+                    class="bg-secondary p-1 rounded text-white">Me</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
                 <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>
@@ -191,7 +212,8 @@
           </span></div>
               </ng-container>
               <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">
-                <p class="mr-0 mb-0 text-left"><b class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
+                <p class="mr-0 mb-0 text-left"><b
+                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + ' '
                 + note.postedBy.lastName}}</b><span
                     class="text-light"><small> {{note.postedOn | date:'dd/MM/yyyy' }}</small></span>
                 </p>
@@ -230,17 +252,73 @@
       </div>
       <div class="modal-footer">
         <input class="form-control" id="message-text"
-               (keypress)="addNote($event,appComp.loggedInUser)">
+               (keypress)="addNote($event,'noteId', 'chatPlaceHolder', appComp.loggedInUser)">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveNote()">Save</button>
+        <button type="button" class="btn btn-primary" (click)="saveNote('notesModal','noteId','note')">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  $(document).ready(function () {
+<div class="modal fade" id="attachmentsModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-  })
-</script>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <input id="attachmentId" type="hidden" style="height: 0px;">
+        <h5 class="modal-title" id="exampleModalLabel">Manage Attachments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="holder">
+            <div id="attachmentsPlaceHolder">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        <label for="fileSelector" class="btn btn-sm btn-success">Click to select files <i id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>
+        <input id="fileSelector" class="form-control" style="visibility: hidden;" type="file"
+               (change)="docChangeListener($event,'kpi_doc_placeholder', true)" [multiple]="true">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #submissionNotesModal class="modal fade" id="submissionNotesModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="submissionNoteId" type="hidden" style="height: 0px;" data-value="test"></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a note for this submission</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="holder">
+            <div id="submissionChatPlaceHolder">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input class="form-control" id="message-text"
+               (keypress)="addNote($event,'submissionNoteId', 'submissionChatPlaceHolder', appComp.loggedInUser)">
+        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveNote('submissionNotesModal','submissionNoteId','submissionNote')">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

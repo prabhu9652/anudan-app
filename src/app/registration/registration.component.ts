@@ -5,6 +5,9 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {User} from '../model/user';
 import {RegistrationCredentials} from '../model/registration-credentials';
 import {AppComponent} from '../app.component';
+import {AuthService, GoogleLoginProvider, SocialUser} from 'ng-social-login-module';
+import {AccessCredentials} from '../model/access-credentials';
+import {register} from 'ts-node';
 
 @Component({
   selector: 'app-registration',
@@ -13,13 +16,16 @@ import {AppComponent} from '../app.component';
 })
 export class RegistrationComponent implements OnInit {
 
+  provider: string;
+  socialUser: SocialUser;
+
   granteeRegisteationForm = new FormGroup({
     emailId: new FormControl('', Validators. email),
     password: new FormControl(''),
     confirmPassword: new FormControl('')
   });
 
-  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent) { }
+  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent, private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -29,16 +35,7 @@ export class RegistrationComponent implements OnInit {
     console.warn(this.granteeRegisteationForm.value);
   }
 
-  register() {
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
-      })
-    };
-
-    const form = this.granteeRegisteationForm.value;
+  submit() {
     const user: RegistrationCredentials = {
       emailId : this.granteeRegisteationForm.value.emailId,
       password : this.granteeRegisteationForm.value.password,
@@ -48,6 +45,21 @@ export class RegistrationComponent implements OnInit {
       role: 'USER',
       organization: null
     };
+
+    this.registerUser(user);
+  }
+
+  registerUser(user: RegistrationCredentials) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+      })
+    };
+
+    const form = this.granteeRegisteationForm.value;
+
     const url = '/api/users/';
     this.http.post<User>(url, user, httpOptions).subscribe( (response: User) => {
 
@@ -58,5 +70,27 @@ export class RegistrationComponent implements OnInit {
 
       this.router.navigate(['dashboard']);
     });
+  }
+
+  signUpWithGoogle(): void {
+
+    this.provider = GoogleLoginProvider.PROVIDER_ID;
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((userData) => {
+      this.socialUser = userData;
+      const user: RegistrationCredentials = {
+        emailId : this.socialUser.email,
+        password : this.granteeRegisteationForm.value.password,
+        firstName: this.socialUser.name,
+        lastName: '',
+        username: this.socialUser.email,
+        role: 'USER',
+        organization: null
+      };
+      this.registerUser(user);
+    });
+    /*this.authService.authState.subscribe((socialUser) => {
+      console.log(socialUser);
+      t
+    });*/
   }
 }
