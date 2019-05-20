@@ -1,3 +1,5 @@
+import {Note} from './dahsboard';
+
 export class KpiSubmissionData {
   submissionId: number;
   kpiDataId: number;

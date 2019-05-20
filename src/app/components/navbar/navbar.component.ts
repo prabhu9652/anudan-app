@@ -17,11 +17,17 @@ export class NavbarComponent implements OnInit {
   mobile_menu_visible: any = 0;
   private toggleButton: any;
   private sidebarVisible: boolean;
+  navColor: string;
+  navTextColor: string;
+  logoUrl: string;
 
   constructor(location: Location, private element: ElementRef, private router: Router, private appComponent: AppComponent) {
     this.location = location;
     this.sidebarVisible = false;
     this.user = appComponent.loggedInUser;
+    this.navColor = appComponent.appConfig.navbarColor;
+    this.navTextColor = appComponent.appConfig.navbarTextColor;
+    this.logoUrl = appComponent.appConfig.logoUrl
   }
 
   ngOnInit() {

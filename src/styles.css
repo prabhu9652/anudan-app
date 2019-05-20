@@ -60,6 +60,10 @@ html, body {
 .h-0{
   height: 0;
 }
+
+.w-0{
+  width: 0;
+}
 .chat-text{
   min-width: 100px;
   border-radius: 4px;

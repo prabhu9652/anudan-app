@@ -130,6 +130,7 @@ export class Submission {
   createdBy: string;
   flowAuthorities: FlowAuthority[];
   actionAuthorities: ActionAuthorities;
+  submissionNotes: Note[];
 
   getQuantitativeKpiById(id: number) {
     for (const q of this.quantitiaveKpisubmissions) {

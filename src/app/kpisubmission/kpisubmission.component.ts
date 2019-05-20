@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
-import {Grant, Submission, Tenants} from '../model/dahsboard';
+import {Grant, Note, Submission, Tenants} from '../model/dahsboard';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ElementRef} from '@angular/core';
@@ -10,6 +10,8 @@ import {Action} from '../model/action';
 import {AppComponent} from '../app.component';
 import {Filedata} from '../model/filedata';
 import {User} from '../model/user';
+import * as moment from 'moment';
+import _date = moment.unitOfTime._date;
 
 declare var $: any;
 
@@ -257,7 +259,13 @@ export class KpisubmissionComponent implements OnInit {
     }
 
     submissionData.id = this.currentSubmission.id;
-    submissionData.notes = [];
+    const submissionNotesToSave = $(this.elem.nativeElement.querySelector('#submissionNotes_' + submissionData.id)).children('[id^="note_item_"]');
+    const submissionNotes: Array<string> = [];
+    for (let i = 0; i <  submissionNotesToSave.length; i++) {
+      console.log('>>>>>>>>' + $(submissionNotesToSave[i]).find('div > span').html());
+      submissionNotes.push($(submissionNotesToSave[i]).find('div > span').html());
+    }
+    submissionData.notes = submissionNotes;
     submissionData.kpiSubmissionData = kpiSubmissionData;
 
 
@@ -371,6 +379,11 @@ export class KpisubmissionComponent implements OnInit {
     }*/
     $('#' + modal).modal('hide');
     if (placeholder === 'submissionNote' && $('#submissionBtn_' + $(idHolder).attr('data-value')).attr('data-value') === 'false') {
+      /*const submissionNotes = $(idHolder).children();
+      for (let i = 0; i < submissionNotes.length; i++) {
+        $('#submissionNote_' + $(idHolder).attr('data-value')).append(submissionNotes[i]);
+      }*/
+
       $('#submissionBtn' + $(idHolder).attr('data-value')).click();
     }
   }
@@ -379,20 +392,25 @@ export class KpisubmissionComponent implements OnInit {
     if (evnt.key === 'Enter') {
 
       const idHolder = this.elem.nativeElement.querySelector('#' + selector);
-      $(idHolder).append('<p id="note_item_' + $(idHolder).attr('data-value') + '">' + evnt.target.value + '</p>');
-
-      $('#' + placeholder).append('<div id="note_item_' + $(idHolder).attr('data-value')
+      const strNote = '<div id="note_item_' + $(idHolder).attr('data-value')
           + '_entry"><p class="mr-0 mb-0 text-right"><b class="bg-secondary p-1 rounded text-white">Me</b><span class="text-light"><small> '
           + new Date().toLocaleDateString() + '</small></span></p>'
           + '<div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"></i><span>'
           + evnt.target.value
-          + '</span></div></div>');
+          + '</span></div></div>';
+
+      $(idHolder).append(strNote);
+
+      $('#' + placeholder).append(strNote);
       evnt.target.value = '';
       $('.holder').animate({scrollTop: $('#chatPlaceHolder').height()}, 1000);
       console.log($(idHolder).attr('data-value'));
       $('#icon_' + $(idHolder).attr('data-value')).addClass('text-primary');
       if (selector === 'submissionNoteId') {
-        $('#submissionBtn_' + $(idHolder).attr('data-value')).attr('data-value', false);
+        const submitBtn = $('[name="submissionBtn_' + $(idHolder).attr('data-value') + '"]');
+        for (let i = 0; i < submitBtn.length; i++) {
+          submitBtn.attr('data-value', false);
+        }
       }
     }
   }

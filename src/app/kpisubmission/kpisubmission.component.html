@@ -7,11 +7,25 @@
         class="fa fa-files-o mr-2"></i>Grant Summary</a>
 
     <div *ngFor="let act of actions" class="btn-group">
-      <button id="submissionBtn_{{act.toStateId}}" class="btn btn-sm btn-primary" [attr.data-value]="act.noteRequired" [attr.data-whatever] = "act.toStateId"
+      <button name="submissionBtn_{{currentSubmission.id}}" class="btn btn-sm btn-primary" [attr.data-value]="act.noteRequired" [attr.data-whatever] = "currentSubmission.id"
               (click)="submitKpis($event, act.toStateId)">{{act.name}}</button>
     </div>
+    <div class="accordion" id="notesAccordian">
+      <div data-toggle="collapse" data-target="#messages" class="nav-link">
+        <i class="fa fa-bell text-rose mr-3"></i>Notes
+      </div>
+      <div id="messages" class="collapse" data-parent="#notesAccordian">
+        <div id="submissionNotes_{{currentSubmission.id}}">
+          <ng-container *ngFor="let historricalSubmissionNote of currentSubmission.submissionNotes">
+            <span><b>{{historricalSubmissionNote.postedBy.lastName}}, {{historricalSubmissionNote.postedBy.lastName}}</b></span>
+            <span class="ml-2">{{historricalSubmissionNote.postedOn | date : 'medium'}}</span>
+            <p>{{historricalSubmissionNote.message}}</p>
+          </ng-container>
+        </div>
+      </div>
+    </div>
     <hr>
-    <div id="submissionNote_{{currentSubmission.id}}" class="invisible h-0"></div>
+
     <h4 class="text-center">Reporting for {{currentSubmission.title}}</h4>
     <div class="row bg-dark text-white mx-2 py-2 mb-2">
       <div class="col-sm-6 col-lg-6"><b>KPI</b></div>
@@ -315,7 +329,7 @@
         <input class="form-control" id="message-text"
                (keypress)="addNote($event,'submissionNoteId', 'submissionChatPlaceHolder', appComp.loggedInUser)">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveNote('submissionNotesModal','submissionNoteId','submissionNote')">Save</button>
+        <button type="button" class="btn btn-primary" (click)="saveNote('submissionNotesModal','submissionNoteId','submissionNotes')">Save</button>
       </div>
     </div>
   </div>
