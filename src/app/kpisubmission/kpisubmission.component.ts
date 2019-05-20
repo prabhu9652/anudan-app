@@ -38,7 +38,7 @@ export class KpisubmissionComponent implements OnInit {
               private grantDataService: GrantDataService,
               private router: Router,
               private elem: ElementRef,
-              private appComp: AppComponent) {
+              public appComp: AppComponent) {
   }
 
   ngOnInit(): void {

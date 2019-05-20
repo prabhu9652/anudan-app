@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent, private authService: AuthService) {
+  constructor(private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService) {
   }
 
   signInWithGoogle(): void {

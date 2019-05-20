@@ -25,7 +25,7 @@ export class RegistrationComponent implements OnInit {
     confirmPassword: new FormControl('')
   });
 
-  constructor(private http: HttpClient, private router: Router, private appComponent: AppComponent, private authService: AuthService) { }
+  constructor(private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService) { }
 
   ngOnInit() {
   }
