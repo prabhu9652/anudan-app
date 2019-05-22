@@ -31,6 +31,8 @@ import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {SocialLoginModule, AuthServiceConfig} from 'ng-social-login-module';
 import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const config = new AuthServiceConfig([
   {
@@ -78,7 +80,8 @@ export function provideConfig() {
       innerStrokeColor: '#C7E596',
       animationDuration: 300
     }),
-    SocialLoginModule
+    SocialLoginModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
 

@@ -59,6 +59,8 @@ export class DashboardComponent implements OnInit {
           for (const submission of grant.submissions) {
             if (submission.flowAuthorities) {
               this.hasKpisToSubmit = true;
+              this.kpiSubmissionTitle = submission.title;
+              this.kpiSubmissionDate = submission.submitBy;
               break;
             }
           }
