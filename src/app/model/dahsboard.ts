@@ -60,6 +60,17 @@ export class GrantKpi {
   kpiType: string;
   createdAt: Date;
   createdBy: string;
+  templates: Template[];
+}
+
+export class Template {
+    description: string;
+    id: number;
+    location: string;
+    name: string;
+    type: string;
+    version: number;
+    fileType: string;
 }
 
 export class Note {
@@ -146,6 +157,21 @@ export class ActionAuthorities {
   id: number;
 }
 
+export class Attribute {
+  fieldName: string;
+  fieldType: string;
+  fieldValue: string;
+}
+
+export class Section {
+  name: string;
+  attribute: Attribute[];
+}
+
+export class GrantDetails {
+  sections: Section[];
+}
+
 export class Grant {
   id: number;
   organization: Organization;
@@ -160,6 +186,7 @@ export class Grant {
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
   flowAuthorities: any[];
+  grantDetails: GrantDetails;
 }
 
 export class Tenant {

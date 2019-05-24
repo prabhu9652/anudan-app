@@ -1,15 +1,32 @@
 <div class="container text-left mt-5 px-5 py-5">
   <div *ngIf="currentGrant.actionAuthorities.permissions.includes('VIEW')">
-    <h5>{{currentGrant.name}}</h5>
-    <span class="badge badge-success">{{currentGrant.grantStatus.displayName}}</span>/<span class="badge badge-dark text-white">{{currentGrant.substatus.displayName}}</span>
+    <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i
+        class="fa fa-home mr-2"></i>Home</a>
+    <div class="row">
+      <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-12 bg-primary text-white p-2"><strong>{{section.name.toLocaleUpperCase()}}</strong></div>
+            <div class="col-sm-12">
+              <ng-container *ngFor="let attribute of section.attribute">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-6"><i class="fa fa-square-o mr-2"></i><b class="">{{attribute.fieldName}}</b></div>
+                  <div class="col-sm-12 col-lg-6 text-left"><span>{{attribute.fieldValue}}</span></div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <span class="badge badge-success">{{currentGrant.grantStatus.displayName}}</span>/<span
+      class="badge badge-dark text-white">{{currentGrant.substatus.displayName}}</span>
     <hr>
     <div class="btn-group">
       <div *ngFor="let flow of currentGrant.flowAuthority">
         <button class="btn btn-sm btn-success"
                 id="{{flow.action}}">{{flow.action}}</button>
       </div>
-
-      <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i class="fa fa-home mr-2"></i>Home</a>
     </div>
     <div class="accordion" id="accordionExample">
       <ng-container *ngFor="let submission of currentGrant.submissions">
@@ -86,7 +103,7 @@
                       </p>
                     </a>
                   </ng-container>
-                  </div>
+                </div>
               </div>
             </div>
           </div>

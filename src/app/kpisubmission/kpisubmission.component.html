@@ -7,7 +7,8 @@
         class="fa fa-files-o mr-2"></i>Grant Summary</a>
 
     <div *ngFor="let act of actions" class="btn-group">
-      <button name="submissionBtn_{{currentSubmission.id}}" class="btn btn-sm btn-primary" [attr.data-value]="act.noteRequired" [attr.data-whatever] = "currentSubmission.id"
+      <button name="submissionBtn_{{currentSubmission.id}}" class="btn btn-sm btn-primary"
+              [attr.data-value]="act.noteRequired" [attr.data-whatever]="currentSubmission.id"
               (click)="submitKpis($event, act.toStateId)">{{act.name}}</button>
     </div>
     <div class="accordion" id="notesAccordian">
@@ -17,7 +18,8 @@
       <div id="messages" class="collapse" data-parent="#notesAccordian">
         <div id="submissionNotes_{{currentSubmission.id}}">
           <ng-container *ngFor="let historricalSubmissionNote of currentSubmission.submissionNotes">
-            <span><b>{{historricalSubmissionNote.postedBy.lastName}}, {{historricalSubmissionNote.postedBy.lastName}}</b></span>
+            <span><b>{{historricalSubmissionNote.postedBy.lastName}}
+              , {{historricalSubmissionNote.postedBy.lastName}}</b></span>
             <span class="ml-2">{{historricalSubmissionNote.postedOn | date : 'medium'}}</span>
             <p>{{historricalSubmissionNote.message}}</p>
           </ng-container>
@@ -54,10 +56,14 @@
              id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
              class="fa fa-newspaper-o"></i>
         </a>
-        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" *ngIf="kpiData.kpiDataFiles.length === 0" data-toggle="modal" data-target="#attachmentsModal"
+        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+           *ngIf="kpiData.kpiDataFiles.length === 0" data-toggle="modal"
+           data-target="#attachmentsModal"
            [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId"
            class="fa fa-paperclip ml-2" title="Attachments"></i>
-        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}" *ngIf="kpiData.kpiDataFiles.length > 0" data-toggle="modal" data-target="#attachmentsModal"
+        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"
+           *ngIf="kpiData.kpiDataFiles.length > 0" data-toggle="modal"
+           data-target="#attachmentsModal"
            [attr.data-whatever]="currentSubmission.id+'_'+kpiData.kpiType+'_'+kpiData.kpiDataId"
            class="fa fa-paperclip ml-2 text-primary" title="Attachments"></i>
         <div class="row invisible h-0"
@@ -160,6 +166,28 @@
     </div>
     <div class="row mx-2" *ngFor="let kpiData of documentKpisToSubmit">
       <div class="col-sm-12 col-lg-12"><b>{{kpiData.kpiDataTitle}}</b></div>
+      <div class="col-sm-12 col-lg-12">
+        <i class="fa fa-download"></i>Templates for Download
+        <table>
+          <tr>
+
+            <ng-container *ngFor="let template of kpiData.templates">
+              <td>
+                <a href="/api/app/{{template.location}}{{template.id}}" title="{{template.name}}" class="mr-2">
+                  <i *ngIf="template.fileType==='pdf'" class="fa fa-file-pdf-o text-rose"></i>
+                  <i *ngIf="template.fileType==='jpg'" class="fa fa-file-image-o"></i>
+                  <i *ngIf="template.fileType==='jpeg'" class="fa fa-file-image-o"></i>
+                  <i *ngIf="template.fileType==='png'" class="fa fa-file-image-o"></i>
+                  <i *ngIf="template.fileType==='doc'" class="fa fa-file"></i>
+                  <i *ngIf="template.fileType==='xls'" class="fa fa-file-excel-o text-success"></i>
+
+                {{template.name}}
+                </a>
+              </td>
+            </ng-container>
+          </tr>
+        </table>
+      </div>
       <div class="col-sm-3 col-lg-3">
         <div>
           <ng-container *ngFor="let doc of kpiData.kpiFiles">
@@ -268,7 +296,9 @@
         <input class="form-control" id="message-text"
                (keypress)="addNote($event,'noteId', 'chatPlaceHolder', appComp.loggedInUser)">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveNote('notesModal','noteId','note')">Save</button>
+        <button type="button" class="btn btn-primary"
+                (click)="saveNote('notesModal','noteId','note')">Save
+        </button>
       </div>
     </div>
   </div>
@@ -297,7 +327,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        <label for="fileSelector" class="btn btn-sm btn-success">Click to select files <i id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>
+        <label for="fileSelector" class="btn btn-sm btn-success">Click to select files <i
+            id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>
         <input id="fileSelector" class="form-control" style="visibility: hidden;" type="file"
                (change)="docChangeListener($event,'kpi_doc_placeholder', true)" [multiple]="true">
       </div>
@@ -329,7 +360,9 @@
         <input class="form-control" id="message-text"
                (keypress)="addNote($event,'submissionNoteId', 'submissionChatPlaceHolder', appComp.loggedInUser)">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveNote('submissionNotesModal','submissionNoteId','submissionNotes')">Save</button>
+        <button type="button" class="btn btn-primary"
+                (click)="saveNote('submissionNotesModal','submissionNoteId','submissionNotes')">Save
+        </button>
       </div>
     </div>
   </div>
