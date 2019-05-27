@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 import {Role, User} from '../model/user';
@@ -10,6 +10,7 @@ import {AccessCredentials} from '../model/access-credentials';
 import {AuthService} from 'ng-social-login-module';
 import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
 import {SocialUser} from 'ng-social-login-module';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,11 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService) {
+  constructor(private http: HttpClient,
+              private router: Router,
+              public appComponent: AppComponent,
+              private authService: AuthService,
+              private toastr: ToastrService) {
   }
 
   signInWithGoogle(): void {
@@ -106,14 +111,11 @@ export class LoginComponent implements OnInit {
         }
       },
       error => {
-        switch (error.status) {
-          case 401:
-            const signInButton = this.loginForm.get('btn-signin');
-            console.log(signInButton);
-
-            alert('A problem occured while processing your login. Please try again');
-            break;
-        }
+        const errorMsg = error as HttpErrorResponse;
+        console.log(error);
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true
+        });
       });
   }
 

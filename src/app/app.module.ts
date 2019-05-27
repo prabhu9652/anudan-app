@@ -33,6 +33,7 @@ import {SocialLoginModule, AuthServiceConfig} from 'ng-social-login-module';
 import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {ToastrModule} from 'ngx-toastr';
 
 const config = new AuthServiceConfig([
   {
@@ -81,7 +82,8 @@ export function provideConfig() {
       animationDuration: 300
     }),
     SocialLoginModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+      ToastrModule.forRoot()
   ],
   providers: [
 

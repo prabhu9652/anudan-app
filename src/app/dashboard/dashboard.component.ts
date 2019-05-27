@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {User} from '../model/user';
 import {Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
@@ -7,6 +7,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
 import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,8 @@ export class DashboardComponent implements OnInit {
               private appComponent: AppComponent,
               private router: Router,
               private route: ActivatedRoute,
-              private data: GrantDataService) {
+              private data: GrantDataService,
+              private toastr: ToastrService) {
   }
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class DashboardComponent implements OnInit {
     this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
       console.log(tenants);
       this.tenants = tenants;
-      if (this.tenants.tenants && this.tenants.tenants.length > 0) {
+        if (this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
 
@@ -69,11 +71,16 @@ export class DashboardComponent implements OnInit {
           }
         }
       }
-    });
+    },
+        error1 => {
+      const errorMsg = error1 as HttpErrorResponse;
+          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+            enableHtml: true
+          });
+        });
   }
 
   manageGrant(grant: Grant) {
-    console.log('Clicked Manage Grant');
     this.data.changeMessage(grant);
     this.router.navigate(['grant']);
   }

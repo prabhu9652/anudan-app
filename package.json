@@ -51,6 +51,7 @@
     "moment": "2.22.1",
     "ng-circle-progress": "^1.0.0",
     "ng-social-login-module": "^1.0.5",
+    "ngx-toastr": "^10.0.4",
     "perfect-scrollbar": "1.1.0",
     "popper.js": "1.14.3",
     "rxjs": "6.3.3",
