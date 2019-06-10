@@ -22,7 +22,8 @@ export class AppComponent implements AfterViewChecked{
     logoUrl: '',
     navbarColor: '#e3f2fd;',
     navbarTextColor: '#222',
-    tenantCode: ''
+    tenantCode: '',
+    defaultSections: []
   };
 
   org: string;
@@ -71,7 +72,7 @@ export class AppComponent implements AfterViewChecked{
 
   getAppUI(hostName) {
     console.log('hostName = ' + hostName);
-    const url = '/api/app/config/'.concat(hostName);
+    const url = '/api/public/config/'.concat(hostName);
     this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
       const newObj: any = response.body;
       this.appConfig = newObj as AppConfig;

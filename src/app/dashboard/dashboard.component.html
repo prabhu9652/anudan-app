@@ -5,31 +5,52 @@
         <div>
           <h3>Grants</h3>
 
-          <div *ngIf="currentTenant">
-            <div class="card-group mt-4">
-
-
-              <a class="card flex-row flex-wrap p-4"
-                   *ngFor="let grant of currentTenant.grants; let i = index"
-                   (click)="manageGrant(grant)">
+          <div *ngIf="!hasTenant">There are no available grants currently.</div>
+          <div *ngIf="hasTenant">
+            <div class="card-group">
+              <a class="card"
+                 *ngFor="let grant of currentTenant.grants; let i = index"
+                 (click)="manageGrant(grant)" style="width: 18rem;">
 
                 <div class="row no-gutters">
-                  <div class="col-auto text-center">
-                    <img [src]="'api/app/images/'+grant.grantorOrganization.imageName"
-                         class="img-fluid" alt="">
+                  <div class="w-100 m-2 text-center">
+                    <img [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                         class="img-fluid" alt="org logo">
                   </div>
                   <div class="col">
                     <div class="card-block px-2 py-2">
-                      <div class="card-title text-left"><strong>{{grant.name}}</strong></div>
-                      <p class="text-left"><span class="badge badge-success ">{{grant.grantStatus.displayName}}</span>/<span class="badge badge-dark text-white ">{{grant.substatus.displayName}}</span></p>
+                      <div class="card-title text-center"><strong>{{grant.name}}</strong>
+                      </div>
+                      <p class="text-center"><span
+                          class="badge badge-success ">{{grant.grantStatus.displayName}}</span>/<span
+                          class="badge badge-dark text-white ">{{grant.substatus.displayName}}</span>
+                      </p>
 
-                      <p class="text-left"><strong
-                          class="font-weight-bolder">{{grant.startDate | date}}</strong> to <strong
-                          class="font-weight-bolder">{{grant.endDate | date}}</strong></p>
+                      <div class="row">
+                        <div class="col-sm-12 col-lg-12 text-center">
+                          Grant Period
+                        </div>
+                      </div>
+                      <p class="text-center"><strong
+                          class="font-weight-bolder">{{grant.startDate | date}}</strong> to
+                        <strong
+                            class="font-weight-bolder">{{grant.endDate | date}}</strong></p>
                       <hr>
                       <div class="row">
-                        <div class="col-sm-12 col-lg-12 text-left">
-                          <div *ngIf="hasKpisToSubmit"><i class="material-icons text-rose">error_outline</i>Upcoming submissions for {{kpiSubmissionTitle}}. <b>Due date </b> <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div></div>
+                        <div class="col-sm-12 col-lg-12 text-center">
+                          <div *ngIf="hasKpisToSubmit">Upcoming submissions
+                            for {{kpiSubmissionTitle}}.
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-12 text-center">
+                          Due date
+                          <ng-container *ngIf="kpiSubmissionDate">
+                            <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div>
+                          </ng-container>
+                          <ng-container *ngIf="!kpiSubmissionDate">
+                            <div class="badge badge-danger">No upcoming submissions</div>
+                          </ng-container>
+
                         </div>
                       </div>
                     </div>
@@ -38,6 +59,7 @@
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>

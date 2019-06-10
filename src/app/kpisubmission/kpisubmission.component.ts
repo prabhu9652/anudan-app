@@ -97,7 +97,8 @@ export class KpisubmissionComponent implements OnInit {
           'kpiDocType': docKpi.type,
           'kpiDataNote': docKpi.note,
           'kpiDataNotes': docKpi.notesHistory,
-          'kpiFiles': docKpi.submissionDocs
+          'kpiFiles': docKpi.submissionDocs,
+          'templates': docKpi.grantKpi.templates
         };
         this.documentKpisToSubmit.push(kpiData);
       }

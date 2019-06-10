@@ -69,6 +69,50 @@ html, body {
   border-radius: 4px;
 }
 
+.toast-top-center {
+  top: 12px;
+  left: 50%;
+  margin-left: -150px;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.float-container {
+  border: solid 1px #ccc;
+}
+.float-container input {
+  border: none;
+  outline: 0;
+}
+
+input[type=date]::-webkit-inner-spin-button { -webkit-appearance: none; display: none; }
+
+.kpi-block::-webkit-scrollbar { width: 0 !important }
+.submissions-block::-webkit-scrollbar { width: 0 !important }
+
+@media all and (max-width: 240px) {
+  .toast-top-center {
+    margin-left: -54px;
+  }
+}
+@media all and (min-width: 241px) and (max-width: 320px) {
+  .toast-top-center {
+    margin-left: -64px;
+  }
+}
+@media all and (min-width: 321px) and (max-width: 480px) {
+  .toast-top-center {
+    margin-left: -96px;
+  }
+}
+
 @media (min-width: 6000px) {
   .sidebar .nav {
     margin-top: 100px;

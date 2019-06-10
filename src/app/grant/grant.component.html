@@ -1,17 +1,422 @@
-<div class="container text-left mt-5 px-5 py-5">
+<div class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
+  <div class="fixed-bottom"
+       style="right: 20px; left: auto;display: flex;align-items: flex-end;flex-direction: column;justify-content: right;">
+    <button #saveGrantButton (click)="saveGrant()" *ngIf="editMode" class="btn btn-sm btn-info">
+      <i class="fa fa-save mr-2"></i>Save Changes
+    </button>
+
+    <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')" #addKpiButton
+            (click)="addNewKpi()" class="btn btn-sm btn-danger">
+      <i class="fa fa-save mr-2"></i>Add KPI
+    </button>
+    <div #actionBlock>
+      <ng-container *ngIf="currentGrant.flowAuthorities">
+        <div *ngFor="let flow of currentGrant.flowAuthorities">
+          <div class="btn btn-sm btn-success" (click)="submitGrant(flow.toStateId)"
+               id="{{flow.action}}">{{flow.action}}</div>
+        </div>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="currentSubmission">
+      <div *ngFor="let flow of currentSubmission.flowAuthorities">
+        <div name="flowActionBtn" [ngClass]="['btn', 'btn-sm']"
+             (click)="saveSubmissionAndMove(flow.toStateId)"
+             id="{{flow.action}}">{{flow.action}}</div>
+      </div>
+    </ng-container>
+  </div>
+
+  <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i
+      class="fa fa-home mr-2"></i>Home</a>
+  <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
+  <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
   <div *ngIf="currentGrant.actionAuthorities.permissions.includes('VIEW')">
-    <h5>{{currentGrant.name}}</h5>
-    <span class="badge badge-success">{{currentGrant.grantStatus.displayName}}</span>/<span class="badge badge-dark text-white">{{currentGrant.substatus.displayName}}</span>
+    <div class="row">
+      <div class="col-6">
+        <label for="grantName">Grant Name</label>
+        <div id="grantName">{{currentGrant.name}}</div>
+      </div>
+      <div class="col-6">
+        <label for="grantDesc">Grant Description</label>
+        <div id="grantDesc">{{currentGrant.description}}"</div>
+      </div>
+      <div class="col-6">
+        <label for="grantStart">Grant Start Date</label>
+        <div id="grantStart">{{currentGrant.startDate | date}}</div>
+      </div>
+      <div class="col-6">
+        <label for="grantEnd">Grant End Date</label>
+        <div id="grantEnd">{{currentGrant.endDate | date}}</div>
+      </div>
+      <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-12 bg-primary text-white p-2">
+              <a (click)="toggleSection($event,section.id)"><i
+                  class="fa fa-chevron-right mr-1 fa-fw"></i></a>
+              <strong>{{section.sectionName.toLocaleUpperCase()}}</strong>
+            </div>
+            <div class="col-sm-12" id="section_{{section.id}}" style="display: none;">
+              <ng-container *ngFor="let attribute of section.attributes">
+                <div class="row mb-2 mt-2">
+                  <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
+                    <div class="col-sm-12 col-lg-6">
+                      <b id="attribute_name_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldName}}</b>
+                    </div>
+                    <div class="col-sm-12 col-lg-6 text-left">
+                      <span class="p-1 m-1" [attr.data-section]="section.id"
+                            [attr.data-attribute]="attribute.id"
+                            id="attribute_value_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldValue}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="attribute.fieldType=='document'">
+                    <div class="col-sm-12 col-lg-12"><a
+                        href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}"><b
+                        class="">{{attribute.fieldName}}</b></a>
+                      <i class="fa fa-trash pull-right ml-2"></i>
+                      <i class="fa fa-edit pull-right ml-2"></i>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
     <hr>
-    <div class="btn-group">
-      <div *ngFor="let flow of currentGrant.flowAuthority">
-        <button class="btn btn-sm btn-success"
-                id="{{flow.action}}">{{flow.action}}</button>
+
+    <div class="row flex-row flex-nowrap" style="overflow-x: auto"
+         (scroll)="postionFirstColumn($event)">
+      <ng-container
+          *ngFor="let dummy of ' '.repeat(currentGrant.submissions.length + 1 ).split(''), let x = index">
+
+
+        <ng-container *ngIf="x!==0">
+          <div class="col-3 p-0" style="border: 1px solid;">
+            <div
+                [ngClass]="['col-12', 'mb-2','text-center', currentGrant.submissions[x - 1].flowAuthorities? 'bg-primary text-white' : 'bg-white']">{{currentGrant.submissions[x
+            - 1].title}}</div>
+            <ng-container
+                *ngFor="let kpiData of currentGrant.submissions[x - 1].quantitiaveKpisubmissions">
+              <div [attr.data-id]="kpiData.grantKpi.id"
+                   style="display: flex;align-items: center; border-bottom: .5px solid #d4d4d4;">
+                <ng-container *ngIf="kpiData.toReport">
+                  <ng-container *ngIf="currentGrant.submissions[x -1].flowAuthorities">
+                    <input (change)="updateSubmission($event, kpiData.grantKpi.kpiType, kpiData.id)"
+                           value="{{kpiData.actuals}}"
+                           class="form-control w-75 float-left">
+                  </ng-container>
+                  <ng-container *ngIf="!currentGrant.submissions[x -1].flowAuthorities">
+                    <input value="{{kpiData.actuals}}"
+                           class="form-control w-50 float-left text-center" readonly disabled
+                           style="background-image: none; border: .5px solid #d4d4d4;">
+                  </ng-container>
+                  <div style="position: absolute;right: 30px;">
+                    <div><i class="fa fa-paperclip text-gray"></i></div>
+                  </div>
+                  <div style="position: absolute;right: 10px;">
+                    <div><i class="fa fa-clipboard text-gray"></i></div>
+                  </div>
+                  <div>
+                    <div>{{kpiData.goal}}</div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!kpiData.toReport">
+                  Submission not required
+                </ng-container>
+              </div>
+            </ng-container>
+            <ng-container
+                *ngFor="let kpiData of currentGrant.submissions[x - 1].qualitativeKpiSubmissions">
+              <div [attr.data-id]="kpiData.grantKpi.id"
+                   style="display: flex;align-items: center; border-bottom: .5px solid #d4d4d4;">
+                <ng-container *ngIf="kpiData.toReport">
+                  <ng-container *ngIf="currentGrant.submissions[x -1].flowAuthorities">
+                  <textarea
+                      (change)="updateSubmission($event, kpiData.grantKpi.kpiType, kpiData.id)"
+                      value="{{kpiData.actuals}}" placeholder="Your response"
+                      class="form-control w-75 p-0 float-left"
+                      style="height: 99% !important;background-image: none; border: .5px solid #d4d4d4;"></textarea>
+                  </ng-container>
+                  <ng-container *ngIf="!currentGrant.submissions[x -1].flowAuthorities">
+                  <textarea value="{{kpiData.actuals}}" placeholder="Your response"
+                            class="form-control w-75 p-0 float-left"
+                            style="height: 99% !important;background-image: none; border: .5px solid #d4d4d4;"
+                            readonly disabled></textarea>
+                  </ng-container>
+                  <div style="position: absolute;right: 30px;">
+                    <div><i class="fa fa-paperclip text-gray"></i></div>
+                  </div>
+                  <div style="position: absolute;right: 10px;">
+                    <div><i class="fa fa-clipboard text-gray"></i></div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!kpiData.toReport">
+                  Submission not required
+                </ng-container>
+              </div>
+            </ng-container>
+            <ng-container
+                *ngFor="let kpiData of currentGrant.submissions[x - 1].documentKpiSubmissions">
+              <div [attr.data-id]="kpiData.grantKpi.id"
+                   style="display: flex;align-items: center; border-bottom: .5px solid #d4d4d4;">
+                <ng-container *ngIf="kpiData.toReport">
+                  <ng-container *ngIf="currentGrant.submissions[x -1].flowAuthorities">
+                    <button class="btn btn-sm btn-primary">Upload</button>
+                  </ng-container>
+                  <ng-container *ngIf="!currentGrant.submissions[x -1].flowAuthorities">
+                    <button class="btn btn-sm btn-primary" disabled>Upload</button>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="!kpiData.toReport">
+                  Submission not required
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="x===0">
+          <div class="col-6 first-column bg-white" style="border: 1px solid; z-index: 100;">
+            <div class="affix">
+              <div class="row affix">
+                <div class="col-12 mb-2">&nbsp;</div>
+                <ng-container
+                    *ngFor="let kpiData of currentGrant.submissions[x].quantitiaveKpisubmissions">
+                  <div class="col-12" id="kpi_title_{{kpiData.grantKpi.id}}"
+                       style="border-bottom: .5px solid #d4d4d4;">
+                    <p class="p-1">{{kpiData.grantKpi.title}}</p>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                    *ngFor="let kpiData of currentGrant.submissions[x].qualitativeKpiSubmissions">
+                  <div class="col-12" id="kpi_title_{{kpiData.grantKpi.id}}"
+                       style="border-bottom: .5px solid #d4d4d4;">
+                    <p>{{kpiData.grantKpi.title}}</p>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                    *ngFor="let kpiData of currentGrant.submissions[x].documentKpiSubmissions">
+                  <div class="col-12" id="kpi_title_{{kpiData.grantKpi.id}}"
+                       style="border-bottom: .5px solid #d4d4d4;">
+                    <p>{{kpiData.grantKpi.title}}</p>
+                    <table>
+                      <tr>
+                        <ng-container *ngFor="let template of kpiData.grantKpi.templates">
+                          <td>
+                            <a href="/api/public/{{template.location}}{{template.id}}"
+                               title="{{template.name}}" class="mr-2">
+                              <i *ngIf="template.fileType==='pdf'"
+                                 class="fa fa-file-pdf-o text-rose"></i>
+                              <i *ngIf="template.fileType==='jpg'" class="fa fa-file-image-o"></i>
+                              <i *ngIf="template.fileType==='jpeg'" class="fa fa-file-image-o"></i>
+                              <i *ngIf="template.fileType==='png'" class="fa fa-file-image-o"></i>
+                              <i *ngIf="template.fileType==='doc'" class="fa fa-file"></i>
+                              <i *ngIf="template.fileType==='xls'"
+                                 class="fa fa-file-excel-o text-success"></i>
+
+                              {{template.name}}
+                            </a>
+                          </td>
+                        </ng-container>
+                      </tr>
+                    </table>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <!--MANAGEMENT SECTION-->
+  <div *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')">
+    <div class="row">
+      <div class="col-6">
+        <label for="grantName">Grant Name</label>
+        <input id="grantName" value="{{currentGrant.name}}" class="form-control" (change)="updateGrant($event)">
+      </div>
+      <div class="col-6">
+        <label for="grantDesc">Grant Description</label>
+        <input id="grantDesc" value="{{currentGrant.description}}" class="form-control" (change)="updateGrant($event)">
+      </div>
+      <div class="col-6">
+        <label for="grantStart">Grant Start Date</label>
+        <input id="grantStart" type="date" value="{{currentGrant.startDate | date:'yyyy-MM-dd'}}" class="form-control" (change)="updateGrant($event)">
+      </div>
+      <div class="col-6">
+        <label for="grantEnd">Grant End Date</label>
+        <input id="grantEnd" type="date" value="{{currentGrant.endDate | date:'yyyy-MM-dd'}}" class="form-control" (change)="updateGrant($event)">
       </div>
 
-      <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i class="fa fa-home mr-2"></i>Home</a>
+
+
+
+      <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-12 bg-primary text-white p-2">
+              <a (click)="toggleSection($event,section.id)"><i
+                  class="fa fa-chevron-right mr-1 fa-fw"></i></a>
+              <strong>{{section.sectionName.toLocaleUpperCase()}}</strong>
+              <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+                 class="text-white pull-right"><i class="fa fa-plus-square"></i></a>
+            </div>
+            <div class="col-sm-12" id="section_{{section.id}}" style="display: none;">
+              <ng-container *ngFor="let attribute of section.attributes">
+                <div class="row mb-2 mt-2">
+                  <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
+                    <div class="col-sm-12 col-lg-6">
+                      <b id="attribute_name_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldName}}</b>
+                      <a (click)="deleteFieldEntry()" class="text-primary">
+                        <i class="fa fa-trash pull-right"
+                           title="Delete {{attribute.fieldName}} value"></i>
+                      </a>
+                      <a (click)="editFieldEntry(attribute.fieldType+'_'+attribute.id)"
+                         class="text-primary">
+                        <i class="fa fa-edit pull-right"
+                           title="Edit {{attribute.fieldName}} value"></i>
+                      </a>
+
+                    </div>
+                    <div class="col-sm-12 col-lg-6 text-left">
+                      <span class="p-1 m-1" [attr.data-section]="section.id"
+                            [attr.data-attribute]="attribute.id"
+                            id="attribute_value_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldValue}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="attribute.fieldType=='document'">
+                    <div class="col-sm-12 col-lg-12"><a
+                        href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}"><b
+                        class="">{{attribute.fieldName}}</b></a>
+                      <i class="fa fa-trash pull-right ml-2"></i>
+                      <i class="fa fa-edit pull-right ml-2"></i>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="col-sm-12">
+        <a (click)="addNewSection()" class="text-secondary"><i class="fa fa-plus-square mr-1"></i>Add
+          new Section</a>
+      </div>
     </div>
-    <div class="accordion" id="accordionExample">
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-5">
+        KPIs
+      </div>
+      <div class="col-sm-7 submissions-block" style="overflow-x: auto" (scroll)="scrollContent($event)">
+        <div class="container-fluid">
+          <div class="row flex-row flex-nowrap">
+            <ng-container *ngFor="let submission of currentGrant.submissions">
+              <div class="col-3">
+                <div class="row">
+                  <div class="col-sm-12 text-center">
+                    <b>{{submission.title}}</b>
+                    <input type="date" required="required" value="{{submission.submitBy | date: 'yyyy-MM-dd'}}" class="form-control px-0">
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngFor="let kpi of currentGrant.kpis">
+      <div class="row border-bottom">
+        <div class="col-sm-5">
+          <input (change)="updateTitle($event, kpi.id, kpi.kpiType)" value="{{kpi.title}}"
+                 class="form-control">
+        </div>
+        <div class="col-sm-7" style="overflow-x: auto">
+          <div class="container-fluid">
+            <div class="row flex-row flex-nowrap">
+              <div class="kpi-block">
+              <ng-container *ngFor="let submission of currentGrant.submissions">
+                <ng-container *ngIf="kpi.kpiType === 'QUANTITATIVE'">
+                  <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
+                    <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+
+                      <div class="col-3">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input *ngIf="kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'quantitative', submission.id, kpiData.id)"
+                                   checked class="form-control">
+                            <input *ngIf="!kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'quantitative', submission.id, kpiData.id)"
+                                   class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+
+                            <input id="goal_{{kpiData.id}}" type="number"
+                                   pattern="^(0|[1-9][0-9]*)$" value="{{kpiData.goal}}"
+                                   (change)="updateGoal($event,'quantitative', submission.id, kpiData.id)"
+                                   class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="kpi.kpiType === 'QUALITATIVE'">
+                  <ng-container *ngFor="let kpiData of submission.qualitativeKpiSubmissions">
+                    <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+                      <div class="col-3">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input *ngIf="kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'qualitative', submission.id, kpiData.id)"
+                                   checked class="form-control">
+                            <input *ngIf="!kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'qualitative', submission.id, kpiData.id)"
+                                   class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="kpi.kpiType === 'DOCUMENT'">
+                  <ng-container *ngFor="let kpiData of submission.documentKpiSubmissions">
+                    <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+                      <div class="col-3">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input *ngIf="kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'document', submission.id, kpiData.id)"
+                                   checked class="form-control">
+                            <input *ngIf="!kpiData.toReport" type="checkbox"
+                                   (change)="toggleCheckBox($event,'document', submission.id, kpiData.id)"
+                                   class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!--<div class="accordion" id="accordionExample">
       <ng-container *ngFor="let submission of currentGrant.submissions">
         <div class="card mb-0">
           <div class="card-header" id="heading_{{submission.id}}">
@@ -56,7 +461,7 @@
                       [animateTitle]=false
                       [title]="[quantKpi.actuals]"
                       [animationDuration]="100"
-                      [subtitle]="['---',quantKpi.goal]"
+                      [subtitle]="['-&#45;&#45;',quantKpi.goal]"
                       [showUnits]=false
                   ></circle-progress>
                 </div>
@@ -86,21 +491,144 @@
                       </p>
                     </a>
                   </ng-container>
-                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </ng-container>
 
-    </div>
-  </div>
-
-  <div *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')">
-
+    </div>-->
   </div>
 </div>
 
+<div #editFieldModal class="modal fade" id="editFieldModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <input type="text" id="editFieldIdHolder">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editFieldLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input id="editFieldInput" class="form-control" value="">
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="saveField()">Okay
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #createFieldModal class="modal fade" id="createFieldModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <input type="text" id="sectionIdHolder">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createFieldLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Field Name:</label>
+          <input id="fieldTitleInput" class="form-control" value="">
+        </div>
+        <label for="fieldValueInput" class="mat-form-field-label pull-left">Field Type:</label>
+        <select id="fieldValueInput" class="form-control">
+          <option value="string" selected>Text</option>
+          <option value="string">Document</option>
+        </select>
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="addField()">Okay
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createSectionLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+          <input id="sectionTitleInput" class="form-control" value="">
+        </div>
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="saveSection()">Done
+        </button>
+        <button type="button" class="btn btn-warning pull-right"
+                (click)="saveSectionAndAddNew()">Save & Add New Section
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #createKpiModal id="createKpiModal" class="modal fade" tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createReportingPeriodLabel">Add new KPI</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-8">
+            <input id="kpiDescription" #kpiDescriptionElem class="form-control"
+                   placeholder="KPI description">
+          </div>
+          <div class="col-sm-4">
+            <select #kpiTypeElem>
+              <option>Quantitative</option>
+              <option>Qualitative</option>
+              <option>Documents</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="saveKpi()">Done
+        </button>
+        <button type="button" class="btn btn-warning pull-right"
+                (click)="saveKpiAndAddNew()">Save & Add New KPI
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

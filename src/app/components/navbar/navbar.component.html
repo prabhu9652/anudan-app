@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-transparent  navbar-fixed fixed-top p-0">
     <div class="container-fluid" [style.background-color]="navColor" [style.color]="navTextColor">
         <div class="navbar-wrapper">
-          <img style="width: 100px;" class="p-2" [src]="logoUrl">
+          <img  class="p-2" style="width: 70%;" [src]="logoUrl" alt="logo">
         </div>
+        <button *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')" class="btn btn-primary float-right" style="position: absolute;right: 10%;" (click)="grantComponent.createGrant()">Create Grant</button>
         <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -45,7 +46,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <b>{{user.lastName+', '+user.firstName + ' ('+user.role.name+')'}}</b>
+                    <b>{{user.lastName}}, {{user.firstName}}</b>
                 </li>
 
                 <li *ngIf="user"><a class="btn btn-sm btn-default text-white" (click)="appComponent.logout()" title="Logout"><i class="fa fa-sign-out text-white"></i>Logout</a></li>

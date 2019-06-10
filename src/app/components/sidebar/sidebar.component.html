@@ -3,9 +3,11 @@
     <li *ngIf="isMobileMenu()" class="p-1 nav-item bg-info">
       <a class="nav-link" (click)="showProfile()">
         <i class="material-icons text-white">person</i>
-        <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName
-        + ', ' + appComponent.loggedInUser.firstName + ' (' + appComponent.loggedInUser.role.name
-        + ')'}}</p>
+        <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName}}
+        , {{appComponent.loggedInUser.firstName}}</p>
+        <ng-container *ngFor="let userRole of appComponent.loggedInUser.userRoles; let i = index">
+          <span class="text-white">{{userRole.role.name}}<ng-container *ngIf="i!=appComponent.loggedInUser.userRoles.length-1">, </ng-container></span>
+        </ng-container>
       </a>
 
     </li>

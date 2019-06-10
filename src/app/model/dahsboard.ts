@@ -60,6 +60,17 @@ export class GrantKpi {
   kpiType: string;
   createdAt: Date;
   createdBy: string;
+  templates: Template[];
+}
+
+export class Template {
+    description: string;
+    id: number;
+    location: string;
+    name: string;
+    type: string;
+    version: number;
+    fileType: string;
 }
 
 export class Note {
@@ -77,6 +88,7 @@ export class QuantitiaveKpisubmission {
   note: string;
   notesHistory: Note[];
   submissionDocs: Doc[];
+  toReport: boolean;
 }
 
 export class QualitativeKpiSubmission {
@@ -87,6 +99,7 @@ export class QualitativeKpiSubmission {
   note: string;
   notesHistory: Note[];
   submissionDocs: Doc[];
+  toReport: boolean;
 }
 
 export class Doc {
@@ -105,6 +118,7 @@ export class DocumentKpiSubmission {
   note: string;
   notesHistory: Note[];
   submissionDocs: Doc[];
+  toReport: boolean;
 }
 
 export class FlowAuthority {
@@ -146,6 +160,35 @@ export class ActionAuthorities {
   id: number;
 }
 
+export class Attribute {
+  id: number;
+  fieldName: string;
+  fieldType: string;
+  fieldValue: string;
+}
+
+export class Section {
+  id: number;
+  sectionName: string;
+  attributes: Attribute[];
+}
+
+export class GrantDetails {
+  sections: Section[];
+}
+
+export class Kpi {
+  id: number;
+  title: string;
+  description: string;
+  scheduled: boolean;
+  periodicity: number;
+  frequency: string;
+  kpiType: string;
+  createdAt: Date;
+  createdBy: string;
+  templates: Template[];
+}
 export class Grant {
   id: number;
   organization: Organization;
@@ -159,7 +202,9 @@ export class Grant {
   endDate: Date;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
-  flowAuthorities: any[];
+  flowAuthorities: FlowAuthority[];
+  grantDetails: GrantDetails;
+  kpis: Kpi[];
 }
 
 export class Tenant {

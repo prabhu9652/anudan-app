@@ -1,12 +1,19 @@
 import {Organization} from './organization';
 
-export class Role {
+export interface Role {
   id: number;
   name: string;
-  createdAt: number;
-  createdBy: string;
-  updatedAt?: any;
-  updatedBy?: any;
+  permissions: Permission[];
+}
+
+export class UserRole {
+  id: number;
+  role: Role;
+}
+
+export class Permission {
+  id: number;
+  permission: string;
 }
 
 export class User {
@@ -17,5 +24,6 @@ export class User {
   username?: string;
   password?: string;
   organization?: Organization;
-  role?: Role;
+  userRoles?: UserRole[];
+  permissions: string[];
 }
