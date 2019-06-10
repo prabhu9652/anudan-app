@@ -5,7 +5,11 @@
         <div class="card">
           <div class="card-header card-header-info">
             <h4 class="card-title">
-              <div>{{user.emailId}} ({{user.role.name}})</div>
+              <div>{{user.emailId}}</div>
+              <ng-container *ngFor="let userRole of user.userRoles; let i = index">
+                <span>{{userRole.role.name}}</span>
+                <ng-container *ngIf="i<user.userRoles.length-1">, </ng-container>
+              </ng-container>
             </h4>
           </div>
           <div class="card-body">

@@ -22,7 +22,8 @@ export class AppComponent implements AfterViewChecked{
     logoUrl: '',
     navbarColor: '#e3f2fd;',
     navbarTextColor: '#222',
-    tenantCode: ''
+    tenantCode: '',
+    defaultSections: []
   };
 
   org: string;

@@ -5,13 +5,12 @@
         <div>
           <h3>Grants</h3>
 
-          <div *ngIf="currentTenant">
-            <div class="mt-4">
-
-
+          <div *ngIf="!hasTenant">There are no available grants currently.</div>
+          <div *ngIf="hasTenant">
+            <div class="card-group">
               <a class="card"
-                   *ngFor="let grant of currentTenant.grants; let i = index"
-                   (click)="manageGrant(grant)" style="width: 18rem;">
+                 *ngFor="let grant of currentTenant.grants; let i = index"
+                 (click)="manageGrant(grant)" style="width: 18rem;">
 
                 <div class="row no-gutters">
                   <div class="w-100 m-2 text-center">
@@ -20,8 +19,12 @@
                   </div>
                   <div class="col">
                     <div class="card-block px-2 py-2">
-                      <div class="card-title text-center"><strong>{{grant.name}}</strong></div>
-                      <p class="text-center"><span class="badge badge-success ">{{grant.grantStatus.displayName}}</span>/<span class="badge badge-dark text-white ">{{grant.substatus.displayName}}</span></p>
+                      <div class="card-title text-center"><strong>{{grant.name}}</strong>
+                      </div>
+                      <p class="text-center"><span
+                          class="badge badge-success ">{{grant.grantStatus.displayName}}</span>/<span
+                          class="badge badge-dark text-white ">{{grant.substatus.displayName}}</span>
+                      </p>
 
                       <div class="row">
                         <div class="col-sm-12 col-lg-12 text-center">
@@ -29,15 +32,25 @@
                         </div>
                       </div>
                       <p class="text-center"><strong
-                          class="font-weight-bolder">{{grant.startDate | date}}</strong> to <strong
-                          class="font-weight-bolder">{{grant.endDate | date}}</strong></p>
+                          class="font-weight-bolder">{{grant.startDate | date}}</strong> to
+                        <strong
+                            class="font-weight-bolder">{{grant.endDate | date}}</strong></p>
                       <hr>
                       <div class="row">
                         <div class="col-sm-12 col-lg-12 text-center">
-                          <div *ngIf="hasKpisToSubmit">Upcoming submissions for {{kpiSubmissionTitle}}.</div>
+                          <div *ngIf="hasKpisToSubmit">Upcoming submissions
+                            for {{kpiSubmissionTitle}}.
+                          </div>
                         </div>
                         <div class="col-sm-12 col-lg-12 text-center">
-                          Due date <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div>
+                          Due date
+                          <ng-container *ngIf="kpiSubmissionDate">
+                            <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div>
+                          </ng-container>
+                          <ng-container *ngIf="!kpiSubmissionDate">
+                            <div class="badge badge-danger">No upcoming submissions</div>
+                          </ng-container>
+
                         </div>
                       </div>
                     </div>
@@ -46,6 +59,7 @@
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>

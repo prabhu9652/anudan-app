@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   user: User;
   tenants: Tenants;
   currentTenant: Tenant;
+  hasTenant = false;
   hasKpisToSubmit: boolean;
   kpiSubmissionDate: Date;
   kpiSubmissionTitle: string;
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
       this.tenants = tenants;
         if (this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
+        this.hasTenant = true;
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
 
         for (const grant of this.currentTenant.grants) {
@@ -75,7 +77,8 @@ export class DashboardComponent implements OnInit {
         error1 => {
       const errorMsg = error1 as HttpErrorResponse;
           this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
+            enableHtml: true,
+            positionClass: 'toast-top-center'
           });
         });
   }

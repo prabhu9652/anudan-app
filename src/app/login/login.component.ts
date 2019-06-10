@@ -90,7 +90,6 @@ export class LoginComponent implements OnInit {
       observe: 'response' as 'body'
     };
 
-
     const url = '/api/authenticate';
 
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
@@ -101,8 +100,18 @@ export class LoginComponent implements OnInit {
 
 
         localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
-        localStorage.setItem('USER', '' + JSON.stringify(this.user));
-        this.appComponent.loggedInUser = this.user;
+
+        this.user.permissions = new Array();
+        for (const userRole of this.user.userRoles) {
+          if (userRole.role.permissions) {
+            for (const perm of userRole.role.permissions) {
+              this.user.permissions.push(perm.permission);
+            }
+          }
+        }
+          localStorage.setItem('USER', '' + JSON.stringify(this.user));
+          this.appComponent.loggedInUser = this.user;
+        console.log(this.user);
 
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
           this.router.navigate(['/dashboard']);

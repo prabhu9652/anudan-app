@@ -34,6 +34,8 @@ import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
+import {MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+
 
 const config = new AuthServiceConfig([
   {
@@ -83,14 +85,20 @@ export function provideConfig() {
     }),
     SocialLoginModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-      ToastrModule.forRoot()
+      ToastrModule.forRoot({
+        autoDismiss: false,
+        enableHtml: true
+      }),
+      MatDatepickerModule,
+      MatNativeDateModule
   ],
   providers: [
 
     {
       provide: AuthServiceConfig,
-      useFactory: provideConfig
-    }
+      useFactory: provideConfig,
+    },
+      MatDatepickerModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
