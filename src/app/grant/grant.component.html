@@ -16,14 +16,15 @@
                id="{{flow.action}}">{{flow.action}}</div>
         </div>
       </ng-container>
-    </div>
-    <ng-container *ngIf="currentSubmission">
+      <ng-container *ngIf="currentSubmission">
       <div *ngFor="let flow of currentSubmission.flowAuthorities">
         <div name="flowActionBtn" [ngClass]="['btn', 'btn-sm']"
              (click)="saveSubmissionAndMove(flow.toStateId)"
              id="{{flow.action}}">{{flow.action}}</div>
       </div>
     </ng-container>
+    </div>
+
   </div>
 
   <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i
@@ -235,76 +236,136 @@
   </div>
   <!--MANAGEMENT SECTION-->
   <div *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')">
+
     <div class="row">
       <div class="col-6">
-        <label for="grantName">Grant Name</label>
-        <input id="grantName" value="{{currentGrant.name}}" class="form-control" (change)="updateGrant($event)">
+        <mat-form-field>
+          <input matInput id="grantName" [(ngModel)]="currentGrant.name"
+                 [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant($event)"
+                 placeholder="Grant Name"
+                 type="text" autocomplete="off">
+        </mat-form-field>
       </div>
       <div class="col-6">
-        <label for="grantDesc">Grant Description</label>
-        <input id="grantDesc" value="{{currentGrant.description}}" class="form-control" (change)="updateGrant($event)">
+        <mat-form-field>
+          <input id="grantDesc" matInput type="text" [(ngModel)]="currentGrant.description"
+                 [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                 placeholder="Grant Description" autocomplete="off">
+        </mat-form-field>
       </div>
       <div class="col-6">
-        <label for="grantStart">Grant Start Date</label>
-        <input id="grantStart" type="date" value="{{currentGrant.startDate | date:'yyyy-MM-dd'}}" class="form-control" (change)="updateGrant($event)">
+        <mat-form-field>
+          <input id="grantStart" matInput [(ngModel)]="currentGrant.startDate"
+                 [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                 [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text">
+          <mat-datepicker-toggle matPrefix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
       </div>
       <div class="col-6">
-        <label for="grantEnd">Grant End Date</label>
-        <input id="grantEnd" type="date" value="{{currentGrant.endDate | date:'yyyy-MM-dd'}}" class="form-control" (change)="updateGrant($event)">
+        <mat-form-field>
+          <input id="grantEnd" matInput [(ngModel)]="currentGrant.endDate"
+                 [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                 [matDatepicker]="pickerEnd" placeholder="Grant End Date" readonly>
+          <mat-datepicker-toggle matPrefix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
       </div>
-
-
 
 
       <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-        <div class="col-sm-6">
-          <div class="row">
-            <div class="col-sm-12 bg-primary text-white p-2">
-              <a (click)="toggleSection($event,section.id)"><i
-                  class="fa fa-chevron-right mr-1 fa-fw"></i></a>
-              <strong>{{section.sectionName.toLocaleUpperCase()}}</strong>
-              <a (click)="addNewFieldToSection(section.id,section.sectionName)"
-                 class="text-white pull-right"><i class="fa fa-plus-square"></i></a>
+        <mat-accordion class="col-sm-12 col-lg-6">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{section.sectionName.toLocaleUpperCase()}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <div class="col-12">
+                <a (click)="deleteSection(section.id,section.sectionName)"
+                   class="mr-2 text-gray"><i class="fa fa-trash"></i></a>
+                <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+                   class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
+              </div>
             </div>
-            <div class="col-sm-12" id="section_{{section.id}}" style="display: none;">
+            <div>
               <ng-container *ngFor="let attribute of section.attributes">
                 <div class="row mb-2 mt-2">
                   <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
-                    <div class="col-sm-12 col-lg-6">
-                      <b id="attribute_name_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldName}}</b>
-                      <a (click)="deleteFieldEntry()" class="text-primary">
-                        <i class="fa fa-trash pull-right"
-                           title="Delete {{attribute.fieldName}} value"></i>
-                      </a>
-                      <a (click)="editFieldEntry(attribute.fieldType+'_'+attribute.id)"
-                         class="text-primary">
-                        <i class="fa fa-edit pull-right"
-                           title="Edit {{attribute.fieldName}} value"></i>
-                      </a>
-
+                    <div class="col-sm-4 col-lg-4">
+                      <mat-form-field>
+                        <input [(ngModel)]="attribute.fieldName"
+                               [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                               matInput placeholder="Field Name">
+                      </mat-form-field>
                     </div>
-                    <div class="col-sm-12 col-lg-6 text-left">
-                      <span class="p-1 m-1" [attr.data-section]="section.id"
-                            [attr.data-attribute]="attribute.id"
-                            id="attribute_value_id_{{attribute.fieldType}}_{{attribute.id}}">{{attribute.fieldValue}}</span>
+                    <div class="col-sm-4 col-lg-4 text-left">
+                      <mat-form-field>
+                        <mat-label>Type</mat-label>
+                        <mat-select [(ngModel)]="attribute.fieldType"
+                                    [ngModelOptions]="{standAlone:true}"
+                                    (ngModelChange)="checkGrant()">
+                          <mat-option value="none" aria-selected="true">--Select type of field--
+                          </mat-option>
+                          <mat-option value="string">Text</mat-option>
+                          <mat-option value="document">Document</mat-option>
+                        </mat-select>
+
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 col-lg-3 text-left">
+                      <mat-form-field>
+                        <input [attr.data-section]="section.id"
+                               [attr.data-attribute]="attribute.id" matInput
+                               placeholder="Field Value"
+                               id="attribute_value_id_{{attribute.fieldType}}_{{attribute.id}}"
+                               value="{{attribute.fieldValue}}">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-1 col-lg-1" style="display: flex;align-items: center;">
+                      <mat-icon (click)="confirm(section.id,attribute.id,'field')"
+                                aria-hidden="false"
+                                aria-label="Example home icon" inline="true">
+                        delete_outline
+                      </mat-icon>
                     </div>
                   </ng-container>
                   <ng-container *ngIf="attribute.fieldType=='document'">
-                    <div class="col-sm-12 col-lg-12"><a
-                        href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}"><b
-                        class="">{{attribute.fieldName}}</b></a>
-                      <i class="fa fa-trash pull-right ml-2"></i>
-                      <i class="fa fa-edit pull-right ml-2"></i>
+                    <div class="col-sm-7 col-lg-7">
+                      <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
+                        <b class="">{{attribute.fieldName}}</b>
+                      </a>
+                    </div>
+                    <div class="col-sm-4 col-lg-4">
+                      <mat-form-field>
+                        <mat-label>Type</mat-label>
+                        <mat-select [(ngModel)]="attribute.fieldType"
+                                    [ngModelOptions]="{standAlone:true}"
+                                    (ngModelChange)="checkGrant()">
+                          <mat-option value="none" aria-selected="true">--Select type of field--
+                          </mat-option>
+                          <mat-option value="string">Text</mat-option>
+                          <mat-option value="document">Document</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-1 col-lg-1" style="display: flex;align-items: center;">
+                      <mat-icon (click)="deleteFieldEntry()" aria-hidden="false"
+                                aria-label="Example home icon" inline="true">
+                        delete_outline
+                      </mat-icon>
                     </div>
                   </ng-container>
                 </div>
               </ng-container>
             </div>
-          </div>
-        </div>
+          </mat-expansion-panel>
+        </mat-accordion>
       </ng-container>
       <div class="col-sm-12">
-        <a (click)="addNewSection()" class="text-secondary"><i class="fa fa-plus-square mr-1"></i>Add
+        <a mat-stroked-button color="accent" (click)="addNewSection()" class="text-secondary"><i
+            class="fa fa-plus-square mr-1"></i>Add
           new Section</a>
       </div>
     </div>
@@ -314,15 +375,28 @@
       <div class="col-sm-5">
         KPIs
       </div>
-      <div class="col-sm-7 submissions-block" style="overflow-x: auto" (scroll)="scrollContent($event)">
+      <div class="col-sm-7 submissions-block" style="overflow-x: auto"
+           (scroll)="scrollContent($event)">
         <div class="container-fluid">
           <div class="row flex-row flex-nowrap">
             <ng-container *ngFor="let submission of currentGrant.submissions">
               <div class="col-3">
                 <div class="row">
                   <div class="col-sm-12 text-center">
-                    <b>{{submission.title}}</b>
-                    <input type="date" required="required" value="{{submission.submitBy | date: 'yyyy-MM-dd'}}" class="form-control px-0">
+                    <mat-form-field class="text-center">
+                      <input matInput class="text-center" [(ngModel)]="submission.title"
+                             [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                             placeholder="Submission Title">
+                    </mat-form-field>
+                    <mat-form-field class="text-center">
+                      <input matInput [matDatepicker]="pickerSubmitBy"
+                             (ngModelChange)="checkGrant($event)"
+                             [(ngModel)]="submission.submitBy"
+                             [ngModelOptions]="{standAlone:true}" placeholder="Submit by Date">
+                      <mat-datepicker-toggle matPrefix
+                                             [for]="pickerSubmitBy"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerSubmitBy></mat-datepicker>
+                    </mat-form-field>
                   </div>
                 </div>
               </div>
@@ -334,13 +408,12 @@
     <ng-container *ngFor="let kpi of currentGrant.kpis">
       <div class="row border-bottom">
         <div class="col-sm-5">
-          <input (change)="updateTitle($event, kpi.id, kpi.kpiType)" value="{{kpi.title}}"
-                 class="form-control">
+          <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
+                 (ngModelChange)="checkGrant()">
         </div>
-        <div class="col-sm-7" style="overflow-x: auto">
+        <div class="col-sm-7">
           <div class="container-fluid">
-            <div class="row flex-row flex-nowrap">
-              <div class="kpi-block">
+            <div class="row flex-row flex-nowrap kpi-block">
               <ng-container *ngFor="let submission of currentGrant.submissions">
                 <ng-container *ngIf="kpi.kpiType === 'QUANTITATIVE'">
                   <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
@@ -348,20 +421,18 @@
 
                       <div class="col-3">
                         <div class="row">
-                          <div class="col-sm-6">
-                            <input *ngIf="kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'quantitative', submission.id, kpiData.id)"
-                                   checked class="form-control">
-                            <input *ngIf="!kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'quantitative', submission.id, kpiData.id)"
-                                   class="form-control">
+                          <div class="col-sm-6" style="display: flex;align-items: center;">
+                            <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"
+                                          [ngModelOptions]="{standAlone:true}"
+                                          (ngModelChange)="checkGrant()"></mat-checkbox>
                           </div>
                           <div class="col-sm-6">
 
-                            <input id="goal_{{kpiData.id}}" type="number"
-                                   pattern="^(0|[1-9][0-9]*)$" value="{{kpiData.goal}}"
-                                   (change)="updateGoal($event,'quantitative', submission.id, kpiData.id)"
-                                   class="form-control">
+                            <mat-form-field>
+                              <input matInput type="number" [(ngModel)]="kpiData.goal"
+                                     [ngModelOptions]="{standAlone:true}"
+                                     (ngModelChange)="checkGrant()" placeholder="Goal">
+                            </mat-form-field>
                           </div>
                         </div>
                       </div>
@@ -373,13 +444,11 @@
                     <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
                       <div class="col-3">
                         <div class="row">
-                          <div class="col-sm-6">
-                            <input *ngIf="kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'qualitative', submission.id, kpiData.id)"
-                                   checked class="form-control">
-                            <input *ngIf="!kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'qualitative', submission.id, kpiData.id)"
-                                   class="form-control">
+                          <div class="col-sm-6" style="display: flex;align-items: center;">
+                            <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"
+                                          [ngModelOptions]="{standAlone:true}"
+                                          (ngModelChange)="checkGrant()"></mat-checkbox>
+
                           </div>
                           <div class="col-sm-6">
                           </div>
@@ -393,13 +462,10 @@
                     <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
                       <div class="col-3">
                         <div class="row">
-                          <div class="col-sm-6">
-                            <input *ngIf="kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'document', submission.id, kpiData.id)"
-                                   checked class="form-control">
-                            <input *ngIf="!kpiData.toReport" type="checkbox"
-                                   (change)="toggleCheckBox($event,'document', submission.id, kpiData.id)"
-                                   class="form-control">
+                          <div class="col-sm-6" style="display: flex;align-items: center;">
+                            <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"
+                                          [ngModelOptions]="{standAlone:true}"
+                                          (ngModelChange)="checkGrant()"></mat-checkbox>
                           </div>
                           <div class="col-sm-6">
                           </div>
@@ -409,7 +475,6 @@
                   </ng-container>
                 </ng-container>
               </ng-container>
-            </div>
             </div>
           </div>
         </div>
@@ -620,9 +685,9 @@
         <button type="button" class="btn btn-primary pull-right"
                 (click)="saveKpi()">Done
         </button>
-        <button type="button" class="btn btn-warning pull-right"
+        <!--<button type="button" class="btn btn-warning pull-right"
                 (click)="saveKpiAndAddNew()">Save & Add New KPI
-        </button>
+        </button>-->
         <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
       </div>

@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 html, body {
   height: 100%;
   background-color: #fff;
@@ -97,6 +97,34 @@ input[type=date]::-webkit-inner-spin-button { -webkit-appearance: none; display:
 .kpi-block::-webkit-scrollbar { width: 0 !important }
 .submissions-block::-webkit-scrollbar { width: 0 !important }
 
+.custom-dialog-container .mat-dialog-container {
+  overflow-y: hidden !important;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+*:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+.form-control:focus{
+  border-color: transparent !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.mat-checkbox-layout{
+  margin-bottom: 0;
+}
+
+.mat-card{
+  color: #323232;
+  max-width: 25rem;
+}
+
 @media all and (max-width: 240px) {
   .toast-top-center {
     margin-left: -54px;
@@ -120,3 +148,6 @@ input[type=date]::-webkit-inner-spin-button { -webkit-appearance: none; display:
 
 
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -3,7 +3,7 @@ import {
   AfterContentInit,
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, Inject,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -26,12 +26,13 @@ import {
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {SubmissionDataService} from '../submission.data.service';
 import {AppComponent} from '../app.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {Colors} from '../model/app-config';
 import * as moment from 'moment';
-import {MatDatepickerInput} from '@angular/material';
+import {MatInputModule, MatDatepickerModule, MatDialog} from '@angular/material';
+import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
 
 declare var $: any;
 
@@ -39,17 +40,19 @@ declare var $: any;
 @Component({
   selector: 'app-grant',
   templateUrl: './grant.component.html',
-  styleUrls: ['./grant.component.scss'],
-  providers: [MatDatepickerInput]
+  styleUrls: ['./grant.component.scss']
 })
 export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecked {
 
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
   currentGrant: Grant;
+  originalGrant: Grant;
   editMode = false;
   firstColumnInitialPosition: number;
   currentSubmission: Submission;
+  a = {};
+  b = {};
   colors: Colors;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
@@ -67,13 +70,17 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       , private route: ActivatedRoute
       , private router: Router
       , private submissionDataService: SubmissionDataService
-      , private appComp: AppComponent
+      , public appComp: AppComponent
       , private http: HttpClient
-      , private toastr: ToastrService) {
+      , private toastr: ToastrService
+      , private dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
+    console.log(this.currentGrant);
+    console.log(this.originalGrant);
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
     for (const submission of this.currentGrant.submissions) {
@@ -145,8 +152,30 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   }
 
 
-  deleteFieldEntry() {
-    console.log('Delete field');
+  confirm(sectionId: string, attributeId: String, func: string) {
+
+    const dialogRef = this.dialog.open(FieldDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        switch (func) {
+          case 'field':
+            this.deleteFieldEntry(sectionId, attributeId);
+        }
+      } else {
+        dialogRef.close();
+      }
+    });
+  }
+
+  deleteFieldEntry(sectionId: string, attributeId: String) {
+    for (const section of this.currentGrant.grantDetails.sections) {
+      if (section.id === Number(sectionId)) {
+        const index = section.attributes.findIndex(attr => attr.id === Number(attributeId));
+        section.attributes.splice(index, 1);
+        this.checkGrant();
+      }
+    }
   }
 
   saveField() {
@@ -184,10 +213,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
   }
 
-  updateGrant(event: Event) {
-    const fieldElem = (<HTMLInputElement>event.target);
-    const fielId = $(fieldElem).attr('id');
-    const fieldVal = $(fieldElem).val();
+  updateGrant(event: any) {
+    /*console.log(this.currentGrant);
+    const fieldElem = event.targetElement;
+    const fielId = fieldElem.id;
+    const fieldVal = fieldElem.value;
     switch (fielId) {
       case 'grantName':
         this.currentGrant.name = fieldVal;
@@ -196,14 +226,15 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.currentGrant.description = fieldVal;
         break;
       case 'grantStart':
-        this.currentGrant.startDate = fieldVal;
+        this.currentGrant.startDate = new Date(fieldVal);
         break;
       case 'grantEnd':
-        this.currentGrant.endDate = fieldVal;
+        this.currentGrant.endDate = new Date(fieldVal);
         break;
     }
     this._setEditMode(true);
     this.grantData.changeMessage(this.currentGrant);
+    console.log(this.currentGrant);*/
   }
 
   saveGrant() {
@@ -267,12 +298,24 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   }
 
   addNewFieldToSection(sectionId: string, sectionName: string) {
-    const createFieldModal = this.createFieldModal.nativeElement;
+    /*const createFieldModal = this.createFieldModal.nativeElement;
     const titleElem = $(createFieldModal).find('#createFieldLabel');
     const idHolderElem = $(createFieldModal).find('#sectionIdHolder');
     $(titleElem).html(sectionName + ' - Create new field');
     $(idHolderElem).val(sectionId);
-    $(createFieldModal).modal('show');
+    $(createFieldModal).modal('show');*/
+    for (const section of this.currentGrant.grantDetails.sections) {
+      if (section.id === Number(sectionId)) {
+        const newAttr = new Attribute();
+        newAttr.fieldType = 'string';
+        newAttr.fieldName = '';
+        newAttr.fieldValue = '';
+        newAttr.id = 0 - Math.round(Math.random() * 1000000000);
+        section.attributes.push(newAttr);
+        break;
+      }
+    }
+    this.checkGrant();
   }
 
 
@@ -433,7 +476,6 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         sub.documentKpiSubmissions.push(docKpi);
       }
-      //this.currentGrant.submissions.push(sub);
     }
     this.grantData.changeMessage(this.currentGrant);
 
@@ -549,8 +591,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
   }
 
-  scrollContent (event: Event) {
-    const dist =  event.srcElement.scrollLeft;
+  scrollContent(event: Event) {
+    const dist = event.srcElement.scrollLeft;
 
     $('.kpi-block').css('left', (0 - dist) + 'px');
   }
@@ -635,9 +677,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grant.grantStatus = new WorkflowStatus();
     grant.grantStatus.name = 'DRAFT';
 
-    grant.startDate = new Date();
+    grant.startDate = new Date().toDateString();
     const endDt = new Date();
-    grant.endDate = new Date(endDt.setFullYear(endDt.getFullYear() + 2));
+    grant.endDate = new Date(endDt.setFullYear(endDt.getFullYear() + 1)).toDateString();
 
     grant.grantStatus.displayName = 'DRAFT';
     grant.substatus = new WorkflowStatus();
@@ -650,12 +692,13 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
       for (const attr of defaultSection.attributes) {
         attr.id = 0 - Math.round(Math.random() * 10000000000);
+        attr.fieldValue = 'dummy data';
       }
       grant.grantDetails.sections.push(defaultSection);
     }
 
     grant.submissions = new Array<Submission>();
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const sub = new Submission();
       sub.id = 0 - Math.round(Math.random() * 10000000000);
       sub.documentKpiSubmissions = [];
@@ -663,7 +706,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       sub.quantitiaveKpisubmissions = [];
       sub.flowAuthorities = [];
       sub.title = 'Quarter ' + (i + 1);
-      sub.submitBy = new Date(grant.startDate.getFullYear(), (grant.startDate.getMonth()) + (3 * (i + 1)), grant.startDate.getDate());
+      const startDateArray = grant.startDate.split('-');
+      sub.submitBy = new Date(Number(startDateArray[0]), Number(startDateArray[1]) + (3 * (i + 1)), Number(startDateArray[2])).toDateString();
       // sub.grant = grant;
       // sub.actionAuthorities = new ActionAuthorities();
       grant.submissions.push(sub);
@@ -687,6 +731,18 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       this.colors = new Colors();
       const color = this.colors.colorArray[elem];
       $(flowActionBtns[elem]).css('background-color', color);
+    }
+  }
+
+
+  checkGrant() {
+
+    console.log(this.currentGrant);
+    console.log(this.originalGrant);
+    if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
+      this._setEditMode(false);
+    } else {
+      this._setEditMode(true);
     }
   }
 

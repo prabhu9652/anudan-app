@@ -26,8 +26,8 @@ export class NavbarComponent implements OnInit {
   constructor(location: Location
               , private element: ElementRef
               , private router: Router
-              , private appComponent: AppComponent
-              ,public grantComponent: GrantComponent) {
+              , public appComponent: AppComponent
+              , public grantComponent: GrantComponent) {
     this.location = location;
     this.sidebarVisible = false;
     this.user = appComponent.loggedInUser;

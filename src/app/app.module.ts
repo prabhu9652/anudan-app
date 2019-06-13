@@ -26,7 +26,6 @@ import {
   AgmCoreModule
 } from '@agm/core';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
-import {GrantComponent} from './grant/grant.component';
 import {KpisubmissionComponent} from './kpisubmission/kpisubmission.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {SocialLoginModule, AuthServiceConfig} from 'ng-social-login-module';
@@ -57,7 +56,6 @@ export function provideConfig() {
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    GrantComponent,
     KpisubmissionComponent,
     RegistrationComponent
   ],
