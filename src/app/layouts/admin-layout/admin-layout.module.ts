@@ -22,9 +22,16 @@ import {
   MatSelectModule,
   MatDatepickerModule,
   MatExpansionModule,
-  MatIconModule, MatDialogModule, MatCheckboxModule, MatCardModule
+  MatIconModule,
+  MatDialogModule,
+  MatCheckboxModule,
+  MatCardModule,
+  MatBottomSheetModule,
+  MatListModule, MatBadgeModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
+import {NavbarComponent} from '../../components/navbar/navbar.component';
 
 @NgModule({
   imports: [
@@ -42,7 +49,10 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
     MatIconModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatCardModule
+    MatCardModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatBadgeModule
   ],
   declarations: [
     GrantComponent,
@@ -54,9 +64,10 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
-    FieldDialogComponent
+    FieldDialogComponent,
+    BottomsheetComponent
   ],
-  entryComponents: [FieldDialogComponent],
+  entryComponents: [FieldDialogComponent, BottomsheetComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
 

@@ -3,7 +3,7 @@
         <div class="navbar-wrapper">
           <img  class="p-2" style="width: 70%;" [src]="logoUrl" alt="logo">
         </div>
-        <button mat-button color="warning" *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')" class="btn btn-primary float-right" style="position: absolute;right: 10%;" (click)="grantComponent.createGrant()">Create Grant</button>
+        <button *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')" class="btn btn-sm btn-primary float-right" style="position: absolute;right: 10%;" (click)="grantComponent.createGrant()">Create Grant</button>
         <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>

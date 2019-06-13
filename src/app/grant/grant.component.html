@@ -1,6 +1,6 @@
 <div class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
   <div class="fixed-bottom"
-       style="right: 20px; left: auto;display: flex;align-items: flex-end;flex-direction: column;justify-content: right;">
+       style="right: 20px; left: auto;z-index: 2;display: flex;align-items: flex-end;flex-direction: column;justify-content: right;">
     <button #saveGrantButton (click)="saveGrant()" *ngIf="editMode" class="btn btn-sm btn-info">
       <i class="fa fa-save mr-2"></i>Save Changes
     </button>
@@ -371,16 +371,16 @@
     </div>
     <hr>
 
-    <div class="row">
-      <div class="col-sm-5">
+    <div  class="row bg-white" style="position: sticky;top: 100px;z-index: 1;">
+      <div class="col-sm-12 col-lg-5">
         KPIs
       </div>
-      <div class="col-sm-7 submissions-block" style="overflow-x: auto"
+      <div class="col-sm-12 col-lg-7 submissions-block"
            (scroll)="scrollContent($event)">
         <div class="container-fluid">
           <div class="row flex-row flex-nowrap">
             <ng-container *ngFor="let submission of currentGrant.submissions">
-              <div class="col-3">
+              <div class="col-3" style="border-right: 0.5px solid #d4d4d4;">
                 <div class="row">
                   <div class="col-sm-12 text-center">
                     <mat-form-field class="text-center">
@@ -390,9 +390,10 @@
                     </mat-form-field>
                     <mat-form-field class="text-center">
                       <input matInput [matDatepicker]="pickerSubmitBy"
-                             (ngModelChange)="checkGrant($event)"
                              [(ngModel)]="submission.submitBy"
-                             [ngModelOptions]="{standAlone:true}" placeholder="Submit by Date">
+                             [ngModelOptions]="{standAlone:true}"
+                             (ngModelChange)="checkGrant($event)"
+                             placeholder="Submit by Date">
                       <mat-datepicker-toggle matPrefix
                                              [for]="pickerSubmitBy"></mat-datepicker-toggle>
                       <mat-datepicker #pickerSubmitBy></mat-datepicker>
@@ -407,11 +408,12 @@
     </div>
     <ng-container *ngFor="let kpi of currentGrant.kpis">
       <div class="row border-bottom">
-        <div class="col-sm-5">
+        <div class="col-sm-12 col-lg-5 pt-2">
           <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
                  (ngModelChange)="checkGrant()">
+          <label mat-icon-button (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates)">Attach template</label>
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-12 col-lg-7">
           <div class="container-fluid">
             <div class="row flex-row flex-nowrap kpi-block">
               <ng-container *ngFor="let submission of currentGrant.submissions">
@@ -419,14 +421,14 @@
                   <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
                     <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
 
-                      <div class="col-3">
+                      <div class="col-3" style="border-right: 0.5px solid #d4d4d4;">
                         <div class="row">
                           <div class="col-sm-6" style="display: flex;align-items: center;">
                             <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"
                                           [ngModelOptions]="{standAlone:true}"
                                           (ngModelChange)="checkGrant()"></mat-checkbox>
                           </div>
-                          <div class="col-sm-6">
+                          <div class="col-sm-6" style="display: flex;align-items: center;">
 
                             <mat-form-field>
                               <input matInput type="number" [(ngModel)]="kpiData.goal"
@@ -442,7 +444,7 @@
                 <ng-container *ngIf="kpi.kpiType === 'QUALITATIVE'">
                   <ng-container *ngFor="let kpiData of submission.qualitativeKpiSubmissions">
                     <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                      <div class="col-3">
+                      <div class="col-3" style="border-right: 0.5px solid #d4d4d4;">
                         <div class="row">
                           <div class="col-sm-6" style="display: flex;align-items: center;">
                             <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"
@@ -460,7 +462,7 @@
                 <ng-container *ngIf="kpi.kpiType === 'DOCUMENT'">
                   <ng-container *ngFor="let kpiData of submission.documentKpiSubmissions">
                     <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                      <div class="col-3">
+                      <div class="col-3" style="border-right: 0.5px solid #d4d4d4;">
                         <div class="row">
                           <div class="col-sm-6" style="display: flex;align-items: center;">
                             <mat-checkbox color="primary" [(ngModel)]="kpiData.toReport"

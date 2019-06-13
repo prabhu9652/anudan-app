@@ -1,0 +1,14 @@
+<mat-card-title>{{passedTemplatesInfo.title}}</mat-card-title>
+<span class="fixed-top" style="right: 10px; left: auto;top: 10px;" (click)="close()"><mat-icon>close</mat-icon></span>
+<mat-card-subtitle>{{passedTemplatesInfo.subTitle}}</mat-card-subtitle>
+<mat-nav-list>
+  <ng-container *ngFor="let template of passedTemplatesInfo.templates">
+    <mat-list-item>
+      <a mat-tab-link *ngIf="template.id > 0" href="/api/public/templates/kpi/{{template.id}}" target="_blank" mat-line>{{template.name}}</a>
+      <p *ngIf="template.id < 0" matBadge="N" matBadgeOverlap="false" matBadgePosition="above after" matBadgeColor="accent">{{template.name}}</p>
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>
+
+<label  for="{{passedTemplatesInfo.kpiId}}">Upload a new File</label>
+<input id="{{passedTemplatesInfo.kpiId}}" multiple="multiple" type="file" style="visibility: hidden" color="primary" (change)="processFile($event)">

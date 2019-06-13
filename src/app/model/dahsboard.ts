@@ -71,6 +71,7 @@ export class Template {
     type: string;
     version: number;
     fileType: string;
+    data: string;
 }
 
 export class Note {
@@ -214,6 +215,14 @@ export class Tenant {
 
 export class Tenants {
   tenants: Tenant[];
+}
+
+export class FileTemplates {
+  kpiId: number;
+  title: string;
+  subTitle: string;
+  templates: Template[];
+  type: string;
 }
 
 export class SerializationHelper {

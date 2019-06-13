@@ -13,14 +13,14 @@ import {GrantDataService} from '../grant.data.service';
 import {
   ActionAuthorities,
   Attribute,
-  DocumentKpiSubmission,
+  DocumentKpiSubmission, FileTemplates,
   Grant, GrantDetails,
   GrantKpi,
   Kpi,
   QualitativeKpiSubmission,
   QuantitiaveKpisubmission,
   Section,
-  Submission,
+  Submission, Template,
   WorkflowStatus
 } from '../model/dahsboard'
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
@@ -31,8 +31,9 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {Colors} from '../model/app-config';
 import * as moment from 'moment';
-import {MatInputModule, MatDatepickerModule, MatDialog} from '@angular/material';
+import {MatInputModule, MatDatepickerModule, MatDialog, MatBottomSheet} from '@angular/material';
 import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
+import {BottomsheetComponent} from '../components/bottomsheet/bottomsheet.component';
 
 declare var $: any;
 
@@ -73,7 +74,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       , public appComp: AppComponent
       , private http: HttpClient
       , private toastr: ToastrService
-      , private dialog: MatDialog) {
+      , private dialog: MatDialog
+      , private _bottomSheet: MatBottomSheet) {
   }
 
   ngOnInit() {
@@ -744,6 +746,25 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     } else {
       this._setEditMode(true);
     }
+  }
+
+  openBottomSheet(kpiId: number, title: string, templates: Template[]): void {
+
+    const fileTemplates = new FileTemplates();
+    fileTemplates.kpiId = kpiId;
+    fileTemplates.subTitle = title;
+    fileTemplates.title = 'Template Library';
+    fileTemplates.templates = templates;
+
+    const _bSheet = this._bottomSheet.open(BottomsheetComponent, {
+      hasBackdrop: false,
+      data: fileTemplates
+    });
+
+    _bSheet.afterDismissed().subscribe(result => {
+      console.log(this.currentGrant);
+      this.checkGrant();
+    });
   }
 
 }
