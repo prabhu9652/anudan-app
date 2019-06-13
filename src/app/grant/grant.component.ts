@@ -70,7 +70,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       , private route: ActivatedRoute
       , private router: Router
       , private submissionDataService: SubmissionDataService
-      , private appComp: AppComponent
+      , public appComp: AppComponent
       , private http: HttpClient
       , private toastr: ToastrService
       , private dialog: MatDialog) {

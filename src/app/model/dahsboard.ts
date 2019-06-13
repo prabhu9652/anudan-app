@@ -198,7 +198,7 @@ export class Grant {
   grantStatus: WorkflowStatus;
   substatus: WorkflowStatus
   statusName: string;
-  //private startDate: String;
+  startDate: String;
   endDate: String;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;

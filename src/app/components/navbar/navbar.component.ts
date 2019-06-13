@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
   constructor(location: Location
               , private element: ElementRef
               , private router: Router
-              , private appComponent: AppComponent
+              , public appComponent: AppComponent
               , public grantComponent: GrantComponent) {
     this.location = location;
     this.sidebarVisible = false;
