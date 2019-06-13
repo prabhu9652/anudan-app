@@ -135,7 +135,7 @@ export class Submission {
   id: number;
   grant: Grant;
   title: string;
-  submitBy: Date;
+  submitBy: string;
   submissionStatus: SubmissionStatus;
   quantitiaveKpisubmissions: QuantitiaveKpisubmission[];
   qualitativeKpiSubmissions: QualitativeKpiSubmission[];
@@ -198,8 +198,8 @@ export class Grant {
   grantStatus: WorkflowStatus;
   substatus: WorkflowStatus
   statusName: string;
-  startDate: Date;
-  endDate: Date;
+  //private startDate: String;
+  endDate: String;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
   flowAuthorities: FlowAuthority[];
@@ -216,3 +216,18 @@ export class Tenants {
   tenants: Tenant[];
 }
 
+export class SerializationHelper {
+  static toInstance<T>(obj: T, json: string): T {
+    const jsonObj = JSON.parse(json);
+
+    if (typeof obj['fromJSON'] === 'function') {
+      obj['fromJSON'](jsonObj);
+    } else {
+      for (const propName of jsonObj) {
+        obj[propName] = jsonObj[propName]
+      }
+    }
+
+    return obj;
+  }
+}

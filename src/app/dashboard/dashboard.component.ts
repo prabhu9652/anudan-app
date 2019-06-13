@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {User} from '../model/user';
-import {Tenant, Tenants} from '../model/dahsboard';
+import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
@@ -52,8 +52,11 @@ export class DashboardComponent implements OnInit {
 
     const url = '/api/users/' + userId + '/dashboard';
     this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
-      console.log(tenants);
+
+      // this.tenants = new Tenants();
       this.tenants = tenants;
+      console.log(this.tenants);
+      // this.tenants = tenants;
         if (this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
         this.hasTenant = true;
@@ -64,7 +67,7 @@ export class DashboardComponent implements OnInit {
             if (submission.flowAuthorities) {
               this.hasKpisToSubmit = true;
               this.kpiSubmissionTitle = submission.title;
-              this.kpiSubmissionDate = submission.submitBy;
+              // this.kpiSubmissionDate = submission.submitBy;
               break;
             }
           }
