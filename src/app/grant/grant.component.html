@@ -458,13 +458,13 @@
               <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
                      (ngModelChange)="checkGrant()">
               <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length === 0"
-                      (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates)">
+                      (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
                 Attach template
               </button>
               <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
                       matBadge="{{kpi.templates.length}}"
                       matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
-                      (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates)">
+                      (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
                 Attach template
               </button>
             </div>
