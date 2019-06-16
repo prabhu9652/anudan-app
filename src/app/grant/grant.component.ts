@@ -706,8 +706,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     const st = new Date;
     grant.startDate = st;
-    grant.stDate = this.datepipe.transform(dt, 'yyyy-MM-dd');
-    const et = new Date();
+    grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
+    let et = new Date();
     et = new Date(et.setFullYear(et.getFullYear() + 1));
     grant.endDate = et;
     grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');
