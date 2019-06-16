@@ -704,9 +704,13 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grant.grantStatus = new WorkflowStatus();
     grant.grantStatus.name = 'DRAFT';
 
-    grant.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-    const endDt = new Date();
-    grant.endDate = this.datepipe.transform(new Date(endDt.setFullYear(endDt.getFullYear() + 1)), 'yyyy-MM-dd');
+    const st = new Date;
+    grant.startDate = st;
+    grant.stDate = this.datepipe.transform(dt, 'yyyy-MM-dd');
+    const et = new Date();
+    et = new Date(et.setFullYear(et.getFullYear() + 1));
+    grant.endDate = et;
+    grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');
 
     grant.grantStatus.displayName = 'DRAFT';
     grant.substatus = new WorkflowStatus();
@@ -748,7 +752,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     sub.title = title;
 
     const dt = new Date();
-    sub.submitBy = this.datepipe.transform(dt, 'yyyy-MM-dd');
+    sub.submitBy = dt;
     sub.submitDateStr = this.datepipe.transform(dt, 'yyyy-MM-dd');
     return sub;
   }
