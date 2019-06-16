@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
 import {
-  ActionAuthorities,
-  Attribute,
+  ActionAuthorities, AttachmentTemplates,
+  Attribute, Doc,
   DocumentKpiSubmission, FileTemplates,
   Grant, GrantDetails,
   GrantKpi,
@@ -34,6 +34,8 @@ import * as moment from 'moment';
 import {MatInputModule, MatDatepickerModule, MatDialog, MatBottomSheet} from '@angular/material';
 import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../components/bottomsheet/bottomsheet.component';
+import {DatePipe} from '@angular/common';
+import {BottomsheetAttachmentsComponent} from '../components/bottomsheetAttachments/bottomsheetAttachments.component';
 
 declare var $: any;
 
@@ -52,9 +54,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   editMode = false;
   firstColumnInitialPosition: number;
   currentSubmission: Submission;
-  a = {};
-  b = {};
-  colors: Colors;
+  canManage = false;
+  attachmentsSideNavOpened = false;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -65,6 +66,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   @ViewChild('saveGrantButton') saveGrantButton: ElementRef;
   @ViewChild('kpiTypeElem') kpiTypeElem: ElementRef;
   @ViewChild('kpiDescriptionElem') kpiDescriptionelem: ElementRef;
+  @ViewChild('kpiBlock') kpiBlock: ElementRef;
+  @ViewChild('sidenav') attachmentsSideNav: any;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -75,16 +78,21 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       , private http: HttpClient
       , private toastr: ToastrService
       , private dialog: MatDialog
-      , private _bottomSheet: MatBottomSheet) {
+      , private _bottomSheet: MatBottomSheet
+      , private elem: ElementRef
+      , private datepipe: DatePipe
+      , public colors: Colors) {
+    this.colors = new Colors();
   }
 
   ngOnInit() {
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
-    console.log(this.currentGrant);
-    console.log(this.originalGrant);
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
+    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+      this.canManage = true;
+    }
     for (const submission of this.currentGrant.submissions) {
       if (submission.flowAuthorities) {
         this.hasKpisToSubmit = true;
@@ -252,6 +260,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+          this.originalGrant = JSON.parse(JSON.stringify(grant));
           this.grantData.changeMessage(grant);
           this._setEditMode(false);
         },
@@ -437,6 +446,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     kpi.id = id;
     kpi.kpiType = kpiTypeElem.val().toUpperCase();
     kpi.description = kpiDesc.val();
+    kpi.templates = [];
     kpi.title = kpiDesc.val();
 
     this.currentGrant.kpis.push(kpi);
@@ -593,9 +603,24 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
   }
 
-  scrollContent(event: Event) {
+  scrollHeaderContent(event: Event) {
     const dist = event.srcElement.scrollLeft;
+    $('.kpi-block').scrollLeft(dist);
+    /*const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
+    for (const singleBlock of kpisBlocks) {
+      singleBlock.scrollLeft = dist;
+    }
+    $('.kpi-block').css('left', (0 - dist) + 'px');*/
+  }
 
+  scrollChildContent(event: Event) {
+    const dist = event.srcElement.scrollLeft;
+    const submissionBlock = this.elem.nativeElement.querySelector('.submissions-block');
+    submissionBlock.scrollLeft = dist;
+    const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
+    for (const singleBlock of kpisBlocks) {
+      singleBlock.scrollLeft = dist;
+    }
     $('.kpi-block').css('left', (0 - dist) + 'px');
   }
 
@@ -679,9 +704,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grant.grantStatus = new WorkflowStatus();
     grant.grantStatus.name = 'DRAFT';
 
-    grant.startDate = new Date().toDateString();
+    grant.startDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     const endDt = new Date();
-    grant.endDate = new Date(endDt.setFullYear(endDt.getFullYear() + 1)).toDateString();
+    grant.endDate = this.datepipe.transform(new Date(endDt.setFullYear(endDt.getFullYear() + 1)), 'yyyy-MM-dd');
 
     grant.grantStatus.displayName = 'DRAFT';
     grant.substatus = new WorkflowStatus();
@@ -691,33 +716,91 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grant.grantDetails = new GrantDetails();
     grant.grantDetails.sections = new Array<Section>();
     for (const defaultSection of this.appComp.appConfig.defaultSections) {
-      defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
+      // defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
       for (const attr of defaultSection.attributes) {
-        attr.id = 0 - Math.round(Math.random() * 10000000000);
-        attr.fieldValue = 'dummy data';
+        // attr.id = 0 - Math.round(Math.random() * 10000000000);
+        attr.fieldValue = '';
       }
       grant.grantDetails.sections.push(defaultSection);
     }
 
     grant.submissions = new Array<Submission>();
     for (let i = 0; i < 4; i++) {
-      const sub = new Submission();
-      sub.id = 0 - Math.round(Math.random() * 10000000000);
-      sub.documentKpiSubmissions = [];
-      sub.qualitativeKpiSubmissions = [];
-      sub.quantitiaveKpisubmissions = [];
-      sub.flowAuthorities = [];
-      sub.title = 'Quarter ' + (i + 1);
-      const startDateArray = grant.startDate.split('-');
-      sub.submitBy = new Date(Number(startDateArray[0]), Number(startDateArray[1]) + (3 * (i + 1)), Number(startDateArray[2])).toDateString();
       // sub.grant = grant;
       // sub.actionAuthorities = new ActionAuthorities();
+      const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1));
+      sub.grant = grant;
       grant.submissions.push(sub);
     }
 
     this.currentGrant = grant
     this.grantData.changeMessage(grant);
     this.router.navigate(['grant']);
+  }
+
+  private _createNewSubmissionAndReturn(title: string): Submission {
+    const sub = new Submission();
+    // sub.id = 0 - Math.round(Math.random() * 10000000000);
+    sub.documentKpiSubmissions = [];
+    sub.qualitativeKpiSubmissions = [];
+    sub.quantitiaveKpisubmissions = [];
+    sub.flowAuthorities = [];
+    sub.title = title;
+
+    const dt = new Date();
+    sub.submitBy = this.datepipe.transform(dt, 'yyyy-MM-dd');
+    sub.submitDateStr = this.datepipe.transform(dt, 'yyyy-MM-dd');
+    return sub;
+  }
+
+  private _addExistingKpisToSubmission(submission: Submission): Submission {
+    const quantKpis = new Array<QuantitiaveKpisubmission>();
+    const qualKpis = new Array<QualitativeKpiSubmission>();
+    const docKpis = new Array<DocumentKpiSubmission>();
+
+    for (const kpi of this.currentGrant.kpis) {
+      if (kpi.kpiType === 'QUANTITATIVE') {
+        const newQuantKpi = new QuantitiaveKpisubmission();
+        // newQuantKpi.id = 0 - Math.round(Math.random() * 10000000000);
+        newQuantKpi.goal = 0;
+        newQuantKpi.grantKpi = kpi;
+        newQuantKpi.actuals = 0;
+        newQuantKpi.toReport = true;
+        newQuantKpi.submissionDocs = [];
+        // newQuantKpi.submission = JSON.parse(JSON.stringify(submission));
+        newQuantKpi.notesHistory = [];
+        newQuantKpi.note = '';
+        quantKpis.push(newQuantKpi);
+      } else if (kpi.kpiType === 'QUALITATIVE') {
+        const newQualKpi = new QualitativeKpiSubmission();
+        // newQualKpi.id = 0 - Math.round(Math.random() * 10000000000);
+        newQualKpi.goal = '';
+        newQualKpi.grantKpi = kpi;
+        newQualKpi.actuals = '';
+        newQualKpi.toReport = true;
+        newQualKpi.submissionDocs = [];
+        // newQualKpi.submission = JSON.parse(JSON.stringify(submission));
+        newQualKpi.notesHistory = [];
+        newQualKpi.note = '';
+        qualKpis.push(newQualKpi);
+      } else if (kpi.kpiType === 'DOCUMENT') {
+        const newDocKpi = new DocumentKpiSubmission();
+        // newDocKpi.id = 0 - Math.round(Math.random() * 10000000000);
+        newDocKpi.goal = '';
+        newDocKpi.grantKpi = kpi;
+        newDocKpi.actuals = '';
+        newDocKpi.toReport = true;
+        newDocKpi.submissionDocs = [];
+        // newDocKpi.submission = JSON.parse(JSON.stringify(submission));
+        newDocKpi.notesHistory = [];
+        newDocKpi.note = '';
+        docKpis.push(newDocKpi);
+      }
+    }
+    submission.quantitiaveKpisubmissions = quantKpis;
+    submission.qualitativeKpiSubmissions = qualKpis;
+    submission.documentKpiSubmissions = docKpis;
+    return submission;
   }
 
   private _adjustHeights() {
@@ -730,7 +813,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   private _setFlowButtonColors() {
     const flowActionBtns = $('[name="flowActionBtn"]');
     for (let elem = 0; elem < flowActionBtns.length; elem++) {
-      this.colors = new Colors();
+      // this.colors = new Colors();
       const color = this.colors.colorArray[elem];
       $(flowActionBtns[elem]).css('background-color', color);
     }
@@ -739,8 +822,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
   checkGrant() {
 
-    console.log(this.currentGrant);
-    console.log(this.originalGrant);
+    console.log(JSON.stringify(this.currentGrant));
+    console.log(JSON.stringify(this.originalGrant));
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
@@ -748,13 +831,14 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
   }
 
-  openBottomSheet(kpiId: number, title: string, templates: Template[]): void {
+  openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
 
     const fileTemplates = new FileTemplates();
     fileTemplates.kpiId = kpiId;
     fileTemplates.subTitle = title;
     fileTemplates.title = 'Template Library';
     fileTemplates.templates = templates;
+    fileTemplates.canManage = canManage;
 
     const _bSheet = this._bottomSheet.open(BottomsheetComponent, {
       hasBackdrop: false,
@@ -765,6 +849,57 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
       console.log(this.currentGrant);
       this.checkGrant();
     });
+  }
+
+  openBottomSheetForSubmittionAttachments(kpiDataId: number
+      , kpiDataType: string
+      , title: string
+      , attachments: Doc[]
+      , canManage: boolean): void {
+
+    const attachmentTemplates = new AttachmentTemplates();
+    attachmentTemplates.kpiDataId = kpiDataId;
+    attachmentTemplates.kpiDataType = kpiDataType;
+    attachmentTemplates.subTitle = title;
+    attachmentTemplates.title = 'KPI Attachments';
+    attachmentTemplates.docs = attachments;
+    attachmentTemplates.canManage = canManage;
+
+    const _bSheet = this._bottomSheet.open(BottomsheetAttachmentsComponent, {
+      hasBackdrop: false,
+      data: attachmentTemplates
+    });
+
+    _bSheet.afterDismissed().subscribe(result => {
+      console.log(this.currentGrant);
+      this.checkGrant();
+    });
+  }
+
+  performAction(event: any) {
+    const selectedOption = event.value;
+    switch (selectedOption) {
+      case '1':
+        let newSubmission = this._createNewSubmissionAndReturn('Submission Title');
+        // newSubmission.grant = this.currentGrant;
+        newSubmission = this._addExistingKpisToSubmission(newSubmission);
+        this.currentGrant.submissions.splice(0, 0, newSubmission);
+        break;
+    }
+
+    this.toastr.info('New submission period appended to existing list', 'Submission Period Added');
+    this.checkGrant();
+    event.source.value = '';
+  }
+
+
+  openAttachmentsNav() {
+    const attachmentsSN = this.attachmentsSideNav._elementRef.nativeElement;
+    this.attachmentsSideNavOpened = true;
+  }
+
+  closeAttachmentsSideNav() {
+    this.attachmentsSideNavOpened = false;
   }
 
 }

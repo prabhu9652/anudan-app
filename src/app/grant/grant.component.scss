@@ -1,1 +1,5 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+mat-sidenav{
+  top: 80px;
+  min-width: 300px;
+}

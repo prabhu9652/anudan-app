@@ -101,8 +101,12 @@ input[type=date]::-webkit-inner-spin-button { -webkit-appearance: none; display:
   overflow-y: hidden !important;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
+}
+
+mat-sidenav {
+  width: 200px;
 }
 
 *:focus {

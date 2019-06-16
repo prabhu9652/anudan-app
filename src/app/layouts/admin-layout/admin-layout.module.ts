@@ -27,11 +27,11 @@ import {
   MatCheckboxModule,
   MatCardModule,
   MatBottomSheetModule,
-  MatListModule, MatBadgeModule
+  MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
-import {NavbarComponent} from '../../components/navbar/navbar.component';
+import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 
 @NgModule({
   imports: [
@@ -52,7 +52,9 @@ import {NavbarComponent} from '../../components/navbar/navbar.component';
     MatCardModule,
     MatBottomSheetModule,
     MatListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatChipsModule,
+    MatSidenavModule
   ],
   declarations: [
     GrantComponent,
@@ -65,9 +67,10 @@ import {NavbarComponent} from '../../components/navbar/navbar.component';
     NotificationsComponent,
     UpgradeComponent,
     FieldDialogComponent,
-    BottomsheetComponent
+    BottomsheetComponent,
+    BottomsheetAttachmentsComponent
   ],
-  entryComponents: [FieldDialogComponent, BottomsheetComponent],
+  entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
 

@@ -6,7 +6,6 @@ import {FooterComponent} from './footer/footer.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
-import {MatButtonModule} from '@angular/material';
 
 @NgModule({
   imports: [

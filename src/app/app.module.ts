@@ -34,6 +34,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {DatePipe} from '@angular/common';
+import {Colors} from './model/app-config';
 
 
 const config = new AuthServiceConfig([
@@ -97,7 +99,9 @@ export function provideConfig() {
       useFactory: provideConfig,
     },
       MatDatepickerModule,
-      MatBottomSheet
+      MatBottomSheet,
+      DatePipe,
+      Colors
   ],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]

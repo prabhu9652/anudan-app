@@ -1,0 +1,21 @@
+<mat-card-title>{{passedDocsInfo.title}}</mat-card-title>
+<span class="fixed-top" style="right: 10px; left: auto;top: 10px;" (click)="close()"><mat-icon>close</mat-icon></span>
+<mat-card-subtitle>{{passedDocsInfo.subTitle}}</mat-card-subtitle>
+<mat-nav-list>
+  <ng-container *ngFor="let doc of passedDocsInfo.docs">
+    <mat-list-item>
+      <mat-icon mat-list-icon>attachment</mat-icon>
+      <a mat-tab-link *ngIf="doc.id > 0" href="/api/public/templates/kpi/{{doc.id}}"
+         target="_blank" mat-line>{{doc.fileName}}</a>
+      <p *ngIf="doc.id < 0" matBadge="N" matBadgeOverlap="false" matBadgePosition="above after"
+         matBadgeColor="accent">{{doc.fileName}}</p>
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>
+
+<ng-container *ngIf="passedDocsInfo.canManage">
+  <label class="btn mat-stroked-button" color="primary" for="{{passedDocsInfo.kpiDataId}}">Upload a
+    new File</label>
+  <input id="{{passedDocsInfo.kpiDataId}}" multiple="multiple" type="file"
+         style="visibility: hidden" color="primary" (change)="processFile($event)">
+</ng-container>
