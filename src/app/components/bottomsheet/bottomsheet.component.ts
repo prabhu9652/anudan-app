@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material';
 import {FileTemplates, Template} from '../../model/dahsboard';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-bottomsheet',
@@ -13,7 +14,8 @@ export class BottomsheetComponent implements OnInit {
 
   constructor(
       private _bottomSheetRef: MatBottomSheetRef<BottomsheetComponent>
-  , @Inject(MAT_BOTTOM_SHEET_DATA) public data: FileTemplates) {
+  , @Inject(MAT_BOTTOM_SHEET_DATA) public data: FileTemplates,
+      private toastr: ToastrService) {
     this.passedTemplatesInfo = this.data;
   }
 
@@ -49,12 +51,21 @@ export class BottomsheetComponent implements OnInit {
       this.passedTemplatesInfo.templates.push(newTemplate);
 
       reader.onloadend = () => {
-        console.log('>>>>>>>>  ' + newTemplate.id);
-        for (const tmplt of this.passedTemplatesInfo.templates) {
-          if (tmplt.id === newTemplate.id) {
-            tmplt.data = reader.result.toString();
+        const data = reader.result.toString();
+        setTimeout(()=> {
+          console.log(data);
+          for (const tmplt of this.passedTemplatesInfo.templates) {
+            if (tmplt.id === newTemplate.id) {
+
+              if(data==='data:'){
+                this.toastr.error('Error processing the file. Please try again','File Error');
+              }
+
+              console.log('>>>>>>>>  ' + newTemplate.id);
+            }
           }
-        }
+        },3000);
+
       }
 
       reader.readAsDataURL(file);

@@ -229,6 +229,7 @@ export class Tenants {
 export class FileTemplates {
   kpiId: number;
   title: string;
+  grantId: number;
   subTitle: string;
   templates: Template[];
   type: string;
@@ -238,11 +239,22 @@ export class FileTemplates {
 export class AttachmentTemplates {
   kpiDataId: number;
   kpiDataType: string;
+  grantId: number;
   title: string;
   subTitle: string;
   docs: Doc[];
   type: string;
   canManage: boolean;
+}
+
+export class NoteTemplates {
+    kpiDataId: number;
+    kpiDataType: string;
+    grantId: number;
+    title: string;
+    subTitle: string;
+    notes: Note[];
+    canManage: boolean;
 }
 
 export class SerializationHelper {

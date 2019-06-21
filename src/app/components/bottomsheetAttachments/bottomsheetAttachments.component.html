@@ -5,7 +5,7 @@
   <ng-container *ngFor="let doc of passedDocsInfo.docs">
     <mat-list-item>
       <mat-icon mat-list-icon>attachment</mat-icon>
-      <a mat-tab-link *ngIf="doc.id > 0" href="/api/public/templates/kpi/{{doc.id}}"
+      <a mat-tab-link *ngIf="doc.id > 0" href="/api/public/grants/{{passedDocsInfo.grantId}}/kpi-documents/{{doc.fileName}}"
          target="_blank" mat-line>{{doc.fileName}}</a>
       <p *ngIf="doc.id < 0" matBadge="N" matBadgeOverlap="false" matBadgePosition="above after"
          matBadgeColor="accent">{{doc.fileName}}</p>

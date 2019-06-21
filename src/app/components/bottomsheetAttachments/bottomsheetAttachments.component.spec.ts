@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BottomsheetAttachmentsComponent } from './bottomsheetAttachments.component';
 
-describe('BottomsheetAttachmentsComponent', () => {
+describe('BottomsheetNotesComponent', () => {
   let component: BottomsheetAttachmentsComponent;
   let fixture: ComponentFixture<BottomsheetAttachmentsComponent>;
 

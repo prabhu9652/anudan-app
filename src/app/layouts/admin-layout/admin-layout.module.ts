@@ -14,36 +14,12 @@ import {NotificationsComponent} from '../../notifications/notifications.componen
 import {UpgradeComponent} from '../../upgrade/upgrade.component';
 
 import {
-  MatButtonModule,
-  MatInputModule,
-  MatRippleModule,
-  MatFormFieldModule,
-  MatTooltipModule,
-  MatSelectModule,
-  MatDatepickerModule,
-  MatExpansionModule,
-  MatIconModule,
-  MatDialogModule,
-  MatCheckboxModule,
-  MatCardModule,
-  MatBottomSheetModule,
-  MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule
-} from '@angular/material';
-import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
-import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
-import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
     MatButtonModule,
+    MatInputModule,
     MatRippleModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     MatTooltipModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatExpansionModule,
     MatIconModule,
@@ -51,27 +27,53 @@ import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttac
     MatCheckboxModule,
     MatCardModule,
     MatBottomSheetModule,
-    MatListModule,
-    MatBadgeModule,
-    MatChipsModule,
-    MatSidenavModule
-  ],
-  declarations: [
-    GrantComponent,
-    DashboardComponent,
-    UserProfileComponent,
-    TableListComponent,
-    TypographyComponent,
-    IconsComponent,
-    MapsComponent,
-    NotificationsComponent,
-    UpgradeComponent,
-    FieldDialogComponent,
-    BottomsheetComponent,
-    BottomsheetAttachmentsComponent
-  ],
-  entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent],
-  schemas: [NO_ERRORS_SCHEMA]
+    MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule
+} from '@angular/material';
+import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
+import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
+import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/bottomsheetNotes.component";
+
+@NgModule({
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        MatButtonModule,
+        MatRippleModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatTooltipModule,
+        MatDatepickerModule,
+        MatExpansionModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatBottomSheetModule,
+        MatListModule,
+        MatBadgeModule,
+        MatChipsModule,
+        MatSidenavModule
+    ],
+    declarations: [
+        GrantComponent,
+        DashboardComponent,
+        UserProfileComponent,
+        TableListComponent,
+        TypographyComponent,
+        IconsComponent,
+        MapsComponent,
+        NotificationsComponent,
+        UpgradeComponent,
+        FieldDialogComponent,
+        BottomsheetComponent,
+        BottomsheetAttachmentsComponent,
+        BottomsheetNotesComponent
+    ],
+    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent],
+    schemas: [NO_ERRORS_SCHEMA]
 })
 
 export class AdminLayoutModule {

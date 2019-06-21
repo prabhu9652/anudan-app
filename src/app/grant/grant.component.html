@@ -15,7 +15,7 @@
           <i class="fa fa-save mr-2"></i>Save Changes
         </button>
 
-        <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')" #addKpiButton
+        <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE') && currentGrant.submissions.length>0" #addKpiButton
                 (click)="addNewKpi()" class="btn btn-sm btn-danger">
           <i class="fa fa-save mr-2"></i>Add KPI
         </button>
@@ -137,7 +137,8 @@
                         </mat-icon>
                       </div>
                       <div style="position: absolute;right: 10px;">
-                        <mat-icon inline="true" class="text-gray">chat</mat-icon>
+                        <mat-icon inline="true" (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                  [color]="kpiData.notesHistory.length>0?'accent':'text-gray'">chat</mat-icon>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!kpiData.toReport">
@@ -169,7 +170,8 @@
                         </mat-icon>
                       </div>
                       <div style="position: absolute;right: 10px;">
-                        <mat-icon inline="true" class="text-gray">chat</mat-icon>
+                        <mat-icon inline="true" (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                  [color]="kpiData.notesHistory.length>0?'accent':'text-gray'">chat</mat-icon>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!kpiData.toReport">
@@ -188,6 +190,10 @@
                       <ng-container *ngIf="!currentGrant.submissions[x -1].flowAuthorities">
                         <button class="btn btn-sm btn-primary" disabled>Upload</button>
                       </ng-container>
+                        <div style="position: absolute;right: 10px;">
+                            <mat-icon inline="true" (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                      [color]="kpiData.notesHistory.length>0?'accent':'text-gray'">chat</mat-icon>
+                        </div>
                     </ng-container>
                     <ng-container *ngIf="!kpiData.toReport">
                       Submission not required
@@ -341,11 +347,7 @@
                         </div>
                         <div class="col-sm-3 col-lg-3 text-left">
                           <mat-form-field>
-                            <input [attr.data-section]="section.id"
-                                   [attr.data-attribute]="attribute.id" matInput
-                                   placeholder="Field Value"
-                                   id="attribute_value_id_{{attribute.fieldType}}_{{attribute.id}}"
-                                   value="{{attribute.fieldValue}}">
+                            <input matInput [(ngModel)]="attribute.fieldValue" [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-1 col-lg-1" style="display: flex;align-items: center;">
@@ -399,7 +401,9 @@
         <div class="row">
           <div class="col-sm-12 col-lg-pull-12 text-right">
             <mat-select placeholder="Actions" (selectionChange)="performAction($event)">
-              <mat-option value="1">Add new Submission Period</mat-option>
+              <mat-option value="1">Add Single Submission Period</mat-option>
+              <mat-option value="2">Add Quarterly Submissions</mat-option>
+              <mat-option value="3">Clear All Submissions</mat-option>
             </mat-select>
           </div>
         </div>
@@ -755,6 +759,40 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<div #selectScheduleModal id="selectScheduleModal" class="modal fade" tabindex="-1"
+     role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportingPeriodLabel">Select Grant Schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <mat-select [(ngModel)]="schedule" [ngModelOptions]="{standAlone: true}">
+                    <mat-option value="1">Monthly</mat-option>
+                    <mat-option value="3">Quarterly</mat-option>
+                    <mat-option value="6">Half Yearly</mat-option>
+                    <mat-option value="12">Yearly</mat-option>
+                </mat-select>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveKpi()">Done
+                </button>
+                <!--<button type="button" class="btn btn-warning pull-right"
+                        (click)="saveKpiAndAddNew()">Save & Add New KPI
+                </button>-->
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 
