@@ -724,6 +724,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         grant.actionAuthorities = new ActionAuthorities();
         grant.actionAuthorities.permissions = [];
         grant.actionAuthorities.permissions.push('MANAGE');
+        grant.organization = this.appComp.appConfig.granteeOrgs[0];
         grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
         grant.substatus = this.appComp.appConfig.submissionInitialStatus;
 
@@ -977,4 +978,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.attachmentsSideNavOpened = false;
     }
 
+
+    setNewOrg(event: Event) {
+        console.log(event);
+    }
 }

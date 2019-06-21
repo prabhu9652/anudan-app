@@ -1,4 +1,4 @@
-import {Section, WorkflowStatus} from './dahsboard';
+import {Organization, Section, WorkflowStatus} from './dahsboard';
 
 export class AppConfig {
   appName: string;
@@ -9,6 +9,7 @@ export class AppConfig {
   defaultSections: Section[];
   submissionInitialStatus: WorkflowStatus;
   grantInitialStatus: WorkflowStatus;
+  granteeOrgs: Organization[]
 }
 
 export class Colors {
