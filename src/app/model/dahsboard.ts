@@ -60,6 +60,7 @@ export class GrantKpi {
   periodicity: number;
   frequency: string;
   kpiType: string;
+  kpiReportingType: string;
   createdAt: Date;
   createdBy: string;
   templates: Template[];
@@ -193,6 +194,7 @@ export class Kpi {
   periodicity: number;
   frequency: string;
   kpiType: string;
+  kpiReportingType: string;
   createdAt: Date;
   createdBy: string;
   templates: Template[];
@@ -209,7 +211,7 @@ export class Grant {
   startDate: Date;
   stDate: string;
   endDate: Date;
-  enDate: String;
+  enDate: string;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
   flowAuthorities: FlowAuthority[];

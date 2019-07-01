@@ -128,7 +128,9 @@ mat-sidenav {
   color: #323232;
   max-width: 25rem;
 }
-
+.cdk-overlay-container{
+  z-index: 1040;
+}
 @media all and (max-width: 240px) {
   .toast-top-center {
     margin-left: -54px;

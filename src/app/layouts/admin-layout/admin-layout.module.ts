@@ -27,12 +27,14 @@ import {
     MatCheckboxModule,
     MatCardModule,
     MatBottomSheetModule,
-    MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule
+    MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule, MatRadioModule, MatTableModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/bottomsheetNotes.component";
+import {WorkflowManagementComponent} from "../../workflow-management/workflow-management.component";
+
 
 @NgModule({
     imports: [
@@ -55,7 +57,9 @@ import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/botto
         MatListModule,
         MatBadgeModule,
         MatChipsModule,
-        MatSidenavModule
+        MatSidenavModule,
+        MatRadioModule,
+        MatTableModule
     ],
     declarations: [
         GrantComponent,
@@ -70,7 +74,8 @@ import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/botto
         FieldDialogComponent,
         BottomsheetComponent,
         BottomsheetAttachmentsComponent,
-        BottomsheetNotesComponent
+        BottomsheetNotesComponent,
+        WorkflowManagementComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]

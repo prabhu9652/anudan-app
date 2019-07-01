@@ -3,3 +3,13 @@ mat-sidenav{
   top: 80px;
   min-width: 300px;
 }
+
+.reporting-data-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.reporting-data-radio-button {
+  margin: 5px;
+}
