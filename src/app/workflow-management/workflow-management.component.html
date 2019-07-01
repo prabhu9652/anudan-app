@@ -1,0 +1,35 @@
+<div class="container text-left mt-5 px-5 py-5">
+    <div class="col-sm-12 col-lg-6">
+        <ng-container *ngFor="let transition of transitions">
+            <div class="row">
+                <div class="col-4">
+                    <mat-select [(ngModel)]="transition.fromStateId" placeholder="Grant From">
+                        <mat-option *ngFor="let entry of transitions" [value]="entry.fromStateId">
+                            {{entry._from}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div class="col-1">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="transition.action" placeholder="Action Name">
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-select [(ngModel)]="transition._to" placeholder="Grant To">
+                        <mat-option *ngFor="let entry of transitions" [value]="entry._to">
+                            {{entry._to}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div class="col-3">
+                    <mat-select [(ngModel)]="transition._performedby">
+                        <mat-option *ngFor="let entry of transitions" [value]="entry._performedby">
+                            {{entry._performedby}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="col-sm-12 col-lg-6"></div>
+</div>

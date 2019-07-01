@@ -16,7 +16,7 @@ import {EditorComponent} from './editor/editor.component';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    EditorComponent,
+    EditorComponent
   ],
   exports: [
     FooterComponent,

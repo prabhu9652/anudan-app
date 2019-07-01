@@ -1,4 +1,6 @@
 import {User} from './user';
+import * as moment from 'moment';
+import _date = moment.unitOfTime._date;
 
 export class Organization {
   id: number;
@@ -58,6 +60,7 @@ export class GrantKpi {
   periodicity: number;
   frequency: string;
   kpiType: string;
+  kpiReportingType: string;
   createdAt: Date;
   createdBy: string;
   templates: Template[];
@@ -71,6 +74,7 @@ export class Template {
     type: string;
     version: number;
     fileType: string;
+    data: string;
 }
 
 export class Note {
@@ -89,6 +93,7 @@ export class QuantitiaveKpisubmission {
   notesHistory: Note[];
   submissionDocs: Doc[];
   toReport: boolean;
+  submission: Submission;
 }
 
 export class QualitativeKpiSubmission {
@@ -100,6 +105,7 @@ export class QualitativeKpiSubmission {
   notesHistory: Note[];
   submissionDocs: Doc[];
   toReport: boolean;
+  submission: Submission;
 }
 
 export class Doc {
@@ -107,6 +113,7 @@ export class Doc {
   fileName: string;
   fileType: string;
   version: number;
+  data: string;
 }
 
 export class DocumentKpiSubmission {
@@ -119,6 +126,7 @@ export class DocumentKpiSubmission {
   notesHistory: Note[];
   submissionDocs: Doc[];
   toReport: boolean;
+  submission: Submission;
 }
 
 export class FlowAuthority {
@@ -135,7 +143,8 @@ export class Submission {
   id: number;
   grant: Grant;
   title: string;
-  submitBy: string;
+  submitBy: Date;
+  submitDateStr: string
   submissionStatus: SubmissionStatus;
   quantitiaveKpisubmissions: QuantitiaveKpisubmission[];
   qualitativeKpiSubmissions: QualitativeKpiSubmission[];
@@ -185,6 +194,7 @@ export class Kpi {
   periodicity: number;
   frequency: string;
   kpiType: string;
+  kpiReportingType: string;
   createdAt: Date;
   createdBy: string;
   templates: Template[];
@@ -198,8 +208,10 @@ export class Grant {
   grantStatus: WorkflowStatus;
   substatus: WorkflowStatus
   statusName: string;
-  startDate: String;
-  endDate: String;
+  startDate: Date;
+  stDate: string;
+  endDate: Date;
+  enDate: string;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
   flowAuthorities: FlowAuthority[];
@@ -214,6 +226,37 @@ export class Tenant {
 
 export class Tenants {
   tenants: Tenant[];
+}
+
+export class FileTemplates {
+  kpiId: number;
+  title: string;
+  grantId: number;
+  subTitle: string;
+  templates: Template[];
+  type: string;
+  canManage: boolean;
+}
+
+export class AttachmentTemplates {
+  kpiDataId: number;
+  kpiDataType: string;
+  grantId: number;
+  title: string;
+  subTitle: string;
+  docs: Doc[];
+  type: string;
+  canManage: boolean;
+}
+
+export class NoteTemplates {
+    kpiDataId: number;
+    kpiDataType: string;
+    grantId: number;
+    title: string;
+    subTitle: string;
+    notes: Note[];
+    canManage: boolean;
 }
 
 export class SerializationHelper {

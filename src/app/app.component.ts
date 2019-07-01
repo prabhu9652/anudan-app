@@ -4,6 +4,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
+import {WorkflowStatus} from "./model/dahsboard";
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,10 @@ export class AppComponent implements AfterViewChecked{
     navbarColor: '#e3f2fd;',
     navbarTextColor: '#222',
     tenantCode: '',
-    defaultSections: []
+    defaultSections: [],
+    grantInitialStatus: new WorkflowStatus(),
+    submissionInitialStatus: new WorkflowStatus(),
+    granteeOrgs: []
   };
 
   org: string;

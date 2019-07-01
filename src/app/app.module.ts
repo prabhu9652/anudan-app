@@ -33,7 +33,9 @@ import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
-import {MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {DatePipe} from '@angular/common';
+import {Colors} from './model/app-config';
 
 
 const config = new AuthServiceConfig([
@@ -96,7 +98,10 @@ export function provideConfig() {
       provide: AuthServiceConfig,
       useFactory: provideConfig,
     },
-      MatDatepickerModule
+      MatDatepickerModule,
+      MatBottomSheet,
+      DatePipe,
+      Colors
   ],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
