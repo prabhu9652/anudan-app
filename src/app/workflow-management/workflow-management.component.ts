@@ -9,7 +9,7 @@ import {WorkflowTransition} from "../model/workflow-transition";
 })
 export class WorkflowManagementComponent implements OnInit {
 
-    private transitions: WorkflowTransition[];
+    transitions: WorkflowTransition[];
 
     constructor(
         private http: HttpClient
