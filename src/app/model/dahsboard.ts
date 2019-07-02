@@ -154,6 +154,7 @@ export class Submission {
   flowAuthorities: FlowAuthority[];
   actionAuthorities: ActionAuthorities;
   submissionNotes: Note[];
+  openForReporting: boolean;
 
   getQuantitativeKpiById(id: number) {
     for (const q of this.quantitiaveKpisubmissions) {

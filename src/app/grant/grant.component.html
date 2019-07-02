@@ -112,7 +112,7 @@
                                  [style.border-right]="'0.5px solid #d4d4d4'"
                                  [style.box-shadow]="currentGrant.submissions[x-1].flowAuthorities?'box-shadow:1px 1px 12px #d4d4d4':''">
                                 <div
-                                        [ngClass]="['col-12','py-2', 'mb-4','text-center', currentGrant.submissions[x - 1].flowAuthorities? 'bg-primary text-white' : 'bg-light']">{{currentGrant.submissions[x
+                                        [ngClass]="['col-12','py-2', 'mb-4','text-center', currentGrant.submissions[x - 1].flowAuthorities || currentGrant.submissions[x - 1].openForReporting? 'bg-primary text-white' : 'bg-light']">{{currentGrant.submissions[x
                                 - 1].title}}
                                 </div>
                                 <ng-container
@@ -133,14 +133,14 @@
                                             </ng-container>
                                             <div style="position: absolute;right: 40px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,currentGrant.submissions[x -1].flowAuthorities)"
+                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,true)"
                                                           [color]="kpiData.submissionDocs.length>0?'accent':'text-gray'">
                                                     attachment
                                                 </mat-icon>
                                             </div>
                                             <div style="position: absolute;right: 10px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,true)"
                                                           [color]="kpiData.notesHistory && kpiData.notesHistory.length>0?'accent':'text-gray'">
                                                     chat
                                                 </mat-icon>
@@ -224,15 +224,29 @@
                                                 *ngFor="let kpiData of currentGrant.submissions[x].quantitiaveKpisubmissions">
                                             <div class="col-12 py-3" id="kpi_title_{{kpiData.grantKpi.id}}"
                                                  style="border-bottom: .5px solid #d4d4d4;">
-                                                <p class="p-1">{{kpiData.grantKpi.title}}</p>
-                                                <button mat-stroked-button class="my-2"
-                                                        *ngIf="kpiData.grantKpi.templates.length > 0"
-                                                        matBadge="{{kpiData.grantKpi.templates.length}}"
-                                                        matBadgeOverlap="true" matBadgePosition="above after"
-                                                        matBadgeColor="accent"
-                                                        (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
-                                                    View templates
-                                                </button>
+                                                <div class="row">
+                                                    <div class="col-sm-1" style="display:flex;align-items: center;">
+                                                        <mat-icon class="text-primary"
+                                                                  *ngIf="kpiData.grantKpi.kpiReportingType==='ACTIVITY'">
+                                                            local_activity
+                                                        </mat-icon>
+                                                        <mat-icon color="accent"
+                                                                  *ngIf="kpiData.grantKpi.kpiReportingType==='FINANCIAL'">
+                                                            money
+                                                        </mat-icon>
+                                                    </div>
+                                                    <div class="col-sm-11">
+                                                        <p class="p-1">{{kpiData.grantKpi.title}}</p>
+                                                        <button mat-stroked-button class="my-2"
+                                                                *ngIf="kpiData.grantKpi.templates.length > 0"
+                                                                matBadge="{{kpiData.grantKpi.templates.length}}"
+                                                                matBadgeOverlap="true" matBadgePosition="above after"
+                                                                matBadgeColor="accent"
+                                                                (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
+                                                            View templates
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </ng-container>
 
@@ -240,32 +254,51 @@
                                                 *ngFor="let kpiData of currentGrant.submissions[x].qualitativeKpiSubmissions">
                                             <div class="col-12 py-3" id="kpi_title_{{kpiData.grantKpi.id}}"
                                                  style="border-bottom: .5px solid #d4d4d4;">
-                                                <p>{{kpiData.grantKpi.title}}</p>
-                                                <button mat-stroked-button class="my-2"
-                                                        *ngIf="kpiData.grantKpi.templates.length > 0"
-                                                        matBadge="{{kpiData.grantKpi.templates.length}}"
-                                                        matBadgeOverlap="true" matBadgePosition="above after"
-                                                        matBadgeColor="accent"
-                                                        (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
-                                                    View templates
-                                                </button>
+                                                <div class="row">
+                                                    <div class="col-sm-1">
+                                                        <mat-icon class="text-info"
+                                                                  *ngIf="kpiData.grantKpi.kpiType==='QUALITATIVE'">
+                                                            assignment
+                                                        </mat-icon>
+                                                    </div>
+                                                    <div class="col-sm-11">
+                                                        <p>{{kpiData.grantKpi.title}}</p>
+                                                        <button mat-stroked-button class="my-2"
+                                                                *ngIf="kpiData.grantKpi.templates.length > 0"
+                                                                matBadge="{{kpiData.grantKpi.templates.length}}"
+                                                                matBadgeOverlap="true" matBadgePosition="above after"
+                                                                matBadgeColor="accent"
+                                                                (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
+                                                            View templates
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-
                                         </ng-container>
 
                                         <ng-container
                                                 *ngFor="let kpiData of currentGrant.submissions[x].documentKpiSubmissions">
                                             <div class="col-12 py-3" id="kpi_title_{{kpiData.grantKpi.id}}"
                                                  style="border-bottom: .5px solid #d4d4d4;">
-                                                <p>{{kpiData.grantKpi.title}}</p>
-                                                <button mat-stroked-button class="my-2"
-                                                        *ngIf="kpiData.grantKpi.templates.length > 0"
-                                                        matBadge="{{kpiData.grantKpi.templates.length}}"
-                                                        matBadgeOverlap="true" matBadgePosition="above after"
-                                                        matBadgeColor="accent"
-                                                        (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
-                                                    View templates
-                                                </button>
+                                                <div class="row">
+                                                    <div class="col-sm-1">
+                                                        <mat-icon class="text-warning"
+                                                                  *ngIf="kpiData.grantKpi.kpiType==='DOCUMENT'">
+                                                            insert_drive_file
+                                                        </mat-icon>
+                                                    </div>
+                                                    <div class="col-sm-11">
+                                                        <p>{{kpiData.grantKpi.title}}</p>
+                                                        <button mat-stroked-button class="my-2"
+                                                                *ngIf="kpiData.grantKpi.templates.length > 0"
+                                                                matBadge="{{kpiData.grantKpi.templates.length}}"
+                                                                matBadgeOverlap="true" matBadgePosition="above after"
+                                                                matBadgeColor="accent"
+                                                                (click)="openBottomSheet(kpiData.grantKpi.id, kpiData.grantKpi.title, kpiData.grantKpi.templates, canManage)">
+                                                            View templates
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -445,7 +478,19 @@
                      (scroll)="scrollHeaderContent($event)">
                     <div class="col-sm-12 col-lg-5"
                          style="background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
-                        KPIs
+                        <p>KPIs</p>
+                        <span class="mr-2"><mat-icon inline class="text-primary">
+                            local_activity
+                        </mat-icon>Activity</span>
+                        <span class="mr-2"><mat-icon inline color="accent">
+                            money
+                        </mat-icon>Financial</span>
+                        <span class="mr-2"><mat-icon inline class="text-info">
+                            assignment
+                        </mat-icon>Subjective</span>
+                        <span class="mr-2"><mat-icon inline class="text-warning">
+                            insert_drive_file
+                        </mat-icon>Document</span>
                     </div>
                     <div class="col-sm-12 col-lg-7" style="z-index: 2;">
                         <div class="container-fluid">
@@ -493,20 +538,36 @@
                          (scroll)="scrollChildContent($event)">
                         <div class="col-sm-12 col-lg-5 pt-2 bg-white"
                              style="z-index: 1;position:sticky;left: 0;border-right: 0.5px solid #d4d4d4;border-left: 4px solid #d4d4d4;">
-                            <mat-icon color="accent" inline *ngIf="kpi.kpiReportingType==='ACTIVITY'">local_activity</mat-icon>
-                            <mat-icon color="primary" inline *ngIf="kpi.kpiReportingType==='FINANCIAL'">attach_money</mat-icon>
-                            <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
-                                   (ngModelChange)="checkGrant()">
-                            <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length === 0"
-                                    (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
-                                Attach template
-                            </button>
-                            <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
-                                    matBadge="{{kpi.templates.length}}"
-                                    matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
-                                    (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
-                                Attach template
-                            </button>
+                            <div class="row">
+                                <div class="col-sm-1" style="display:flex;align-items: center;">
+                                    <mat-icon class="text-primary" *ngIf="kpi.kpiReportingType==='ACTIVITY'">
+                                        local_activity
+                                    </mat-icon>
+                                    <mat-icon color="accent" *ngIf="kpi.kpiReportingType==='FINANCIAL'">
+                                        money
+                                    </mat-icon>
+                                    <mat-icon class="text-info" *ngIf="kpi.kpiType==='QUALITATIVE'">
+                                        assignment
+                                    </mat-icon>
+                                    <mat-icon class="text-warning" *ngIf="kpi.kpiType==='DOCUMENT'">
+                                        insert_drive_file
+                                    </mat-icon>
+                                </div>
+                                <div class="col-sm-11">
+                                    <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
+                                           (ngModelChange)="checkGrant()">
+                                    <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length === 0"
+                                            (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
+                                        Attach template
+                                    </button>
+                                    <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
+                                            matBadge="{{kpi.templates.length}}"
+                                            matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
+                                            (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
+                                        Attach template
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-12 col-lg-7">
                             <div class="container-fluid" style="height: 100%;">
@@ -526,7 +587,8 @@
                                                                               [ngModelOptions]="{standAlone:true}"
                                                                               (ngModelChange)="checkGrant()"></mat-checkbox>
                                                             </div>
-                                                            <div class="col-sm-9" style="display:flex;align-items:center">
+                                                            <div class="col-sm-9"
+                                                                 style="display:flex;align-items:center">
                                                                 <mat-form-field>
                                                                     <input matInput type="number"
                                                                            [(ngModel)]="kpiData.goal"
@@ -782,23 +844,33 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <mat-form-field>
-                        <input matInput id="kpiDescription" #kpiDescriptionElem class="form-control"
-                               placeholder="KPI description">
+                            <input matInput id="kpiDescription" #kpiDescriptionElem class="form-control"
+                                   placeholder="KPI description">
                         </mat-form-field>
                     </div>
                     <div class="col-sm-12 text-left">
                         <div id="reporting-data">Select what you want to be reported for this KPI</div>
-                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="reporting-data" (change)="setKpiTypeSection($event)">
-                            <mat-radio-button checked class="reporting-data-radio-button" value="Quantitative">Numbers and Metrics</mat-radio-button>
-                            <mat-radio-button class="reporting-data-radio-button" value="Qualitative">Long Responses</mat-radio-button>
-                            <mat-radio-button class="reporting-data-radio-button" value="Document">Document Attachments</mat-radio-button>
+                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="reporting-data"
+                                         (change)="setKpiTypeSection($event)">
+                            <mat-radio-button checked class="reporting-data-radio-button" value="Quantitative">Numbers
+                                and Metrics
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="Qualitative">Long Responses
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="Document">Document
+                                Attachments
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
                     <div class="col-sm-12 text-left" *ngIf="currentKPIType==='Quantitative'">
                         <div id="kpi-type">Select the type KPI type</div>
-                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="kpi-type" (change)="setKpiReportingTypeSection($event)">
-                            <mat-radio-button class="reporting-data-radio-button"  checked value="activity">Monitoring and Evaluation</mat-radio-button>
-                            <mat-radio-button class="reporting-data-radio-button" value="financial">Financial</mat-radio-button>
+                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="kpi-type"
+                                         (change)="setKpiReportingTypeSection($event)">
+                            <mat-radio-button class="reporting-data-radio-button" checked value="activity">Monitoring
+                                and Evaluation
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="financial">Financial
+                            </mat-radio-button>
                         </mat-radio-group>
                     </div>
                 </div>
