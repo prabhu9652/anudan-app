@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   kpiSubmissionTitle: string;
 
   constructor(private http: HttpClient,
-              private appComponent: AppComponent,
+              public appComponent: AppComponent,
               private router: Router,
               private route: ActivatedRoute,
               private data: GrantDataService,
