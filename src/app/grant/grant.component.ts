@@ -69,7 +69,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     currentKPIReportingType = 'Activity';
     timer: any;
     grantToUpdate: Grant;
-    erroredElemenet: ElementRef;
+    erroredElement: ElementRef;
+    erroredField: string;
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -195,7 +196,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
 
-    confirm(sectionId: string, attributeId: String, submissios: Submission[], func: string, title: string) {
+    confirm(sectionId: number, attributeId: number, submissios: Submission[],kpiId: number, func: string, title: string) {
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
             data: title
@@ -213,6 +214,10 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                     case 'clearSubmissions':
                         this.clearSubmissions();
                         break;
+
+                    case 'kpi':
+                        this.deleteKpi(kpiId);
+                        break;
                 }
             } else {
                 dialogRef.close();
@@ -220,14 +225,46 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         });
     }
 
-    deleteFieldEntry(sectionId: string, attributeId: String) {
+    deleteFieldEntry(sectionId: number, attributeId: number) {
         for (const section of this.currentGrant.grantDetails.sections) {
-            if (section.id === Number(sectionId)) {
-                const index = section.attributes.findIndex(attr => attr.id === Number(attributeId));
+            if (section.id === sectionId) {
+                const index = section.attributes.findIndex(attr => attr.id === attributeId);
                 section.attributes.splice(index, 1);
                 this.checkGrant();
             }
         }
+    }
+
+    deleteKpi(kpiId: number) {
+        for(const kpi of this.currentGrant.kpis){
+            if(kpi.id === kpiId) {
+                const index = this.currentGrant.kpis.findIndex(k => k.id === kpiId);
+                this.currentGrant.kpis.splice(index, 1);
+            }
+        }
+
+        for(const sub of this.currentGrant.submissions){
+            for(const kpiData of sub.quantitiaveKpisubmissions) {
+                if(kpiData.grantKpi.id === kpiId) {
+                    const index = sub.quantitiaveKpisubmissions.findIndex(k => k.grantKpi.id === kpiId);
+                    sub.quantitiaveKpisubmissions.splice(index, 1);
+                }
+            }
+            for(const kpiData of sub.qualitativeKpiSubmissions) {
+                if(kpiData.grantKpi.id === kpiId) {
+                    const index = sub.qualitativeKpiSubmissions.findIndex(k => k.grantKpi.id === kpiId);
+                    sub.qualitativeKpiSubmissions.splice(index, 1);
+                }
+            }
+            for(const kpiData of sub.documentKpiSubmissions) {
+                if(kpiData.grantKpi.id === kpiId) {
+                    const index = sub.documentKpiSubmissions.findIndex(k => k.grantKpi.id === kpiId);
+                    sub.qualitativeKpiSubmissions.splice(index, 1);
+                }
+            }
+        }
+
+        this.checkGrant();
     }
 
     saveField() {
@@ -293,9 +330,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         const errors = this.validateFields();
         if (errors) {
-            this.toastr.error('Some required fields are missing', 'Missing entries');
-            console.log($(this.erroredElemenet));
-            $(this.erroredElemenet).focus();
+            this.toastr.error($(this.erroredElement).attr('placeholder')+' is required', 'Missing entries');
+            $(this.erroredElement).focus();
         } else {
             const httpOptions = {
                 headers: new HttpHeaders({
@@ -332,7 +368,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             ',textarea[required]:not(:disabled):not([readonly])');
         for (let elem of containerFormLements) {
             if (elem.value.trim() === '') {
-                this.erroredElemenet = elem;
+                this.erroredElement = elem;
+                switch ($(this.erroredElement).attr('placeholder')) {
+                    case 'Field Value':
+
+                }
                 return true;
             }
         }
@@ -461,6 +501,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         newSection.attributes = [];
         newSection.id = 0 - Math.round(Math.random() * 10000000000);
         newSection.sectionName = sectionName.val();
+        newSection.deletable = true;
 
         currentSections.push(newSection);
 
@@ -1024,7 +1065,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 this.toastr.info('Quarterly Submissions added', 'Submission Periods Added');
                 break;
             case '3':
-                this.confirm('', '', [], 'clearSubmissions', ' all Submissions')
+                this.confirm(0, 0, [],0, 'clearSubmissions', ' all Submissions')
                 break;
         }
 

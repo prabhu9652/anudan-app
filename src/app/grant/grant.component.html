@@ -359,10 +359,10 @@
                                 <div class="row">
                                     <div class="col-12 bg-light text-right">
                                         <a class="mr-2 text-gray"
-                                           (click)="confirm(section.id,0,[],'section','section')"><i
+                                           (click)="confirm(section.id,0,[],0,'section','section')"><i
                                                 class="fa fa-edit"></i></a>
                                         <a class="mr-2 text-gray" *ngIf="section.deletable"
-                                           (click)="confirm(section.id,0,[],'section','section')"><i
+                                           (click)="confirm(section.id,0,[],0,'section','section')"><i
                                                 class="fa fa-trash"></i></a>
                                         <a (click)="addNewFieldToSection(section.id,section.sectionName)"
                                            class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
@@ -398,17 +398,19 @@
                                                 </div>
                                                 <div class="col-sm-3 col-lg-3 text-left">
                                                     <mat-form-field>
-                                                        <input matInput [(ngModel)]="attribute.fieldValue" [required]="attribute.deletable?'required':''"
-                                                               [ngModelOptions]="{standAlone:true}" placeholder="Field Value"
+                                                        <input matInput [(ngModel)]="attribute.fieldValue"
+                                                               [required]="attribute.deletable?'required':''"
+                                                               [ngModelOptions]="{standAlone:true}"
+                                                               placeholder="Field Value"
                                                                (ngModelChange)="checkGrant()">
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-sm-1 col-lg-1"
                                                      style="display: flex;align-items: center;">
                                                     <mat-icon *ngIf="attribute.deletable"
-                                                            (click)="confirm(section.id,attribute.id,[],'field','field')"
-                                                            aria-hidden="false"
-                                                            aria-label="Example home icon" inline="true">
+                                                              (click)="confirm(section.id,attribute.id,[],0,'field','field')"
+                                                              aria-hidden="false"
+                                                              aria-label="Example home icon" inline="true">
                                                         delete_outline
                                                     </mat-icon>
                                                 </div>
@@ -470,20 +472,28 @@
                      style="background-color:#f9f9f9;position: sticky;top: 82px;overflow-x: auto;z-index: 3;"
                      (scroll)="scrollHeaderContent($event)">
                     <div class="col-sm-12 col-lg-5"
-                         style="background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
-                        <p>KPIs</p>
+                         style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h3>KPIs</h3>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <p>
                         <span class="mr-2"><mat-icon inline class="text-primary">
                             local_activity
                         </mat-icon>Activity</span>
-                        <span class="mr-2"><mat-icon inline color="accent">
+                                    <span class="mr-2"><mat-icon inline color="accent">
                             money
                         </mat-icon>Financial</span>
-                        <span class="mr-2"><mat-icon inline class="text-info">
+                                    <span class="mr-2"><mat-icon inline class="text-info">
                             assignment
                         </mat-icon>Subjective</span>
-                        <span class="mr-2"><mat-icon inline class="text-warning">
+                                    <span class="mr-2"><mat-icon inline class="text-warning">
                             insert_drive_file
                         </mat-icon>Document</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-12 col-lg-7" style="z-index: 2;">
                         <div class="container-fluid">
@@ -498,7 +508,7 @@
                                                            [ngModelOptions]="{standAlone:true}"
                                                            (ngModelChange)="checkGrant()"
                                                            placeholder="Submission Title" required>
-                                                    </mat-form-field>
+                                                </mat-form-field>
                                                 <mat-form-field *ngIf="submission.id<0" matBadge="N"
                                                                 matBadgePosition="above after" matBadgeColor="accent"
                                                                 class="text-center">
@@ -547,9 +557,15 @@
                                     </mat-icon>
                                 </div>
                                 <div class="col-sm-11">
+                                    <mat-icon style="text-align: right;"
+                                              (click)="confirm(null,null,[],kpi.id,'kpi','KPI')"
+                                              aria-hidden="false"
+                                              aria-label="Example home icon" inline="true">
+                                        delete_outline
+                                    </mat-icon>
                                     <mat-form-field>
-                                    <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
-                                           (ngModelChange)="checkGrant()" required placeholder="KPI Title">
+                                        <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
+                                               (ngModelChange)="checkGrant()" required placeholder="KPI Title">
                                     </mat-form-field>
                                     <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length === 0"
                                             (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
@@ -602,7 +618,7 @@
                                                 <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
                                                     <div class="col-sm-4 col-lg-6"
                                                          style="border-right: 0.5px solid #d4d4d4;">
-                                                        <div class="row">
+                                                        <div class="row h-100">
                                                             <div class="col-sm-6"
                                                                  style="display: flex;align-items: center;">
                                                                 <mat-checkbox color="primary"
@@ -623,7 +639,7 @@
                                                 <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
                                                     <div class="col-sm-4 col-lg-6"
                                                          style="border-right: 0.5px solid #d4d4d4;">
-                                                        <div class="row">
+                                                        <div class="row h-100">
                                                             <div class="col-sm-6"
                                                                  style="display: flex;align-items: center;">
                                                                 <mat-checkbox color="primary"
