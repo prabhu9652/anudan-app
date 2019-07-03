@@ -175,12 +175,15 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   fieldValue: string;
+  deletable: boolean;
+  required: boolean;
 }
 
 export class Section {
   id: number;
   sectionName: string;
   attributes: Attribute[];
+  deletable: boolean;
 }
 
 export class GrantDetails {

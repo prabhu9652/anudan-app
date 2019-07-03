@@ -63,12 +63,13 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     firstColumnInitialPosition: number;
     currentSubmission: Submission;
     canManage = false;
-    attachmentsSideNavOpened = false;
+    attachmentsSideNavOpened = true;
     schedule = 3;
     currentKPIType = 'Quantitative';
     currentKPIReportingType = 'Activity';
     timer: any;
     grantToUpdate: Grant;
+    erroredElemenet: ElementRef;
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -82,6 +83,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     @ViewChild('kpiBlock') kpiBlock: ElementRef;
     @ViewChild('sidenav') attachmentsSideNav: any;
     @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
+    @ViewChild('container') container: ElementRef;
 
     constructor(private grantData: GrantDataService
         , private submissionData: SubmissionDataService
@@ -134,7 +136,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     private checkGrantPermissions() {
         if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
             this.canManage = true;
-        }else{
+        } else {
             this.canManage = false;
         }
     }
@@ -193,7 +195,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
 
-    confirm(sectionId: string, attributeId: String,submissios: Submission[], func: string, title: string) {
+    confirm(sectionId: string, attributeId: String, submissios: Submission[], func: string, title: string) {
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
             data: title
@@ -289,33 +291,54 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     saveGrant() {
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
+        const errors = this.validateFields();
+        if (errors) {
+            this.toastr.error('Some required fields are missing', 'Missing entries');
+            console.log($(this.erroredElemenet));
+            $(this.erroredElemenet).focus();
+        } else {
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
 
-        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-        this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-                this.originalGrant = JSON.parse(JSON.stringify(grant));
-                this.grantData.changeMessage(grant);
-                this.currentGrant = grant;
-                this._setEditMode(false);
-                this.currentSubmission = null;
-                this.checkGrantPermissions();
-                this.checkCurrentSubmission();
-            },
-            error => {
-                const errorMsg = error as HttpErrorResponse;
-                console.log(error);
-                this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                    enableHtml: true
+            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+                    this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    this.grantData.changeMessage(grant);
+                    this.currentGrant = grant;
+                    this._setEditMode(false);
+                    this.currentSubmission = null;
+                    this.checkGrantPermissions();
+                    this.checkCurrentSubmission();
+                },
+                error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                        enableHtml: true
+                    });
                 });
-            });
+        }
     }
+
+    private validateFields() {
+        const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
+            ',select[required]:not(:disabled):not([readonly])' +
+            ',textarea[required]:not(:disabled):not([readonly])');
+        for (let elem of containerFormLements) {
+            if (elem.value.trim() === '') {
+                this.erroredElemenet = elem;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     saveSubmissionAndMove(toStateId: number) {
 
@@ -375,6 +398,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 newAttr.fieldType = 'string';
                 newAttr.fieldName = '';
                 newAttr.fieldValue = '';
+                newAttr.deletable = true;
+                newAttr.required = false;
                 newAttr.id = 0 - Math.round(Math.random() * 1000000000);
                 section.attributes.push(newAttr);
                 break;
@@ -499,7 +524,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         const kpi = new Kpi();
         kpi.id = id;
         kpi.kpiType = this.currentKPIType.toUpperCase();
-        kpi.kpiReportingType = this.currentKPIReportingType===null?null:this.currentKPIReportingType.toUpperCase();
+        kpi.kpiReportingType = this.currentKPIReportingType === null ? null : this.currentKPIReportingType.toUpperCase();
         kpi.description = kpiDesc.val();
         kpi.templates = [];
         kpi.title = kpiDesc.val();
@@ -511,7 +536,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         grantKpi.id = id;
         grantKpi.kpiType = this.currentKPIType.toUpperCase();
-        grantKpi.kpiReportingType = this.currentKPIReportingType===null?null:this.currentKPIReportingType.toUpperCase();
+        grantKpi.kpiReportingType = this.currentKPIReportingType === null ? null : this.currentKPIReportingType.toUpperCase();
         grantKpi.title = kpiDesc.val();
         grantKpi.description = kpiDesc.val();
         grantKpi.frequency = 'YEARLY';
@@ -999,7 +1024,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 this.toastr.info('Quarterly Submissions added', 'Submission Periods Added');
                 break;
             case '3':
-                this.confirm('','',[],'clearSubmissions', ' all Submissions')
+                this.confirm('', '', [], 'clearSubmissions', ' all Submissions')
                 break;
         }
 
@@ -1011,7 +1036,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     clearSubmissions() {
         this.currentGrant.submissions = [];
-}
+    }
 
 
     openAttachmentsNav() {
@@ -1041,23 +1066,22 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     }
 
-    setSubmissionDate(sub: Submission, event: MatDatepickerInputEvent<any>){
+    setSubmissionDate(sub: Submission, event: MatDatepickerInputEvent<any>) {
         sub.submitBy = event.value;
-        sub.submitDateStr = this.datepipe.transform(event.value,'yyyy-MM-dd');
+        sub.submitDateStr = this.datepipe.transform(event.value, 'yyyy-MM-dd');
         this.checkGrant();
     }
 
-    setKpiTypeSection(event){
+    setKpiTypeSection(event) {
         this.currentKPIType = event.value;
-        if(this.currentKPIReportingType!='Quantitative'){
+        if (this.currentKPIReportingType != 'Quantitative') {
             this.currentKPIReportingType = null;
-        }
-        else{
+        } else {
             this.currentKPIReportingType = 'Activity';
         }
     }
 
-    setKpiReportingTypeSection(event){
+    setKpiReportingTypeSection(event) {
         this.currentKPIReportingType = event.value;
 
         console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);

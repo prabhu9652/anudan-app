@@ -8,11 +8,13 @@ import {GrantDataService} from '../grant.data.service';
 import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
+import {GrantComponent} from "../grant/grant.component";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers: [GrantComponent]
 })
 export class DashboardComponent implements OnInit {
 
@@ -29,7 +31,8 @@ export class DashboardComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private data: GrantDataService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              public grantComponent: GrantComponent) {
   }
 
   ngOnInit() {

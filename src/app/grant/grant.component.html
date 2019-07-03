@@ -1,14 +1,6 @@
-<mat-sidenav-container class="example-container">
-    <mat-sidenav #sidenav fixedInViewport="false" fixedTopGap="80" disableClose="true" position="end"
-                 mode="push" [(opened)]="attachmentsSideNavOpened" style="top: 80px !important;">
-
-        <h3>Attachments</h3>
-        <button mat-button color="accent" (click)="closeAttachmentsSideNav()">Close
-        </button>
-
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <div class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
+<div class="row">
+    <div class="col-lg-12">
+        <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
             <div class="fixed-bottom"
                  style="right: 20px; left: auto;z-index: 4;display: flex;align-items: flex-end;flex-direction: column;justify-content: right;">
                 <button #saveGrantButton (click)="saveGrant()" *ngIf="editMode" class="btn btn-sm btn-info">
@@ -112,8 +104,8 @@
                                  [style.border-right]="'0.5px solid #d4d4d4'"
                                  [style.box-shadow]="currentGrant.submissions[x-1].flowAuthorities?'box-shadow:1px 1px 12px #d4d4d4':''">
                                 <div
-                                        [ngClass]="['col-12','py-2', 'mb-4','text-center', currentGrant.submissions[x - 1].flowAuthorities || currentGrant.submissions[x - 1].openForReporting? 'bg-primary text-white' : 'bg-light']">{{currentGrant.submissions[x
-                                - 1].title}}
+                                        [ngClass]="['col-12','py-2', 'mb-4','text-center', currentGrant.submissions[x - 1].flowAuthorities || currentGrant.submissions[x - 1].openForReporting? 'bg-primary text-white' : 'bg-light']">
+                                    <b>{{currentGrant.submissions[x - 1].title}}</b>
                                 </div>
                                 <ng-container
                                         *ngFor="let kpiData of currentGrant.submissions[x - 1].quantitiaveKpisubmissions">
@@ -133,14 +125,14 @@
                                             </ng-container>
                                             <div style="position: absolute;right: 40px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,true)"
+                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,currentGrant.submissions[x - 1].openForReporting)"
                                                           [color]="kpiData.submissionDocs.length>0?'accent':'text-gray'">
                                                     attachment
                                                 </mat-icon>
                                             </div>
                                             <div style="position: absolute;right: 10px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,true)"
+                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x - 1].openForReporting)"
                                                           [color]="kpiData.notesHistory && kpiData.notesHistory.length>0?'accent':'text-gray'">
                                                     chat
                                                 </mat-icon>
@@ -169,14 +161,14 @@
                                             </ng-container>
                                             <div style="position: absolute;right: 40px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,currentGrant.submissions[x -1].flowAuthorities)"
+                                                          (click)="openBottomSheetForSubmittionAttachments(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.submissionDocs,currentGrant.submissions[x - 1].openForReporting)"
                                                           [color]="kpiData.submissionDocs.length>0?'accent':'text-gray'">
                                                     attachment
                                                 </mat-icon>
                                             </div>
                                             <div style="position: absolute;right: 10px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x - 1].openForReporting)"
                                                           [color]="kpiData.notesHistory && kpiData.notesHistory.length>0?'accent':'text-gray'">
                                                     chat
                                                 </mat-icon>
@@ -200,7 +192,7 @@
                                             </ng-container>
                                             <div style="position: absolute;right: 10px;">
                                                 <mat-icon inline="true"
-                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x -1].flowAuthorities)"
+                                                          (click)="openBottomSheetForSubmittionNotes(kpiData.id,kpiData.grantKpi.kpiType,kpiData.grantKpi.title,kpiData.notesHistory,currentGrant.submissions[x - 1].openForReporting)"
                                                           [color]="kpiData.notesHistory && kpiData.notesHistory.length>0?'accent':'text-gray'">
                                                     chat
                                                 </mat-icon>
@@ -316,29 +308,29 @@
                         <mat-form-field>
                             <input matInput id="grantName" [(ngModel)]="currentGrant.name"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant($event)"
-                                   placeholder="Grant Name"
+                                   placeholder="Grant Name" required
                                    type="text" autocomplete="off">
                         </mat-form-field>
                     </div>
                     <div class="col-6">
                         <mat-form-field>
                             <input id="grantDesc" matInput type="text" [(ngModel)]="currentGrant.description"
-                                   [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                                   [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" required
                                    placeholder="Grant Description" autocomplete="off">
                         </mat-form-field>
                     </div>
                     <div class="col-6">
                         <mat-form-field>
-                            <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate"
+                            <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate" required
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
-                                   [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text">
+                                   [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text" readonly>
                             <mat-datepicker-toggle matPrefix [for]="pickerStart"></mat-datepicker-toggle>
                             <mat-datepicker #pickerStart></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div class="col-6">
                         <mat-form-field>
-                            <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"
+                            <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate" required
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
                                    [matDatepicker]="pickerEnd" placeholder="Grant End Date" readonly>
                             <mat-datepicker-toggle matPrefix [for]="pickerEnd"></mat-datepicker-toggle>
@@ -348,7 +340,7 @@
                     <div class="col-6">
                         <mat-form-field>
                             <mat-select placeholder="Grant Receiver" matInput [value]="currentGrant.organization.id"
-                                        (selectionChange)="setNewOrg($event)">
+                                        (selectionChange)="setNewOrg($event)" required>
                                 <mat-option *ngFor="let org of appComp.appConfig.granteeOrgs" [value]="org.id"
                                             (select)="org.id===currentGrant.organization.id">{{org.name}}</mat-option>
                             </mat-select>
@@ -369,7 +361,7 @@
                                         <a class="mr-2 text-gray"
                                            (click)="confirm(section.id,0,[],'section','section')"><i
                                                 class="fa fa-edit"></i></a>
-                                        <a class="mr-2 text-gray"
+                                        <a class="mr-2 text-gray" *ngIf="section.deletable"
                                            (click)="confirm(section.id,0,[],'section','section')"><i
                                                 class="fa fa-trash"></i></a>
                                         <a (click)="addNewFieldToSection(section.id,section.sectionName)"
@@ -382,7 +374,8 @@
                                             <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
                                                 <div class="col-sm-4 col-lg-4">
                                                     <mat-form-field>
-                                                        <input [(ngModel)]="attribute.fieldName"
+
+                                                        <input [(ngModel)]="attribute.fieldName" required
                                                                [ngModelOptions]="{standAlone:true}"
                                                                (ngModelChange)="checkGrant()"
                                                                matInput placeholder="Field Name">
@@ -405,14 +398,14 @@
                                                 </div>
                                                 <div class="col-sm-3 col-lg-3 text-left">
                                                     <mat-form-field>
-                                                        <input matInput [(ngModel)]="attribute.fieldValue"
-                                                               [ngModelOptions]="{standAlone:true}"
+                                                        <input matInput [(ngModel)]="attribute.fieldValue" [required]="attribute.deletable?'required':''"
+                                                               [ngModelOptions]="{standAlone:true}" placeholder="Field Value"
                                                                (ngModelChange)="checkGrant()">
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-sm-1 col-lg-1"
                                                      style="display: flex;align-items: center;">
-                                                    <mat-icon
+                                                    <mat-icon *ngIf="attribute.deletable"
                                                             (click)="confirm(section.id,attribute.id,[],'field','field')"
                                                             aria-hidden="false"
                                                             aria-label="Example home icon" inline="true">
@@ -504,15 +497,15 @@
                                                     <input matInput class="text-center" [(ngModel)]="submission.title"
                                                            [ngModelOptions]="{standAlone:true}"
                                                            (ngModelChange)="checkGrant()"
-                                                           placeholder="Submission Title">
-                                                </mat-form-field>
+                                                           placeholder="Submission Title" required>
+                                                    </mat-form-field>
                                                 <mat-form-field *ngIf="submission.id<0" matBadge="N"
                                                                 matBadgePosition="above after" matBadgeColor="accent"
                                                                 class="text-center">
                                                     <input matInput class="text-center" [(ngModel)]="submission.title"
                                                            [ngModelOptions]="{standAlone:true}"
                                                            (ngModelChange)="checkGrant()"
-                                                           placeholder="Submission Title">
+                                                           placeholder="Submission Title" required>
                                                 </mat-form-field>
                                                 <mat-form-field class="text-center">
                                                     <input matInput [matDatepicker]="pickerSubmitBy"
@@ -554,8 +547,10 @@
                                     </mat-icon>
                                 </div>
                                 <div class="col-sm-11">
+                                    <mat-form-field>
                                     <input matInput [(ngModel)]="kpi.title" ngModelOptions="{standAlone:true}"
-                                           (ngModelChange)="checkGrant()">
+                                           (ngModelChange)="checkGrant()" required placeholder="KPI Title">
+                                    </mat-form-field>
                                     <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length === 0"
                                             (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,true)">
                                         Attach template
@@ -737,8 +732,8 @@
         </div>
 
 
-    </mat-sidenav-content>
-</mat-sidenav-container>
+    </div>
+</div>
 
 <div #editFieldModal class="modal fade" id="editFieldModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
