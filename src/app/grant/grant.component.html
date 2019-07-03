@@ -3,9 +3,9 @@
         <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
             <div class="fixed-bottom"
                  style="right: 20px; left: auto;z-index: 4;display: flex;align-items: flex-end;flex-direction: column;justify-content: right;">
-                <button #saveGrantButton (click)="saveGrant()" *ngIf="editMode" class="btn btn-sm btn-info">
+                <!--<button #saveGrantButton (click)="saveGrant()" *ngIf="editMode" class="btn btn-sm btn-info">
                     <i class="fa fa-save mr-2"></i>Save Changes
-                </button>
+                </button>-->
 
                 <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE') && currentGrant.submissions.length>0"
                         #addKpiButton

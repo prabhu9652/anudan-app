@@ -27,7 +27,13 @@ import {
     MatCheckboxModule,
     MatCardModule,
     MatBottomSheetModule,
-    MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule, MatRadioModule, MatTableModule
+    MatListModule,
+    MatBadgeModule,
+    MatChipsModule,
+    MatSidenavModule,
+    MatRadioModule,
+    MatTableModule,
+    MatProgressSpinnerModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
@@ -59,7 +65,8 @@ import {WorkflowManagementComponent} from "../../workflow-management/workflow-ma
         MatChipsModule,
         MatSidenavModule,
         MatRadioModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressSpinnerModule
     ],
     declarations: [
         GrantComponent,

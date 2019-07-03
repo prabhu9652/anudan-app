@@ -104,11 +104,17 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     ngOnInit() {
 
-        /*interval(30000).subscribe(t=>{
+        interval(3000).subscribe(t => {
 
-            this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-            this.saveGrant();
-        });*/
+            console.log('Came here');
+            if (this.editMode) {
+                this.appComp.autosave = true;
+                this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+                this.saveGrant();
+            } else {
+                this.appComp.autosave = false;
+            }
+        });
 
         this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
         this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -196,7 +202,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
 
-    confirm(sectionId: number, attributeId: number, submissios: Submission[],kpiId: number, func: string, title: string) {
+    confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
             data: title
@@ -236,28 +242,28 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     deleteKpi(kpiId: number) {
-        for(const kpi of this.currentGrant.kpis){
-            if(kpi.id === kpiId) {
+        for (const kpi of this.currentGrant.kpis) {
+            if (kpi.id === kpiId) {
                 const index = this.currentGrant.kpis.findIndex(k => k.id === kpiId);
                 this.currentGrant.kpis.splice(index, 1);
             }
         }
 
-        for(const sub of this.currentGrant.submissions){
-            for(const kpiData of sub.quantitiaveKpisubmissions) {
-                if(kpiData.grantKpi.id === kpiId) {
+        for (const sub of this.currentGrant.submissions) {
+            for (const kpiData of sub.quantitiaveKpisubmissions) {
+                if (kpiData.grantKpi.id === kpiId) {
                     const index = sub.quantitiaveKpisubmissions.findIndex(k => k.grantKpi.id === kpiId);
                     sub.quantitiaveKpisubmissions.splice(index, 1);
                 }
             }
-            for(const kpiData of sub.qualitativeKpiSubmissions) {
-                if(kpiData.grantKpi.id === kpiId) {
+            for (const kpiData of sub.qualitativeKpiSubmissions) {
+                if (kpiData.grantKpi.id === kpiId) {
                     const index = sub.qualitativeKpiSubmissions.findIndex(k => k.grantKpi.id === kpiId);
                     sub.qualitativeKpiSubmissions.splice(index, 1);
                 }
             }
-            for(const kpiData of sub.documentKpiSubmissions) {
-                if(kpiData.grantKpi.id === kpiId) {
+            for (const kpiData of sub.documentKpiSubmissions) {
+                if (kpiData.grantKpi.id === kpiId) {
                     const index = sub.documentKpiSubmissions.findIndex(k => k.grantKpi.id === kpiId);
                     sub.qualitativeKpiSubmissions.splice(index, 1);
                 }
@@ -328,11 +334,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     saveGrant() {
 
-        const errors = this.validateFields();
+        /*const errors = this.validateFields();
         if (errors) {
-            this.toastr.error($(this.erroredElement).attr('placeholder')+' is required', 'Missing entries');
+            this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
             $(this.erroredElement).focus();
-        } else {
+        } else {*/
             const httpOptions = {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
@@ -343,7 +349,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
                     this.currentGrant = grant;
@@ -351,6 +357,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
                     this.checkCurrentSubmission();
+                    this.appComp.autosave = false;
                 },
                 error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -359,7 +366,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                         enableHtml: true
                     });
                 });
-        }
+        // }
     }
 
     private validateFields() {
@@ -721,9 +728,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     private _setEditMode(state: boolean) {
         this.editMode = state;
         if (state) {
-            $(this.actionBlock.nativeElement).css('display', 'none');
+            $(this.actionBlock.nativeElement).prop('disabled',true);
         } else {
-            $(this.actionBlock.nativeElement).css('display', 'block');
+            $(this.actionBlock.nativeElement).prop('disabled',false);
         }
     }
 
@@ -1065,7 +1072,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 this.toastr.info('Quarterly Submissions added', 'Submission Periods Added');
                 break;
             case '3':
-                this.confirm(0, 0, [],0, 'clearSubmissions', ' all Submissions')
+                this.confirm(0, 0, [], 0, 'clearSubmissions', ' all Submissions')
                 break;
         }
 

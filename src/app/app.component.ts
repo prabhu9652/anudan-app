@@ -5,6 +5,7 @@ import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus} from "./model/dahsboard";
+import {Time} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements AfterViewChecked{
 
   title = 'anudan.org';
   loggedInUser: User;
+  autosave: boolean = false;
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
