@@ -12,7 +12,7 @@ import {IconsComponent} from '../../icons/icons.component';
 import {MapsComponent} from '../../maps/maps.component';
 import {NotificationsComponent} from '../../notifications/notifications.component';
 import {UpgradeComponent} from '../../upgrade/upgrade.component';
-
+import {NgxGraphModule} from '@swimlane/ngx-graph';
 import {
     MatButtonModule,
     MatInputModule,
@@ -38,8 +38,8 @@ import {
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
-import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/bottomsheetNotes.component";
-import {WorkflowManagementComponent} from "../../workflow-management/workflow-management.component";
+import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 
 
 @NgModule({
@@ -66,7 +66,8 @@ import {WorkflowManagementComponent} from "../../workflow-management/workflow-ma
         MatSidenavModule,
         MatRadioModule,
         MatTableModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        NgxGraphModule
     ],
     declarations: [
         GrantComponent,
