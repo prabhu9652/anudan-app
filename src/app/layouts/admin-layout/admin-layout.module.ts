@@ -40,6 +40,8 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
+import {GrantsComponent} from '../../grants/grants.component';
+import {BasicComponent} from '../../grant/basic/basic.component';
 
 
 @NgModule({
@@ -72,6 +74,8 @@ import {WorkflowManagementComponent} from '../../workflow-management/workflow-ma
     declarations: [
         GrantComponent,
         DashboardComponent,
+        GrantsComponent,
+        BasicComponent,
         UserProfileComponent,
         TableListComponent,
         TypographyComponent,

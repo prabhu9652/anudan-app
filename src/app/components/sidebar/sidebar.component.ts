@@ -10,7 +10,7 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Home',  icon: 'dashboard', class: '' }/*,
+  { path: '/grants', title: 'Grants',  icon: 'dashboard', class: '' }/*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
   { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
@@ -18,6 +18,12 @@ export const ROUTES: RouteInfo[] = [
   { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
   { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
   { path: '/upgrade', title: 'Upgrade to PRO',  icon:'unarchive', class: 'active-pro' },*/
+];
+
+export const GRANT_ROUTES: RouteInfo[] = [
+    { path: '/grant/basic-details', title: 'Basic Details',  icon: 'dashboard', class: '' },
+    { path: '/section', title: 'Grant Sections',  icon: 'dashboard', class: '' },
+    { path: '/reporting', title: 'Reporting',  icon: 'dashboard', class: '' }
 ];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
@@ -31,12 +37,14 @@ export const ADMIN_ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  grantMenuItems: any[];
   adminMenuItems: any[];
 
   constructor(public appComponent: AppComponent, private router: Router) {}
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
   }
   isMobileMenu() {
