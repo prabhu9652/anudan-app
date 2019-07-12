@@ -22,8 +22,9 @@ export const ROUTES: RouteInfo[] = [
 
 export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/basic-details', title: 'Basic Details',  icon: 'dashboard', class: '' },
-    { path: '/section', title: 'Grant Sections',  icon: 'dashboard', class: '' },
-    { path: '/reporting', title: 'Reporting',  icon: 'dashboard', class: '' }
+    { path: '/grant/sections', title: 'Sections',  icon: 'dashboard', class: '' },
+    { path: '/grant/reporting', title: 'Reporting',  icon: 'dashboard', class: '' },
+    { path: '/preview', title: 'Preview & Submit',  icon: 'dashboard', class: '' }
 ];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
