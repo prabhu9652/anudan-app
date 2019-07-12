@@ -949,10 +949,10 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     private _adjustHeights() {
-        for (const elem of $('[data-id]')) {
+        /*for (const elem of $('[data-id]')) {
             $(elem).css('height', $('#kpi_title_' + $(elem).attr('data-id')).outerHeight() + 'px');
             // console.log($(elem).css('height'));
-        }
+        }*/
     }
 
     private _setFlowButtonColors() {
