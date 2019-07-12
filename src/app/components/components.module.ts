@@ -6,12 +6,14 @@ import {FooterComponent} from './footer/footer.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
+import {MatProgressSpinnerModule} from "@angular/material";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatProgressSpinnerModule
+    ],
   declarations: [
     FooterComponent,
     NavbarComponent,

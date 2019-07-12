@@ -157,3 +157,16 @@ mat-sidenav {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.anu-input{
+  border: 1px solid #d4d4d4 !important;
+  border-radius: 4px !important;
+  line-height: 165% !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  display: none !important;
+}

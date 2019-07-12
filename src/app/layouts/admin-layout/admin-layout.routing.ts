@@ -10,6 +10,8 @@ import {NotificationsComponent} from '../../notifications/notifications.componen
 import {UpgradeComponent} from '../../upgrade/upgrade.component';
 import {GrantComponent} from '../../grant/grant.component';
 import {WorkflowManagementComponent} from "../../workflow-management/workflow-management.component";
+import {GrantsComponent} from '../../grants/grants.component';
+import {BasicComponent} from '../../grant/basic/basic.component';
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -55,7 +57,9 @@ export const AdminLayoutRoutes: Routes = [
   //     }]
   // }
   {path: 'dashboard', component: DashboardComponent},
-  {path: 'grant', component: GrantComponent},
+  {path: 'grants', component: GrantsComponent},
+  {path: 'grant/basic-details', component: BasicComponent},
+  {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},
   {path: 'typography', component: TypographyComponent},

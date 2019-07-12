@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {WorkflowTransition} from "../model/workflow-transition";
+import {WorkflowLinks, WorkflowNode} from '../model/graph';
 
 @Component({
     selector: 'app-workflow-management',
@@ -10,6 +11,8 @@ import {WorkflowTransition} from "../model/workflow-transition";
 export class WorkflowManagementComponent implements OnInit {
 
     transitions: WorkflowTransition[];
+    nodes: WorkflowNode[];
+    links: WorkflowLinks[];
 
     constructor(
         private http: HttpClient
@@ -19,6 +22,8 @@ export class WorkflowManagementComponent implements OnInit {
     ngOnInit() {
 
         this.getWorkflows();
+        this.nodes = new Array<WorkflowNode>();
+        this.links = new Array<WorkflowLinks>();
     }
 
     private getWorkflows() {
@@ -30,11 +35,29 @@ export class WorkflowManagementComponent implements OnInit {
                 'Authorization': localStorage.getItem('AUTH_TOKEN')
             })
         };
-        let url = '/api/admin/workflow/grant';
+        const url = '/api/admin/workflow/grant';
 
-        this.http.get<WorkflowTransition>(url, httpOptions).subscribe((transitions: any) => {
+        this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
             this.transitions = transitions;
-            console.log(this.transitions);
+            const localNodes = new Array<WorkflowNode>();
+            const localLinks = new Array<WorkflowLinks>();
+            for (const transition of transitions) {
+                let index = localNodes.findIndex(trans => trans.id === String(transition.fromStateId));
+                if (index === -1) {
+                    localNodes.push(new WorkflowNode(String(transition.fromStateId), transition._from));
+                }
+                index = localNodes.findIndex(trans => trans.id === String(transition.toStateId));
+                if (index === -1) {
+                    localNodes.push(new WorkflowNode(String(transition.toStateId), transition._to));
+                }
+
+                localLinks.push(new WorkflowLinks('', String(transition.fromStateId), String(transition.toStateId), transition.action + '^' + transition._performedby))
+
+            }
+
+            this.nodes = localNodes;
+            this.links = localLinks;
+            console.log(JSON.stringify(this.nodes));
         });
     }
 

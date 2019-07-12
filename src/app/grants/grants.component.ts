@@ -12,11 +12,11 @@ import {GrantComponent} from "../grant/grant.component";
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  templateUrl: './grants.component.html',
+  styleUrls: ['./grants.component.css'],
   providers: [GrantComponent]
 })
-export class DashboardComponent implements OnInit {
+export class GrantsComponent implements OnInit {
 
   user: User;
   tenants: Tenants;
@@ -91,6 +91,7 @@ export class DashboardComponent implements OnInit {
 
   manageGrant(grant: Grant) {
     this.data.changeMessage(grant);
-    this.router.navigate(['grant']);
+    this.router.navigate(['grant/basic-details']);
+    this.appComponent.currentView = 'grant';
   }
 }

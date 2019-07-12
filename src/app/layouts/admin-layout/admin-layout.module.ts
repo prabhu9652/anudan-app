@@ -12,7 +12,7 @@ import {IconsComponent} from '../../icons/icons.component';
 import {MapsComponent} from '../../maps/maps.component';
 import {NotificationsComponent} from '../../notifications/notifications.component';
 import {UpgradeComponent} from '../../upgrade/upgrade.component';
-
+import {NgxGraphModule} from '@swimlane/ngx-graph';
 import {
     MatButtonModule,
     MatInputModule,
@@ -27,13 +27,21 @@ import {
     MatCheckboxModule,
     MatCardModule,
     MatBottomSheetModule,
-    MatListModule, MatBadgeModule, MatChipsModule, MatSidenavModule, MatRadioModule, MatTableModule
+    MatListModule,
+    MatBadgeModule,
+    MatChipsModule,
+    MatSidenavModule,
+    MatRadioModule,
+    MatTableModule,
+    MatProgressSpinnerModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
-import {BottomsheetNotesComponent} from "../../components/bottomsheetNotes/bottomsheetNotes.component";
-import {WorkflowManagementComponent} from "../../workflow-management/workflow-management.component";
+import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
+import {GrantsComponent} from '../../grants/grants.component';
+import {BasicComponent} from '../../grant/basic/basic.component';
 
 
 @NgModule({
@@ -59,11 +67,15 @@ import {WorkflowManagementComponent} from "../../workflow-management/workflow-ma
         MatChipsModule,
         MatSidenavModule,
         MatRadioModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressSpinnerModule,
+        NgxGraphModule
     ],
     declarations: [
         GrantComponent,
         DashboardComponent,
+        GrantsComponent,
+        BasicComponent,
         UserProfileComponent,
         TableListComponent,
         TypographyComponent,

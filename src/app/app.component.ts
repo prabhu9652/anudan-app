@@ -5,6 +5,7 @@ import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus} from "./model/dahsboard";
+import {Time} from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,9 @@ export class AppComponent implements AfterViewChecked{
 
   title = 'anudan.org';
   loggedInUser: User;
+  autosave: boolean = false;
+  currentView = 'grants';
+
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -42,7 +46,7 @@ export class AppComponent implements AfterViewChecked{
     this.initAppUI();
     const isLocal = this.isLocalhost();
     if ( this.loggedIn ) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/grants']);
     } else {
       this.router.navigate(['/']);
     }
@@ -120,7 +124,7 @@ export class AppComponent implements AfterViewChecked{
   }
 
   goToHome() {
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['grants']);
   }
 
   goToGrantSummary() {

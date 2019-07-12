@@ -1,9 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-transparent  navbar-fixed fixed-top p-0">
     <div class="container-fluid" [style.background-color]="navColor" [style.color]="navTextColor">
         <div class="navbar-wrapper">
-          <img  class="p-2" style="width: 70%;" [src]="logoUrl" alt="logo">
+            <img class="p-2" style="width: 70%;" [src]="logoUrl" alt="logo">
         </div>
-        <button *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')" class="btn btn-sm btn-primary float-right" style="position: absolute;right: 10%;" (click)="grantComponent.createGrant()">Create Grant</button>
+        <ng-container *ngIf="appComponent.autosave">
+            <div class="row">
+                <div class="col-1">
+                    <mat-spinner color="accent" diameter="20" [strokeWidth]="5" aria-label="Autosaving"></mat-spinner>
+                </div>
+                <div class="col-1">Saving...</div>
+            </div>
+        </ng-container>
         <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -30,7 +37,8 @@
                     </a>
                 </li>-->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
                         <small><i class="material-icons">notifications</i></small>
                         <small><span class="notification">5</span></small>
                         <p>
@@ -49,7 +57,8 @@
                     <b>{{user.lastName}}, {{user.firstName}}</b>
                 </li>
 
-                <li *ngIf="user"><a class="btn btn-sm btn-default text-white" (click)="appComponent.logout()" title="Logout"><i class="fa fa-sign-out text-white"></i>Logout</a></li>
+                <li *ngIf="user"><a class="btn btn-sm btn-default text-white" (click)="appComponent.logout()"
+                                    title="Logout"><i class="fa fa-sign-out text-white"></i>Logout</a></li>
             </ul>
         </div>
     </div>

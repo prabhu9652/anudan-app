@@ -1,20 +1,20 @@
 <div class="container text-left mt-5 px-5 py-5">
-    <div class="col-sm-12 col-lg-6">
+    <div class="col-sm-12 col-lg-12">
         <ng-container *ngFor="let transition of transitions">
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <mat-select [(ngModel)]="transition.fromStateId" placeholder="Grant From">
                         <mat-option *ngFor="let entry of transitions" [value]="entry.fromStateId">
                             {{entry._from}}
                         </mat-option>
                     </mat-select>
                 </div>
-                <div class="col-1">
+                <div class="col-3">
                     <mat-form-field>
                         <input matInput [(ngModel)]="transition.action" placeholder="Action Name">
                     </mat-form-field>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <mat-select [(ngModel)]="transition._to" placeholder="Grant To">
                         <mat-option *ngFor="let entry of transitions" [value]="entry._to">
                             {{entry._to}}
@@ -31,5 +31,74 @@
             </div>
         </ng-container>
     </div>
-    <div class="col-sm-12 col-lg-6"></div>
+    <div class="col-sm-12 col-lg-12" style="min-height: 500px;">
+        <ngx-graph
+                class="chart-container"
+
+                [enableZoom]="false"
+                [links]="links"
+                [nodes]='nodes'>
+            <ng-template #defsTemplate>
+                <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+                    <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+                </svg:marker>
+            </ng-template>
+
+            <ng-template #clusterTemplate let-cluster>
+                <svg:g
+                        class="node cluster"
+                        ngx-tooltip
+                        [tooltipPlacement]="'top'"
+                        [tooltipType]="'tooltip'"
+                        [tooltipTitle]="cluster.label"
+                >
+                    <svg:rect
+                            rx="5"
+                            ry="5"
+                            [attr.width]="cluster.dimension.width"
+                            [attr.height]="cluster.dimension.height"
+                            [attr.fill]="cluster.data.color"
+                    />
+                </svg:g>
+            </ng-template>
+
+            <ng-template #nodeTemplate let-node>
+                <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
+                    <svg:rect
+                            [attr.width]="node.dimension.width"
+                            [attr.height]="node.dimension.height"
+                            [attr.fill]="node.data.color"
+                            rx="10" ry="10"
+                    />
+                    <svg:text alignment-baseline="central" [attr.fill]="white" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+                        {{node.label}}
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+
+            <ng-template #linkTemplate let-link>
+                <svg:g class="edge">
+                    <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+                    <svg:text class="edge-label" text-anchor="middle" dy="-1.4em">
+                        <textPath
+                                class="text-path"
+                                [attr.href]="'#' + link.id"
+                                [style.dominant-baseline]="link.dominantBaseline"
+                                startOffset="50%">
+                            {{link.label.split('^')[0]}}
+                        </textPath>
+                    </svg:text>
+                    <svg:text class="edge-label"  text-anchor="middle" dy="1.4em">
+                        <textPath
+                                class="text-path"
+                                [attr.href]="'#' + link.id"
+                                [style.dominant-baseline]="link.dominantBaseline"
+                                startOffset="50%">
+                            {{link.label.split('^')[1]}}
+                        </textPath>
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+        </ngx-graph>
+    </div>
 </div>

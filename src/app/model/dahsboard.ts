@@ -154,6 +154,7 @@ export class Submission {
   flowAuthorities: FlowAuthority[];
   actionAuthorities: ActionAuthorities;
   submissionNotes: Note[];
+  openForReporting: boolean;
 
   getQuantitativeKpiById(id: number) {
     for (const q of this.quantitiaveKpisubmissions) {
@@ -174,12 +175,15 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   fieldValue: string;
+  deletable: boolean;
+  required: boolean;
 }
 
 export class Section {
   id: number;
   sectionName: string;
   attributes: Attribute[];
+  deletable: boolean;
 }
 
 export class GrantDetails {
