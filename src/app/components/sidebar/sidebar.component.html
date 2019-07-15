@@ -1,5 +1,5 @@
-<div class="sidebar-wrapper">
-    <ul class="nav">
+<div class="sidebar-wrapper h-100">
+    <ul class="nav h-100">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item bg-info">
             <a class="nav-link" (click)="showProfile()">
                 <i class="material-icons text-white">person</i>
@@ -13,7 +13,7 @@
         </li>
         <ng-container *ngIf="appComponent.currentView === 'grants'">
         <li routerLinkActive="active" *ngFor="let menuItem of menuItems"
-            class="{{menuItem.class}} nav-item">
+            class="{{menuItem.class}} nav-item text-left">
             <a class="nav-link" [routerLink]="[menuItem.path]">
                 <i class="material-icons">{{menuItem.icon}}</i>
                 <p>{{menuItem.title}}</p>
@@ -23,7 +23,7 @@
 
         <ng-container *ngIf="appComponent.currentView === 'grant'">
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
-                class="{{menuItem.class}} nav-item">
+                class="{{menuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
                     <i class="material-icons">{{menuItem.icon}}</i>
                     <p>{{menuItem.title}}</p>
@@ -45,8 +45,8 @@
             </a>
         </li>-->
 
-        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()">
-            <a class="nav-link" (click)="appComponent.logout()">
+        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="position: absolute;bottom: 10px;">
+            <a class="nav-link text-left" (click)="appComponent.logout()">
                 <i class="material-icons">exit_to_app</i>
                 <p>Logout</p>
             </a>
