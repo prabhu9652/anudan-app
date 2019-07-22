@@ -27,11 +27,11 @@ import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttac
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 
 @Component({
-  selector: 'app-reporting',
-  templateUrl: './reporting.component.html',
-  styleUrls: ['./reporting.component.scss']
+  selector: 'app-preview',
+  templateUrl: './preview.component.html',
+  styleUrls: ['./preview.component.scss']
 })
-export class ReportingComponent implements OnInit {
+export class PreviewComponent implements OnInit {
 
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
@@ -82,7 +82,7 @@ export class ReportingComponent implements OnInit {
 
   ngOnInit() {
 
-    /*interval(3000).subscribe(t => {
+    interval(3000).subscribe(t => {
 
       console.log('Came here');
       if (this.editMode) {
@@ -92,7 +92,7 @@ export class ReportingComponent implements OnInit {
       } else {
         this.appComp.autosave = false;
       }
-    });*/
+    });
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -705,11 +705,11 @@ export class ReportingComponent implements OnInit {
 
   private _setEditMode(state: boolean) {
     this.editMode = state;
-    /*if (state) {
+    if (state) {
       $(this.actionBlock.nativeElement).prop('disabled',true);
     } else {
       $(this.actionBlock.nativeElement).prop('disabled',false);
-    }*/
+    }
   }
 
   scrollHeaderContent(event: Event) {
@@ -1112,4 +1112,5 @@ export class ReportingComponent implements OnInit {
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
+
 }

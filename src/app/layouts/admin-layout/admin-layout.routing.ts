@@ -14,6 +14,7 @@ import {GrantsComponent} from '../../grants/grants.component';
 import {BasicComponent} from '../../grant/basic/basic.component';
 import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
+import {PreviewComponent} from '../../grant/preview/preview.component';
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -63,6 +64,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'grant/basic-details', component: BasicComponent},
   {path: 'grant/sections', component: SectionsComponent},
   {path: 'grant/reporting', component: ReportingComponent},
+  {path: 'grant/preview', component: PreviewComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

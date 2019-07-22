@@ -81,7 +81,7 @@ export class BasicComponent implements OnInit {
 
   ngOnInit() {
 
-    interval(3000).subscribe(t => {
+    /*interval(3000).subscribe(t => {
 
       console.log('Came here');
       if (this.editMode) {
@@ -91,7 +91,7 @@ export class BasicComponent implements OnInit {
       } else {
         this.appComp.autosave = false;
       }
-    });
+    });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
