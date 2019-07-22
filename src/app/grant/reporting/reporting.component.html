@@ -1,13 +1,24 @@
 <div class="row anu-container">
-  <div class="col-8">
-  <h3 class="ml-5 mt-4">Reporting & KPIs</h3>
-  </div>
-  <div class="col-3">
-    <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE') && currentGrant.submissions.length>0"
-            #addKpiButton
-            (click)="addNewKpi()" class="btn btn-sm btn-danger">
-      <i class="fa fa-save mr-2"></i>Add KPI
-    </button>
+
+  <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
+    <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
+    <hr/>
+    <div class="row">
+      <h4 class="col-7 text-left pl-5 ml-3 my-3">Reporting & KPIs</h4>
+      <div class="col-2 text-right">
+        <a mat-stroked-button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE') && currentGrant.submissions.length>0"
+                #addKpiButton (click)="addNewKpi()" >
+          <mat-icon>add_box</mat-icon>Add New KPI
+        </a>
+      </div>
+      <div class="col-2 text-right">
+        <mat-select placeholder="Actions" (selectionChange)="performAction($event)" class="anu-input" style="height:36px;">
+          <mat-option value="1">Add Single Submission Period</mat-option>
+          <mat-option value="2">Add Quarterly Submissions</mat-option>
+          <mat-option value="3">Clear All Submissions</mat-option>
+        </mat-select>
+      </div>
+    </div>
   </div>
   <div class="col-lg-12">
     <div #container class="container text-left mt-2 px-5 py-2" (scroll)="rememberScrollPosition($event)">
@@ -223,18 +234,12 @@
       <!--MANAGEMENT SECTION-->
       <div *ngIf="canManage">
         <div class="row">
-          <div class="col-sm-12 col-lg-pull-12 text-right">
-            <mat-select placeholder="Actions" (selectionChange)="performAction($event)" class="anu-input">
-              <mat-option value="1">Add Single Submission Period</mat-option>
-              <mat-option value="2">Add Quarterly Submissions</mat-option>
-              <mat-option value="3">Clear All Submissions</mat-option>
-            </mat-select>
-          </div>
+
         </div>
 
         <mat-divider></mat-divider>
         <div class="row pt-3 submissions-block"
-             style="background-color:#f9f9f9;position: sticky;top: 0px;overflow-x: auto;z-index: 3;"
+             style="background-color:#f9f9f9;position: sticky;top: 130px;overflow-x: auto;z-index: 3;"
              (scroll)="scrollHeaderContent($event)">
           <div class="col-sm-12 col-lg-5"
                style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">

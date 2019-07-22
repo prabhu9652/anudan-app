@@ -12,26 +12,26 @@
 
         <div class="row">
           <div class="col-12 mb-2">
-              <b>Grant Name:</b>
-            <div class="ml-1" type="text" autocomplete="off" >{{currentGrant.name}}</div>
+              Grant Name:
+            <div class="ml-1" type="text" autocomplete="off" ><b>{{currentGrant.name}}</b></div>
           </div>
           <div class="col-12 mb-2">
-            <b>Description:</b>
-              <div class="ml-1">{{currentGrant.description}}</div>
+            Description:
+              <div class="ml-1"><b>{{currentGrant.description}}</b></div>
           </div>
           <div class="col-6 mb-2">
-            <b>Start Date:</b>
-            <div class="ml-1">{{currentGrant.stDate}}</div>
+            Start Date:
+            <div class="ml-1"><b>{{currentGrant.stDate}}</b></div>
 
           </div>
           <div class="col-6 mb-2">
-            <b>End Date:</b>
-            <div class="ml-1">{{currentGrant.enDate}}</div>
+            End Date:
+            <div class="ml-1"><b>{{currentGrant.enDate}}</b></div>
 
           </div>
           <div class="col-12 mb-2">
-            <b>Grantee Organization:</b>
-            <div class="ml-1">{{currentGrant.organization.name}}</div>
+            Grantee Organization:
+            <div class="ml-1"><b>{{currentGrant.organization.name}}</b></div>
           </div>
           <div class="col-12">
 
@@ -47,8 +47,8 @@
                       <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
 
                         <div class="col-sm-12 col-lg-12 text-left">
-                          <b>{{attribute.fieldName}}</b>
-                            <div class="mt-1">{{attribute.fieldValue}}</div>
+                          {{attribute.fieldName}}
+                            <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
                         </div>
 
                       </ng-container>
@@ -108,7 +108,7 @@
                       <div class="col-sm-12 text-center">
 
                         <b>{{submission.title}}</b>
-                          <div>{{submission.submitBy | date:'yyyy-MM-dd'}}</div>
+                        <div><b>{{submission.submitBy | date:'yyyy-MM-dd'}}</b></div>
 
                       </div>
                     </div>
@@ -140,7 +140,7 @@
                   </mat-icon>
                 </div>
                 <div class="col-sm-12">
-                    <div readonly >{{kpi.title}}</div>
+                  <div readonly ><b>{{kpi.title}}</b></div>
                   <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
                           matBadge="{{kpi.templates.length}}"
                           matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"

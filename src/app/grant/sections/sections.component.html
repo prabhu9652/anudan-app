@@ -1,13 +1,18 @@
 <div class="row anu-container">
 
-  <div class="col-8">
-  <h3 class="ml-5 mt-4">Grant Sections</h3>
+  <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
+    <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
+    <hr/>
+    <div class="row">
+    <h4 class="col-9 text-left pl-5 ml-3 my-3">Grant Sections</h4>
+    <div class="col-2 text-right">
+      <a mat-stroked-button (click)="addNewSection()" >
+        <mat-icon>add_box</mat-icon>Add new Section</a>
+    </div>
+    </div>
   </div>
-  <div class="col-3">
-      <a mat-stroked-button color="accent" (click)="addNewSection()" class="text-secondary"><i
-              class="fa fa-plus-square mr-1"></i>Add
-        new Section</a>
-  </div>
+
+
   <div class="col-lg-12">
     <div #container class="container text-left mt-2 px-5 py-2" (scroll)="rememberScrollPosition($event)">
 
