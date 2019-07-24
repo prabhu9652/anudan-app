@@ -37,6 +37,7 @@
                 <div
                         [ngClass]="['col-12','py-2', 'mb-4','text-center', currentGrant.submissions[x - 1].flowAuthorities || currentGrant.submissions[x - 1].openForReporting? 'bg-primary text-white' : 'bg-light']">
                   <b>{{currentGrant.submissions[x - 1].title}}</b>
+
                 </div>
                 <ng-container
                         *ngFor="let kpiData of currentGrant.submissions[x - 1].quantitiaveKpisubmissions">
