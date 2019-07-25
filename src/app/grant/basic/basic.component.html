@@ -1,6 +1,8 @@
 <div class="row anu-container">
     <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
         <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
+        <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
+        <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
         <hr/>
         <h4 class="col-12 text-left pl-5 ml-3 my-3">Grant Basics</h4>
     </div>
@@ -9,33 +11,22 @@
 
             <div *ngIf="!canManage">
                 <div class="row">
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput readonly placeholder="Grant Name" class="anu-input"
-                                   [ngModel]="currentGrant.name" [ngModelOptions]="{standAlone:true}">
-                        </mat-form-field>
+                    <div class="col-12 mb-4">
+                        <b>Grant Name:</b>
+                        <div>{{currentGrant.name}}</div>
                     </div>
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput readonly placeholder="Grant Description" class="anu-input"
-                                   [ngModel]="currentGrant.description" [ngModelOptions]="{standAlone:true}">
-                        </mat-form-field>
+                    <div class="col-6 mb-4">
+                        <b>Grant Start Date:</b>
+                        <div>{{currentGrant.startDate | date:'dd-MMM-yyyy'}}</div>
                     </div>
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput class="anu-input" readonly
-                                   [ngModel]="currentGrant.startDate | date:'dd-MMM-yyyy'"
-                                   placeholder="Grant Start Date">
-                        </mat-form-field>
+                    <div class="col-6 mb-4">
+                        <b>Grant End Date:</b>
+                        <div>{{currentGrant.endDate | date:'dd-MMM-yyyy'}}</div>
                     </div>
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput readonly class="anu-input"
-                                   [ngModel]="currentGrant.endDate | date:'dd-MMM-yyyy'"
-                                   placeholder="Grant End Date">
-                        </mat-form-field>
+                    <div class="col-12 mb-4">
+                        <b>Grant Description:</b>
+                        <div>{{currentGrant.description}}</div>
                     </div>
-
 
                 </div>
 

@@ -183,3 +183,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-form-field-infix {
   width: 120px !important;
 }
+
+.badge-black{
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: normal;
+}

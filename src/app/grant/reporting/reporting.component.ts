@@ -927,10 +927,13 @@ export class ReportingComponent implements OnInit {
   }
 
   private _adjustHeights() {
-    /*for (const elem of $('[data-id]')) {
-        $(elem).css('height', $('#kpi_title_' + $(elem).attr('data-id')).outerHeight() + 'px');
-        // console.log($(elem).css('height'));
-    }*/
+
+    const elems = $('[id^="kpi_title_"]').toArray();
+    for (const singleElem of elems) {
+      const idVal = $(singleElem).attr('id').split('_')[2];
+        $('[data-id='+idVal+']').height($(singleElem).height()+'px');
+        console.log($('[data-id='+idVal+']').height());
+    }
   }
 
   private _setFlowButtonColors() {

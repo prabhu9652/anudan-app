@@ -82,7 +82,7 @@ export class PreviewComponent implements OnInit {
 
   ngOnInit() {
 
-    interval(3000).subscribe(t => {
+    /*interval(3000).subscribe(t => {
 
       console.log('Came here');
       if (this.editMode) {
@@ -92,7 +92,7 @@ export class PreviewComponent implements OnInit {
       } else {
         this.appComp.autosave = false;
       }
-    });
+    });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -327,7 +327,7 @@ export class PreviewComponent implements OnInit {
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
+    this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
           this.grantData.changeMessage(grant);
           this.currentGrant = grant;
@@ -705,11 +705,11 @@ export class PreviewComponent implements OnInit {
 
   private _setEditMode(state: boolean) {
     this.editMode = state;
-    if (state) {
+    /*if (state) {
       $(this.actionBlock.nativeElement).prop('disabled',true);
     } else {
       $(this.actionBlock.nativeElement).prop('disabled',false);
-    }
+    }*/
   }
 
   scrollHeaderContent(event: Event) {
@@ -1114,4 +1114,8 @@ export class PreviewComponent implements OnInit {
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
 
+
+    saveAsPdf() {
+
+    }
 }

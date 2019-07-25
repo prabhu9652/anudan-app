@@ -12,15 +12,15 @@
          (click)="saveSubmissionAndMove(flow.toStateId)"
          id="{{flow.action}}">{{flow.action}}</a>
     </div>
+    <a mat-button color="warn" (click)="saveAsPdf()"></a>
   </ng-container>
   </div>
-  <div class="col-lg-12">
+  <div class="col-lg-12" id="grantSummary">
     <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
 
-      <span
-              class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
+      <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
       <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
 
       <!--MANAGEMENT SECTION-->
@@ -88,7 +88,7 @@
 
         <mat-divider></mat-divider>
         <div class="row pt-3 submissions-block"
-             style="background-color:#f9f9f9;position: sticky;top: 0px;overflow-x: auto;z-index: 3;"
+             style="background-color:#f9f9f9;overflow-x: auto;z-index: 3;"
              (scroll)="scrollHeaderContent($event)">
           <div class="col-sm-12 col-lg-5"
                style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
@@ -186,7 +186,7 @@
                                   <span>{{kpiData.goal}}</span>
 
 
-                                <p *ngIf="!submission.flowAuthorities">{{kpiData.toReport ? 'Required':'Not required'}}</p>
+                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
                               </div>
                             </div>
                           </div>
@@ -199,9 +199,10 @@
                           <div class="col-sm-4 col-lg-6"
                                style="border-right: 0.5px solid #d4d4d4;">
                             <div class="row h-100">
-                              <div class="col-sm-6"
+                              <div class="col-sm-12"
                                    style="display: flex;align-items: center;">
-                                <p *ngIf="!submission.flowAuthorities">{{kpiData.toReport ? 'Required':'Not required'}}</p>
+                                <div *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">{{kpiData.actuals}}</div>
+                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
 
                               </div>
                               <div class="col-sm-6">
@@ -219,7 +220,7 @@
                             <div class="row h-100">
                               <div class="col-sm-6"
                                    style="display: flex;align-items: center;">
-                                <p *ngIf="!submission.flowAuthorities">{{kpiData.toReport ? 'Required':'Not required'}}</p>
+                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
                               </div>
                               <div class="col-sm-6">
                               </div>
