@@ -1,512 +1,513 @@
 <div class="row anu-container">
-  <div class="w-100" style="position:sticky; top:0;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
-  <ng-container *ngIf="currentGrant.flowAuthorities">
-    <div *ngFor="let flow of currentGrant.flowAuthorities">
-      <a mat-stroked-button (click)="submitGrant(flow.toStateId)"
-         id="{{flow.action}}">{{flow.action}}</a>
+    <div class="w-100" style="position:sticky; top:0;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
+        <ng-container *ngIf="currentGrant.flowAuthorities">
+            <div *ngFor="let flow of currentGrant.flowAuthorities">
+                <a mat-stroked-button (click)="submitGrant(flow.toStateId)"
+                   id="{{flow.action}}">{{flow.action}}</a>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="currentSubmission">
+            <div *ngFor="let flow of currentSubmission.flowAuthorities" style="background:#fff;z-index:1040;">
+                <a name="flowActionBtn" mat-stroked-button
+                   (click)="saveSubmissionAndMove(flow.toStateId)"
+                   id="{{flow.action}}">{{flow.action}}</a>
+            </div>
+        </ng-container>
+        <a mat-flat-button color="primary" (click)="saveAsPdf()"><mat-icon class="text-white ml-1">picture_as_pdf</mat-icon>Export as PDF</a>
     </div>
-  </ng-container>
-  <ng-container *ngIf="currentSubmission">
-    <div *ngFor="let flow of currentSubmission.flowAuthorities" style="background:#fff;z-index:1040;">
-      <a name="flowActionBtn" mat-stroked-button
-         (click)="saveSubmissionAndMove(flow.toStateId)"
-         id="{{flow.action}}">{{flow.action}}</a>
-    </div>
-    <a mat-button color="warn" (click)="saveAsPdf()"></a>
-  </ng-container>
-  </div>
-  <div class="col-lg-12" id="grantSummary">
-    <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
+    <div #grantSummary class="col-lg-12" id="grantSummary">
+        <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
+            <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
+            <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
 
-      <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
-      <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
-
-      <!--MANAGEMENT SECTION-->
+            <!--MANAGEMENT SECTION-->
 
 
-        <div class="row">
-          <div class="col-12 mb-2">
-            <img [src]="appComp.appConfig.logoUrl" alt="logo">
-            <h4 class="ml-1" type="text" autocomplete="off" ><b>{{currentGrant.name}}</b></h4>
-          </div>
-          <div class="col-12 mb-2">
-            Description:
-              <div class="ml-1"><b>{{currentGrant.description}}</b></div>
-          </div>
-          <div class="col-6 mb-2">
-            Start Date:
-            <div class="ml-1"><b>{{currentGrant.stDate}}</b></div>
-
-          </div>
-          <div class="col-6 mb-2">
-            End Date:
-            <div class="ml-1"><b>{{currentGrant.enDate}}</b></div>
-
-          </div>
-          <div class="col-12 mb-2">
-            Grantee Organization:
-            <div class="ml-1"><b>{{currentGrant.organization.name}}</b></div>
-          </div>
-          <div class="col-12">
-
-          <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-            <hr>
-            <h5>
-                    {{section.sectionName.toLocaleUpperCase()}}
-            </h5>
-
-                <div>
-                  <ng-container *ngFor="let attribute of section.attributes">
-                    <div class="row mb-2 mt-2">
-                      <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
-
-                        <div class="col-sm-12 col-lg-12 text-left">
-                          {{attribute.fieldName}}
-                            <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
-                        </div>
-
-                      </ng-container>
-                      <ng-container *ngIf="attribute.fieldType=='document'">
-                        <div class="col-sm-12 col-lg-12">
-                          <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
-                            <b class="">{{attribute.fieldName}}</b>
-                          </a>
-                        </div>
-
-                      </ng-container>
-                    </div>
-                  </ng-container>
+            <div class="row w-100">
+                <div class="col-12 mb-2">
+                    <img [src]="appComp.appConfig.logoUrl" alt="logo"/>
+                    <h4 class="ml-1" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
                 </div>
-          </ng-container>
-          </div>
-        </div>
-        <hr>
+                <div class="col-12 mb-2">
+                    Description:
+                    <div class="ml-1"><b>{{currentGrant.description}}</b></div>
+                </div>
+                <div class="col-6 mb-2">
+                    Start Date:
+                    <div class="ml-1"><b>{{currentGrant.stDate}}</b></div>
+
+                </div>
+                <div class="col-6 mb-2">
+                    End Date:
+                    <div class="ml-1"><b>{{currentGrant.enDate}}</b></div>
+
+                </div>
+                <div class="col-12 mb-2">
+                    Grantee Organization:
+                    <div class="ml-1"><b>{{currentGrant.organization.name}}</b></div>
+                </div>
+                <div class="col-12">
+
+                    <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+                        <hr/>
+                        <h5>
+                            {{section.sectionName.toLocaleUpperCase()}}
+                        </h5>
+
+                        <div>
+                            <div class="row mb-2 mt-2">
+                                <ng-container *ngFor="let attribute of section.attributes">
+
+                                    <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
+
+                                        <div class="col-sm-12 col-lg-6 text-left">
+                                            {{attribute.fieldName}}
+                                            <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
+                                        </div>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldType=='document'">
+                                        <div class="col-sm-12 col-lg-6">
+                                            <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
+                                                <b class="">{{attribute.fieldName}}</b>
+                                            </a>
+                                        </div>
+
+                                    </ng-container>
+
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <hr/>
 
 
-
-        <mat-divider></mat-divider>
-        <div class="row pt-3 submissions-block"
-             style="background-color:#f9f9f9;overflow-x: auto;z-index: 3;"
-             (scroll)="scrollHeaderContent($event)">
-          <div class="col-sm-12 col-lg-5"
-               style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
-            <div class="row">
-              <div class="col-sm-12 text-center">
-                <h3>KPIs</h3>
-              </div>
-              <div class="col-sm-12 text-center">
-                <p>
+            <mat-divider></mat-divider>
+            <div class="row pt-3 submissions-block"
+                 style="background-color:#f9f9f9;overflow-x: auto;z-index: 3;"
+                 (scroll)="scrollHeaderContent($event)">
+                <div class="col-sm-12 col-lg-5"
+                     style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h3>KPIs</h3>
+                        </div>
+                        <div class="col-sm-12 text-center">
+                            <p>
                         <span class="mr-2"><mat-icon inline class="text-primary">
                             local_activity
                         </mat-icon>Activity</span>
-                  <span class="mr-2"><mat-icon inline color="accent">
+                                <span class="mr-2"><mat-icon inline color="accent">
                             money
                         </mat-icon>Financial</span>
-                  <span class="mr-2"><mat-icon inline class="text-info">
+                                <span class="mr-2"><mat-icon inline class="text-info">
                             assignment
                         </mat-icon>Subjective</span>
-                  <span class="mr-2"><mat-icon inline class="text-warning">
+                                <span class="mr-2"><mat-icon inline class="text-warning">
                             insert_drive_file
                         </mat-icon>Document</span>
-                </p>
-              </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-7" style="z-index: 2;">
+                    <div class="container-fluid">
+                        <div class="row flex-row flex-nowrap">
+                            <ng-container *ngFor="let submission of currentGrant.submissions">
+                                <div class="col-sm-4 col-lg-6"
+                                     style="background-color:#f9f9f9; border-right: 0.5px solid #d4d4d4;">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+
+                                            <b>{{submission.title}}</b>
+                                            <div><b>{{submission.submitBy | date:'yyyy-MM-dd'}}</b></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-12 col-lg-7" style="z-index: 2;">
-            <div class="container-fluid">
-              <div class="row flex-row flex-nowrap">
-                <ng-container *ngFor="let submission of currentGrant.submissions">
-                  <div class="col-sm-4 col-lg-6"
-                       style="background-color:#f9f9f9; border-right: 0.5px solid #d4d4d4;">
+            <ng-container *ngIf="currentGrant.kpis.length==0">No KPIs set for this grant</ng-container>
+            <ng-container *ngFor="let kpi of currentGrant.kpis">
+                <div class="row border-bottom kpi-block" style="overflow-x: auto;"
+                     (scroll)="scrollChildContent($event)">
+                    <div class="col-sm-12 col-lg-5 pt-2 bg-white"
+                         style="z-index: 1;position:sticky;left: 0;border-right: 0.5px solid #d4d4d4;border-left: 4px solid #d4d4d4;">
+                        <div class="row">
+                            <div class="col-sm-1" style="display:flex;align-items: center;">
+                                <mat-icon class="text-primary" *ngIf="kpi.kpiReportingType==='ACTIVITY'">
+                                    local_activity
+                                </mat-icon>
+                                <mat-icon color="accent" *ngIf="kpi.kpiReportingType==='FINANCIAL'">
+                                    money
+                                </mat-icon>
+                                <mat-icon class="text-info" *ngIf="kpi.kpiType==='QUALITATIVE'">
+                                    assignment
+                                </mat-icon>
+                                <mat-icon class="text-warning" *ngIf="kpi.kpiType==='DOCUMENT'">
+                                    insert_drive_file
+                                </mat-icon>
+                            </div>
+                            <div class="col-sm-12">
+                                <div readonly><b>{{kpi.title}}</b></div>
+                                <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
+                                        matBadge="{{kpi.templates.length}}"
+                                        matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
+                                        (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,false)">
+                                    View templates
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-7">
+                        <div class="container-fluid" style="height: 100%;">
+                            <div class="row flex-row flex-nowrap" style="height: 100%;">
+                                <ng-container *ngFor="let submission of currentGrant.submissions">
+                                    <ng-container *ngIf="kpi.kpiType === 'QUANTITATIVE'">
+                                        <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
+                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+
+                                                <div class="col-sm-4 col-lg-6"
+                                                     style="height: 100%;border-right: 0.5px solid #d4d4d4;">
+                                                    <div class="row h-100">
+                                                        <div class="col-sm-12"
+                                                             style="display:flex;align-items:center">
+
+                                                            <ng-container
+                                                                    *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">
+                                                                <span>{{kpiData.actuals}} / </span>
+                                                            </ng-container>
+                                                            <span>{{kpiData.goal}}</span>
+
+
+                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="kpi.kpiType === 'QUALITATIVE'">
+                                        <ng-container *ngFor="let kpiData of submission.qualitativeKpiSubmissions">
+                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+                                                <div class="col-sm-4 col-lg-6"
+                                                     style="border-right: 0.5px solid #d4d4d4;">
+                                                    <div class="row h-100">
+                                                        <div class="col-sm-12"
+                                                             style="display: flex;align-items: center;">
+                                                            <div *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">{{kpiData.actuals}}</div>
+                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
+
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="kpi.kpiType === 'DOCUMENT'">
+                                        <ng-container *ngFor="let kpiData of submission.documentKpiSubmissions">
+                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
+                                                <div class="col-sm-4 col-lg-6"
+                                                     style="border-right: 0.5px solid #d4d4d4;">
+                                                    <div class="row h-100">
+                                                        <div class="col-sm-6"
+                                                             style="display: flex;align-items: center;">
+                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!--<div class="accordion" id="accordionExample">
+              <ng-container *ngFor="let submission of currentGrant.submissions">
+                <div class="card mb-0">
+                  <div class="card-header" id="heading_{{submission.id}}">
                     <div class="row">
-                      <div class="col-sm-12 text-center">
+                      <div class="col-sm-9">
+                        <b class="mb-0 submission-header">
 
-                        <b>{{submission.title}}</b>
-                        <div><b>{{submission.submitBy | date:'yyyy-MM-dd'}}</b></div>
-
+                          <div data-toggle="collapse" [attr.data-target]="'#collapse_'+submission.id">
+                            Submission
+                            for {{submission.title}} | Submit By: {{submission.submitBy | date}} |
+                            Status: {{submission.submissionStatus.displayName}}</div>
+                        </b>
+                      </div>
+                      <div class="col-sm-3 text-right">
+                        <button *ngIf="submission.flowAuthorities" class="btn btn-sm btn-primary"
+                                (click)="viewKpisToSubmit(submission.id)">View Submissions
+                        </button>
                       </div>
                     </div>
                   </div>
-                </ng-container>
-              </div>
-            </div>
-          </div>
+                </div>
+                <div id="collapse_{{submission.id}}" class="collapse"
+                     [attr.aria-labelledby]="'heading_'+submission.id"
+                     data-parent="#accordionExample">
+                  <div class="card-body">
+                    <div *ngFor="let quantKpi of submission.quantitiaveKpisubmissions">
+
+                      <div class="row border-bottom">
+                        <div class="col-sm-8 submission-title"><b>{{quantKpi.grantKpi.title}}</b></div>
+                        <div class="col-sm-2 text-center">
+                          <circle-progress
+                              [backgroundStrokeWidth]="5"
+                              [percent]="quantKpi.actuals * 100 / quantKpi.goal"
+                              [backgroundPadding]="0"
+                              [radius]="40"
+                              [space]="-1"
+                              [outerStrokeWidth]="10"
+                              [outerStrokeColor]="'#3de033'"
+                              [outerStrokeLinecap]="'square'"
+                              [innerStrokeColor]="'#828282'"
+                              [titleFontSize]="15"
+                              [animateTitle]=false
+                              [title]="[quantKpi.actuals]"
+                              [animationDuration]="100"
+                              [subtitle]="['-&#45;&#45;',quantKpi.goal]"
+                              [showUnits]=false
+                          ></circle-progress>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngFor="let qualKpi of submission.qualitativeKpiSubmissions">
+                      <div class="row">
+                        <div class="col-sm-12"><b>{{qualKpi.grantKpi.title}}</b></div>
+                        <div class="col-sm-12 mb-5 border-left">{{qualKpi.actuals}}</div>
+                      </div>
+                    </div>
+                    <div *ngFor="let docKpi of submission.documentKpiSubmissions">
+                      <div class="row">
+                        <div class="col-sm-12"><b>{{docKpi.grantKpi.title}}</b></div>
+                        <div class="col-sm-12 mb-5">
+                          <ng-container *ngFor="let doc of docKpi.submissionDocs">
+                            <a target="_blank"
+                               href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file/{{doc.id}}">
+                              <p>
+                                <i *ngIf="doc.fileType==='pdf'"
+                                   class="fa fa-2x fa-file-pdf-o text-rose"></i>
+                                <i *ngIf="doc.fileType==='jpg'" class="fa fa-2x fa-file-image-o"></i>
+                                <i *ngIf="doc.fileType==='jpeg'" class="fa fa-2x fa-file-image-o"></i>
+                                <i *ngIf="doc.fileType==='png'" class="fa fa-2x fa-file-image-o"></i>
+                                <i *ngIf="doc.fileType==='doc'" class="fa fa-2x fa-file"></i>
+                                {{doc.fileName}}
+                              </p>
+                            </a>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>-->
+
         </div>
-        <ng-container *ngIf="currentGrant.kpis.length==0">No KPIs set for this grant</ng-container>
-        <ng-container *ngFor="let kpi of currentGrant.kpis">
-          <div class="row border-bottom kpi-block" style="overflow-x: auto;"
-               (scroll)="scrollChildContent($event)">
-            <div class="col-sm-12 col-lg-5 pt-2 bg-white"
-                 style="z-index: 1;position:sticky;left: 0;border-right: 0.5px solid #d4d4d4;border-left: 4px solid #d4d4d4;">
-              <div class="row">
-                <div class="col-sm-1" style="display:flex;align-items: center;">
-                  <mat-icon class="text-primary" *ngIf="kpi.kpiReportingType==='ACTIVITY'">
-                    local_activity
-                  </mat-icon>
-                  <mat-icon color="accent" *ngIf="kpi.kpiReportingType==='FINANCIAL'">
-                    money
-                  </mat-icon>
-                  <mat-icon class="text-info" *ngIf="kpi.kpiType==='QUALITATIVE'">
-                    assignment
-                  </mat-icon>
-                  <mat-icon class="text-warning" *ngIf="kpi.kpiType==='DOCUMENT'">
-                    insert_drive_file
-                  </mat-icon>
-                </div>
-                <div class="col-sm-12">
-                  <div readonly ><b>{{kpi.title}}</b></div>
-                  <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
-                          matBadge="{{kpi.templates.length}}"
-                          matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
-                          (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,false)">
-                    View templates
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-12 col-lg-7">
-              <div class="container-fluid" style="height: 100%;">
-                <div class="row flex-row flex-nowrap" style="height: 100%;">
-                  <ng-container *ngFor="let submission of currentGrant.submissions">
-                    <ng-container *ngIf="kpi.kpiType === 'QUANTITATIVE'">
-                      <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
-                        <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
 
-                          <div class="col-sm-4 col-lg-6"
-                               style="height: 100%;border-right: 0.5px solid #d4d4d4;">
-                            <div class="row h-100">
-                              <div class="col-sm-12"
-                                   style="display:flex;align-items:center">
-
-                                  <ng-container *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">
-                                    <span>{{kpiData.actuals}} / </span>
-                                  </ng-container>
-                                  <span>{{kpiData.goal}}</span>
-
-
-                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="kpi.kpiType === 'QUALITATIVE'">
-                      <ng-container *ngFor="let kpiData of submission.qualitativeKpiSubmissions">
-                        <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                          <div class="col-sm-4 col-lg-6"
-                               style="border-right: 0.5px solid #d4d4d4;">
-                            <div class="row h-100">
-                              <div class="col-sm-12"
-                                   style="display: flex;align-items: center;">
-                                <div *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">{{kpiData.actuals}}</div>
-                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
-
-                              </div>
-                              <div class="col-sm-6">
-                              </div>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="kpi.kpiType === 'DOCUMENT'">
-                      <ng-container *ngFor="let kpiData of submission.documentKpiSubmissions">
-                        <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                          <div class="col-sm-4 col-lg-6"
-                               style="border-right: 0.5px solid #d4d4d4;">
-                            <div class="row h-100">
-                              <div class="col-sm-6"
-                                   style="display: flex;align-items: center;">
-                                <p *ngIf="canManage">{{kpiData.toReport ? 'Required':'Not required'}}</p>
-                              </div>
-                              <div class="col-sm-6">
-                              </div>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-
-        <!--<div class="accordion" id="accordionExample">
-          <ng-container *ngFor="let submission of currentGrant.submissions">
-            <div class="card mb-0">
-              <div class="card-header" id="heading_{{submission.id}}">
-                <div class="row">
-                  <div class="col-sm-9">
-                    <b class="mb-0 submission-header">
-
-                      <div data-toggle="collapse" [attr.data-target]="'#collapse_'+submission.id">
-                        Submission
-                        for {{submission.title}} | Submit By: {{submission.submitBy | date}} |
-                        Status: {{submission.submissionStatus.displayName}}</div>
-                    </b>
-                  </div>
-                  <div class="col-sm-3 text-right">
-                    <button *ngIf="submission.flowAuthorities" class="btn btn-sm btn-primary"
-                            (click)="viewKpisToSubmit(submission.id)">View Submissions
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="collapse_{{submission.id}}" class="collapse"
-                 [attr.aria-labelledby]="'heading_'+submission.id"
-                 data-parent="#accordionExample">
-              <div class="card-body">
-                <div *ngFor="let quantKpi of submission.quantitiaveKpisubmissions">
-
-                  <div class="row border-bottom">
-                    <div class="col-sm-8 submission-title"><b>{{quantKpi.grantKpi.title}}</b></div>
-                    <div class="col-sm-2 text-center">
-                      <circle-progress
-                          [backgroundStrokeWidth]="5"
-                          [percent]="quantKpi.actuals * 100 / quantKpi.goal"
-                          [backgroundPadding]="0"
-                          [radius]="40"
-                          [space]="-1"
-                          [outerStrokeWidth]="10"
-                          [outerStrokeColor]="'#3de033'"
-                          [outerStrokeLinecap]="'square'"
-                          [innerStrokeColor]="'#828282'"
-                          [titleFontSize]="15"
-                          [animateTitle]=false
-                          [title]="[quantKpi.actuals]"
-                          [animationDuration]="100"
-                          [subtitle]="['-&#45;&#45;',quantKpi.goal]"
-                          [showUnits]=false
-                      ></circle-progress>
-                    </div>
-                  </div>
-                </div>
-                <div *ngFor="let qualKpi of submission.qualitativeKpiSubmissions">
-                  <div class="row">
-                    <div class="col-sm-12"><b>{{qualKpi.grantKpi.title}}</b></div>
-                    <div class="col-sm-12 mb-5 border-left">{{qualKpi.actuals}}</div>
-                  </div>
-                </div>
-                <div *ngFor="let docKpi of submission.documentKpiSubmissions">
-                  <div class="row">
-                    <div class="col-sm-12"><b>{{docKpi.grantKpi.title}}</b></div>
-                    <div class="col-sm-12 mb-5">
-                      <ng-container *ngFor="let doc of docKpi.submissionDocs">
-                        <a target="_blank"
-                           href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file/{{doc.id}}">
-                          <p>
-                            <i *ngIf="doc.fileType==='pdf'"
-                               class="fa fa-2x fa-file-pdf-o text-rose"></i>
-                            <i *ngIf="doc.fileType==='jpg'" class="fa fa-2x fa-file-image-o"></i>
-                            <i *ngIf="doc.fileType==='jpeg'" class="fa fa-2x fa-file-image-o"></i>
-                            <i *ngIf="doc.fileType==='png'" class="fa fa-2x fa-file-image-o"></i>
-                            <i *ngIf="doc.fileType==='doc'" class="fa fa-2x fa-file"></i>
-                            {{doc.fileName}}
-                          </p>
-                        </a>
-                      </ng-container>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-
-        </div>-->
 
     </div>
-
-
-  </div>
 </div>
 
 <div #editFieldModal class="modal fade" id="editFieldModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <input type="text" id="editFieldIdHolder">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editFieldLabel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input id="editFieldInput" class="form-control" value="">
-      </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="saveField()">Okay
-        </button>
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+    <input type="text" id="editFieldIdHolder">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editFieldLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="editFieldInput" class="form-control" value="">
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveField()">Okay
+                </button>
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div #createFieldModal class="modal fade" id="createFieldModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <input type="text" id="sectionIdHolder">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createFieldLabel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Field Name:</label>
-          <input id="fieldTitleInput" class="form-control" value="">
-        </div>
-        <label for="fieldValueInput" class="mat-form-field-label pull-left">Field Type:</label>
-        <select id="fieldValueInput" class="form-control">
-          <option value="string" selected>Text</option>
-          <option value="string">Document</option>
-        </select>
-      </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="addField()">Okay
-        </button>
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+    <input type="text" id="sectionIdHolder">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createFieldLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="fieldTitleInput" class="mat-form-field-label pull-left">Field Name:</label>
+                    <input id="fieldTitleInput" class="form-control" value="">
+                </div>
+                <label for="fieldValueInput" class="mat-form-field-label pull-left">Field Type:</label>
+                <select id="fieldValueInput" class="form-control">
+                    <option value="string" selected>Text</option>
+                    <option value="string">Document</option>
+                </select>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="addField()">Okay
+                </button>
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createSectionLabel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
-          <input id="sectionTitleInput" class="form-control" value="">
-        </div>
-      </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="saveSection()">Done
-        </button>
-        <button type="button" class="btn btn-warning pull-right"
-                (click)="saveSectionAndAddNew()">Save & Add New Section
-        </button>
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSectionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+                    <input id="sectionTitleInput" class="form-control" value="">
+                </div>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveSection()">Done
+                </button>
+                <button type="button" class="btn btn-warning pull-right"
+                        (click)="saveSectionAndAddNew()">Save & Add New Section
+                </button>
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <div #createKpiModal id="createKpiModal" class="modal fade" tabindex="-1"
      role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createReportingPeriodLabel">Add new KPI</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <mat-form-field>
-              <input matInput id="kpiDescription" #kpiDescriptionElem class="form-control"
-                     placeholder="KPI description">
-            </mat-form-field>
-          </div>
-          <div class="col-sm-12 text-left">
-            <div id="reporting-data">Select what you want to be reported for this KPI</div>
-            <mat-radio-group class="reporting-data-radio-group" aria-labelledby="reporting-data"
-                             (change)="setKpiTypeSection($event)">
-              <mat-radio-button checked class="reporting-data-radio-button" value="Quantitative">Numbers
-                and Metrics
-              </mat-radio-button>
-              <mat-radio-button class="reporting-data-radio-button" value="Qualitative">Long Responses
-              </mat-radio-button>
-              <mat-radio-button class="reporting-data-radio-button" value="Document">Document
-                Attachments
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div class="col-sm-12 text-left" *ngIf="currentKPIType==='Quantitative'">
-            <div id="kpi-type">Select the type KPI type</div>
-            <mat-radio-group class="reporting-data-radio-group" aria-labelledby="kpi-type"
-                             (change)="setKpiReportingTypeSection($event)">
-              <mat-radio-button class="reporting-data-radio-button" checked value="activity">Monitoring
-                and Evaluation
-              </mat-radio-button>
-              <mat-radio-button class="reporting-data-radio-button" value="financial">Financial
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-      </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="saveKpi()">Done
-        </button>
-        <!--<button type="button" class="btn btn-warning pull-right"
-                (click)="saveKpiAndAddNew()">Save & Add New KPI
-        </button>-->
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportingPeriodLabel">Add new KPI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <mat-form-field>
+                            <input matInput id="kpiDescription" #kpiDescriptionElem class="form-control"
+                                   placeholder="KPI description">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 text-left">
+                        <div id="reporting-data">Select what you want to be reported for this KPI</div>
+                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="reporting-data"
+                                         (change)="setKpiTypeSection($event)">
+                            <mat-radio-button checked class="reporting-data-radio-button" value="Quantitative">Numbers
+                                and Metrics
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="Qualitative">Long Responses
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="Document">Document
+                                Attachments
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-sm-12 text-left" *ngIf="currentKPIType==='Quantitative'">
+                        <div id="kpi-type">Select the type KPI type</div>
+                        <mat-radio-group class="reporting-data-radio-group" aria-labelledby="kpi-type"
+                                         (change)="setKpiReportingTypeSection($event)">
+                            <mat-radio-button class="reporting-data-radio-button" checked value="activity">Monitoring
+                                and Evaluation
+                            </mat-radio-button>
+                            <mat-radio-button class="reporting-data-radio-button" value="financial">Financial
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveKpi()">Done
+                </button>
+                <!--<button type="button" class="btn btn-warning pull-right"
+                        (click)="saveKpiAndAddNew()">Save & Add New KPI
+                </button>-->
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <div #selectScheduleModal id="selectScheduleModal" class="modal fade" tabindex="-1"
      role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createReportingPeriodLabel">Select Grant Schedule</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <mat-select [(ngModel)]="schedule" [ngModelOptions]="{standAlone: true}">
-          <mat-option value="1">Monthly</mat-option>
-          <mat-option value="3">Quarterly</mat-option>
-          <mat-option value="6">Half Yearly</mat-option>
-          <mat-option value="12">Yearly</mat-option>
-        </mat-select>
-      </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="saveKpi()">Done
-        </button>
-        <!--<button type="button" class="btn btn-warning pull-right"
-                (click)="saveKpiAndAddNew()">Save & Add New KPI
-        </button>-->
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportingPeriodLabel">Select Grant Schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <mat-select [(ngModel)]="schedule" [ngModelOptions]="{standAlone: true}">
+                    <mat-option value="1">Monthly</mat-option>
+                    <mat-option value="3">Quarterly</mat-option>
+                    <mat-option value="6">Half Yearly</mat-option>
+                    <mat-option value="12">Yearly</mat-option>
+                </mat-select>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveKpi()">Done
+                </button>
+                <!--<button type="button" class="btn btn-warning pull-right"
+                        (click)="saveKpiAndAddNew()">Save & Add New KPI
+                </button>-->
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 

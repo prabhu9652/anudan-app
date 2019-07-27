@@ -25,6 +25,7 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {PdfDocument} from "../../model/pdf-document";
 
 @Component({
   selector: 'app-preview',
@@ -63,6 +64,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('grantSummary') grantSummary: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -1117,5 +1119,21 @@ export class PreviewComponent implements OnInit {
 
     saveAsPdf() {
 
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const grantSummaryElem = $("html").html();
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+"/pdf";
+
+        this.http.post(url, grantSummaryElem, httpOptions).subscribe((data: PdfDocument) => {
+            console.log(data);
+            window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
+        });
     }
 }
