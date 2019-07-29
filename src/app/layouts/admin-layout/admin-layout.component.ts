@@ -6,6 +6,8 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
+import {GrantDataService} from '../../grant.data.service';
+import {Grant} from '../../model/dahsboard';
 
 @Component({
   selector: 'app-admin-layout',
@@ -20,6 +22,7 @@ export class AdminLayoutComponent implements OnInit {
   constructor( public location: Location, private router: Router) {}
 
   ngOnInit() {
+
       const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
       if (isWindows && !document.getElementsByTagName('body')[0].classList.contains('sidebar-mini')) {

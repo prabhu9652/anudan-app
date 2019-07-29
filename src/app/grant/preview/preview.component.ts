@@ -25,13 +25,15 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {PdfDocument} from "../../model/pdf-document";
 
 @Component({
-  selector: 'app-basic',
-  templateUrl: './basic.component.html',
-  styleUrls: ['./basic.component.scss']
+  selector: 'app-preview',
+  templateUrl: './preview.component.html',
+  styleUrls: ['./preview.component.scss']
 })
-export class BasicComponent implements OnInit {
+export class PreviewComponent implements OnInit {
+
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
   currentGrant: Grant;
@@ -62,6 +64,7 @@ export class BasicComponent implements OnInit {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('grantSummary') grantSummary: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -145,7 +148,7 @@ export class BasicComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     this._adjustHeights();
-    this._setFlowButtonColors();
+    //this._setFlowButtonColors();
   }
 
   rememberScrollPosition(event: Event) {
@@ -326,7 +329,7 @@ export class BasicComponent implements OnInit {
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
+    this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
           this.grantData.changeMessage(grant);
           this.currentGrant = grant;
@@ -350,13 +353,13 @@ export class BasicComponent implements OnInit {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
         ',select[required]:not(:disabled):not([readonly])' +
         ',textarea[required]:not(:disabled):not([readonly])');
-    for (const elem of containerFormLements) {
+    for (let elem of containerFormLements) {
       if (elem.value.trim() === '') {
         this.erroredElement = elem;
-        /*switch ($(this.erroredElement).attr('placeholder')) {
+        switch ($(this.erroredElement).attr('placeholder')) {
           case 'Field Value':
 
-        }*/
+        }
         return true;
       }
     }
@@ -542,6 +545,7 @@ export class BasicComponent implements OnInit {
 
   saveKpi() {
     const kpiModal = this.createKpiModal.nativeElement;
+    //const kpiTypeElem = $(this.kpiTypeElem.nativeElement);
     const kpiDesc = $(this.kpiDescriptionelem.nativeElement);
     const id = 0 - Math.round(Math.random() * 10000000000);
 
@@ -703,11 +707,11 @@ export class BasicComponent implements OnInit {
 
   private _setEditMode(state: boolean) {
     this.editMode = state;
-    if (state) {
-      $(this.actionBlock.nativeElement).prop('disabled', true);
+    /*if (state) {
+      $(this.actionBlock.nativeElement).prop('disabled',true);
     } else {
-      $(this.actionBlock.nativeElement).prop('disabled', false);
-    }
+      $(this.actionBlock.nativeElement).prop('disabled',false);
+    }*/
   }
 
   scrollHeaderContent(event: Event) {
@@ -925,10 +929,10 @@ export class BasicComponent implements OnInit {
   }
 
   private _adjustHeights() {
-    /*  const allElems = $('[data-id]');
-    for (const elem of allElems) {
-      $(elem).css('height', $('#kpi_title_' + $(elem).attr('data-id')).outerHeight() + 'px');
-      // console.log($(elem).css('height'));
+    console.log('adjusting heights');
+    /*for (const elem of $('[data-id]')) {
+        $(elem).css('height', $('#kpi_title_' + $(elem).attr('data-id')).outerHeight() + 'px');
+        // console.log($(elem).css('height'));
     }*/
   }
 
@@ -1099,7 +1103,7 @@ export class BasicComponent implements OnInit {
 
   setKpiTypeSection(event) {
     this.currentKPIType = event.value;
-    if (this.currentKPIReportingType !== 'Quantitative') {
+    if (this.currentKPIReportingType != 'Quantitative') {
       this.currentKPIReportingType = null;
     } else {
       this.currentKPIReportingType = 'Activity';
@@ -1111,4 +1115,25 @@ export class BasicComponent implements OnInit {
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
+
+
+    saveAsPdf() {
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const grantSummaryElem = $("html").html();
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+"/pdf";
+
+        this.http.post(url, grantSummaryElem, httpOptions).subscribe((data: PdfDocument) => {
+            console.log(data);
+            window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
+        });
+    }
 }

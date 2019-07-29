@@ -1,5 +1,20 @@
 <div class="row anu-container">
-  <h3 class="ml-5 mt-4">Grant Sections</h3>
+
+  <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
+    <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
+    <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
+    <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
+    <hr/>
+    <div class="row">
+    <h4 class="col-9 text-left pl-5 ml-3 my-3">Grant Sections</h4>
+    <div class="col-2 text-right">
+      <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
+        <mat-icon>add_box</mat-icon>Add new Section</a>
+    </div>
+    </div>
+  </div>
+
+
   <div class="col-lg-12">
     <div #container class="container text-left mt-2 px-5 py-2" (scroll)="rememberScrollPosition($event)">
 
@@ -7,7 +22,7 @@
         <div class="row">
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-            <mat-accordion class="col-sm-12 col-lg-6">
+            <mat-accordion class="col-sm-12 col-lg-12">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
                   <mat-panel-title>
@@ -15,10 +30,10 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <ng-container *ngFor="let attribute of section.attributes">
-                  <mat-form-field *ngIf="attribute.fieldType==='string'">
-                    <input matInput readonly placeholder="{{attribute.fieldName}}"
-                           [ngModel]="attribute.fieldValue">
-                  </mat-form-field>
+                  <ng-container *ngIf="attribute.fieldType==='string'">
+                    <b>{{attribute.fieldName}}</b>
+                    <div>{{attribute.fieldValue}}</div>
+                  </ng-container>
                   <mat-nav-list>
                     <ng-container *ngIf="attribute.fieldType==='document'">
                       <mat-list-item>
