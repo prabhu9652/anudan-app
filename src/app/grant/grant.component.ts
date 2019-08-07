@@ -19,7 +19,7 @@ import {
     Kpi, Note, NoteTemplates,
     QualitativeKpiSubmission,
     QuantitiaveKpisubmission,
-    Section,
+    Section, Organization,
     Submission, SubmissionStatus, Template,
     WorkflowStatus
 } from '../model/dahsboard'
@@ -104,7 +104,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     ngOnInit() {
 
-        interval(3000).subscribe(t => {
+        /*interval(3000).subscribe(t => {
 
             console.log('Came here');
             if (this.editMode) {
@@ -114,7 +114,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             } else {
                 this.appComp.autosave = false;
             }
-        });
+        });*/
 
         this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
         this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -332,8 +332,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         console.log(this.currentGrant);*/
     }
 
-    saveGrant() {
+    saveGrant(grantToSave: Grant) {
 
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -349,7 +350,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
                     this.currentGrant = grant;
@@ -358,6 +359,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                     this.checkGrantPermissions();
                     this.checkCurrentSubmission();
                     this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss a') + '     ';
                 },
                 error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -405,7 +407,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             }
         }
 
-        this.saveGrant();
+        this.saveGrant(this.currentGrant);
 
         /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
             + this.currentGrant.id + '/submission/flow/'
@@ -727,11 +729,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     private _setEditMode(state: boolean) {
         this.editMode = state;
-        if (state) {
+        /*if (state) {
             $(this.actionBlock.nativeElement).prop('disabled',true);
         } else {
             $(this.actionBlock.nativeElement).prop('disabled',false);
-        }
+        }*/
     }
 
     scrollHeaderContent(event: Event) {
@@ -832,11 +834,14 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     createGrant() {
+        this.appComp.currentView = 'grant';
         const grant = new Grant();
         grant.submissions = new Array<Submission>();
         grant.actionAuthorities = new ActionAuthorities();
         grant.actionAuthorities.permissions = [];
         grant.actionAuthorities.permissions.push('MANAGE');
+
+        const tempOrg = new Organization();
         grant.organization = this.appComp.appConfig.granteeOrgs[0];
         grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
         grant.substatus = this.appComp.appConfig.submissionInitialStatus;
@@ -879,7 +884,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         this.currentGrant = grant
         this.grantData.changeMessage(grant);
-        this.router.navigate(['grant']);
+        this.appComp.currentView = 'grant';
+        this.router.navigate(['grant/basic-details']);
     }
 
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {

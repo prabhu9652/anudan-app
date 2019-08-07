@@ -1,8 +1,8 @@
 <div class="sidebar-wrapper h-100">
     <ul class="nav h-100">
-        <li *ngIf="isMobileMenu()" class="p-1 nav-item bg-info">
+        <li *ngIf="isMobileMenu()" class="p-1 nav-item">
+            <img [src]="appComponent.appConfig.logoUrl" alt="logo">
             <a class="nav-link" (click)="showProfile()">
-                <i class="material-icons text-white">person</i>
                 <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName}}
                     , {{appComponent.loggedInUser.firstName}}</p>
                 <ng-container *ngFor="let userRole of appComponent.loggedInUser.userRoles; let i = index">

@@ -1,9 +1,7 @@
 <div class="row anu-container">
-    <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
-        <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
+    <div class="col-12 bg-white" style="position:sticky;top:40px;z-index:1040;">
         <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
         <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
-        <hr/>
         <h4 class="col-12 text-left pl-5 ml-3 my-3">Grant Basics</h4>
     </div>
     <div class="col-lg-12">
@@ -15,13 +13,17 @@
                         <b>Grant Name:</b>
                         <div>{{currentGrant.name}}</div>
                     </div>
-                    <div class="col-6 mb-4">
+                    <div class="col-4 mb-4">
                         <b>Grant Start Date:</b>
                         <div>{{currentGrant.startDate | date:'dd-MMM-yyyy'}}</div>
                     </div>
-                    <div class="col-6 mb-4">
+                    <div class="col-4 mb-4">
                         <b>Grant End Date:</b>
                         <div>{{currentGrant.endDate | date:'dd-MMM-yyyy'}}</div>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <b>Grant Amount:</b>
+                        <div>{{currentGrant.amount}}</div>
                     </div>
                     <div class="col-12 mb-4">
                         <b>Grant Description:</b>
@@ -43,7 +45,7 @@
                                    type="text" autocomplete="off" class="anu-input">
                         </mat-form-field>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <mat-form-field>
                             <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
@@ -52,13 +54,20 @@
                             <mat-datepicker #pickerStart></mat-datepicker>
                         </mat-form-field>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <mat-form-field>
                             <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
                                    [matDatepicker]="pickerEnd" placeholder="Grant End Date" readonly>
                             <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                             <mat-datepicker #pickerEnd></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field>
+                            <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                                   placeholder="Grant Amount">
                         </mat-form-field>
                     </div>
                     <div class="col-12">

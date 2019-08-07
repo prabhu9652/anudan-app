@@ -20,6 +20,7 @@ export class AppComponent implements AfterViewChecked{
   title = 'anudan.org';
   loggedInUser: User;
   autosave: boolean = false;
+  autosaveDisplay = 'auto save     ';
   currentView = 'grants';
 
   public appConfig: AppConfig = {

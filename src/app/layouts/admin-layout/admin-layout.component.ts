@@ -8,20 +8,43 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
 import {GrantDataService} from '../../grant.data.service';
 import {Grant} from '../../model/dahsboard';
+import {AppComponent} from '../../app.component';
+import {GrantComponent} from "../../grant/grant.component";
+import {interval} from 'rxjs';
+
+
+
 
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  styleUrls: ['./admin-layout.component.scss'],
+  providers: [GrantComponent]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
   private lastPoppedUrl: string;
+  currentGrant: Grant;
+  grantToUpdate: Grant;
   private yScrollStack: number[] = [];
 
-  constructor( public location: Location, private router: Router) {}
+  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router) {}
 
   ngOnInit() {
+console.log('Came here');
+  interval(10000).subscribe(t => {
+
+      
+     
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          this.grantComponent.saveGrant(this.currentGrant);
+        }
+        
+      
+    });
+
+      this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
       const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
@@ -85,6 +108,11 @@ export class AdminLayoutComponent implements OnInit {
           bool = true;
       }
       return bool;
+  }
+
+  showAllGrants() {
+    this.appComponent.currentView = 'grants';
+    this.router.navigate(['grants']);
   }
 
 }

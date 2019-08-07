@@ -1,7 +1,6 @@
 <div class="row anu-container">
 
   <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
-    <h3 class="col-12 text-left pl-5 ml-3 my-3">{{currentGrant.name}}</h3>
     <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
     <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
     <hr/>
@@ -22,8 +21,7 @@
         <div class="row">
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-            <mat-accordion class="col-sm-12 col-lg-12">
-              <mat-expansion-panel>
+              <mat-expansion-panel [disabled]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{section.sectionName.toLocaleUpperCase()}}
@@ -47,7 +45,6 @@
                   </mat-nav-list>
                 </ng-container>
               </mat-expansion-panel>
-            </mat-accordion>
           </ng-container>
         </div>
         <hr>
@@ -59,7 +56,7 @@
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
             <mat-accordion class="col-sm-12 col-lg-12">
-              <mat-expansion-panel>
+              <mat-expansion-panel [expanded]="true" [disabled]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{section.sectionName.toLocaleUpperCase()}}
@@ -80,8 +77,8 @@
                 <div>
                   <ng-container *ngFor="let attribute of section.attributes">
                     <div class="row mb-2 mt-2">
-                      <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
-                        <div class="col-sm-4 col-lg-4">
+                      <ng-container class="mb-2">
+                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='string'">
                           <mat-form-field>
 
                             <input [(ngModel)]="attribute.fieldName" required class="anu-input"
@@ -100,12 +97,13 @@
                                 of field--
                               </mat-option>
                               <mat-option value="string">Text</mat-option>
-                              <mat-option value="document">Document</mat-option>
+                              <mat-option value="multiline">Multi-line Text</mat-option>
+                              <!--mat-option value="document">Document</mat-option-->
                             </mat-select>
 
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-3 col-lg-3 text-left">
+                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='string'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
@@ -113,6 +111,13 @@
                                    placeholder="Field Value"
                                    (ngModelChange)="checkGrant()">
                           </mat-form-field>
+                        </div>
+                        <div class="col-sm-7 col-lg-7 text-left" *ngIf="attribute.fieldType==='multiline'">
+                          <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Field Value"
+                                   (ngModelChange)="checkGrant()"></textarea>
                         </div>
                         <div class="col-sm-1 col-lg-1"
                              style="display: flex;align-items: center;">

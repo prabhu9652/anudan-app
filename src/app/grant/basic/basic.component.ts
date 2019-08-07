@@ -703,11 +703,11 @@ export class BasicComponent implements OnInit {
 
   private _setEditMode(state: boolean) {
     this.editMode = state;
-    if (state) {
+    /*if (state) {
       $(this.actionBlock.nativeElement).prop('disabled', true);
     } else {
       $(this.actionBlock.nativeElement).prop('disabled', false);
-    }
+    }*/
   }
 
   scrollHeaderContent(event: Event) {

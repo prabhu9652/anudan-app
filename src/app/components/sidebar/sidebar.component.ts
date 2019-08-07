@@ -21,10 +21,10 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_ROUTES: RouteInfo[] = [
-    { path: '/grant/basic-details', title: 'Grant Basics',  icon: 'dashboard', class: '' },
-    { path: '/grant/sections', title: 'Sections',  icon: 'dashboard', class: '' },
-    { path: '/grant/reporting', title: 'Monitoring & Evaluation',  icon: 'dashboard', class: '' },
-    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'dashboard', class: '' }
+    { path: '/grant/basic-details', title: 'Grant Basics',  icon: 'description', class: '' },
+    { path: '/grant/sections', title: 'Sections',  icon: 'view_agenda', class: '' },
+    { path: '/grant/reporting', title: 'Monitoring & Evaluation',  icon: 'assessment', class: '' },
+    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
 
 export const ADMIN_ROUTES: RouteInfo[] = [

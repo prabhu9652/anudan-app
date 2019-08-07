@@ -215,6 +215,7 @@ export class Grant {
   startDate: Date;
   stDate: string;
   endDate: Date;
+  amount: number;
   enDate: string;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
