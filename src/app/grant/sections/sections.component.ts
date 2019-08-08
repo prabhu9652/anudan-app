@@ -25,11 +25,12 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
-
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
-  styleUrls: ['./sections.component.scss']
+  styleUrls: ['./sections.component.scss'],
+  providers: [SidebarComponent]
 })
 export class SectionsComponent implements OnInit {
 
@@ -49,6 +50,7 @@ export class SectionsComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  action: string;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -76,11 +78,18 @@ export class SectionsComponent implements OnInit {
       , private _bottomSheet: MatBottomSheet
       , private elem: ElementRef
       , private datepipe: DatePipe
-      , public colors: Colors) {
+      , public colors: Colors
+      , public sidebar: SidebarComponent) {
     this.colors = new Colors();
+    this.route.params.subscribe( (p) => {
+    this.action = p['action'];
+    console.log(this.action);
+    } );
   }
 
   ngOnInit() {
+
+  this.href = this.router.url;
 
     /*interval(3000).subscribe(t => {
 
@@ -496,6 +505,9 @@ export class SectionsComponent implements OnInit {
     $('#section_' + newSection.id).css('display', 'block');
     this._setEditMode(true);
     $(createSectionModal).modal('hide');
+    this.appComp.sectionAdded = true;
+    this.sidebar.buildSectionsSideNav();
+    this.router.navigate(['grant/section/' + newSection.sectionName]);
   }
 
   saveSectionAndAddNew() {
@@ -1111,5 +1123,9 @@ export class SectionsComponent implements OnInit {
     this.currentKPIReportingType = event.value;
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
+  }
+
+  getCleanText(name:string){
+    return name.replace(/[^0-9a-z]/gi, '');
   }
 }

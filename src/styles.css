@@ -203,3 +203,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #4DC252;
   color: #0E100E;
 }
+
+.anu-btn{
+  background-color: #4DC252;
+  color: #0E100E;
+}
+
+.sidebar .nav li.active > a i{
+  color: #0E100E;
+}
+
+.sidebar .nav li:hover > a{
+  color: inherit;
+}

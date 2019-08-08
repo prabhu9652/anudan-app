@@ -19,9 +19,8 @@
 
       <div *ngIf="!canManage">
         <div class="row">
-
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-              <mat-expansion-panel [disabled]="true">
+              <mat-expansion-panel *ngIf="action === 'Purpose'" [disabled]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{section.sectionName.toLocaleUpperCase()}}
@@ -56,7 +55,7 @@
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
             <mat-accordion class="col-sm-12 col-lg-12">
-              <mat-expansion-panel [expanded]="true" [disabled]="true">
+              <mat-expansion-panel [expanded]="true" *ngIf="action === getCleanText(section.sectionName)">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     {{section.sectionName.toLocaleUpperCase()}}
@@ -78,7 +77,7 @@
                   <ng-container *ngFor="let attribute of section.attributes">
                     <div class="row mb-2 mt-2">
                       <ng-container class="mb-2">
-                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='string'">
+                        <div class="col-sm-4 col-lg-4">
                           <mat-form-field>
 
                             <input [(ngModel)]="attribute.fieldName" required class="anu-input"

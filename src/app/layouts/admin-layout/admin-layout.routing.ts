@@ -63,6 +63,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'grants', component: GrantsComponent},
   {path: 'grant/basic-details', component: BasicComponent},
   {path: 'grant/sections', component: SectionsComponent},
+  {path: 'grant/section/:action', component: SectionsComponent},
   {path: 'grant/reporting', component: ReportingComponent},
   {path: 'grant/preview', component: PreviewComponent},
   {path: 'section', component: GrantComponent},

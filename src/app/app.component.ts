@@ -22,6 +22,7 @@ export class AppComponent implements AfterViewChecked{
   autosave: boolean = false;
   autosaveDisplay = 'auto save     ';
   currentView = 'grants';
+  sectionAdded = false;
 
   public appConfig: AppConfig = {
     appName: '',
@@ -51,6 +52,7 @@ export class AppComponent implements AfterViewChecked{
     } else {
       this.router.navigate(['/']);
     }
+
   }
 
   ngAfterViewChecked(): void {

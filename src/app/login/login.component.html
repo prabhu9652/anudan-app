@@ -7,6 +7,7 @@
         <div class="card-body px-lg-5 py-lg-5">
           <div class="card-img-top">
             <img [src]="appComponent.appConfig.logoUrl" alt="logo">
+            <p>Simplify your grant management workflow</p>
           </div>
           <form id="formLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
@@ -43,7 +44,7 @@
             </div>
 
 
-            <button id="btn-signin" class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">Sign In</button>
+            <button id="btn-signin" class="btn anu-btn" type="submit" [disabled]="!loginForm.valid">Sign In</button>
           </form>
           <div class="btn btn-sm btn-social btn-google" (click)="signInWithGoogle()">
             <span class="fa fa-google"></span>
