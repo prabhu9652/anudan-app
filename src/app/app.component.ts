@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewChecked{
   autosaveDisplay = 'auto save     ';
   currentView = 'grants';
   sectionAdded = false;
-
+  sectionUpdated = false;
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',

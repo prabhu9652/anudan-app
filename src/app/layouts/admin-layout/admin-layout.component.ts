@@ -32,13 +32,14 @@ export class AdminLayoutComponent implements OnInit {
   constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+  console.log('here');
   
   interval(10000).subscribe(t => {
 
       
      
         this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        if(this.currentGrant !== null){
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
           this.grantComponent.saveGrant(this.currentGrant);
         }
         

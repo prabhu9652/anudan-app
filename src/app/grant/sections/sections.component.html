@@ -3,9 +3,7 @@
   <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
     <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
     <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
-    <hr/>
     <div class="row">
-    <h4 class="col-9 text-left pl-5 ml-3 my-3">Grant Sections</h4>
     <div class="col-2 text-right">
       <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
         <mat-icon>add_box</mat-icon>Add new Section</a>
@@ -54,15 +52,17 @@
         <div class="row">
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-            <mat-accordion class="col-sm-12 col-lg-12">
-              <mat-expansion-panel [expanded]="true" *ngIf="action === getCleanText(section.sectionName)">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{section.sectionName.toLocaleUpperCase()}}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
+              <div *ngIf="action === getCleanText(section.sectionName)">
+                
                 <div class="row">
-                  <div class="col-12 bg-light text-right">
+                  <div class="col-10">
+                    <mat-form-field>
+                      <input [(ngModel)]="section.sectionName" [ngModelOptions]="{standAlone:true}"
+                                     (ngModelChange)="checkGrant($event)"
+                                     matInput placeholder="Section Name" class="anu-input">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-2 text-right">
                     <a class="mr-2 text-gray"
                        (click)="confirm(section.id,0,[],0,'section','section')"><i
                             class="fa fa-edit"></i></a>
@@ -73,6 +73,7 @@
                        class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
                   </div>
                 </div>
+                <hr>
                 <div>
                   <ng-container *ngFor="let attribute of section.attributes">
                     <div class="row mb-2 mt-2">
@@ -159,8 +160,7 @@
                     </div>
                   </ng-container>
                 </div>
-              </mat-expansion-panel>
-            </mat-accordion>
+              </div>
           </ng-container>
         </div>
       </div>

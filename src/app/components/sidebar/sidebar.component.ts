@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
-import {Granr} from '../../model/dahsboard';
+import {Grant} from '../../model/dahsboard';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -24,7 +24,7 @@ export const ROUTES: RouteInfo[] = [
 
 export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/basic-details', title: 'Grant Basics',  icon: 'description', class: '' },
-    { path: '/grant/sections', title: 'Sections',  icon: 'view_agenda', class: '' },
+    { path: '/grant/sections', title: 'Grant Specific',  icon: 'view_agenda', class: '' },
     { path: '/grant/reporting', title: 'Monitoring & Evaluation',  icon: 'assessment', class: '' },
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit {
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    
   }
 
   ngAfterContentChecked() {
@@ -66,8 +67,10 @@ export class SidebarComponent implements OnInit {
     this.buildSectionsSideNav();
   }
 
+
   buildSectionsSideNav() {
-  if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true)){
+  //SECTION_ROUTES = [];
+  if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){

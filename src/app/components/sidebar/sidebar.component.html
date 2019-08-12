@@ -25,19 +25,27 @@
         <ng-container *ngIf="appComponent.currentView === 'grant'">
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
-                <ng-container *ngIf="menuItem.title !== 'Sections'">
+                <ng-container *ngIf="menuItem.title !== 'Grant Specific'">
                     <a class="nav-link" [routerLink]="[menuItem.path]">
                         <i class="material-icons">{{menuItem.icon}}</i>
                         <p>{{menuItem.title}}</p>
                     </a>
                 </ng-container>
-                <ng-container *ngIf="menuItem.title === 'Sections'">
-                    <li routerLinkActive="active" *ngFor="let menuItem of sectionMenuItems" class="{{menuItem.class}} nav-item text-left">
-                        <a class="nav-link" [routerLink]="[menuItem.path]">
-                            <i class="material-icons">{{menuItem.icon}}</i>
-                            <p>{{menuItem.title}}</p>
-                        </a>
+            
+                <ng-container *ngIf="menuItem.title === 'Grant Specific'">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <i class="material-icons">list</i>Grant Specific
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <li routerLinkActive="active" *ngFor="let menuItem of sectionMenuItems" class="{{menuItem.class}} nav-item text-left">
+                            <a class="nav-link" [routerLink]="[menuItem.path]">
+                                <i class="material-icons">{{menuItem.icon}}</i>
+                                <p>{{menuItem.title}}</p>
+                            </a>
                     </li>
+                    </mat-expansion-panel>
                 </ng-container>
             </li>
         </ng-container>
@@ -60,7 +68,7 @@
             </a>
         </li>-->
 
-        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="position: absolute;bottom: 10px;">
+        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()">
             <a class="nav-link text-left" (click)="appComponent.logout()">
                 <i class="material-icons">exit_to_app</i>
                 <p>Logout</p>

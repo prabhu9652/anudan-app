@@ -89,7 +89,7 @@ export class SectionsComponent implements OnInit {
 
   ngOnInit() {
 
-  this.href = this.router.url;
+  //this.href = this.router.url;
 
     /*interval(3000).subscribe(t => {
 
@@ -223,7 +223,7 @@ export class SectionsComponent implements OnInit {
       if (section.id === sectionId) {
         const index = section.attributes.findIndex(attr => attr.id === attributeId);
         section.attributes.splice(index, 1);
-        this.checkGrant();
+        this.checkGrant(null);
       }
     }
   }
@@ -257,7 +257,7 @@ export class SectionsComponent implements OnInit {
       }
     }
 
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
   saveField() {
@@ -439,7 +439,7 @@ export class SectionsComponent implements OnInit {
         break;
       }
     }
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
 
@@ -955,13 +955,22 @@ export class SectionsComponent implements OnInit {
   }
 
 
-  checkGrant() {
+  checkGrant(ev: Event) {
+  
+  
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
+
+    this.appComp.sectionUpdated = true;
+    this.sidebar.buildSectionsSideNav();
+    if( ev !== null){
+      this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+    }
       this._setEditMode(true);
     }
   }
+
 
   openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
 
@@ -980,7 +989,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -1006,7 +1015,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -1032,7 +1041,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -1067,7 +1076,7 @@ export class SectionsComponent implements OnInit {
     }
 
 
-    this.checkGrant();
+    this.checkGrant(null);
     event.source.value = '';
   }
 
@@ -1094,7 +1103,7 @@ export class SectionsComponent implements OnInit {
   deleteSection(secId: number) {
     const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
   handleSpacebar(ev: Event) {
@@ -1107,7 +1116,7 @@ export class SectionsComponent implements OnInit {
   setSubmissionDate(sub: Submission, event: MatDatepickerInputEvent<any>) {
     sub.submitBy = event.value;
     sub.submitDateStr = this.datepipe.transform(event.value, 'yyyy-MM-dd');
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
   setKpiTypeSection(event) {

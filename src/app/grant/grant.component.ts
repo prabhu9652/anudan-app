@@ -51,7 +51,7 @@ declare var $: any;
 @Component({
     selector: 'app-grant',
     templateUrl: './grant.component.html',
-    styleUrls: ['./grant.component.scss'],
+    styleUrls: ['./grant.component.scss']
 })
 export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecked {
 
@@ -885,7 +885,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.currentGrant = grant
         this.grantData.changeMessage(grant);
         this.appComp.currentView = 'grant';
+        
         this.router.navigate(['grant/basic-details']);
+        
     }
 
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {

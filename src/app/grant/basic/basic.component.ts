@@ -25,11 +25,13 @@ import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.c
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-basic',
   templateUrl: './basic.component.html',
-  styleUrls: ['./basic.component.scss']
+  styleUrls: ['./basic.component.scss'],
+  providers: [SidebarComponent]
 })
 export class BasicComponent implements OnInit {
   hasKpisToSubmit: boolean;
@@ -75,7 +77,8 @@ export class BasicComponent implements OnInit {
       , private _bottomSheet: MatBottomSheet
       , private elem: ElementRef
       , private datepipe: DatePipe
-      , public colors: Colors) {
+      , public colors: Colors
+      , public sidebar: SidebarComponent) {
     this.colors = new Colors();
   }
 

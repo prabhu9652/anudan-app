@@ -216,3 +216,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .sidebar .nav li:hover > a{
   color: inherit;
 }
+
+.mat-expansion-panel-body{
+  padding: 0 !important;
+}
