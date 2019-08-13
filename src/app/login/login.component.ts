@@ -11,6 +11,9 @@ import {AuthService} from 'ng-social-login-module';
 import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
 import {SocialUser} from 'ng-social-login-module';
 import {ToastrService} from 'ngx-toastr';
+import {Notifications} from '../model/dahsboard'
+import {interval} from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -90,7 +93,7 @@ export class LoginComponent implements OnInit {
       observe: 'response' as 'body'
     };
 
-    const url = '/api/authenticate';
+    let url = '/api/authenticate';
 
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
 
@@ -118,6 +121,27 @@ export class LoginComponent implements OnInit {
         } else {
           this.router.navigate(['/grants']);
         }
+
+        interval(5000).subscribe(t => {
+
+            url = '/api/user/' + this.user.id + '/notifications/';
+              const httpOptions = {
+                headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+              };
+
+              console.log('here');
+              this.http.get<Tenants>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+                this.appComponent.notifications = notifications;
+
+
+              });
+    });
+
+        
       },
       error => {
         const errorMsg = error as HttpErrorResponse;

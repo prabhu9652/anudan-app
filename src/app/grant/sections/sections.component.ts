@@ -319,42 +319,44 @@ export class SectionsComponent implements OnInit {
     console.log(this.currentGrant);*/
   }
 
-  saveGrant() {
+  saveGrant(grantToSave: Grant) {
 
-    /*const errors = this.validateFields();
-    if (errors) {
-        this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
-        $(this.erroredElement).focus();
-    } else {*/
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
-    };
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        /*const errors = this.validateFields();
+        if (errors) {
+            this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
+            $(this.erroredElement).focus();
+        } else {*/
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
-        });
-    // }
-  }
+            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
+                    this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    this.grantData.changeMessage(grant);
+                    this.currentGrant = grant;
+                    this._setEditMode(false);
+                    this.currentSubmission = null;
+                    this.checkGrantPermissions();
+                    this.checkCurrentSubmission();
+                    this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss a') + '     ';
+                },
+                error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                        enableHtml: true
+                    });
+                });
+        // }
+    }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
@@ -961,9 +963,10 @@ export class SectionsComponent implements OnInit {
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
-
+    this.saveGrant(this.currentGrant);
     this.appComp.sectionUpdated = true;
     this.sidebar.buildSectionsSideNav();
+    console.log(this.sidebar.SECTION_ROUTES);
     if( ev !== null){
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
@@ -1136,5 +1139,21 @@ export class SectionsComponent implements OnInit {
 
   getCleanText(name:string){
     return name.replace(/[^0-9a-z]/gi, '');
+  }
+
+
+  buildSectionsSideNav() {
+  
+  this.sidebar.SECTION_ROUTES = [];
+  if(this.appComp.currentView === 'grant' && this.currentGrant && (this.sidebar.SECTION_ROUTES.length === 0 || this.appComp.sectionAdded === true || this.appComp.sectionUpdated === true)){
+      this.sidebar.sectionMenuItems = [];
+      this.sidebar.SECTION_ROUTES = [];
+      for (let section of this.currentGrant.grantDetails.sections){
+        this.sidebar.SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
+      }
+      
+      this.sidebar.sectionMenuItems = this.sidebar.SECTION_ROUTES.filter(menuItem => menuItem);
+      this.appComp.sectionAdded = false;
+    }
   }
 }

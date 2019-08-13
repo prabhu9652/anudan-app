@@ -118,6 +118,8 @@ export class BasicComponent implements OnInit {
     $('#createKpiModal').on('shown.bs.modal', function (event) {
       $('#kpiDescription').focus();
     });
+
+    //this.sidebar.buildSectionsSideNav(this.currentGrant);
   }
 
   private checkGrantPermissions() {
@@ -946,10 +948,12 @@ export class BasicComponent implements OnInit {
 
 
   checkGrant() {
+  console.log('basic');
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
       this._setEditMode(true);
+      this.grantData.changeMessage(this.currentGrant);
     }
   }
 

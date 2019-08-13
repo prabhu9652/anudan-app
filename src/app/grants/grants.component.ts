@@ -43,6 +43,7 @@ export class GrantsComponent implements OnInit {
 
 
   fetchDashboard(userId: string) {
+  console.log('dashboard');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

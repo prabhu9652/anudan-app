@@ -1,6 +1,13 @@
 <div class="sidebar-wrapper h-100">
     <ul class="nav h-100">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item">
+
+            <ng-container *ngIf="appComponent.notifications.length>0">
+                <i id="messageIcon" class="material-icons float-right text-danger" (click)="showMessages()">notifications</i>
+            </ng-container>
+            <ng-container *ngIf="appComponent.notifications.length===0">
+                <i id="messageIcon" class="material-icons float-right">notifications_none</i>
+            </ng-container>
             <img [src]="appComponent.appConfig.logoUrl" alt="logo">
             <a class="nav-link" (click)="showProfile()">
                 <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName}}
@@ -10,6 +17,7 @@
                         <ng-container *ngIf="i!=appComponent.loggedInUser.userRoles.length-1">, </ng-container></span>
                 </ng-container>
             </a>
+
         </li>
         <ng-container *ngIf="appComponent.currentView === 'grants'">
         <li routerLinkActive="active" *ngFor="let menuItem of menuItems"
@@ -34,15 +42,15 @@
             
                 <ng-container *ngIf="menuItem.title === 'Grant Specific'">
                     <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                          <mat-panel-title>
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav()">
+                          <mat-panel-title >
                             <i class="material-icons">list</i>Grant Specific
                           </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <li routerLinkActive="active" *ngFor="let menuItem of sectionMenuItems" class="{{menuItem.class}} nav-item text-left">
-                            <a class="nav-link" [routerLink]="[menuItem.path]">
-                                <i class="material-icons">{{menuItem.icon}}</i>
-                                <p>{{menuItem.title}}</p>
+                        <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
+                            <a class="nav-link" [routerLink]="[menuItem1.path]">
+                                <i class="material-icons">{{menuItem1.icon}}</i>
+                                <p>{{menuItem1.title}}</p>
                             </a>
                     </li>
                     </mat-expansion-panel>
@@ -77,4 +85,8 @@
 
     </ul>
     <hr>
+    <div #messagepopover id="messagepopover" style="display:hidden;">
 </div>
+</div>
+
+

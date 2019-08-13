@@ -141,7 +141,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     private checkGrantPermissions() {
-        if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+        if (this.currentGrant && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
             this.canManage = true;
         } else {
             this.canManage = false;

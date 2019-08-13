@@ -34,11 +34,14 @@ export class AdminLayoutComponent implements OnInit {
   ngOnInit() {
   console.log('here');
   
-  interval(10000).subscribe(t => {
+  interval(15000).subscribe(t => {
 
       
      
         this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        /*if(this.currentGrant !== null){
+          this.grantComponent.checkGrantPermissions();
+        }*/
         if(this.currentGrant !== null && this.currentGrant.name !== undefined){
           this.grantComponent.saveGrant(this.currentGrant);
         }

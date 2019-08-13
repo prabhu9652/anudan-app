@@ -18,14 +18,12 @@
       <div *ngIf="!canManage">
         <div class="row">
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
-              <mat-expansion-panel *ngIf="action === 'Purpose'" [disabled]="true">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
+              <div *ngIf="action === getCleanText(section.sectionName)" [disabled]="true">
+                <h4>
                     {{section.sectionName.toLocaleUpperCase()}}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
+                  </h4>
                 <ng-container *ngFor="let attribute of section.attributes">
-                  <ng-container *ngIf="attribute.fieldType==='string'">
+                  <ng-container *ngIf="attribute.fieldType==='string' || attribute.fieldType==='multiline'">
                     <b>{{attribute.fieldName}}</b>
                     <div>{{attribute.fieldValue}}</div>
                   </ng-container>
@@ -41,7 +39,7 @@
                     </ng-container>
                   </mat-nav-list>
                 </ng-container>
-              </mat-expansion-panel>
+              </div>
           </ng-container>
         </div>
         <hr>
@@ -62,11 +60,9 @@
                                      matInput placeholder="Section Name" class="anu-input">
                     </mat-form-field>
                   </div>
-                  <div class="col-2 text-right">
-                    <a class="mr-2 text-gray"
-                       (click)="confirm(section.id,0,[],0,'section','section')"><i
-                            class="fa fa-edit"></i></a>
-                    <a class="mr-2 text-gray" *ngIf="section.deletable"
+                  <div class="col-2 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+                    
+                    <a class="mr-2 text-gray" 
                        (click)="confirm(section.id,0,[],0,'section','section')"><i
                             class="fa fa-trash"></i></a>
                     <a (click)="addNewFieldToSection(section.id,section.sectionName)"

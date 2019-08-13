@@ -4,7 +4,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus} from "./model/dahsboard";
+import {WorkflowStatus, Notifications} from "./model/dahsboard";
 import {Time} from "@angular/common";
 
 @Component({
@@ -20,10 +20,12 @@ export class AppComponent implements AfterViewChecked{
   title = 'anudan.org';
   loggedInUser: User;
   autosave: boolean = false;
-  autosaveDisplay = 'auto save     ';
+  autosaveDisplay = '';
   currentView = 'grants';
   sectionAdded = false;
   sectionUpdated = false;
+  notifications = [];
+
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',

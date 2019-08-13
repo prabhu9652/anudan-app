@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
@@ -50,32 +50,41 @@ export class SidebarComponent implements OnInit {
   action: number;
   sub: any;
 
-  constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService) {
+  @ViewChild('messagepopover') messages: ElementRef;
 
+  constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef) {
+    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.buildSectionsSideNav();
   }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.ref.detectChanges();
     
   }
 
-  ngAfterContentChecked() {
+
+  showMessages(){
+  for(let i=0; i< this.appComponent.notifications.length;i++){
+  $("#messagepopover").append('<p>'+this.appComponent.notifications[i].message+'</p>')
+  }
   
-    this.buildSectionsSideNav();
+  $("#messagepopover").css('display','block');
   }
 
 
   buildSectionsSideNav() {
-  //SECTION_ROUTES = [];
+  this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+  SECTION_ROUTES = [];
   if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){
         SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
       }
+      
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);
       this.appComponent.sectionAdded = false;
     }

@@ -279,3 +279,8 @@ export class SerializationHelper {
     return obj;
   }
 }
+
+export class Notifications{
+  id: number;
+  message: string;
+}
