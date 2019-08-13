@@ -50,7 +50,6 @@ export class SidebarComponent implements OnInit {
   action: number;
   sub: any;
 
-  @ViewChild('messagepopover') messages: ElementRef;
 
   constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef) {
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);

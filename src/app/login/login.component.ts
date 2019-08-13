@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
               };
 
               console.log('here');
-              this.http.get<Tenants>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+              this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                 this.appComponent.notifications = notifications;
 
 

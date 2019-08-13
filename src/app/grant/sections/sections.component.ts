@@ -966,7 +966,6 @@ export class SectionsComponent implements OnInit {
     this.saveGrant(this.currentGrant);
     this.appComp.sectionUpdated = true;
     this.sidebar.buildSectionsSideNav();
-    console.log(this.sidebar.SECTION_ROUTES);
     if( ev !== null){
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
@@ -1142,18 +1141,4 @@ export class SectionsComponent implements OnInit {
   }
 
 
-  buildSectionsSideNav() {
-  
-  this.sidebar.SECTION_ROUTES = [];
-  if(this.appComp.currentView === 'grant' && this.currentGrant && (this.sidebar.SECTION_ROUTES.length === 0 || this.appComp.sectionAdded === true || this.appComp.sectionUpdated === true)){
-      this.sidebar.sectionMenuItems = [];
-      this.sidebar.SECTION_ROUTES = [];
-      for (let section of this.currentGrant.grantDetails.sections){
-        this.sidebar.SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
-      }
-      
-      this.sidebar.sectionMenuItems = this.sidebar.SECTION_ROUTES.filter(menuItem => menuItem);
-      this.appComp.sectionAdded = false;
-    }
-  }
 }
