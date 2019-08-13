@@ -34,7 +34,7 @@ export class AdminLayoutComponent implements OnInit {
   ngOnInit() {
   console.log('here');
   
-  interval(15000).subscribe(t => {
+  interval(3000).subscribe(t => {
 
       
      

@@ -33,26 +33,35 @@
         <ng-container *ngIf="appComponent.currentView === 'grant'">
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
-                <ng-container *ngIf="menuItem.title !== 'Grant Specific'">
+                <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
                     <a class="nav-link" [routerLink]="[menuItem.path]">
                         <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
+                        <p style="font-size: 15px;"><b>{{menuItem.title}}</b></p>
                     </a>
                 </ng-container>
             
-                <ng-container *ngIf="menuItem.title === 'Grant Specific'">
+                <ng-container *ngIf="menuItem.title === 'Grant Details'">
                     <mat-expansion-panel>
-                        <mat-expansion-panel-header (click)="buildSectionsSideNav()">
-                          <mat-panel-title >
-                            <i class="material-icons">list</i>Grant Specific
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                          <mat-panel-title style="display: flex; align-items: center">
+                            <i class="material-icons">list</i>Grant Details
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
-                            <a class="nav-link" [routerLink]="[menuItem1.path]">
+                            <a class="nav-link" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
                                 <i class="material-icons">{{menuItem1.icon}}</i>
                                 <p>{{menuItem1.title}}</p>
                             </a>
                     </li>
+                    <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
+                class="{{menuItem.class}} nav-item text-left">
+                    <ng-container *ngIf="menuItem.title === 'Monitoring & Evaluation'">
+                        <a class="nav-link" [routerLink]="[menuItem.path]" style="padding-top: 0;padding-bottom: 0;">
+                            <i class="material-icons">{{menuItem.icon}}</i>
+                            <p>{{menuItem.title}}</p>
+                        </a>
+                    </ng-container>
+                </li>
                     </mat-expansion-panel>
                 </ng-container>
             </li>

@@ -222,6 +222,7 @@ export class Grant {
   flowAuthorities: FlowAuthority[];
   grantDetails: GrantDetails;
   kpis: Kpi[];
+  representative: string;
 }
 
 export class Tenant {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -12,6 +12,7 @@ import {
   SubmissionStatus, Template
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
+import {DataService} from '../../data.service';
 import {SubmissionDataService} from '../../submission.data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
@@ -30,7 +31,7 @@ import {SidebarComponent} from '../../components/sidebar/sidebar.component';
   selector: 'app-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
-  providers: [SidebarComponent]
+  providers: [SidebarComponent, DataService]
 })
 export class SectionsComponent implements OnInit {
 
@@ -79,7 +80,8 @@ export class SectionsComponent implements OnInit {
       , private elem: ElementRef
       , private datepipe: DatePipe
       , public colors: Colors
-      , public sidebar: SidebarComponent) {
+      , private sidebar: SidebarComponent,
+      private data: DataService) {
     this.colors = new Colors();
     this.route.params.subscribe( (p) => {
     this.action = p['action'];
@@ -88,6 +90,8 @@ export class SectionsComponent implements OnInit {
   }
 
   ngOnInit() {
+  console.log("asdasdasdasdasd");
+  console.log(this.sidebar);
 
   //this.href = this.router.url;
 
@@ -339,8 +343,8 @@ export class SectionsComponent implements OnInit {
 
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    this.grantData.changeMessage(grant);
-                    this.currentGrant = grant;
+                    //this.grantData.changeMessage(grant);
+                    //this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
@@ -431,7 +435,7 @@ export class SectionsComponent implements OnInit {
     for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
         const newAttr = new Attribute();
-        newAttr.fieldType = 'string';
+        newAttr.fieldType = 'text';
         newAttr.fieldName = '';
         newAttr.fieldValue = '';
         newAttr.deletable = true;
@@ -963,10 +967,11 @@ export class SectionsComponent implements OnInit {
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
-    this.saveGrant(this.currentGrant);
+    //this.saveGrant(this.currentGrant);
     this.appComp.sectionUpdated = true;
     this.sidebar.buildSectionsSideNav();
-    if( ev !== null){
+    if(ev){
+      this.grantData.changeMessage(this.currentGrant);
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
       this._setEditMode(true);

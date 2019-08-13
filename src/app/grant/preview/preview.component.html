@@ -44,9 +44,13 @@
                     <div class="ml-1"><b>{{currentGrant.enDate}}</b></div>
 
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-6 mb-2">
                     Grantee Organization:
                     <div class="ml-1"><b>{{currentGrant.organization.name}}</b></div>
+                </div>
+                <div class="col-6 mb-2">
+                    Grantee Organization Representative:
+                    <div class="ml-1"><b>{{currentGrant.representative}}</b></div>
                 </div>
                 <div class="col-12">
 
@@ -60,16 +64,16 @@
                             <div class="row mb-2 mt-2">
                                 <ng-container *ngFor="let attribute of section.attributes">
 
-                                    <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
+                                    <ng-container *ngIf="attribute.fieldType==='multiline'" class="mb-2">
 
-                                        <div class="col-sm-12 col-lg-6 text-left">
+                                        <div class="col-sm-12 col-lg-12 text-left">
                                             {{attribute.fieldName}}
                                             <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
                                         </div>
 
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldType=='document'">
-                                        <div class="col-sm-12 col-lg-6">
+                                        <div class="col-sm-12 col-lg-12">
                                             <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
                                                 <b class="">{{attribute.fieldName}}</b>
                                             </a>

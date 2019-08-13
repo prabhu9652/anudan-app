@@ -23,11 +23,12 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_ROUTES: RouteInfo[] = [
-    { path: '/grant/basic-details', title: 'Grant Basics',  icon: 'description', class: '' },
-    { path: '/grant/sections', title: 'Grant Specific',  icon: 'view_agenda', class: '' },
+    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'description', class: '' },
+    { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '' },
     { path: '/grant/reporting', title: 'Monitoring & Evaluation',  icon: 'assessment', class: '' },
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
+
 
 export let SECTION_ROUTES: RouteInfo[] = [];
 
@@ -52,8 +53,8 @@ export class SidebarComponent implements OnInit {
 
 
   constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef) {
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
-    this.buildSectionsSideNav();
+
+    
   }
 
   ngOnInit() {
@@ -61,6 +62,10 @@ export class SidebarComponent implements OnInit {
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
+    this.grantData.currentMessage.subscribe((grant) => {
+      this.currentGrant = grant;
+      this.buildSectionsSideNav();
+    });
     
   }
 

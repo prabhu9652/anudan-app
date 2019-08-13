@@ -48,6 +48,7 @@
       <div *ngIf="canManage">
 
         <div class="row">
+          <div class="col-12">
 
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
               <div *ngIf="action === getCleanText(section.sectionName)">
@@ -72,9 +73,18 @@
                 <hr>
                 <div>
                   <ng-container *ngFor="let attribute of section.attributes">
-                    <div class="row mb-2 mt-2">
+                    <div class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
                       <ng-container class="mb-2">
-                        <div class="col-sm-4 col-lg-4">
+                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
+                          <mat-form-field>
+
+                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   (ngModelChange)="checkGrant()"
+                                   matInput placeholder="Field Name">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
                             <input [(ngModel)]="attribute.fieldName" required class="anu-input"
@@ -92,14 +102,18 @@
                               <mat-option value="none" aria-selected="true">--Select type
                                 of field--
                               </mat-option>
-                              <mat-option value="string">Text</mat-option>
+                              <mat-option value="text">Text</mat-option>
                               <mat-option value="multiline">Multi-line Text</mat-option>
+                              <mat-option value="kpi">KPI</mat-option>
+                              <mat-option value="table">Table</mat-option>
+                              <!--mat-op
+                              <!--mat-op
                               <!--mat-option value="document">Document</mat-option-->
                             </mat-select>
 
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='string'">
+                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
@@ -108,11 +122,10 @@
                                    (ngModelChange)="checkGrant()">
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-7 col-lg-7 text-left" *ngIf="attribute.fieldType==='multiline'">
+                        <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='multiline'">
                           <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
                                    [required]="attribute.deletable?'required':''"
                                    [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Field Value"
                                    (ngModelChange)="checkGrant()"></textarea>
                         </div>
                         <div class="col-sm-1 col-lg-1"
@@ -140,7 +153,7 @@
                               <mat-option value="none" aria-selected="true">--Select type
                                 of field--
                               </mat-option>
-                              <mat-option value="string">Text</mat-option>
+                              <mat-option value="text">Text</mat-option>
                               <mat-option value="document">Document</mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -158,6 +171,7 @@
                 </div>
               </div>
           </ng-container>
+        </div>
         </div>
       </div>
     </div>
