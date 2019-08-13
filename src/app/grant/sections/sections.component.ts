@@ -394,7 +394,7 @@ export class SectionsComponent implements OnInit {
       }
     }
 
-    this.saveGrant();
+    //this.saveGrant();
 
     /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/submission/flow/'
