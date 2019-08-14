@@ -970,8 +970,8 @@ export class SectionsComponent implements OnInit {
     //this.saveGrant(this.currentGrant);
     this.appComp.sectionUpdated = true;
     this.sidebar.buildSectionsSideNav();
+    this.grantData.changeMessage(this.currentGrant);
     if(ev){
-      this.grantData.changeMessage(this.currentGrant);
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
       this._setEditMode(true);

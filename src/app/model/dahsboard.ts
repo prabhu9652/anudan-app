@@ -175,6 +175,8 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   fieldValue: string;
+  target: string;
+  frequency: string;
   deletable: boolean;
   required: boolean;
 }

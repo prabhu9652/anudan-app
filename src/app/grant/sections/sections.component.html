@@ -1,13 +1,20 @@
 <div class="row anu-container">
 
-  <div class="col-12 bg-white" style="position:sticky;top:0;z-index:1040;">
+  <div class="col-12 bg-white" style="position: sticky;top: 20px;z-index: 1040;">
     <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
     <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
     <div class="row">
-    <div class="col-2 text-right">
-      <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
+    <div class="col-10 text-left" style="display: flex;align-items: center;justify-content: flex-start;">
+                    <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
         <mat-icon>add_box</mat-icon>Add new Section</a>
-    </div>
+                    <a *ngIf="canManage" mat-stroked-button (click)="confirm(section.id,0,[],0,'section','section')" >
+                      <mat-icon>delete</mat-icon>Delete Section
+                    </a>
+                    <a *ngIf="canManage" mat-stroked-button (click)="addNewFieldToSection(section.id,section.sectionName)" >
+                      <mat-icon>add_circle_outline</mat-icon>Add New Field
+                    </a>
+                    
+                  </div>
     </div>
   </div>
 
@@ -61,14 +68,7 @@
                                      matInput placeholder="Section Name" class="anu-input">
                     </mat-form-field>
                   </div>
-                  <div class="col-2 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
-                    
-                    <a class="mr-2 text-gray" 
-                       (click)="confirm(section.id,0,[],0,'section','section')"><i
-                            class="fa fa-trash"></i></a>
-                    <a (click)="addNewFieldToSection(section.id,section.sectionName)"
-                       class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
-                  </div>
+                  
                 </div>
                 <hr>
                 <div>
@@ -91,6 +91,15 @@
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-12" *ngIf="attribute.fieldType==='kpi'">
+                          <mat-form-field>
+
+                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   (ngModelChange)="checkGrant()"
+                                   matInput placeholder="KPI Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left">
@@ -120,6 +129,32 @@
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Field Value"
                                    (ngModelChange)="checkGrant()">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="attribute.target" class="anu-input"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Target/Goal"
+                                   (ngModelChange)="checkGrant()">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
+                          <mat-form-field>
+                            <mat-label>Type</mat-label>
+                            <mat-select [(ngModel)]="attribute.frequency"  class="anu-input"
+                                        [ngModelOptions]="{standAlone:true}"
+                                        (ngModelChange)="checkGrant()">
+                              <mat-option value="none" aria-selected="true">--Select type
+                                of field--
+                              </mat-option>
+                              <mat-option value="monthly">Monthly</mat-option>
+                              <mat-option value="quarterly">Quarterly</mat-option>
+                              <mat-option value="half-yearly">Half Yearly</mat-option>
+                              <mat-option value="yearly">Yearly</mat-option>
+                            </mat-select>
+
                           </mat-form-field>
                         </div>
                         <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='multiline'">

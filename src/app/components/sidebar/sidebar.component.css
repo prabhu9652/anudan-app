@@ -17,7 +17,3 @@
 .mat-expansion-panel-body {
    padding: 0 !important;
 }
-
-.indicator::after{
-    color: rgba(255,255,255,1) !important;
-}
