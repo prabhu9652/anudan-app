@@ -1,6 +1,7 @@
 import {User} from './user';
 import * as moment from 'moment';
 import _date = moment.unitOfTime._date;
+import {NativeDateAdapter} from '@angular/material';
 
 export class Organization {
   id: number;
@@ -305,4 +306,21 @@ export class ColumnData{
 export class TableData {
   name: string;
   columns: ColumnData[];
+}
+
+export class CustomDateAdapter extends NativeDateAdapter {
+   format(date: Date, displayFormat: Object): string {
+      console.log(date);
+      if (displayFormat === 'input') {
+         const day = date.getDate();
+         const month = moment(date).format("MMM");//date.getUTCMonth() + 1;
+         const year = date.getFullYear();
+         // Return the format as per your requirement
+         return `${day}-${month}-${year}`;
+      } else {
+         return date.toDateString();
+      }
+   }
+   
+   // If required extend other NativeDateAdapter methods.
 }

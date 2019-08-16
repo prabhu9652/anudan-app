@@ -48,8 +48,8 @@
                         <div class="row">
                             <div class="col-6">
                                 <mat-form-field>
-                                    <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate" required class="anu-input"
-                                           [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                                    <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate" required class="anu-input" 
+                                           [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text" readonly>
                                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                                     <mat-datepicker #pickerStart></mat-datepicker>
@@ -58,7 +58,7 @@
                             <div class="col-6">
                                 <mat-form-field>
                                     <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate" required class="anu-input"
-                                           [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
+                                           [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('end', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerEnd" placeholder="Grant End Date" readonly>
                                     <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                                     <mat-datepicker #pickerEnd></mat-datepicker>

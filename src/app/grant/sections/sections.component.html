@@ -154,6 +154,7 @@
                                     <input matInput [(ngModel)]="column.name" class="anu-input"
                                            [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
+                                           placeholder="Column description" 
                                            (ngModelChange)="checkGrant()">
                                   </mat-form-field>
                                 </td>
@@ -167,6 +168,7 @@
                                     <textarea matInput [(ngModel)]="row.name" class="anu-input"
                                            [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
+                                           placeholder="Row description" 
                                            (ngModelChange)="checkGrant()"></textarea>
                                   </mat-form-field>
                                 </td>
@@ -176,6 +178,7 @@
                                     <input matInput [(ngModel)]="column.value" class="anu-input"
                                            [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
+                                           placeholder="Value" 
                                            (ngModelChange)="checkGrant()">
                                   </mat-form-field>
                                   </td>

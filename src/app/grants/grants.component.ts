@@ -116,6 +116,7 @@ export class GrantsComponent implements OnInit {
   manageGrant(grant: Grant) {
         this.dataService.changeMessage(grant.id);
         this.data.changeMessage(grant);
+        this.appComponent.currentView = 'grant';
         this.router.navigate(['grant/basic-details']);
   }
 }

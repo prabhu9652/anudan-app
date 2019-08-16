@@ -985,12 +985,12 @@ export class SectionsComponent implements OnInit {
       if(attr.fieldValue.trim() === ''){
         attr.fieldTableValue = [];
         const data = new TableData();
-        data.name = "Row";
+        data.name = "";
         data.columns = [];
 
         for(let i=0; i< 5; i++){
           const col = new ColumnData();
-          col.name = "Column " + (i+1);
+          col.name = "";
           col.value = '';
           data.columns.push(col);
         }

@@ -9,7 +9,8 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,
+  CustomDateAdapter
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -17,7 +18,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
+import {MatBottomSheet, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
 import {interval} from 'rxjs';
@@ -29,13 +30,32 @@ import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 
 
+export const APP_DATE_FORMATS = {
+   parse: {
+      dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
+   },
+   display: {
+      dateInput: 'input',
+      monthYearLabel: {year: 'numeric', month: 'short'},
+      dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+      monthYearA11yLabel: {year: 'numeric', month: 'long'},
+   }
+};
+
 @Component({
   selector: 'app-basic',
   templateUrl: './basic.component.html',
   styleUrls: ['./basic.component.scss'],
-  providers: [SidebarComponent]
+  providers: [SidebarComponent,{
+         provide: DateAdapter, useClass: CustomDateAdapter
+      },
+      {
+         provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+      }]
 })
 export class BasicComponent implements OnInit {
+
+  
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
   currentGrant: Grant;
@@ -109,6 +129,7 @@ export class BasicComponent implements OnInit {
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
+ 
     this.checkGrantPermissions();
     this.checkCurrentSubmission();
 
@@ -1133,9 +1154,19 @@ export class BasicComponent implements OnInit {
   if(this.currentGrant.startDate && this.currentGrant.endDate){
       var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
       time = time + 86400001;
-      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2 });
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
     }else{
       this.currentGrant.duration = 'No end date';
     }
+  }
+
+  manageDate(type: string, ev: Event, dt: string){
+  //const dtParsed = ev.split('/');
+    if(type==='start'){
+      this.currentGrant.startDate=new Date(ev);
+    }else if(type==='end'){
+      this.currentGrant.endDate=new Date(ev);
+    }
+    this.setDateDuration();
   }
 }
