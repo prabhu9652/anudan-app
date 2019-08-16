@@ -9,7 +9,8 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,
+  TableData, ColumnData
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -963,6 +964,7 @@ export class SectionsComponent implements OnInit {
 
   checkGrant(ev: Event) {
   
+  console.log(ev);
   
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
@@ -976,6 +978,44 @@ export class SectionsComponent implements OnInit {
     }
       this._setEditMode(true);
     }
+  }
+
+  handleTypeChange(ev: Event, attr: Attribute){
+    if(ev.toString()==='table'){
+      if(attr.fieldValue.trim() === ''){
+        attr.fieldTableValue = [];
+        const data = new TableData();
+        data.name = "Row";
+        data.columns = [];
+
+        for(let i=0; i< 5; i++){
+          const col = new ColumnData();
+          col.name = "Column " + (i+1);
+          col.value = '';
+          data.columns.push(col);
+        }
+
+        attr.fieldTableValue.push(data);
+      }
+    }
+  }
+
+  addColumn(attr: Attribute){
+       for(let row of attr.fieldTableValue) {
+
+        const col = new ColumnData();
+          col.name = "New Column";
+          col.value = '';
+        row.columns.push(col);
+       }
+  }
+
+  addRow(attr: Attribute){
+       const row = new TableData();
+       row.name = 'New Row';
+       row.columns = attr.fieldTableValue[0].columns;
+
+       attr.fieldTableValue.push(row);
   }
 
 

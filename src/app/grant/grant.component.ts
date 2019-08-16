@@ -10,6 +10,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
+import {DataService} from '../data.service';
 import {
     ActionAuthorities, AttachmentTemplates,
     Attribute, Doc,
@@ -71,6 +72,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grantToUpdate: Grant;
     erroredElement: ElementRef;
     erroredField: string;
+    currentGrantId = 0;
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -87,6 +89,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     @ViewChild('container') container: ElementRef;
 
     constructor(private grantData: GrantDataService
+        , private dataService: DataService
         , private submissionData: SubmissionDataService
         , private route: ActivatedRoute
         , private router: Router
@@ -353,6 +356,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     //this.grantData.changeMessage(grant);
+                    this.dataService.changeMessage(grant.id);
                     this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
@@ -847,7 +851,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         grant.substatus = this.appComp.appConfig.submissionInitialStatus;
 
         grant.id = 0 - Math.round(Math.random() * 10000000000);
-
+        this.dataService.changeMessage(grant.id);
         const st = new Date;
         grant.startDate = st;
         grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
@@ -980,6 +984,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             this._setEditMode(true);
         }
     }
+
 
     openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
 

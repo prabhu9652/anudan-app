@@ -4,17 +4,10 @@
     <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
     <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
     <div class="row">
-    <div class="col-10 text-left" style="display: flex;align-items: center;justify-content: flex-start;">
-                    <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
+    <div class="col-2 text-right">
+      <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
         <mat-icon>add_box</mat-icon>Add new Section</a>
-                    <a *ngIf="canManage" mat-stroked-button (click)="confirm(section.id,0,[],0,'section','section')" >
-                      <mat-icon>delete</mat-icon>Delete Section
-                    </a>
-                    <a *ngIf="canManage" mat-stroked-button (click)="addNewFieldToSection(section.id,section.sectionName)" >
-                      <mat-icon>add_circle_outline</mat-icon>Add New Field
-                    </a>
-                    
-                  </div>
+    </div>
     </div>
   </div>
 
@@ -68,7 +61,14 @@
                                      matInput placeholder="Section Name" class="anu-input">
                     </mat-form-field>
                   </div>
-                  
+                  <div class="col-2 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+                    
+                    <a class="mr-2 text-gray" 
+                       (click)="confirm(section.id,0,[],0,'section','section')"><i
+                            class="fa fa-trash"></i></a>
+                    <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+                       class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
+                  </div>
                 </div>
                 <hr>
                 <div>
@@ -93,6 +93,15 @@
                                    matInput placeholder="Field Name">
                           </mat-form-field>
                         </div>
+                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='table'">
+                          <mat-form-field>
+
+                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   (ngModelChange)="checkGrant()"
+                                   matInput placeholder="Field Name">
+                          </mat-form-field>
+                        </div>
                         <div class="col-sm-4 col-lg-12" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
 
@@ -107,7 +116,7 @@
                             <mat-label>Type</mat-label>
                             <mat-select [(ngModel)]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}"
-                                        (ngModelChange)="checkGrant()">
+                                        (ngModelChange)="handleTypeChange($event,attribute)">
                               <mat-option value="none" aria-selected="true">--Select type
                                 of field--
                               </mat-option>
@@ -131,6 +140,53 @@
                                    (ngModelChange)="checkGrant()">
                           </mat-form-field>
                         </div>
+                        <div class="col-sm-12 col-lg-11 text-left" *ngIf="attribute.fieldType==='table'">
+                          
+                          <button (click)="addColumn(attribute)">Add Column</button>
+                          <button (click)="addRow(attribute)">Add Row</button>
+                          <div class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
+                          <table>
+                            <tr>
+                              <td width="20%" style="position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">&nbsp;</td>
+                            <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns">
+                              
+                                <td style="border: 1px solid #e4e4e4;">
+                                  <mat-form-field>
+                                    <input matInput [(ngModel)]="column.name" class="anu-input"
+                                           [required]="attribute.deletable?'required':''"
+                                           [ngModelOptions]="{standAlone:true}"
+                                           (ngModelChange)="checkGrant()">
+                                  </mat-form-field>
+                                </td>
+                              
+                            </ng-container>
+                            </tr>
+                            <ng-container *ngFor="let row of attribute.fieldTableValue">
+                              <tr>
+                                <td width="20%" style="position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">
+                                  <mat-form-field>
+                                    <textarea matInput [(ngModel)]="row.name" class="anu-input"
+                                           [required]="attribute.deletable?'required':''"
+                                           [ngModelOptions]="{standAlone:true}"
+                                           (ngModelChange)="checkGrant()"></textarea>
+                                  </mat-form-field>
+                                </td>
+                                <ng-container *ngFor="let column of row.columns">
+                                  <td style="border: 1px solid #e4e4e4;">
+                                    <mat-form-field>
+                                    <input matInput [(ngModel)]="column.value" class="anu-input"
+                                           [required]="attribute.deletable?'required':''"
+                                           [ngModelOptions]="{standAlone:true}"
+                                           (ngModelChange)="checkGrant()">
+                                  </mat-form-field>
+                                  </td>
+                                </ng-container>
+                              </tr>
+                            </ng-container>
+                          </table>
+                        </div>
+
+                        </div>
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
@@ -142,7 +198,7 @@
                         </div>
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
-                            <mat-label>Type</mat-label>
+                            <mat-label>Reporting Frequency</mat-label>
                             <mat-select [(ngModel)]="attribute.frequency"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}"
                                         (ngModelChange)="checkGrant()">

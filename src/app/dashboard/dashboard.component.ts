@@ -5,6 +5,7 @@ import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
+import {DataService} from '../data.service';
 import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
@@ -25,6 +26,7 @@ export class DashboardComponent implements OnInit {
   hasKpisToSubmit: boolean;
   kpiSubmissionDate: Date;
   kpiSubmissionTitle: string;
+  currentGrantId: number;
 
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
@@ -32,7 +34,8 @@ export class DashboardComponent implements OnInit {
               private route: ActivatedRoute,
               private data: GrantDataService,
               private toastr: ToastrService,
-              public grantComponent: GrantComponent) {
+              public grantComponent: GrantComponent,
+              private dataService: DataService) {
   }
 
   ngOnInit() {
@@ -40,6 +43,8 @@ export class DashboardComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     this.fetchDashboard(user.id);
+    this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+
   }
 
 
@@ -91,6 +96,7 @@ export class DashboardComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
+    this.dataService.changeMessage(grant.id);
     this.data.changeMessage(grant);
     this.router.navigate(['grant']);
   }

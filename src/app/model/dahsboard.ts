@@ -175,6 +175,7 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   fieldValue: string;
+  fieldTableValue: TableData[];
   target: string;
   frequency: string;
   deletable: boolean;
@@ -286,4 +287,14 @@ export class SerializationHelper {
 export class Notifications{
   id: number;
   message: string;
+}
+
+export class ColumnData{
+  name: string;
+  value: string;
+}
+
+export class TableData {
+  name: string;
+  columns: ColumnData[];
 }

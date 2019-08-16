@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
 import {GrantDataService} from '../../grant.data.service';
+import {DataService} from '../../data.service';
 import {Grant} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {GrantComponent} from "../../grant/grant.component";
@@ -28,22 +29,26 @@ export class AdminLayoutComponent implements OnInit {
   grantToUpdate: Grant;
   private yScrollStack: number[] = [];
   action: any;
+  currentGrantId: number;
+  subscription: any;
 
-  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService) {}
 
   ngOnInit() {
-  console.log('here');
+  this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+
   
-  interval(3000).subscribe(t => {
+  this.subscription = interval(10000).subscribe(t => {
 
       
      
         this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        /*if(this.currentGrant !== null){
+        if(this.currentGrant !== null){
           this.grantComponent.checkGrantPermissions();
-        }*/
+        }
         if(this.currentGrant !== null && this.currentGrant.name !== undefined){
-          this.grantComponent.saveGrant(this.currentGrant);
+          this.grantToUpdate.id = this.currentGrantId;
+          this.grantComponent.saveGrant(this.grantToUpdate);
         }
         
       
@@ -116,6 +121,16 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   showAllGrants() {
+
+    //this.subscription.unsubscribe();
+    //this.dataService.changeMessage(0);
+
+    if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+      this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+      this.grantToUpdate.id = this.currentGrantId;
+      this.grantComponent.saveGrant(this.grantToUpdate);
+    }
+
     this.appComponent.currentView = 'grants';
     this.router.navigate(['grants']);
   }
