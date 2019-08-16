@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {GrantTemplate} from '../../model/dahsboard';
 
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 
