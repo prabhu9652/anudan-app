@@ -10,6 +10,9 @@ import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
+import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
+import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +38,8 @@ export class GrantsComponent implements OnInit {
               private data: GrantDataService,
               private toastr: ToastrService,
               public grantComponent: GrantComponent,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -43,6 +47,21 @@ export class GrantsComponent implements OnInit {
     this.appComponent.loggedInUser = user;
     this.fetchDashboard(user.id);
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+  }
+
+  createGrant(){
+  const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
+      data: this.currentTenant.grantTemplates[0].name
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.grantComponent.createGrant();
+      } else {
+        dialogRef.close();
+      }
+    });
+    
   }
 
 
@@ -95,11 +114,8 @@ export class GrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-
-   this.dataService.changeMessage(grant.id);
-    this.data.changeMessage(grant);
-    this.router.navigate(['grant/basic-details']);
-    this.appComponent.currentView = 'grant';
-    
+        this.dataService.changeMessage(grant.id);
+        this.data.changeMessage(grant);
+        this.router.navigate(['grant']);
   }
 }

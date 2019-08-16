@@ -218,6 +218,7 @@ export class Grant {
   startDate: Date;
   stDate: string;
   endDate: Date;
+  duration: string;
   amount: number;
   enDate: string;
   submissions: Submission[];
@@ -228,9 +229,16 @@ export class Grant {
   representative: string;
 }
 
+export class GrantTemplate{
+  id: number;
+  name: string;
+  description: string
+}
+
 export class Tenant {
   name: string;
   grants: Grant[];
+  templates: GrantTemplate[];
 }
 
 export class Tenants {

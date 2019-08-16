@@ -10,6 +10,9 @@ import {Grant} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
+import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
+import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +38,8 @@ export class DashboardComponent implements OnInit {
               private data: GrantDataService,
               private toastr: ToastrService,
               public grantComponent: GrantComponent,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -96,8 +100,21 @@ export class DashboardComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-    this.dataService.changeMessage(grant.id);
-    this.data.changeMessage(grant);
-    this.router.navigate(['grant']);
+    
+
+    const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
+      data: title
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.changeMessage(grant.id);
+        this.data.changeMessage(grant);
+        this.router.navigate(['grant']);
+      } else {
+        dialogRef.close();
+      }
+    });
+  
   }
 }

@@ -26,6 +26,8 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+
 
 @Component({
   selector: 'app-basic',
@@ -50,6 +52,9 @@ export class BasicComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+  
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -84,6 +89,7 @@ export class BasicComponent implements OnInit {
 
   ngOnInit() {
 
+  
     /*interval(3000).subscribe(t => {
 
       console.log('Came here');
@@ -97,6 +103,9 @@ export class BasicComponent implements OnInit {
     });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    
+    this.setDateDuration();
+    
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
@@ -949,6 +958,7 @@ export class BasicComponent implements OnInit {
 
   checkGrant() {
   console.log('basic');
+  this.setDateDuration();
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
@@ -1117,5 +1127,15 @@ export class BasicComponent implements OnInit {
     this.currentKPIReportingType = event.value;
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
+  }
+
+  setDateDuration(){
+  if(this.currentGrant.startDate && this.currentGrant.endDate){
+      var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+      time = time + 86400001;
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2 });
+    }else{
+      this.currentGrant.duration = 'No end date';
+    }
   }
 }
