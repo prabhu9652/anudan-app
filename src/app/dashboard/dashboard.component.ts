@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
     
 
     const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
-      data: title
+      data: ""
     });
 
     dialogRef.afterClosed().subscribe(result => {

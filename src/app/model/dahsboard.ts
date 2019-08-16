@@ -238,7 +238,7 @@ export class GrantTemplate{
 export class Tenant {
   name: string;
   grants: Grant[];
-  templates: GrantTemplate[];
+  grantTemplates: GrantTemplate[];
 }
 
 export class Tenants {
