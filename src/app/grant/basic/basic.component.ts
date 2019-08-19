@@ -1163,9 +1163,9 @@ export class BasicComponent implements OnInit {
   manageDate(type: string, ev: Event, dt: string){
   //const dtParsed = ev.split('/');
     if(type==='start'){
-      this.currentGrant.startDate=new Date(ev);
+      this.currentGrant.startDate=new Date(ev.toString());
     }else if(type==='end'){
-      this.currentGrant.endDate=new Date(ev);
+      this.currentGrant.endDate=new Date(ev.toString());
     }
     this.setDateDuration();
   }
