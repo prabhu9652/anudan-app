@@ -363,7 +363,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                     this.checkGrantPermissions();
                     this.checkCurrentSubmission();
                     this.appComp.autosave = false;
-                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss a') + '     ';
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
                 },
                 error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -837,7 +837,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         $(scheduleModal).modal('show');
     }
 
-    createGrant() {
+    createGrant(template: string) {
+        this.appComp.selectedTemplate = template;
         this.appComp.currentView = 'grant';
         const grant = new Grant();
         grant.submissions = new Array<Submission>();
@@ -846,7 +847,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         grant.actionAuthorities.permissions.push('MANAGE');
 
         const tempOrg = new Organization();
-        grant.organization = this.appComp.appConfig.granteeOrgs[0];
+        //grant.organization = this.appComp.appConfig.granteeOrgs[0];
         grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
         grant.substatus = this.appComp.appConfig.submissionInitialStatus;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit,HostListener } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -11,7 +11,7 @@ import {DataService} from '../../data.service';
 import {Grant} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {GrantComponent} from "../../grant/grant.component";
-import {interval} from 'rxjs';
+import {interval, Subject} from 'rxjs';
 
 
 
@@ -31,14 +31,19 @@ export class AdminLayoutComponent implements OnInit {
   action: any;
   currentGrantId: number;
   subscription: any;
+  userActivity;
+  userInactive: Subject<any> = new Subject();
 
-  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService) {}
+  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService) {
+    this.setTimeout();
+    this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
+  }
 
   ngOnInit() {
   this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
 
   
-  this.subscription = interval(10000).subscribe(t => {
+  /*this.subscription = interval(20000).subscribe(t => {
 
       
      
@@ -52,7 +57,7 @@ export class AdminLayoutComponent implements OnInit {
         }
         
       
-    });
+    });*/
 
       this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
@@ -133,6 +138,31 @@ export class AdminLayoutComponent implements OnInit {
 
     this.appComponent.currentView = 'grants';
     this.router.navigate(['grants']);
+  }
+
+  setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+          this.grantToUpdate.id = this.currentGrantId;
+          this.grantComponent.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
   }
 
 }

@@ -10,7 +10,8 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  CustomDateAdapter
+  CustomDateAdapter,
+  Organization
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -21,13 +22,15 @@ import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval} from 'rxjs';
+import {interval, Observable} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
 
 
 export const APP_DATE_FORMATS = {
@@ -74,6 +77,10 @@ export class BasicComponent implements OnInit {
   erroredField: string;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
+  myControl: FormControl;
+  options: Organization[];
+  filteredOptions: Observable<Organization[]>;
   
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
@@ -109,21 +116,21 @@ export class BasicComponent implements OnInit {
 
   ngOnInit() {
 
-  
-    /*interval(3000).subscribe(t => {
-
-      console.log('Came here');
-      if (this.editMode) {
-        this.appComp.autosave = true;
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        this.saveGrant();
-      } else {
-        this.appComp.autosave = false;
-      }
-    });*/
-
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     
+    this.myControl = new FormControl(this.currentGrant.organization);
+
+    this.options = this.appComp.appConfig.granteeOrgs;
+
+    const orgs = this.options.slice();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : orgs)
+      );
+
+
     this.setDateDuration();
     
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -1112,7 +1119,7 @@ export class BasicComponent implements OnInit {
   }
 
 
-  setNewOrg(event: Event) {
+  setOrg(event: Event) {
     console.log(event);
   }
 
@@ -1169,4 +1176,36 @@ export class BasicComponent implements OnInit {
     }
     this.setDateDuration();
   }
+
+  private _filter(value: string): Organization[] {
+    const filterValue = value.toLowerCase();
+    const selectedOrg = this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+    if(selectedOrg.length === 0){
+    const newOrg = new Organization();
+    newOrg.id = 0 - Math.round(Math.random() * 1000000000);
+    newOrg.organizationType = 'GRANTEE';
+    newOrg.type = 'GRANTEE';
+    newOrg.name = value;
+    this.currentGrant.organization = newOrg;
+    }
+    
+    return selectedOrg;
+  }
+
+  displayFn = org => {
+  
+  if(org){
+      this.currentGrant.organization =org;
+
+    }
+  return org ? org.name : undefined;
+}
+
+  /*displayFn(org?: Organization): string | undefined {
+
+    if(org){
+      //this.currentGrant.organization =org;
+    }
+    return org ? org.name : undefined;
+  }*/
 }

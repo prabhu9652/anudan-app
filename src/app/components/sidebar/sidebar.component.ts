@@ -71,11 +71,25 @@ export class SidebarComponent implements OnInit {
 
 
   showMessages(){
+  $("#messagepopover").html('');
   for(let i=0; i< this.appComponent.notifications.length;i++){
-  $("#messagepopover").append('<p>'+this.appComponent.notifications[i].message+'</p>')
+    
+    if(!this.appComponent.notifications[i].read){
+      $("#messagepopover").append('<p>'+this.appComponent.notifications[i].message+'</p>');
+      $("#messagepopover").append('<button class="btn btn-sm">Mark as read</button>');
+    }else{
+      $("#messagepopover").html('');
+      $("#messagepopover").append('<p>No messages</p>');
+    }
   }
   
-  $("#messagepopover").css('display','block');
+  
+  if($("#messagepopover").css('display')==='none'){
+    $("#messagepopover").css('display','block');
+  }else{
+    $("#messagepopover").css('display','none');
+  }
+  
   }
 
 

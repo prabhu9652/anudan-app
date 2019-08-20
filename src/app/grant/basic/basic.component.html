@@ -85,13 +85,24 @@
                         </mat-form-field>
                     </div-->
                     <div class="col-6">
-                        <mat-form-field>
+                        <!--mat-form-field>
                             <mat-select placeholder="Grantee Organization" matInput [value]="currentGrant.organization.id"
                                         (selectionChange)="setNewOrg($event)" required class="anu-input">
                                 <mat-option *ngFor="let org of appComp.appConfig.granteeOrgs" [value]="org.id"
                                             (select)="org.id===currentGrant.organization.id">{{org.name}}</mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field-->
+                        <form class="example-form">
+                            <mat-form-field>
+                                <input type="text" matInput [formControl]="myControl" class="anu-input" [matAutocomplete]="auto" placeholder="Grantee Organization">
+                            </mat-form-field>
+
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option.name}}
+                              </mat-option>
+                            </mat-autocomplete>
+                        </form>
                     </div>
                     <div class="col-6">
                         <mat-form-field>
@@ -101,7 +112,9 @@
                                    type="text" autocomplete="off" class="anu-input">
                         </mat-form-field>
                     </div>
-                    <div class="col-6"></div>
+                    <div class="col-6">
+                        
+                    </div>
 
 
                 </div>

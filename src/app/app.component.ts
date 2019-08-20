@@ -4,8 +4,10 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus, Notifications} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization} from "./model/dahsboard";
 import {Time} from "@angular/common";
+import {interval} from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,8 @@ export class AppComponent implements AfterViewChecked{
     defaultSections: [],
     grantInitialStatus: new WorkflowStatus(),
     submissionInitialStatus: new WorkflowStatus(),
-    granteeOrgs: []
+    granteeOrgs: [],
+    selectedTemplate: ''
   };
 
   org: string;
@@ -54,6 +57,11 @@ export class AppComponent implements AfterViewChecked{
     } else {
       this.router.navigate(['/']);
     }
+
+
+    this.subscription = interval(10000).subscribe(t => {
+      this.initAppUI();      
+    });
 
   }
 

@@ -33,7 +33,8 @@ import {
     MatSidenavModule,
     MatRadioModule,
     MatTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatAutocompleteModule
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
@@ -53,6 +54,7 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         CommonModule,
         RouterModule.forChild(AdminLayoutRoutes),
         FormsModule,
+        ReactiveFormsModule,
         MatButtonModule,
         MatRippleModule,
         MatFormFieldModule,
@@ -73,7 +75,8 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         MatRadioModule,
         MatTableModule,
         MatProgressSpinnerModule,
-        NgxGraphModule
+        NgxGraphModule,
+        MatAutocompleteModule
     ],
     declarations: [
         GrantComponent,

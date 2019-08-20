@@ -1,5 +1,5 @@
 <!-- <div class="row align-items-center"> -->
-<div class="container mt--8 pb-5">
+<div class="container mt--8 pb-5" style="background: #d4d4d4;">
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card shadow border-0 d-xl-flex justify-content-center">
@@ -7,7 +7,7 @@
         <div class="card-body px-lg-5 py-lg-5">
           <div class="card-img-top">
             <img [src]="appComponent.appConfig.logoUrl" alt="logo">
-            <p>Simplify your grant management workflow</p>
+            <p class="mt-4" style="font-size: 14px;">Simplify your grant management workflow</p>
           </div>
           <form id="formLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
@@ -20,7 +20,7 @@
                 </div>
               </div>
                 <input required type="text" class="form-control form-control-sm" id="emailId" data-html="true"
-                       placeholder="Email Id" formControlName="emailId" autocomplete="current-password" (focus)="showPopover('hello')">
+                       placeholder="Email Address" formControlName="emailId" autocomplete="current-password" (focus)="showPopover('hello')">
 
               </div>
               <!-- <div *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)"
@@ -44,13 +44,20 @@
             </div>
 
 
-            <button id="btn-signin" class="btn anu-btn" type="submit" [disabled]="!loginForm.valid">Sign In</button>
+            <button id="btn-signin" class="btn anu-btn" style="background: #4DC252" type="submit" [disabled]="!loginForm.valid">Sign In</button>
           </form>
-          <div class="btn btn-sm btn-social btn-google" (click)="signInWithGoogle()">
-            <span class="fa fa-google"></span>
+          <hr>
+          <div class="row">
+            <div class="col-6" style="display: flex;align-items: center;justify-content: flex-end;">Or signin with</div>
+            <div class="col-6 text-left">
+              <div class="btn btn-sm btn-social btn-google" (click)="signInWithGoogle()">
+                <span class="fa fa-google"></span>
+              </div>
+            </div>
           </div>
+          
           <div class="card-footer text-center">
-              <div class="text-center w-100" (click)="signup()">Seeking grants? Sign up now!</div>
+              <div class="w-100">Dont have an account yet?<a class="ml-2 text-warning" (click)="signup()">Sign up now!</a></div>
           </div>
         </div>
       </div>

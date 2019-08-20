@@ -7,6 +7,8 @@ export class Organization {
   id: number;
   name: string;
   code: string;
+  organizationType: string;
+  type: string;
   createdAt: Date;
   createdBy: string;
   type: string;
@@ -296,6 +298,8 @@ export class SerializationHelper {
 export class Notifications{
   id: number;
   message: string;
+  read: boolean;
+  postedOn: Date;
 }
 
 export class ColumnData{

@@ -56,7 +56,7 @@ export class GrantsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.grantComponent.createGrant();
+        this.grantComponent.createGrant(this.currentTenant.grantTemplates[0].name);
       } else {
         dialogRef.close();
       }
@@ -106,10 +106,27 @@ export class GrantsComponent implements OnInit {
     },
         error1 => {
       const errorMsg = error1 as HttpErrorResponse;
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true,
-            positionClass: 'toast-top-center'
-          });
+          if(errorMsg.error.message === 'Token Expired'){
+            const logoutMsg = this.toastr.error("<p>Your session is expired. Please log back in</p>", errorMsg.error.messageTitle, {
+              allowHtml: true,
+              tapToDismiss: false,
+              timeOut: 30000,
+              positionClass: 'toast-bottom-center'
+            });
+            setTimeout(() => 
+            {
+                this.toastr.clear();   
+                this.appComponent.logout();
+            },
+            5000);
+            
+          }else {
+            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+              enableHtml: true,
+              positionClass: 'toast-top-center'
+            });
+          }
+          
         });
   }
 
