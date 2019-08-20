@@ -11,7 +11,6 @@ export class Organization {
   type: string;
   createdAt: Date;
   createdBy: string;
-  type: string;
 }
 
 export class GrantorOrganization {

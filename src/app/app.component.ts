@@ -59,7 +59,7 @@ export class AppComponent implements AfterViewChecked{
     }
 
 
-    this.subscription = interval(10000).subscribe(t => {
+    interval(10000).subscribe(t => {
       this.initAppUI();      
     });
 
