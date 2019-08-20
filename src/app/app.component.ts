@@ -27,6 +27,7 @@ export class AppComponent implements AfterViewChecked{
   sectionAdded = false;
   sectionUpdated = false;
   notifications = [];
+  selectedTemplate: '';
 
   public appConfig: AppConfig = {
     appName: '',
@@ -37,8 +38,7 @@ export class AppComponent implements AfterViewChecked{
     defaultSections: [],
     grantInitialStatus: new WorkflowStatus(),
     submissionInitialStatus: new WorkflowStatus(),
-    granteeOrgs: [],
-    selectedTemplate: ''
+    granteeOrgs: []
   };
 
   org: string;

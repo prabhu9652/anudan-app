@@ -107,8 +107,7 @@ export class GrantsComponent implements OnInit {
         error1 => {
       const errorMsg = error1 as HttpErrorResponse;
           if(errorMsg.error.message === 'Token Expired'){
-            const logoutMsg = this.toastr.error("<p>Your session is expired. Please log back in</p>", errorMsg.error.messageTitle, {
-              allowHtml: true,
+            const logoutMsg = this.toastr.error("Your session is expired. Please log back in", errorMsg.error.messageTitle, {
               tapToDismiss: false,
               timeOut: 30000,
               positionClass: 'toast-bottom-center'
