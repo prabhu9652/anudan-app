@@ -27,7 +27,7 @@ export class AppComponent implements AfterViewChecked{
   sectionAdded = false;
   sectionUpdated = false;
   notifications = [];
-  selectedTemplate: '';
+  selectedTemplate = '';
 
   public appConfig: AppConfig = {
     appName: '',
