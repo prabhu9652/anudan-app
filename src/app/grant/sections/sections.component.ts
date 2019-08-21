@@ -28,7 +28,6 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
-import {OrderByPipe} from './orderby';
 
 @Component({
   selector: 'app-sections',
