@@ -1185,8 +1185,10 @@ export class BasicComponent implements OnInit {
     newOrg.id = 0 - Math.round(Math.random() * 1000000000);
     newOrg.organizationType = 'GRANTEE';
     newOrg.type = 'GRANTEE';
-    newOrg.name = value;
-    this.currentGrant.organization = newOrg;
+    newOrg.name = 'Create Grantee organization as ' + value;
+    //this.currentGrant.organization = newOrg;
+    selectedOrg.push(newOrg);
+
     }
     
     return selectedOrg;
@@ -1195,6 +1197,9 @@ export class BasicComponent implements OnInit {
   displayFn = org => {
   
   if(org){
+      if(org.name.startsWith('Create Grantee organization as ')){
+        org.name = org.name.replace('Create Grantee organization as ','');
+      }
       this.currentGrant.organization =org;
 
     }

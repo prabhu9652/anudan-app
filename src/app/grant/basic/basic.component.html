@@ -103,7 +103,7 @@
                                 <input type="text" matInput [formControl]="myControl" class="anu-input" [matAutocomplete]="auto" placeholder="Grantee Organization">
                             </mat-form-field>
 
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" autoActiveFirstOption>
                               <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                 {{option.name}}
                               </mat-option>
