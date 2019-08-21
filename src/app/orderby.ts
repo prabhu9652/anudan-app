@@ -4,6 +4,9 @@ import { Pipe,PipeTransform } from "@angular/core";
 
   name: "orderby"
 })
+@Injectable({
+  providedIn: 'root',
+})
 export class OrderByPipe implements PipeTransform {
   transform(array:Array<any>, args?) {
     if(array) {
