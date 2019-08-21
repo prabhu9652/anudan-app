@@ -71,13 +71,13 @@
                 </div>
                 <hr>
                 <div>
-                  <ng-container *ngFor="let attribute of section.attributes">
+                  <ng-container #sectionsContainer *ngFor="let attribute of section.attributes">
                     <div class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>
 
-                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
@@ -86,7 +86,7 @@
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
-                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
@@ -95,7 +95,7 @@
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='table'">
                           <mat-form-field>
 
-                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
@@ -104,7 +104,7 @@
                         <div class="col-sm-4 col-lg-12" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
 
-                            <input [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="KPI Title">
@@ -222,8 +222,7 @@
                         </div>
                         <div class="col-sm-1 col-lg-1"
                              style="display: flex;align-items: center;">
-                          <mat-icon *ngIf="attribute.deletable"
-                                    (click)="confirm(section.id,attribute.id,[],0,'field','field')"
+                          <mat-icon (click)="confirm(section.id,attribute.id,[],0,'field','field')"
                                     aria-hidden="false"
                                     aria-label="Example home icon" inline="true">
                             delete_outline

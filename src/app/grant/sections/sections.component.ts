@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, AfterViewChecked} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -34,7 +34,7 @@ import {SidebarComponent} from '../../components/sidebar/sidebar.component';
   styleUrls: ['./sections.component.scss'],
   providers: [SidebarComponent, DataService]
 })
-export class SectionsComponent implements OnInit {
+export class SectionsComponent implements OnInit, AfterViewChecked {
 
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
@@ -53,6 +53,7 @@ export class SectionsComponent implements OnInit {
   erroredElement: ElementRef;
   erroredField: string;
   action: string;
+  newField: any;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -130,6 +131,12 @@ export class SectionsComponent implements OnInit {
     $('#createKpiModal').on('shown.bs.modal', function (event) {
       $('#kpiDescription').focus();
     });
+  }
+
+  ngAfterViewChecked() {
+    if(this.newField){
+      this.scrollTo(this.newField);
+    }
   }
 
   private checkGrantPermissions() {
@@ -433,6 +440,7 @@ export class SectionsComponent implements OnInit {
     $(titleElem).html(sectionName + ' - Create new field');
     $(idHolderElem).val(sectionId);
     $(createFieldModal).modal('show');*/
+    const id = 0 - Math.round(Math.random() * 1000000000);
     for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
         const newAttr = new Attribute();
@@ -441,12 +449,21 @@ export class SectionsComponent implements OnInit {
         newAttr.fieldValue = '';
         newAttr.deletable = true;
         newAttr.required = false;
-        newAttr.id = 0 - Math.round(Math.random() * 1000000000);
+        newAttr.id = id
         section.attributes.push(newAttr);
         break;
       }
     }
     this.checkGrant(null);
+    this.newField = 'field_' + id;
+  }
+
+  scrollTo(uniqueID){
+
+    const elmnt = document.getElementById(uniqueID); // let if use typescript
+    elmnt.scrollIntoView(true); // this will scroll elem to the top
+    elmnt.focus();
+    this.newField = null;
   }
 
 
