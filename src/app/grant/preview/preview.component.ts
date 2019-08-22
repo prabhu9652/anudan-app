@@ -139,17 +139,17 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(): void {
+  /*ngAfterViewInit(): void {
     const firstCol = $('.first-column');
     if (firstCol.length) {
       this.firstColumnInitialPosition = firstCol.position().left;
     }
-  }
+  }*/
 
-  ngAfterContentChecked(): void {
+  /*ngAfterContentChecked(): void {
     this._adjustHeights();
     //this._setFlowButtonColors();
-  }
+  }*/
 
   rememberScrollPosition(event: Event) {
     console.log(event);
@@ -1135,5 +1135,34 @@ export class PreviewComponent implements OnInit {
             console.log(data);
             window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
         });
+    }
+
+    getTabularData(elemId: number, data: string){
+      let html = '<table width="100%" border="1"><tr>';
+      const tabData = JSON.parse(data);
+      html += '<td>&nbsp;</td>'; 
+      for(let i=0; i< tabData[0].columns.length;i++){
+       
+          
+          if(tabData[0].columns[i].name.trim() !== ''){         
+            html+='<td>' + tabData[0].columns[i].name + '</td>';
+          }   
+      }
+      html += '</tr>';
+      for(let i=0; i< tabData.length;i++){
+       
+          html += '<tr><td>' + tabData[i].name + '</td>';
+          for(let j=0; j < tabData[i].columns.length; j++){
+            if(tabData[i].columns[j].name.trim() !== ''){  
+              html+='<td>' + tabData[i].columns[j].value + '</td>';
+            }
+          }
+          html += '</tr>';
+      }
+
+      html += '</table>'
+      //document.getElementById('attribute_' + elemId).innerHTML = '';
+      //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+      return html;
     }
 }

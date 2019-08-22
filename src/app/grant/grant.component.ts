@@ -860,6 +860,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         et = new Date(et.setFullYear(et.getFullYear() + 1));
         grant.endDate = et;
         grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');*/
+        grant.stDate = '';
+        grant.enDate = '';
 
 
         grant.kpis = new Array<Kpi>();

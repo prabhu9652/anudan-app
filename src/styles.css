@@ -129,7 +129,7 @@ mat-sidenav {
   max-width: 25rem;
 }
 .cdk-overlay-container{
-  z-index: 1040;
+  z-index: 1060;
 }
 @media all and (max-width: 240px) {
   .toast-top-center {
