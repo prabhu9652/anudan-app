@@ -853,13 +853,13 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         grant.id = 0 - Math.round(Math.random() * 10000000000);
         this.dataService.changeMessage(grant.id);
-        const st = new Date;
+        /*const st = new Date;
         grant.startDate = st;
         grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
         let et = new Date();
         et = new Date(et.setFullYear(et.getFullYear() + 1));
         grant.endDate = et;
-        grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');
+        grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');*/
 
 
         grant.kpis = new Array<Kpi>();
