@@ -97,6 +97,7 @@ export class PreviewComponent implements OnInit {
     });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    console.log(this.currentGrant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 

@@ -1,7 +1,7 @@
 <div class="row anu-container">
 
   <div class="col-12 bg-white" style="position: sticky;top: 20px;z-index: 1040;">
-    <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
+    <span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
     <div class="row">
     <div class="col-2 text-right">
       <a *ngIf="canManage" mat-stroked-button (click)="addNewSection()" >
@@ -22,9 +22,31 @@
                     {{section.sectionName.toLocaleUpperCase()}}
                   </h4>
                 <ng-container *ngFor="let attribute of section.attributes">
-                  <ng-container *ngIf="attribute.fieldType==='string' || attribute.fieldType==='multiline'">
+                  <ng-container *ngIf="attribute.fieldType==='text' || attribute.fieldType==='multiline'">
                     <b>{{attribute.fieldName}}</b>
                     <div>{{attribute.fieldValue}}</div>
+                  </ng-container>
+                  <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
+                    <div class="col-sm-12 col-lg-12 text-left mb-3">
+                        <div class="row mx-2">
+                            <mat-form-field>
+                                <input matInput class="col-3" [value]="attribute.fieldName" placeholder="KPI">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput class="col-3" [value]="attribute.target" placeholder="Target/Goal">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput class="col-3" [value]="attribute.frequency" placeholder="Frequency">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="attribute.fieldType=='table'">
+                      <div class="col-sm-12 col-lg-12 mb-3">
+                          {{attribute.fieldName}}
+                          <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldValue)"></div>
+                      </div>
+
                   </ng-container>
                   <mat-nav-list>
                     <ng-container *ngIf="attribute.fieldType==='document'">

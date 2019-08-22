@@ -1,9 +1,9 @@
 <div class="row anu-container">
-    <div class="w-100" style="position:sticky; top:0;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
+    <div class="w-100 p-2" style="position:sticky; top:65px;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
         <ng-container *ngIf="currentGrant.flowAuthorities">
             <div *ngFor="let flow of currentGrant.flowAuthorities">
                 <a mat-stroked-button (click)="submitGrant(flow.toStateId)"
-                   id="{{flow.action}}">{{flow.action}}</a>
+                   id="{{flow.action}}" class="mr-1">{{flow.action}}</a>
             </div>
         </ng-container>
         <ng-container *ngIf="currentSubmission">
@@ -19,20 +19,28 @@
         <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
-            <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
+            
 
             <!--MANAGEMENT SECTION-->
 
 
             <div class="row w-100">
-                <div class="col-12 mb-2">
-                    <img [src]="appComp.appConfig.logoUrl" alt="logo"/>
-                    <h4 class="ml-1 mb-3" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                <div class="col-12 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
+                    <div class="row">
+                        <div class="col-3">
+                            <img [src]="appComp.appConfig.logoUrl" alt="logo"/>
+                        </div>
+                        <div class="col-7 text-left pl-3" style="display: flex;align-items: center;">
+                            <h4 class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                        </div>
+                        <div class="col-2" style="display: flex;align-items: center;">
+                            <span class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 mb-2">
-                    Description:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.description}}</b></div>
-                </div>
+                
+
+                <hr>
                 <div class="col-6 mb-2">
                     Start Date:
                     <div class="ml-1 mb-3"><b>{{currentGrant.stDate}}</b></div>
@@ -110,10 +118,7 @@
                     </ng-container>
                 </div>
             </div>
-            <hr/>
-
-
-            <mat-divider></mat-divider>
+            
             
             
 
