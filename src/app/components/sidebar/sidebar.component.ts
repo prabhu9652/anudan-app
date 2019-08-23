@@ -1,8 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@angular/core';
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
 import {Grant} from '../../model/dahsboard';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+
 
 declare const $: any;
 declare interface RouteInfo {
@@ -47,12 +49,15 @@ export class SidebarComponent implements OnInit {
   sectionMenuItems: any[];
   adminMenuItems: any[];
   currentGrant: Grant;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
 
   action: number;
   sub: any;
 
 
-  constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef) {
+  constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef, private elRef: ElementRef) {
 
     
   }
@@ -72,15 +77,23 @@ export class SidebarComponent implements OnInit {
 
   showMessages(){
   $("#messagepopover").html('');
-  for(let i=0; i< this.appComponent.notifications.length;i++){
-    
-    if(!this.appComponent.notifications[i].read){
-      $("#messagepopover").append('<p>'+this.appComponent.notifications[i].message+'</p>');
-      $("#messagepopover").append('<button class="btn btn-sm">Mark as read</button>');
-    }else{
-      $("#messagepopover").html('');
-      $("#messagepopover").append('<p>No messages</p>');
+  if(this.appComponent.notifications.length === 0){
+    $("#messagepopover").append('<p>No messages</p>');
+  }else{
+    for(let i=0; i< this.appComponent.notifications.length;i++){
+      
+        const posted = this.appComponent.notifications[i].postedOn;
+       
+        var time = new Date().getTime() - new Date(posted).getTime();
+        
+        
+        $("#messagepopover").append('<div class="row"><div class="col-8"><p>'+this.appComponent.notifications[i].message+'</p><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div><div class="col-4"><button id="notificationBtn_' + this.appComponent.notifications[i].id + '" class="btn btn-sm">Mark as read</button></div></div>');
     }
+
+    $('[id^="notificationBtn_"]').on('click',function(ev){
+      console.log($(this).attr('id'));
+    });
+
   }
   
   
@@ -92,6 +105,9 @@ export class SidebarComponent implements OnInit {
   
   }
 
+  messageRead() {
+    console.log("Read");
+  }
 
   buildSectionsSideNav() {
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);

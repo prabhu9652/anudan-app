@@ -2,11 +2,11 @@
     <ul class="nav h-100">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item">
 
-            <ng-container *ngIf="appComponent.notifications.length>0">
-                <i id="messageIcon" class="material-icons float-right text-danger" (click)="showMessages()">notifications</i>
+            <ng-container *ngIf="appComponent.notifications.length > 0">
+                <mat-icon class="float-right mr-3 mt-3" [matBadge]="this.appComponent.notifications.length" matBadgeColor="warn" (click)="showMessages()">notifications</mat-icon>
             </ng-container>
-            <ng-container *ngIf="appComponent.notifications.length===0">
-                <i id="messageIcon" class="material-icons float-right">notifications_none</i>
+            <ng-container *ngIf="appComponent.notifications.length === 0">
+                <mat-icon class="float-right mr-3 mt-3" (click)="showMessages()">notifications_none</mat-icon>
             </ng-container>
             <img [src]="appComponent.appConfig.logoUrl" alt="logo">
             <a class="nav-link" (click)="showProfile()">

@@ -121,27 +121,6 @@ export class LoginComponent implements OnInit {
         } else {
           this.router.navigate(['/grants']);
         }
-
-        interval(5000).subscribe(t => {
-
-            url = '/api/user/' + this.user.id + '/notifications/';
-              const httpOptions = {
-                headers: new HttpHeaders({
-                  'Content-Type': 'application/json',
-                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                  'Authorization': localStorage.getItem('AUTH_TOKEN')
-                })
-              };
-
-              console.log('here');
-              this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
-                this.appComponent.notifications = notifications;
-
-
-              });
-    });
-
-        
       },
       error => {
         const errorMsg = error as HttpErrorResponse;

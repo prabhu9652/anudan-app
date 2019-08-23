@@ -688,6 +688,7 @@ export class PreviewComponent implements OnInit {
       /*this.loading = false;
       this.grantDataService.changeMessage(grant);
       this.router.navigate(['grant']);*/
+      this.grantData.changeMessage(grant);
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {

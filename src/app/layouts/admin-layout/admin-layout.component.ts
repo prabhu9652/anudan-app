@@ -11,7 +11,9 @@ import {DataService} from '../../data.service';
 import {Grant} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {GrantComponent} from "../../grant/grant.component";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval, Subject} from 'rxjs';
+
 
 
 
@@ -34,7 +36,7 @@ export class AdminLayoutComponent implements OnInit {
   userActivity;
   userInactive: Subject<any> = new Subject();
 
-  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService) {
+  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private http: HttpClient,) {
     this.setTimeout();
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
   }
@@ -96,7 +98,29 @@ export class AdminLayoutComponent implements OnInit {
           let ps = new PerfectScrollbar(elemMainPanel);
           ps = new PerfectScrollbar(elemSidebar);
       }
+
+
+      interval(5000).subscribe(t => {
+
+        
+            const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
+              const httpOptions = {
+                headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+              };
+
+              
+              this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+                this.appComponent.notifications = notifications;
+                console.log(this.appComponent.notifications);
+
+              });
+              });
   }
+
   ngAfterViewInit() {
       this.runOnRouteChange();
   }

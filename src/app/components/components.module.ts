@@ -6,7 +6,7 @@ import {FooterComponent} from './footer/footer.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
-import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule} from "@angular/material";
+import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule} from "@angular/material";
 
 @NgModule({
     imports: [
@@ -14,7 +14,8 @@ import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule} from "@ang
         RouterModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatIconModule
     ],
   declarations: [
     FooterComponent,
