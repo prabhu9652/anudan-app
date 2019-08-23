@@ -8,7 +8,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
-import {Grant} from '../../model/dahsboard';
+import {Grant, Notifications} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {GrantComponent} from "../../grant/grant.component";
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
