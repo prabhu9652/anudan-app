@@ -14,15 +14,15 @@
                     <div *ngIf="!hasTenant">There are no available grants currently.</div>
                     <div *ngIf="hasTenant">
 
-                            <mat-expansion-panel class="mb-3">
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsDraft.length > 0">
                                 <mat-expansion-panel-header style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
-                                    <i class="material-icons">assessment</i>Draft Grants
+                                    <i class="material-icons">assessment</i>Draft
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsInDraft; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index"
                                           (click)="manageGrant(grant)">
-                                    <ng-container *ngIf="grant.grantStatus.name === 'DRAFT'">
+                                    
                                     <div class="col-2">
                                         <img class="img-fluid" 
                                              [src]="'api/public/images/'+grant.grantorOrganization.imageName"
@@ -46,19 +46,18 @@
                                     <div class="col-1">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
                                     </div>
-                                </ng-container>
                                 </div>
                             </mat-expansion-panel>
 
-                            <mat-expansion-panel class="mb-3">
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsActive.length > 0">
                                 <mat-expansion-panel-header style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
-                                    <i class="material-icons">assessment</i>Grants under review
+                                    <i class="material-icons">assessment</i>Active
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsUnderReview; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
                                           (click)="manageGrant(grant)">
-                                    <ng-container *ngIf="grant.grantStatus.name === 'REVIEW PENDING' || grant.grantStatus.name === 'RETURNED'">
+                                   
                                     <div class="col-2">
                                         <img class="img-fluid" 
                                              [src]="'api/public/images/'+grant.grantorOrganization.imageName"
@@ -82,19 +81,17 @@
                                     <div class="col-1">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
                                     </div>
-                                </ng-container>
                                 </div>
                             </mat-expansion-panel>
 
-                            <mat-expansion-panel class="mb-3">
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsClosed.length > 0">
                                 <mat-expansion-panel-header style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
-                                    <i class="material-icons">assessment</i>Approved grants
+                                    <i class="material-icons">assessment</i>Closed
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsApproved; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
                                           (click)="manageGrant(grant)">
-                                    <ng-container *ngIf="grant.grantStatus.name === 'APPROVED'">
                                     <div class="col-2">
                                         <img class="img-fluid" 
                                              [src]="'api/public/images/'+grant.grantorOrganization.imageName"
@@ -118,7 +115,6 @@
                                     <div class="col-1">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
                                     </div>
-                                </ng-container>
                                 </div>
                             </mat-expansion-panel>
                             <!--mat-card *ngFor="let grant of currentTenant.grants; let i = index" class="mx-1"

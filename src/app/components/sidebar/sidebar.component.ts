@@ -27,7 +27,6 @@ export const ROUTES: RouteInfo[] = [
 export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/basic-details', title: 'Grant Header',  icon: 'description', class: '' },
     { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '' },
-    { path: '/grant/reporting', title: 'Monitoring & Evaluation',  icon: 'assessment', class: '' },
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
 
@@ -116,7 +115,7 @@ export class SidebarComponent implements OnInit {
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){
-        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName + section.id, icon: 'description', class:''});
+        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
       }
       
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);

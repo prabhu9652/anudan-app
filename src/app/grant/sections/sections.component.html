@@ -174,7 +174,6 @@
                                 <td style="border: 1px solid #e4e4e4;">
                                   <mat-form-field>
                                     <input matInput [(ngModel)]="column.name" class="anu-input"
-                                           [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
                                            placeholder="Column description" 
                                            (ngModelChange)="checkGrant()">
@@ -188,7 +187,6 @@
                                 <td width="20%" style="position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">
                                   <mat-form-field>
                                     <textarea matInput [(ngModel)]="row.name" class="anu-input"
-                                           [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
                                            placeholder="Row description" 
                                            (ngModelChange)="checkGrant()"></textarea>
@@ -198,7 +196,6 @@
                                   <td style="border: 1px solid #e4e4e4;">
                                     <mat-form-field>
                                     <input matInput [(ngModel)]="column.value" class="anu-input"
-                                           [required]="attribute.deletable?'required':''"
                                            [ngModelOptions]="{standAlone:true}"
                                            placeholder="Value" 
                                            (ngModelChange)="checkGrant()">
@@ -369,9 +366,6 @@
       <div class="">
         <button type="button" class="btn btn-primary pull-right"
                 (click)="saveSection()">Done
-        </button>
-        <button type="button" class="btn btn-warning pull-right"
-                (click)="saveSectionAndAddNew()">Save & Add New Section
         </button>
         <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 

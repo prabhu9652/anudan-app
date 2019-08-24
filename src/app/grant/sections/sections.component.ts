@@ -1030,7 +1030,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
        for(let row of attr.fieldTableValue) {
 
         const col = new ColumnData();
-          col.name = "New Column";
+          col.name = "";
           col.value = '';
         row.columns.push(col);
        }
@@ -1038,8 +1038,11 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
   addRow(attr: Attribute){
        const row = new TableData();
-       row.name = 'New Row';
-       row.columns = attr.fieldTableValue[0].columns;
+       row.name = '';
+       row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+       for(let i=0; i<row.columns.length;i++){
+        row.columns[i].value = '';
+       }
 
        attr.fieldTableValue.push(row);
   }

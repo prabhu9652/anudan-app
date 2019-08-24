@@ -696,6 +696,15 @@ export class PreviewComponent implements OnInit {
   }
 
   fetchCurrentGrant(){
+
+  const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
