@@ -690,15 +690,19 @@ export class PreviewComponent implements OnInit {
       this.router.navigate(['grant']);*/
       this.grantData.changeMessage(grant);
 
-      url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
+      this.fetchCurrentGrant();
+    });
+
+  }
+
+  fetchCurrentGrant(){
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });
-    });
-
   }
 
 
@@ -1139,9 +1143,9 @@ export class PreviewComponent implements OnInit {
         });
     }
 
-    getTabularData(elemId: number, data: string){
+    getTabularData(elemId: number, data: TableData){
       let html = '<table width="100%" border="1"><tr>';
-      const tabData = JSON.parse(data);
+      const tabData = data;
       html += '<td>&nbsp;</td>'; 
       for(let i=0; i< tabData[0].columns.length;i++){
        

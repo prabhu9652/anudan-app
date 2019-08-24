@@ -20,7 +20,7 @@
                                     <i class="material-icons">assessment</i>Draft Grants
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of currentTenant.grants; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsInDraft; let i = index"
                                           (click)="manageGrant(grant)">
                                     <ng-container *ngIf="grant.grantStatus.name === 'DRAFT'">
                                     <div class="col-2">
@@ -56,7 +56,7 @@
                                     <i class="material-icons">assessment</i>Grants under review
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of currentTenant.grants; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsUnderReview; let i = index"
                                           (click)="manageGrant(grant)">
                                     <ng-container *ngIf="grant.grantStatus.name === 'REVIEW PENDING' || grant.grantStatus.name === 'RETURNED'">
                                     <div class="col-2">
@@ -92,7 +92,7 @@
                                     <i class="material-icons">assessment</i>Approved grants
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of currentTenant.grants; let i = index"
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsApproved; let i = index"
                                           (click)="manageGrant(grant)">
                                     <ng-container *ngIf="grant.grantStatus.name === 'APPROVED'">
                                     <div class="col-2">

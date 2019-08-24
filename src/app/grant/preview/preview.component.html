@@ -107,7 +107,7 @@
                                     <ng-container *ngIf="attribute.fieldType=='table'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
                                             {{attribute.fieldName}}
-                                            <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldValue)"></div>
+                                            <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldTableValue)"></div>
                                         </div>
 
                                     </ng-container>

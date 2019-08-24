@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit,HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -10,9 +10,8 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {Grant, Notifications} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
-import {GrantComponent} from "../../grant/grant.component";
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {interval, Subject} from 'rxjs';
+import {interval} from 'rxjs';
 
 
 
@@ -21,8 +20,7 @@ import {interval, Subject} from 'rxjs';
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss'],
-  providers: [GrantComponent]
+  styleUrls: ['./admin-layout.component.scss']
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
@@ -33,33 +31,14 @@ export class AdminLayoutComponent implements OnInit {
   action: any;
   currentGrantId: number;
   subscription: any;
-  userActivity;
-  userInactive: Subject<any> = new Subject();
+  
 
-  constructor(private grantComponent: GrantComponent, private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private http: HttpClient,) {
-    this.setTimeout();
-    this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
+  constructor(private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private http: HttpClient,) {
+    
   }
 
   ngOnInit() {
   this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
-
-  
-  /*this.subscription = interval(20000).subscribe(t => {
-
-      
-     
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        if(this.currentGrant !== null){
-          this.grantComponent.checkGrantPermissions();
-        }
-        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
-          this.grantToUpdate.id = this.currentGrantId;
-          this.grantComponent.saveGrant(this.grantToUpdate);
-        }
-        
-      
-    });*/
 
       this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
@@ -157,36 +136,13 @@ export class AdminLayoutComponent implements OnInit {
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
       this.grantToUpdate.id = this.currentGrantId;
-      this.grantComponent.saveGrant(this.grantToUpdate);
+      //this.grantComponent.saveGrant(this.grantToUpdate);
     }
 
     this.appComponent.currentView = 'grants';
     this.router.navigate(['grants']);
   }
 
-  setTimeout() {
-    this.userActivity = setTimeout(() => {
-    this.userInactive.next(undefined);
-
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        if(this.currentGrant !== null){
-          this.grantComponent.checkGrantPermissions();
-        }
-        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
-          this.grantToUpdate.id = this.currentGrantId;
-          this.grantComponent.saveGrant(this.grantToUpdate);
-        }
-    }, 3000);
-    
-  }
-
-  //@HostListener('window:mousemove')
-  @HostListener('window:keyup', ['$event'])
-  //@HostListener('window:scroll', ['$event'])
-  @HostListener('document:click', ['$event'])
-  refreshUserState() {
-    clearTimeout(this.userActivity);
-    this.setTimeout();
-  }
+  
 
 }

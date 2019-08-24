@@ -116,7 +116,7 @@ export class SidebarComponent implements OnInit {
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){
-        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
+        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName + section.id, icon: 'description', class:''});
       }
       
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);

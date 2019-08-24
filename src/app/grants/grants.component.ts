@@ -30,6 +30,9 @@ export class GrantsComponent implements OnInit {
   kpiSubmissionDate: Date;
   kpiSubmissionTitle: string;
   currentGrantId: number;
+  grantsInDraft = [];
+  grantsUnderReview = [];
+  grantsApproved = [];
 
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
@@ -90,6 +93,13 @@ export class GrantsComponent implements OnInit {
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
 
         for (const grant of this.currentTenant.grants) {
+          if(grant.grantStatus.name === 'DRAFT'){
+            this.grantsInDraft.push(grant); 
+          }else if(grant.grantStatus.name === 'REVIEW PENDING' || grant.grantStatus.name === 'RETURNED'){
+            this.grantsUnderReview.push(grant);
+          }else if(grant.grantStatus.name === 'APPROVED'){
+            this.grantsApproved.push(grant);
+          }
           for (const submission of grant.submissions) {
             if (submission.flowAuthorities) {
               this.hasKpisToSubmit = true;

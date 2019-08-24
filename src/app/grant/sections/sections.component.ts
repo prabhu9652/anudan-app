@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild, Input, AfterViewChecked} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, AfterViewChecked, HostListener} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -22,7 +22,7 @@ import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval} from 'rxjs';
+import {interval, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
@@ -55,6 +55,9 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   erroredField: string;
   action: string;
   newField: any;
+
+  userActivity;
+  userInactive: Subject<any> = new Subject();
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -93,8 +96,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-  console.log("asdasdasdasdasd");
-  console.log(this.sidebar);
+  this.setTimeout();
+  this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
   //this.href = this.router.url;
 
@@ -353,13 +356,16 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     //this.grantData.changeMessage(grant);
+                    //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
-                    this.checkCurrentSubmission();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
                     this.appComp.autosave = false;
-                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss a') + '     ';
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
                 },
                 error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -988,10 +994,12 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       this._setEditMode(false);
     } else {
     //this.saveGrant(this.currentGrant);
-    this.appComp.sectionUpdated = true;
-    this.sidebar.buildSectionsSideNav();
-    this.grantData.changeMessage(this.currentGrant);
+    
+    //this.grantData.changeMessage(this.currentGrant);
     if(ev){
+      this.grantData.changeMessage(this.currentGrant);
+      this.appComp.sectionUpdated = true;
+      this.sidebar.buildSectionsSideNav();
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
       this._setEditMode(true);
@@ -1231,5 +1239,30 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
       return html;
     }
+
+    setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          //this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+          //this.grantToUpdate.id = this.currentGrantId;
+          this.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
 
 }

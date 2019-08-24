@@ -7,7 +7,8 @@ import {
     OnChanges,
     OnInit,
     SimpleChanges,
-    ViewChild
+    ViewChild,
+    HostListener
 } from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
 import {DataService} from '../data.service';
@@ -44,7 +45,7 @@ import {BottomsheetComponent} from '../components/bottomsheet/bottomsheet.compon
 import {DatePipe} from '@angular/common';
 import {BottomsheetAttachmentsComponent} from '../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from "../components/bottomsheetNotes/bottomsheetNotes.component";
-import {interval} from "rxjs";
+import {interval,Subject} from "rxjs";
 
 declare var $: any;
 
@@ -73,6 +74,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     erroredElement: ElementRef;
     erroredField: string;
     currentGrantId = 0;
+    userActivity;
+    userInactive: Subject<any> = new Subject();
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -105,7 +108,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.colors = new Colors();
     }
 
+
     ngOnInit() {
+
+    this.setTimeout();
+        this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
         /*interval(3000).subscribe(t => {
 
@@ -124,7 +131,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
         this.checkGrantPermissions();
-        this.checkCurrentSubmission();
+        if(this.currentGrant.submissions){
+            this.checkCurrentSubmission();
+        }
 
         $('#editFieldModal').on('shown.bs.modal', function (event) {
             $('#editFieldInput').focus();
@@ -355,13 +364,15 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    //this.grantData.changeMessage(grant);
+                    this.grantData.changeMessage(grant);
                     this.dataService.changeMessage(grant.id);
-                    this.currentGrant = grant;
+                    //this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
-                    this.checkCurrentSubmission();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
                     this.appComp.autosave = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
                 },
@@ -1150,4 +1161,29 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
     }
+
+    setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+          this.grantToUpdate.id = this.currentGrantId;
+          this.grantComponent.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
 }

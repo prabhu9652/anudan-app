@@ -95,6 +95,7 @@
                 <div>
                   <ng-container #sectionsContainer *ngFor="let attribute of section.attributes">
                     <div class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
+                      {{attribute.id}}
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>

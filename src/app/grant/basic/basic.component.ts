@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, HostListener} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -22,7 +22,7 @@ import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval, Observable} from 'rxjs';
+import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
@@ -61,7 +61,7 @@ export class BasicComponent implements OnInit {
   
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
-  currentGrant: Grant;
+  @Input() currentGrant: Grant;
   originalGrant: Grant;
   editMode = false;
   firstColumnInitialPosition: number;
@@ -81,6 +81,9 @@ export class BasicComponent implements OnInit {
   myControl: FormControl;
   options: Organization[];
   filteredOptions: Observable<Organization[]>;
+
+  userActivity;
+  userInactive: Subject<any> = new Subject();
   
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
@@ -114,9 +117,14 @@ export class BasicComponent implements OnInit {
     this.colors = new Colors();
   }
 
+  
   ngOnInit() {
 
+    this.setTimeout();
+    this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
+
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    console.log(this.currentGrant);
     
     this.myControl = new FormControl(this.currentGrant.organization);
 
@@ -351,42 +359,47 @@ export class BasicComponent implements OnInit {
     console.log(this.currentGrant);*/
   }
 
-  saveGrant() {
+  saveGrant(grantToSave: Grant) {
 
-    /*const errors = this.validateFields();
-    if (errors) {
-        this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
-        $(this.erroredElement).focus();
-    } else {*/
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
-    };
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        /*const errors = this.validateFields();
+        if (errors) {
+            this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
+            $(this.erroredElement).focus();
+        } else {*/
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
-        });
-    // }
-  }
+            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
+                    this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    this.grantData.changeMessage(grant);
+                    //this.dataService.changeMessage(grant.id);
+                    //this.currentGrant = grant;
+                    this._setEditMode(false);
+                    this.currentSubmission = null;
+                    this.checkGrantPermissions();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
+                    this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                },
+                error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                        enableHtml: true
+                    });
+                });
+        // }
+    }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
@@ -1206,11 +1219,29 @@ export class BasicComponent implements OnInit {
   return org ? org.name : undefined;
 }
 
-  /*displayFn(org?: Organization): string | undefined {
+setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
 
-    if(org){
-      //this.currentGrant.organization =org;
-    }
-    return org ? org.name : undefined;
-  }*/
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          //this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+          //this.grantToUpdate.id = this.currentGrantId;
+          this.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
+  
 }
