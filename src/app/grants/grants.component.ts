@@ -89,6 +89,7 @@ export class GrantsComponent implements OnInit {
       // this.tenants = tenants;
         if (this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
+        this.appComponent.currentTenant = this.currentTenant;
         this.hasTenant = true;
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
 

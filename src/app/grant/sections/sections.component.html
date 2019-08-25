@@ -105,7 +105,7 @@
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
                           </mat-form-field>
-                        </div>
+                        </div>                      
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
@@ -145,6 +145,7 @@
                               <mat-option value="multiline">Descriptive</mat-option>
                               <mat-option value="kpi">Measurement/KPI</mat-option>
                               <mat-option value="table">Tablular</mat-option>
+                              <mat-option value="document">Document</mat-option>
                               <!--mat-op
                               <!--mat-op
                               <!--mat-option value="document">Document</mat-option-->
@@ -240,38 +241,40 @@
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"></textarea>
                         </div>
+                        <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='document'">
+                                   <form class="example-form">
+                                      <mat-form-field class="example-chip-list">
+                                        <mat-chip-list #chipList aria-label="Fruit selection">
+                                          <mat-chip
+                                            *ngFor="let fruit of fruits"
+                                            [selectable]="selectable"
+                                            [removable]="removable"
+                                            (removed)="remove(attribute, fruit)">
+                                            {{fruit.name}}
+                                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                          </mat-chip>
+                                          <input class="anu-input"
+                                            placeholder="New fruit..."
+                                            #fruitInput
+                                            [formControl]="myControl"
+                                            [matAutocomplete]="auto"
+                                            [matChipInputFor]="chipList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            [matChipInputAddOnBlur]="addOnBlur"
+                                            (matChipInputTokenEnd)="add($event)">
+                                        </mat-chip-list>
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(attribute, $event)">
+                                          <mat-option *ngFor="let doc of filteredOptions | async" [value]="doc">
+                                            {{doc.name}}
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                      </mat-form-field>
+                                  </form>
+                        </div>
                         <div class="col-sm-1 col-lg-1"
                              style="display: flex;align-items: center;">
                           <mat-icon (click)="confirm(section.id,attribute.id,[],0,'field','field')"
                                     aria-hidden="false"
-                                    aria-label="Example home icon" inline="true">
-                            delete_outline
-                          </mat-icon>
-                        </div>
-                      </ng-container>
-                      <ng-container *ngIf="attribute.fieldType=='document'">
-                        <div class="col-sm-7 col-lg-7">
-                          <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
-                            <b class="">{{attribute.fieldName}}</b>
-                          </a>
-                        </div>
-                        <div class="col-sm-4 col-lg-4">
-                          <mat-form-field>
-                            <mat-label>Type</mat-label>
-                            <mat-select [(ngModel)]="attribute.fieldType" class="anu-input"
-                                        [ngModelOptions]="{standAlone:true}"
-                                        (ngModelChange)="checkGrant()">
-                              <mat-option value="none" aria-selected="true">--Select type
-                                of field--
-                              </mat-option>
-                              <mat-option value="text">Text</mat-option>
-                              <mat-option value="document">Document</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-sm-1 col-lg-1"
-                             style="display: flex;align-items: center;">
-                          <mat-icon (click)="deleteFieldEntry()" aria-hidden="false"
                                     aria-label="Example home icon" inline="true">
                             delete_outline
                           </mat-icon>

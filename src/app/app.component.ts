@@ -4,7 +4,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus, Notifications, Organization} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization, Tenant} from "./model/dahsboard";
 import {Time} from "@angular/common";
 import {interval} from 'rxjs';
 
@@ -28,6 +28,7 @@ export class AppComponent implements AfterViewChecked{
   sectionUpdated = false;
   notifications = [];
   selectedTemplate = '';
+  currentTenant: Tenant;
 
   public appConfig: AppConfig = {
     appName: '',

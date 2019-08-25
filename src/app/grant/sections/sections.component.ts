@@ -10,7 +10,7 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData
+  TableData, ColumnData, TemplateLibrary
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -22,12 +22,20 @@ import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval, Subject} from 'rxjs';
+import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+
+
+
 
 @Component({
   selector: 'app-sections',
@@ -56,6 +64,20 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   action: string;
   newField: any;
 
+  myControl: FormControl;
+  options: TemplateLibrary[];
+  filteredOptions: Observable<TemplateLibrary[]>;
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  fruits: TemplateLibrary[] = [];
+  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
   userActivity;
   userInactive: Subject<any> = new Subject();
 
@@ -72,6 +94,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -99,19 +123,26 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   this.setTimeout();
   this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
-  //this.href = this.router.url;
+  this.myControl = new FormControl();
 
-    /*interval(3000).subscribe(t => {
+    this.options = this.appComp.currentTenant.templateLibrary;
 
-      console.log('Came here');
-      if (this.editMode) {
-        this.appComp.autosave = true;
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        this.saveGrant();
-      } else {
-        this.appComp.autosave = false;
-      }
-    });*/
+    const docs = this.options.slice();
+    /*this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value),
+        map(name => name ? this._filter(name) : docs)
+      );*/
+
+      this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value),
+        map(name => name ? this._filter(name) : docs)
+      );
+      
+
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -451,7 +482,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
         const newAttr = new Attribute();
-        newAttr.fieldType = 'text';
+        newAttr.fieldType = 'multiline';
         newAttr.fieldName = '';
         newAttr.fieldValue = '';
         newAttr.deletable = true;
@@ -1271,5 +1302,62 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     clearTimeout(this.userActivity);
     this.setTimeout();
   }
+
+  private _filter(value: string): TemplateLibrary[] {
+    const filterValue = value.toLowerCase();
+    const selectedDoc = this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+    
+    
+    return selectedDoc;
+  }
+
+  displayFn = doc => {
+  
+  
+  return doc ? doc.name : undefined;
+}
+
+////////////////////////
+add(event: MatChipInputEvent): void {
+    // Add fruit only when MatAutocomplete is not open
+    // To make sure this does not conflict with OptionSelected Event
+    if (!this.matAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      // Add our fruit
+      if ((value || '')) {
+        const index = this.fruits.findIndex((a) => a.name===value);
+        this.fruits.push(this.options[index]);
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.myControl.setValue(null);
+    }
+  }
+
+
+  remove(attribute: Attribute, fruit: TemplateLibrary) {
+    const index = this.fruits.findIndex((a) => a.id===fruit.id);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+      attribute.fieldValue = JSON.stringify(this.fruits);
+      console.log(this.currentGrant);
+    }
+  }
+
+  selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
+    this.fruits.push(event.option.value);
+    attribute.fieldValue = JSON.stringify(this.fruits);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+ 
 
 }

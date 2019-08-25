@@ -241,6 +241,7 @@ export class Tenant {
   name: string;
   grants: Grant[];
   grantTemplates: GrantTemplate[];
+  templateLibrary: TemplateLibrary[];
 }
 
 export class Tenants {
@@ -309,6 +310,15 @@ export class ColumnData{
 export class TableData {
   name: string;
   columns: ColumnData[];
+}
+
+export class TemplateLibrary{
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  version: number;
+  granterId: number;
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {
