@@ -1179,7 +1179,11 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   deleteSection(secId: number) {
     const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
+    this.grantData.changeMessage(this.currentGrant);
     this.checkGrant(null);
+
+    const path = this.sidebar.buildSectionsSideNav();
+    this.router.navigate([path]);
   }
 
   handleSpacebar(ev: Event) {

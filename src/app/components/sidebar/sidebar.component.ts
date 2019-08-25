@@ -108,7 +108,7 @@ export class SidebarComponent implements OnInit {
     console.log("Read");
   }
 
-  buildSectionsSideNav() {
+  buildSectionsSideNav(): string {
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
   SECTION_ROUTES = [];
   if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
@@ -120,8 +120,11 @@ export class SidebarComponent implements OnInit {
       
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);
       this.appComponent.sectionAdded = false;
+      return SECTION_ROUTES[0].path;
     }
   }
+
+
   isMobileMenu() {
       if ($(window).width() > 6000) {
           return false;

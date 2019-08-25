@@ -419,7 +419,7 @@ export class BasicComponent implements OnInit {
   }
 
 
-  saveSubmissionAndMove(toStateId: number) {
+  /*saveSubmissionAndMove(toStateId: number) {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -439,7 +439,7 @@ export class BasicComponent implements OnInit {
 
     this.saveGrant();
 
-    /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+    let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/submission/flow/'
         + this.currentSubmission.submissionStatus.id + '/' + toStateId;
 
@@ -461,8 +461,8 @@ export class BasicComponent implements OnInit {
           this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
             enableHtml: true
           });
-        });*/
-  }
+        });
+  }*/
 
   addNewFieldToSection(sectionId: string, sectionName: string) {
     /*const createFieldModal = this.createFieldModal.nativeElement;

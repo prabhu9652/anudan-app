@@ -1168,11 +1168,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
         if(this.currentGrant !== null){
-          this.grantComponent.checkGrantPermissions();
+          this.checkGrantPermissions();
         }
         if(this.currentGrant !== null && this.currentGrant.name !== undefined){
           this.grantToUpdate.id = this.currentGrantId;
-          this.grantComponent.saveGrant(this.grantToUpdate);
+          this.saveGrant(this.grantToUpdate);
         }
     }, 3000);
     

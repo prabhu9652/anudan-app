@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,TableData
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -1152,7 +1152,7 @@ export class PreviewComponent implements OnInit {
         });
     }
 
-    getTabularData(elemId: number, data: TableData){
+    getTabularData(elemId: number, data: TableData[]){
       let html = '<table width="100%" border="1"><tr>';
       const tabData = data;
       html += '<td>&nbsp;</td>'; 
