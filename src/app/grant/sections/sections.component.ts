@@ -1320,7 +1320,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     this.setTimeout();
   }
 
-  private _filter(value: string): TemplateLibrary[] {
+  private _filter(value: any): TemplateLibrary[] {
     let filterValue;
     if(typeof value==='string'){
       filterValue = value.toLowerCase();
