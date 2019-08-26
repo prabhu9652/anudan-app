@@ -135,16 +135,33 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         map(name => name ? this._filter(name) : docs)
       );*/
 
-      this.filteredOptions = this.myControl.valueChanges
+      
+      
+
+
+    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+    for(let section of this.currentGrant.grantDetails.sections){
+      for(let attribute of section.attributes){
+        if(attribute.fieldType === 'document'){
+          let frt = JSON.parse(attribute.fieldValue);
+          if(frt.length > 0){
+            for(let i=0; i< frt.length; i++){
+              this.fruits.push(frt[i]);
+            }
+          }
+          
+        }
+      }
+    }
+
+    this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : value),
         map(name => name ? this._filter(name) : docs)
       );
-      
 
-
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
@@ -1304,7 +1321,13 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   }
 
   private _filter(value: string): TemplateLibrary[] {
-    const filterValue = value.toLowerCase();
+    let filterValue;
+    if(typeof value==='string'){
+      filterValue = value.toLowerCase();
+    }else if(typeof value === 'object'){
+      filterValue = value.name;
+    }
+
     const selectedDoc = this.options.filter(option => option.name.toLowerCase().includes(filterValue));
     
     
