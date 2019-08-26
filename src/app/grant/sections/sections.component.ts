@@ -1324,7 +1324,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     let filterValue;
     if(typeof value==='string'){
       filterValue = value.toLowerCase();
-    }else if(typeof value === 'object'){
+    }else {
       filterValue = value.name;
     }
 
