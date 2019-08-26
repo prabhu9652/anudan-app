@@ -102,11 +102,12 @@
                                         </div>
 
                                     </ng-container>
-                                    <ng-container *ngIf="attribute.fieldType=='document'">
+                                    <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
-                                                <b class="">{{attribute.fieldName}}</b>
-                                            </a>
+                                            Document Attachments
+                                            <ng-container *ngFor="let doc of attribute.docs">
+                                                <span class="ml-3">{{doc.name}}</p>
+                                            </ng-container>
                                         </div>
 
                                     </ng-container>

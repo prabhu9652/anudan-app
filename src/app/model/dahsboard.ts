@@ -178,6 +178,7 @@ export class Attribute {
   fieldType: string;
   fieldValue: string;
   fieldTableValue: TableData[];
+  docs: TemplateLibrary[];
   target: string;
   frequency: string;
   deletable: boolean;

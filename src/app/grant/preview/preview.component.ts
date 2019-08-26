@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData
+  SubmissionStatus, Template,TableData, TemplateLibrary
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -97,7 +97,22 @@ export class PreviewComponent implements OnInit {
     });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    
+    for(let section of this.currentGrant.grantDetails.sections){
+      for(let attribute of section.attributes){
+        if(attribute.fieldType ==='document'){
+          const docs = JSON.parse(attribute.fieldValue);
+          if(docs.length > 0){
+            attribute.docs = new Array<TemplateLibrary>();
+            for(let i=0; i< docs.length; i++){
+              attribute.docs.push(docs[i]);
+            }
+          }
+        }
+      }
+    }
     console.log(this.currentGrant);
+
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
