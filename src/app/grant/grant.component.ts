@@ -23,7 +23,7 @@ import {
     QuantitiaveKpisubmission,
     Section, Organization,
     Submission, SubmissionStatus, Template,
-    WorkflowStatus
+    WorkflowStatus, GrantTemplate
 } from '../model/dahsboard'
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {SubmissionDataService} from '../submission.data.service';
@@ -848,8 +848,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         $(scheduleModal).modal('show');
     }
 
-    createGrant(template: string) {
-        this.appComp.selectedTemplate = template;
+    createGrant(template: GrantTemplate) {
+        this.appComp.selectedTemplate = template.name;
         this.appComp.currentView = 'grant';
         const grant = new Grant();
         grant.submissions = new Array<Submission>();
@@ -878,7 +878,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         grant.kpis = new Array<Kpi>();
         grant.grantDetails = new GrantDetails();
         grant.grantDetails.sections = new Array<Section>();
-        for (const defaultSection of this.appComp.appConfig.defaultSections) {
+        for (const defaultSection of template.sections) {
             defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
             for (const attr of defaultSection.attributes) {
                 attr.id = 0 - Math.round(Math.random() * 10000000000);

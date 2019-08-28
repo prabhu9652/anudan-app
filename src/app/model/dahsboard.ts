@@ -235,7 +235,8 @@ export class Grant {
 export class GrantTemplate{
   id: number;
   name: string;
-  description: string
+  description: string;
+  sections: Section[];
 }
 
 export class Tenant {

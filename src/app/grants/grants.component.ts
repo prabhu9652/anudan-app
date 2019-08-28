@@ -59,7 +59,7 @@ export class GrantsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.grantComponent.createGrant(this.currentTenant.grantTemplates[0].name);
+        this.grantComponent.createGrant(this.currentTenant.grantTemplates[0]);
       } else {
         dialogRef.close();
       }
