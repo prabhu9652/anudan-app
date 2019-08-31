@@ -586,6 +586,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       return;
     }
 
+    const createSectionModal = this.createSectionModal.nativeElement;
+
     const httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
