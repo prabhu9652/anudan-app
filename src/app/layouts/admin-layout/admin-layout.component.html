@@ -9,7 +9,7 @@
 
     <div class="main-panel">
         <!--<app-navbar></app-navbar>-->
-        <div *ngIf="appComponent.currentView !== 'grants'" class="p-4 text-left" style="position: sticky;top:0;background-color: rgb(229, 229, 229);z-index: 1050;background: #333;color: #fff;"><a (click)="showAllGrants()" class="text-info"><b>Home</b></a> > {{currentGrant.name}}
+        <div *ngIf="appComponent.currentView !== 'grants'" class="p-4 text-left" style="position: sticky;top:0;background-color: rgb(229, 229, 229);z-index: 1050;background: #333;color: #fff;"><a (click)="showAllGrants()" class="text-info"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
             <div class="float-right ml-4">
                 <b>{{ appComponent.autosaveDisplay}}</b>
             </div>

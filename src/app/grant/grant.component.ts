@@ -851,61 +851,26 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     createGrant(template: GrantTemplate) {
         this.appComp.selectedTemplate = template.name;
         this.appComp.currentView = 'grant';
-        const grant = new Grant();
-        grant.submissions = new Array<Submission>();
-        grant.actionAuthorities = new ActionAuthorities();
-        grant.actionAuthorities.permissions = [];
-        grant.actionAuthorities.permissions.push('MANAGE');
 
-        const tempOrg = new Organization();
-        //grant.organization = this.appComp.appConfig.granteeOrgs[0];
-        grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
-        grant.substatus = this.appComp.appConfig.submissionInitialStatus;
+        const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
 
-        grant.id = 0 - Math.round(Math.random() * 10000000000);
-        this.dataService.changeMessage(grant.id);
-        /*const st = new Date;
-        grant.startDate = st;
-        grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
-        let et = new Date();
-        et = new Date(et.setFullYear(et.getFullYear() + 1));
-        grant.endDate = et;
-        grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');*/
-        grant.stDate = '';
-        grant.enDate = '';
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/create/' + template.id;
 
-
-        grant.kpis = new Array<Kpi>();
-        grant.grantDetails = new GrantDetails();
-        grant.grantDetails.sections = new Array<Section>();
-        for (const defaultSection of template.sections) {
-            defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
-            for (const attr of defaultSection.attributes) {
-                attr.id = 0 - Math.round(Math.random() * 10000000000);
-                attr.fieldValue = '';
-            }
-            grant.grantDetails.sections.push(defaultSection);
-        }
-
-        /*grant.submissions = new Array<Submission>();
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-            // sub.grant = grant;
-            // sub.actionAuthorities = new ActionAuthorities();
-
-            const mnth = tmpDt.getMonth()+ (3*i);
-            const dt = new Date(tmpDt.getFullYear(),mnth ,tmpDt.getDate());
-            const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-            // sub.grant = grant;
-            grant.submissions.push(sub);
-        }*/
-
+    this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+        grant.templateId = template.id;
+        const savedgrant = grant;
         this.currentGrant = grant
         this.grantData.changeMessage(grant);
         this.appComp.currentView = 'grant';
-        
+
         this.router.navigate(['grant/basic-details']);
-        
+        });
     }
 
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {

@@ -34,7 +34,7 @@
                                         <p>INR {{grant.amount}}</p>
                                         <div class="row">
                                             <div class="col-6">
-                                                {{grant.organization.name}}
+                                                {{grant.organization?grant.organization.name:null}}
                                             </div>
                                             <div class="col-6 text-left">
                                                 <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}

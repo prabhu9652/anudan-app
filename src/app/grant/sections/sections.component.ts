@@ -10,7 +10,7 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -142,16 +142,17 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
     for(let section of this.currentGrant.grantDetails.sections){
-      for(let attribute of section.attributes){
-        if(attribute.fieldType === 'document'){
+    if(section.attributes) {
+      for(let attribute of section.attributes) {
+        if (attribute.fieldType === 'document') {
           let frt = JSON.parse(attribute.fieldValue);
-          if(frt.length > 0){
+          if(frt.length > 0) {
             for(let i=0; i< frt.length; i++){
               this.fruits.push(frt[i]);
             }
           }
-          
         }
+      }
       }
     }
 
@@ -166,7 +167,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
     this.checkGrantPermissions();
-    this.checkCurrentSubmission();
+    //this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();
@@ -185,11 +186,11 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  ngAfterViewChecked() {
-    if(this.newField){
-      this.scrollTo(this.newField);
-    }
-  }
+   ngAfterViewChecked() {
+       if(this.newField){
+         this.scrollTo(this.newField);
+       }
+     }
 
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
@@ -495,8 +496,25 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     $(titleElem).html(sectionName + ' - Create new field');
     $(idHolderElem).val(sectionId);
     $(createFieldModal).modal('show');*/
+
+    const httpOptions = {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+
+                const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/' + Number(sectionId) + '/field';
+
+                this.http.get<FieldInfo>(url, httpOptions).subscribe((info: FieldInfo) => {
+                    //this.checkGrant(null);
+                    this.grantData.changeMessage(info.grant);
+                    this.newField = 'field_' + info.attributeId;
+                    //this.scrollTo(this.newField);
+                });
     const id = 0 - Math.round(Math.random() * 1000000000);
-    for (const section of this.currentGrant.grantDetails.sections) {
+    /* for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
         const newAttr = new Attribute();
         newAttr.fieldType = 'multiline';
@@ -508,9 +526,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         section.attributes.push(newAttr);
         break;
       }
-    }
-    this.checkGrant(null);
-    this.newField = 'field_' + id;
+    } */
+
   }
 
   scrollTo(uniqueID){
@@ -568,7 +585,29 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       sectionName.focus();
       return;
     }
-    const createSectionModal = this.createSectionModal.nativeElement;
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
+
+    this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+         this.grantData.changeMessage(info.grant);
+
+        sectionName.val('');
+        //$('#section_' + newSection.id).css('display', 'block');
+        this._setEditMode(true);
+        $(createSectionModal).modal('hide');
+        this.appComp.sectionAdded = true;
+        this.sidebar.buildSectionsSideNav();
+        this.router.navigate(['grant/section/' + info.sectionName]);
+    });
+    /*const createSectionModal = this.createSectionModal.nativeElement;
     const currentSections = this.currentGrant.grantDetails.sections;
     const newSection = new Section();
     newSection.attributes = [];
@@ -577,16 +616,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     newSection.deletable = true;
 
     currentSections.push(newSection);
+    */
 
-    this.grantData.changeMessage(this.currentGrant);
-
-    sectionName.val('');
-    $('#section_' + newSection.id).css('display', 'block');
-    this._setEditMode(true);
-    $(createSectionModal).modal('hide');
-    this.appComp.sectionAdded = true;
-    this.sidebar.buildSectionsSideNav();
-    this.router.navigate(['grant/section/' + newSection.sectionName]);
   }
 
   saveSectionAndAddNew() {

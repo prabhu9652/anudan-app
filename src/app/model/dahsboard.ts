@@ -230,6 +230,7 @@ export class Grant {
   grantDetails: GrantDetails;
   kpis: Kpi[];
   representative: string;
+  templateId: number;
 }
 
 export class GrantTemplate{
@@ -321,6 +322,17 @@ export class TemplateLibrary{
   location: string;
   version: number;
   granterId: number;
+}
+
+export class FieldInfo{
+    attributeId: number;
+    grant: Grant;
+}
+
+export class SectionInfo{
+    sectionId: number;
+    sectionName: string;
+    grant: Grant;
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {

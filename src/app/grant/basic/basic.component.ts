@@ -146,7 +146,7 @@ export class BasicComponent implements OnInit {
 
  
     this.checkGrantPermissions();
-    this.checkCurrentSubmission();
+    //this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();
@@ -380,6 +380,7 @@ export class BasicComponent implements OnInit {
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
+                    this.setDateDuration();
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
                     this._setEditMode(false);
@@ -999,13 +1000,14 @@ export class BasicComponent implements OnInit {
 
   checkGrant() {
   console.log('basic');
-  this.setDateDuration();
+
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
       this._setEditMode(true);
       this.grantData.changeMessage(this.currentGrant);
     }
+    this.setDateDuration();
   }
 
   openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
