@@ -73,9 +73,9 @@
 
                                     <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'" class="mb-2">
 
-                                        <div class="col-sm-12 col-lg-12 text-left mb-3">
+                                        <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
                                             {{attribute.fieldName}}
-                                            <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
+                                            <pre class="mt-1 text-justify"><b [innerHtml]="attribute.fieldValue"></b></pre>
                                         </div>
 
                                     </ng-container>
@@ -104,9 +104,19 @@
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            Document Attachments
-                                            <ng-container *ngFor="let doc of attribute.docs">
-                                                <span class="ml-3">{{doc.name}}</span>
+                                            <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+
+                                                <span class="ml-3">
+                                                    <ng-container *ngIf="doc.type === 'pdf'">
+                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                                        <i class="fas fa-file-excel text-success"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                                        <i class="fas fa-file-word text-primary"></i>
+                                                    </ng-container>
+                                                {{doc.name}}</span>
                                             </ng-container>
                                         </div>
 

@@ -111,6 +111,8 @@ export class PreviewComponent implements OnInit {
         }
       }
     }
+
+    this.grantData.changeMessage(this.currentGrant);
     console.log(this.currentGrant);
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -136,6 +138,10 @@ export class PreviewComponent implements OnInit {
     });
   }
 
+  getDocumentName(val: string): any[] {
+    const obj = JSON.parse(val);
+    return obj;
+  }
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
