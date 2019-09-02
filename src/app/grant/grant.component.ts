@@ -849,7 +849,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     createGrant(template: GrantTemplate) {
-        this.appComp.selectedTemplate = template.name;
+        this.appComp.selectedTemplate = template;
         this.appComp.currentView = 'grant';
 
         const httpOptions = {

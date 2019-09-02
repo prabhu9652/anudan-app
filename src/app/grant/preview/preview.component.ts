@@ -99,6 +99,7 @@ export class PreviewComponent implements OnInit {
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
     
     for(let section of this.currentGrant.grantDetails.sections){
+    if(section.attributes){
       for(let attribute of section.attributes){
         if(attribute.fieldType ==='document'){
           const docs = JSON.parse(attribute.fieldValue);
@@ -108,6 +109,7 @@ export class PreviewComponent implements OnInit {
               attribute.docs.push(docs[i]);
             }
           }
+        }
         }
       }
     }

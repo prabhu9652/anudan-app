@@ -60,6 +60,7 @@ export class GrantsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.grantComponent.createGrant(this.currentTenant.grantTemplates[0]);
+        this.appComponent.selectedTemplate = this.currentTenant.grantTemplates[0];
       } else {
         dialogRef.close();
       }
@@ -144,6 +145,9 @@ export class GrantsComponent implements OnInit {
         this.dataService.changeMessage(grant.id);
         this.data.changeMessage(grant);
         this.appComponent.currentView = 'grant';
+
+                this.appComponent.selectedTemplate = grant.grantTemplate;
+
         this.router.navigate(['grant/basic-details']);
   }
 }

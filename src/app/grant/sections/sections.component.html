@@ -51,12 +51,22 @@
                   <mat-nav-list>
                     <ng-container *ngIf="attribute.fieldType==='document'">
                       <mat-list-item>
-                        <mat-icon mat-list-icon>attachment</mat-icon>
-                        <a mat-tab-link mat-line target="_blank"
-                           [href]="'/api/public/grants/'+currentGrant.id+'/file/'+attribute.fieldName">
-                          {{attribute.fieldName}}
-                        </a>
+                        <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+
+                            <span class="ml-3">
+                                <ng-container *ngIf="doc.type === 'pdf'">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                    <i class="fas fa-file-excel text-success"></i>
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                    <i class="fas fa-file-word text-primary"></i>
+                                </ng-container>
+                            {{doc.name}}</span>
+                        </ng-container>
                       </mat-list-item>
+
                     </ng-container>
                   </mat-nav-list>
                 </ng-container>
@@ -95,7 +105,6 @@
                 <div>
                   <ng-container #sectionsContainer *ngFor="let attribute of section.attributes">
                     <div class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
-                      {{attribute.id}}
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>

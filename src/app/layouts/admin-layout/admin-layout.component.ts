@@ -81,23 +81,25 @@ export class AdminLayoutComponent implements OnInit {
 
       interval(5000).subscribe(t => {
 
-        
-            const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
-              const httpOptions = {
-                headers: new HttpHeaders({
-                  'Content-Type': 'application/json',
-                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                  'Authorization': localStorage.getItem('AUTH_TOKEN')
-                })
-              };
+            if(localStorage.getItem('USER')){
+                const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
+                  const httpOptions = {
+                    headers: new HttpHeaders({
+                      'Content-Type': 'application/json',
+                      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                      'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                  };
 
-              
-              this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
-                this.appComponent.notifications = notifications;
-                console.log(this.appComponent.notifications);
 
-              });
-              });
+                  this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+                    this.appComponent.notifications = notifications;
+                    console.log(this.appComponent.notifications);
+
+                  });
+                  }
+                  });
+
   }
 
   ngAfterViewInit() {

@@ -231,6 +231,7 @@ export class Grant {
   kpis: Kpi[];
   representative: string;
   templateId: number;
+  grantTemplate: GrantTemplate;
 }
 
 export class GrantTemplate{

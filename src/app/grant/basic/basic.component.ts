@@ -1229,7 +1229,7 @@ setTimeout() {
         if(this.currentGrant !== null){
           //this.grantComponent.checkGrantPermissions();
         }
-        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
           //this.grantToUpdate.id = this.currentGrantId;
           this.saveGrant(this.grantToUpdate);
         }

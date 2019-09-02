@@ -497,6 +497,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     $(idHolderElem).val(sectionId);
     $(createFieldModal).modal('show');*/
 
+    this.appComp.sectionInModification = true;
+
     const httpOptions = {
                     headers: new HttpHeaders({
                         'Content-Type': 'application/json',
@@ -510,6 +512,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
                 this.http.get<FieldInfo>(url, httpOptions).subscribe((info: FieldInfo) => {
                     //this.checkGrant(null);
                     this.grantData.changeMessage(info.grant);
+                    this.appComp.sectionInModification = false;
                     this.newField = 'field_' + info.attributeId;
                     //this.scrollTo(this.newField);
                 });
@@ -571,6 +574,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 
   addNewSection() {
+    this.appComp.sectionInModification = true;
     const createSectionModal = this.createSectionModal.nativeElement;
     const titleElem = $(createSectionModal).find('#createSectionLabel');
     $(titleElem).html('Add new section');
@@ -607,7 +611,9 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         $(createSectionModal).modal('hide');
         this.appComp.sectionAdded = true;
         this.sidebar.buildSectionsSideNav();
-        this.router.navigate(['grant/section/' + info.sectionName]);
+        this.appComp.sectionInModification = false;
+        this.appComp.selectedTemplate = info.grant.grantTemplate;
+        this.router.navigate(['grant/section/' + this.getCleanText(info.sectionName)]);
     });
     /*const createSectionModal = this.createSectionModal.nativeElement;
     const currentSections = this.currentGrant.grantDetails.sections;
@@ -1068,6 +1074,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 
   checkGrant(ev: Event) {
+  this.appComp.sectionInModification = true;
   
   console.log(ev);
   
@@ -1081,8 +1088,10 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
       this.sidebar.buildSectionsSideNav();
+      this.appComp.sectionInModification = false;
       this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
     }
+     this.appComp.sectionInModification = false;
       this._setEditMode(true);
     }
   }
@@ -1336,7 +1345,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         if(this.currentGrant !== null){
           //this.grantComponent.checkGrantPermissions();
         }
-        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
           //this.grantToUpdate.id = this.currentGrantId;
           this.saveGrant(this.grantToUpdate);
         }
@@ -1414,6 +1423,9 @@ add(event: MatChipInputEvent): void {
     this.fruitCtrl.setValue(null);
   }
 
- 
+ getDocumentName(val: string): any[] {
+     const obj = JSON.parse(val);
+     return obj;
+   }
 
 }
