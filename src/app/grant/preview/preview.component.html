@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-6 mb-2">
                     Grantee Organization:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.organization.name}}</b></div>
+                    <div *ngIf="currentGrant.organization" class="ml-1 mb-3"><b>{{currentGrant.organization.name}}</b></div>
                 </div>
                 <div class="col-6 mb-2">
                     Grantee Organization Representative:

@@ -1267,13 +1267,28 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   }
 
   deleteSection(secId: number) {
-    const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
+
+  const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
+
+      this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+           this.grantData.changeMessage(grant);
+           const path = this.sidebar.buildSectionsSideNav();
+               this.router.navigate([path]);
+           });
+    /* const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
     this.grantData.changeMessage(this.currentGrant);
-    this.checkGrant(null);
+    this.checkGrant(null); */
 
-    const path = this.sidebar.buildSectionsSideNav();
-    this.router.navigate([path]);
+
   }
 
   handleSpacebar(ev: Event) {
