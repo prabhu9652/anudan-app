@@ -238,6 +238,7 @@ export class GrantTemplate{
   id: number;
   name: string;
   description: string;
+  published: boolean;
   sections: Section[];
 }
 

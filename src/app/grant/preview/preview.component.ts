@@ -228,6 +228,11 @@ export class PreviewComponent implements OnInit {
           case 'kpi':
             this.deleteKpi(kpiId);
             break;
+
+           case 'saveTemplate':
+           this.submitGrant(sectionId);
+           break;
+
         }
       } else {
         dialogRef.close();
@@ -694,7 +699,6 @@ export class PreviewComponent implements OnInit {
 
 
   submitGrant(toStateId: number) {
-    console.log(toStateId);
 
     const httpOptions = {
       headers: new HttpHeaders({

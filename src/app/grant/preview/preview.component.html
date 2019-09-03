@@ -2,7 +2,9 @@
     <div class="w-100 p-2" style="position:sticky; top:65px;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
         <ng-container *ngIf="currentGrant.flowAuthorities">
             <div *ngFor="let flow of currentGrant.flowAuthorities">
-                <a mat-stroked-button (click)="submitGrant(flow.toStateId)"
+                <a mat-stroked-button *ngIf="currentGrant.grantStatus.name==='DRAFT'" (click)="confirm(flow.toStateId, 0, [], 0, 'saveTemplate', 'Save Grant as template')"
+                   id="{{flow.action}}" class="mr-1">{{flow.action}}</a>
+                <a mat-stroked-button *ngIf="currentGrant.grantStatus.name!=='DRAFT'" (click)="submitGrant(flow.toStateId)"
                    id="{{flow.action}}" class="mr-1">{{flow.action}}</a>
             </div>
         </ng-container>
