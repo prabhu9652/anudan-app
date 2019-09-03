@@ -26,6 +26,8 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {PdfDocument} from "../../model/pdf-document";
+import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
+
 
 @Component({
   selector: 'app-preview',
@@ -228,13 +230,9 @@ export class PreviewComponent implements OnInit {
           case 'kpi':
             this.deleteKpi(kpiId);
             break;
-
-           case 'saveTemplate':
-           this.submitGrant(sectionId);
-           break;
-
         }
       } else {
+
         dialogRef.close();
       }
     });
@@ -248,6 +246,9 @@ export class PreviewComponent implements OnInit {
         this.checkGrant();
       }
     }
+  }
+
+  saveTemplate(templateId: number, templateName: string){
   }
 
   deleteKpi(kpiId: number) {
@@ -716,8 +717,26 @@ export class PreviewComponent implements OnInit {
       this.grantDataService.changeMessage(grant);
       this.router.navigate(['grant']);*/
       this.grantData.changeMessage(grant);
-
       this.fetchCurrentGrant();
+      if(!grant.grantTemplate.published){
+      const dialogRef = this.dialog.open(TemplateDialogComponent, {
+            data: this.currentGrant.grantTemplate.name
+          });
+
+       dialogRef.afterClosed().subscribe(result => {
+             if (result.result) {
+               let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
+                   this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
+                    this.grantData.changeMessage(grant);
+                    this.appComp.selectedTemplate = grant.grantTemplate;
+                   });
+
+             } else {
+               dialogRef.close();
+             }
+           });
+        }
+
     });
 
   }
@@ -1206,5 +1225,9 @@ export class PreviewComponent implements OnInit {
       //document.getElementById('attribute_' + elemId).innerHTML = '';
       //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
       return html;
+    }
+
+    datePickerSelected(event:Event){
+        console.log(event);
     }
 }

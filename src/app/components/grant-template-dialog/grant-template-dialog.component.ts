@@ -1,4 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {GrantTemplate} from '../../model/dahsboard';
 
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 
@@ -9,9 +10,10 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@
 })
 export class GrantTemplateDialogComponent implements OnInit {
 
+  @ViewChild('templateHolder') templateHolder: ElementRef;
 
   constructor(public dialogRef: MatDialogRef<GrantTemplateDialogComponent>
-      , @Inject(MAT_DIALOG_DATA) public message: string) {
+      , @Inject(MAT_DIALOG_DATA) public templates: GrantTemplate[]) {
     this.dialogRef.disableClose = true;
   }
 
@@ -23,6 +25,14 @@ export class GrantTemplateDialogComponent implements OnInit {
   }
 
   onYesClick(): void {
-    this.dialogRef.close(true);
+  const selectedTemplateId = this.templateHolder.nativeElement;
+  let selectedTemplate;
+    for(let template of this.templates){
+        if(template.id === Number(selectedTemplateId.value)){
+            selectedTemplate = template;
+            break;
+        }
+    }
+    this.dialogRef.close({result:true,selectedTemplate:selectedTemplate});
   }
 }

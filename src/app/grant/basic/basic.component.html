@@ -55,7 +55,7 @@
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text" readonly>
                                     <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                    <mat-datepicker #pickerStart (click)="datePickerSelected($event)"></mat-datepicker>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">

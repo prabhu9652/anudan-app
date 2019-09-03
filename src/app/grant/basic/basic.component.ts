@@ -1192,6 +1192,10 @@ export class BasicComponent implements OnInit {
     this.setDateDuration();
   }
 
+  datePickerSelected(event:Event){
+    console.log(event);
+  }
+
   private _filter(value: string): Organization[] {
     const filterValue = value.toLowerCase();
     const selectedOrg = this.options.filter(option => option.name.toLowerCase().includes(filterValue));

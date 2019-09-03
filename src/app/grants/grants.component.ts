@@ -6,7 +6,7 @@ import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
 import {DataService} from '../data.service';
-import {Grant} from '../model/dahsboard'
+import {Grant,GrantTemplate} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
@@ -54,18 +54,31 @@ export class GrantsComponent implements OnInit {
   }
 
   createGrant(){
-  const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
-      data: this.currentTenant.grantTemplates[0].name
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.grantComponent.createGrant(this.currentTenant.grantTemplates[0]);
-        this.appComponent.selectedTemplate = this.currentTenant.grantTemplates[0];
-      } else {
-        dialogRef.close();
-      }
-    });
+  const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+      };
+        const user = JSON.parse(localStorage.getItem('USER'));
+      const url = '/api/user/' + user.id + '/grant/templates';
+      this.http.get<GrantTemplate[]>(url, httpOptions).subscribe((templates: GrantTemplate[]) => {
+          const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
+                data: templates
+              });
+
+              dialogRef.afterClosed().subscribe(result => {
+                if (result.result) {
+                  this.grantComponent.createGrant(result.selectedTemplate);
+                  this.appComponent.selectedTemplate = result.selectedTemplate;
+                } else {
+                  dialogRef.close();
+                }
+              });
+      });
+
     
   }
 

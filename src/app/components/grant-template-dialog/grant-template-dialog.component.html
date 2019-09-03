@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Grant Templates</h1>
 
-<select>
-	<option>{{message}}</option>
+<select #templateHolder>
+	<option *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</option>
 </select>
 <pre>
 	<ul>

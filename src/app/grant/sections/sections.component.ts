@@ -513,6 +513,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
                     //this.checkGrant(null);
                     this.grantData.changeMessage(info.grant);
                     this.appComp.sectionInModification = false;
+                    this.appComp.selectedTemplate = info.grant.grantTemplate;
                     this.newField = 'field_' + info.attributeId;
                     //this.scrollTo(this.newField);
                 });

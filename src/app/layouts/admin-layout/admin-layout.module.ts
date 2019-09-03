@@ -38,6 +38,7 @@ import {
 } from '@angular/material';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
+import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
@@ -95,12 +96,13 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         UpgradeComponent,
         FieldDialogComponent,
         GrantTemplateDialogComponent,
+        TemplateDialogComponent,
         BottomsheetComponent,
         BottomsheetAttachmentsComponent,
         BottomsheetNotesComponent,
         WorkflowManagementComponent
     ],
-    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent],
+    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Save Grant Template?</h1>
+<p>We noticed a change in the <b>Default Grant Template</b>. Please provide a name for the template and click <b>Save Template</b>.</p>
+<input #templateName value="{{message}}" class="anu-input">
+
+<div mat-dialog-actions>
+  <button mat-button mat-flat-button (click)="onNoClick()">Don't Save</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">Save Template</button>
+</div>
