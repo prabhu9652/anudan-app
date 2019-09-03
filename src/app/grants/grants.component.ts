@@ -48,6 +48,7 @@ export class GrantsComponent implements OnInit {
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
+    console.log(this.appComponent.loggedInUser.permissions);
     this.fetchDashboard(user.id);
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
   }
@@ -93,7 +94,9 @@ export class GrantsComponent implements OnInit {
         this.appComponent.currentTenant = this.currentTenant;
         this.hasTenant = true;
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
-
+         this.grantsDraft = [];
+         this.grantsActive = [];
+         this.grantsClosed = [];
         for (const grant of this.currentTenant.grants) {
           if(grant.grantStatus.name !== 'APPROVED' && grant.grantStatus.name !== 'CLOSED'){
             this.grantsDraft.push(grant); 
@@ -149,5 +152,23 @@ export class GrantsComponent implements OnInit {
                 this.appComponent.selectedTemplate = grant.grantTemplate;
 
         this.router.navigate(['grant/basic-details']);
+  }
+
+  deleteGrant(grant: Grant){
+    console.log(grant);
+    const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grant.id;
+
+        this.http.delete(url, httpOptions).subscribe( (val: any) => {
+            const user = JSON.parse(localStorage.getItem('USER'));
+            this.fetchDashboard(user.id);
+        });
   }
 }

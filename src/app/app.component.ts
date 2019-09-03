@@ -94,7 +94,7 @@ export class AppComponent implements AfterViewChecked{
 
 
   getAppUI(hostName) {
-    console.log('hostName = ' + hostName);
+    //console.log('hostName = ' + hostName);
     const url = '/api/public/config/'.concat(hostName);
     this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
       const newObj: any = response.body;

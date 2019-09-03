@@ -94,7 +94,7 @@ export class AdminLayoutComponent implements OnInit {
 
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
-                    console.log(this.appComponent.notifications);
+                    //console.log(this.appComponent.notifications);
 
                   });
                   }
