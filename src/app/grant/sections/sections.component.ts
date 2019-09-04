@@ -145,11 +145,13 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     if(section.attributes) {
       for(let attribute of section.attributes) {
         if (attribute.fieldType === 'document') {
+          if(attribute.fieldValue!==""){
           let frt = JSON.parse(attribute.fieldValue);
           if(frt.length > 0) {
             for(let i=0; i< frt.length; i++){
               this.fruits.push(frt[i]);
             }
+           }
           }
         }
       }

@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-3">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
-                                        <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant')"
+                                        <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant') && grant.grantStatus.name==='DRAFT'"
                                                 class="btn btn-sm btn-danger float-right"
                                                 (click)="deleteGrant(grant)">Delete Grant
                                         </button>

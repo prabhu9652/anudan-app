@@ -8,6 +8,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
+import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -33,7 +34,7 @@ export class AdminLayoutComponent implements OnInit {
   subscription: any;
   
 
-  constructor(private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private http: HttpClient,) {
+  constructor(private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private grantUpdateService: GrantUpdateService,private http: HttpClient) {
     
   }
 
@@ -79,7 +80,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      interval(5000).subscribe(t => {
+      interval(30000).subscribe(t => {
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -92,14 +93,13 @@ export class AdminLayoutComponent implements OnInit {
                   };
 
 
+
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
-                    //console.log(this.appComponent.notifications);
-
+                    this.grantUpdateService.changeMessage(true);
                   });
                   }
                   });
-
   }
 
   ngAfterViewInit() {

@@ -27,6 +27,8 @@ import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttac
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {PdfDocument} from "../../model/pdf-document";
 import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+
 
 
 @Component({
@@ -52,6 +54,8 @@ export class PreviewComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -99,7 +103,15 @@ export class PreviewComponent implements OnInit {
     });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
-    
+
+    if(this.currentGrant.startDate && this.currentGrant.endDate){
+      var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+      time = time + 86400001;
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+    }else{
+      this.currentGrant.duration = 'No end date';
+    }
+
     for(let section of this.currentGrant.grantDetails.sections){
     if(section.attributes){
       for(let attribute of section.attributes){

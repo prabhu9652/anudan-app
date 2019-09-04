@@ -6,6 +6,7 @@ import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
 import {DataService} from '../data.service';
+import {GrantUpdateService} from '../grant.update.service';
 import {Grant,GrantTemplate} from '../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
@@ -13,7 +14,6 @@ import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
-
 
 
 @Component({
@@ -44,6 +44,7 @@ export class GrantsComponent implements OnInit {
               private toastr: ToastrService,
               public grantComponent: GrantComponent,
               private dataService: DataService,
+              private grantUpdateService: GrantUpdateService,
               private dialog: MatDialog) {
   }
 
@@ -53,6 +54,11 @@ export class GrantsComponent implements OnInit {
     console.log(this.appComponent.loggedInUser.permissions);
     this.fetchDashboard(user.id);
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+    this.grantUpdateService.currentMessage.subscribe(id => {
+        if(id){
+        this.fetchDashboard(user.id);
+        }
+    });
   }
 
   createGrant(){
@@ -132,6 +138,7 @@ export class GrantsComponent implements OnInit {
             break;
           }
         }
+        this.grantUpdateService.changeMessage(false);
       }
     },
         error1 => {
