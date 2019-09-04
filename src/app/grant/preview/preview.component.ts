@@ -730,7 +730,7 @@ export class PreviewComponent implements OnInit {
       this.router.navigate(['grant']);*/
       this.grantData.changeMessage(grant);
       this.fetchCurrentGrant();
-      if(!grant.grantTemplate.published){
+      if(!grant.grantTemplate.published && grant.grantStatus.name==='DRAFT'){
       const dialogRef = this.dialog.open(TemplateDialogComponent, {
             data: this.currentGrant.grantTemplate.name
           });

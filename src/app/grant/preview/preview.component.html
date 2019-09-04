@@ -89,18 +89,16 @@
                                         <div class="col-sm-12 col-lg-12 text-left mb-3">
                                             <div class="row mx-2">
                                                 <div class="col-8">
+                                                    <div>{{attribute.fieldName}}</div>
+                                                </div>
+                                                <div class="col-2">
                                                     <mat-form-field>
-                                                        <input matInput [value]="attribute.fieldName" placeholder="KPI">
+                                                        <input readonly matInput [value]="attribute.target" placeholder="Target/Goal">
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-2">
                                                     <mat-form-field>
-                                                        <input matInput [value]="attribute.target" placeholder="Target/Goal">
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-2">
-                                                    <mat-form-field>
-                                                        <input matInput [value]="attribute.frequency | titlecase" placeholder="Frequency">
+                                                        <input readonly matInput [value]="attribute.frequency | titlecase" placeholder="Frequency">
                                                     </mat-form-field>
                                                 </div>
                                             </div>
