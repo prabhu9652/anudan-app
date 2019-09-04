@@ -56,7 +56,7 @@ export class GrantsComponent implements OnInit {
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
     this.grantUpdateService.currentMessage.subscribe(id => {
         if(id){
-        this.fetchDashboard(user.id);
+        //this.fetchDashboard(user.id);
         }
     });
   }
