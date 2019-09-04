@@ -70,7 +70,7 @@
                             <div class="row mb-2 mt-2">
                                 <ng-container *ngFor="let attribute of section.attributes">
 
-                                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'" class="mb-2">
+                                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"  class="mb-2">
 
                                         <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
                                             {{attribute.fieldName}}
@@ -78,6 +78,7 @@
                                         </div>
 
                                     </ng-container>
+
                                     <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
 
                                         <div class="col-sm-12 col-lg-12 text-left mb-3">
@@ -103,9 +104,11 @@
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                            {{attribute.fieldName}}
+                                            <ul>
+                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)">
 
-                                                <span class="ml-3">
+                                                <p class="m-0">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
                                                         <i class="fas fa-file-pdf text-danger"></i>
                                                     </ng-container>
@@ -115,8 +118,9 @@
                                                     <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
                                                         <i class="fas fa-file-word text-primary"></i>
                                                     </ng-container>
-                                                {{doc.name}}</span>
-                                            </ng-container>
+                                                    {{doc.name}}</p>
+                                            </li>
+                                            </ul>
                                         </div>
 
                                     </ng-container>
@@ -128,6 +132,43 @@
 
                                     </ng-container>
 
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="col-12">
+                    <hr/>
+                    <h5>
+                        ATTACHMENTS
+                    </h5>
+                    <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+
+
+                        <div>
+                            <div class="row mb-2 mt-2">
+                                <ng-container *ngFor="let attribute of section.attributes">
+
+
+                                    <ng-container *ngIf="attribute.fieldType==='document'">
+                                        <div class="col-sm-12 col-lg-12 mb-3">
+                                            <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                                <a href="/api/public/grants/{{currentGrant.id}}/file/{{doc.id}}" target="_blank">
+                                                <span class="ml-3">
+                                                    <ng-container *ngIf="doc.type === 'pdf'">
+                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                                        <i class="fas fa-file-excel text-success"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                                        <i class="fas fa-file-word text-primary"></i>
+                                                    </ng-container>
+                                                    {{doc.name}}</span></a>
+                                            </ng-container>
+                                        </div>
+
+                                    </ng-container>
                                 </ng-container>
                             </div>
                         </div>

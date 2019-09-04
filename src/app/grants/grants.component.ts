@@ -12,6 +12,8 @@ import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
+import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
+
 
 
 @Component({
@@ -111,7 +113,7 @@ export class GrantsComponent implements OnInit {
          this.grantsActive = [];
          this.grantsClosed = [];
         for (const grant of this.currentTenant.grants) {
-          if(grant.grantStatus.name !== 'APPROVED' && grant.grantStatus.name !== 'CLOSED'){
+          if(grant.grantStatus.name === 'REVIEW PENDING' || grant.grantStatus.name === 'RETURNED' || ( grant.grantStatus.name === 'DRAFT' && grant.createdBy===this.appComponent.loggedInUser.emailId)){
             this.grantsDraft.push(grant); 
           }else if(grant.grantStatus.name === 'APPROVED'){
             this.grantsActive.push(grant);
@@ -168,20 +170,30 @@ export class GrantsComponent implements OnInit {
   }
 
   deleteGrant(grant: Grant){
-    console.log(grant);
-    const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
-
-        const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grant.id;
-
-        this.http.delete(url, httpOptions).subscribe( (val: any) => {
-            const user = JSON.parse(localStorage.getItem('USER'));
-            this.fetchDashboard(user.id);
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: "Are you sure you want to delete this grant?"
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+
+                    const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grant.id;
+
+                    this.http.delete(url, httpOptions).subscribe( (val: any) => {
+                        const user = JSON.parse(localStorage.getItem('USER'));
+                        this.fetchDashboard(user.id);
+                    });
+          } else {
+            dialogRef.close();
+          }
+        });
+
   }
 }

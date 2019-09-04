@@ -232,6 +232,8 @@ export class Grant {
   representative: string;
   templateId: number;
   grantTemplate: GrantTemplate;
+  createdAt: Date;
+  createdBy: string;
 }
 
 export class GrantTemplate{

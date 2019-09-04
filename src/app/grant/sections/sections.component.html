@@ -114,7 +114,16 @@
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Field Name">
                           </mat-form-field>
-                        </div>                      
+                        </div>
+                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
+                          <mat-form-field>
+
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   (ngModelChange)="checkGrant()"
+                                   matInput placeholder="Field Name">
+                          </mat-form-field>
+                        </div>
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
