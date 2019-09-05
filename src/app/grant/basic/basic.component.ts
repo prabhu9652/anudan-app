@@ -19,7 +19,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
+import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
@@ -31,7 +31,6 @@ import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
-
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -99,6 +98,9 @@ export class BasicComponent implements OnInit {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('pickerStart') pickerStart: MatDatepicker<Date>;
+  @ViewChild('pickerEnd') pickerEnd: MatDatepicker<Date>;
+
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -1193,7 +1195,7 @@ export class BasicComponent implements OnInit {
   }
 
   datePickerSelected(event:Event){
-    console.log(event);
+    this.appComp.sectionInModification = false;
   }
 
   private _filter(value: string): Organization[] {
@@ -1251,5 +1253,28 @@ setTimeout() {
     clearTimeout(this.userActivity);
     this.setTimeout();
   }
-  
+
+ openStartDate(){
+    const stDateElem = this.pickerStart;
+    if(!stDateElem.opened){
+        this.appComp.sectionInModification = true;
+        stDateElem.open();
+    } else{
+        this.appComp.sectionInModification = false;
+        stDateElem.close();
+    }
+
+ }
+
+ openEndDate(){
+     const stDateElem = this.pickerEnd;
+     if(!stDateElem.opened){
+         this.appComp.sectionInModification = true;
+         stDateElem.open();
+     } else{
+         this.appComp.sectionInModification = false;
+         stDateElem.close();
+     }
+
+  }
 }

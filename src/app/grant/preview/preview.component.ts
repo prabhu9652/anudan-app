@@ -116,7 +116,12 @@ export class PreviewComponent implements OnInit {
     if(section.attributes){
       for(let attribute of section.attributes){
         if(attribute.fieldType ==='document'){
-          const docs = JSON.parse(attribute.fieldValue);
+          let docs;
+          try {
+            docs = JSON.parse(attribute.fieldValue);
+          } catch(e){
+            docs = [];
+          }
           if(docs.length > 0){
             attribute.docs = new Array<TemplateLibrary>();
             for(let i=0; i< docs.length; i++){
@@ -724,6 +729,7 @@ export class PreviewComponent implements OnInit {
       })
     };
 
+    const origStatus = this.currentGrant.grantStatus.name;
     let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/flow/'
         + this.currentGrant.grantStatus.id + '/' + toStateId;
@@ -733,7 +739,7 @@ export class PreviewComponent implements OnInit {
       this.router.navigate(['grant']);*/
       this.grantData.changeMessage(grant);
       this.fetchCurrentGrant();
-      if(!grant.grantTemplate.published && grant.grantStatus.name==='DRAFT'){
+      if(!grant.grantTemplate.published && origStatus==='DRAFT'){
       const dialogRef = this.dialog.open(TemplateDialogComponent, {
             data: this.currentGrant.grantTemplate.name
           });

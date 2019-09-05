@@ -171,6 +171,10 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     this.checkGrantPermissions();
     //this.checkCurrentSubmission();
 
+    $('#stDateIcon').on('click',function(event){
+        console.log('PICKER CLICKED');
+    });
+
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();
     });
@@ -539,7 +543,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   scrollTo(uniqueID){
 
     const elmnt = document.getElementById(uniqueID); // let if use typescript
-    elmnt.scrollIntoView(true); // this will scroll elem to the top
+    //elmnt.scrollIntoView(true); // this will scroll elem to the top
     elmnt.focus();
     this.newField = null;
   }
@@ -1099,7 +1103,15 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  changeFieldType(){
+    this.appComp.sectionInModification = true
+  }
+
+  selectionClosed(){
+    console.log('Closed');
+  }
   handleTypeChange(ev: Event, attr: Attribute){
+    attr.fieldValue = '';
     if(ev.toString()==='table'){
       if(attr.fieldValue.trim() === ''){
         attr.fieldTableValue = [];
@@ -1114,9 +1126,26 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
           data.columns.push(col);
         }
 
-        attr.fieldTableValue.push(data);
+        //attr.fieldTableValue.push(data);
       }
     }
+
+    const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+            + this.currentGrant.id + '/field/'+attr.id;
+        this.http.post<FieldInfo>(url, attr, httpOptions).subscribe((info: FieldInfo) => {
+            this.grantData.changeMessage(info.grant);
+        this.appComp.sectionInModification = false;
+        this.appComp.selectedTemplate = info.grant.grantTemplate;
+        this.newField = 'field_' + info.attributeId;
+        });
   }
 
   addColumn(attr: Attribute){

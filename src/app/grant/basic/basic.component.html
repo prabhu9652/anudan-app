@@ -51,20 +51,21 @@
                         <div class="row">
                             <div class="col-4">
                                 <mat-form-field>
-                                    <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate"  class="anu-input" 
+                                    <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate"  class="anu-input"  (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerStart" placeholder="Grant Start Date" type="text" readonly>
-                                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-                                    <mat-datepicker #pickerStart (click)="datePickerSelected($event)"></mat-datepicker>
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                    <mat-icon (click)="openStartDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;">calendar_today</mat-icon>
                                 </mat-form-field>
+
                             </div>
                             <div class="col-4">
                                 <mat-form-field>
-                                    <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input"
+                                    <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input" (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('end', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerEnd" placeholder="Grant End Date" readonly>
-                                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                                     <mat-datepicker #pickerEnd></mat-datepicker>
+                                    <mat-icon (click)="openEndDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;">calendar_today</mat-icon>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">

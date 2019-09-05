@@ -341,7 +341,6 @@ export class SectionInfo{
 
 export class CustomDateAdapter extends NativeDateAdapter {
    format(date: Date, displayFormat: Object): string {
-      console.log(date);
       if (displayFormat === 'input') {
          const day = date.getDate();
          const month = moment(date).format("MMM");//date.getUTCMonth() + 1;
