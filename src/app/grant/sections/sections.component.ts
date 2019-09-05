@@ -15,7 +15,7 @@ import {
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
@@ -113,6 +113,12 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       , private sidebar: SidebarComponent,
       private data: DataService) {
     this.colors = new Colors();
+
+    router.events.subscribe((val) => {
+            if(val instanceof NavigationStart){
+                this.saveGrant();
+            }
+        });
     this.route.params.subscribe( (p) => {
     this.action = p['action'];
     console.log(this.action);
@@ -400,7 +406,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
     console.log(this.currentGrant);*/
   }
 
-  saveGrant(grantToSave: Grant) {
+  saveGrant() {
 
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
@@ -418,9 +424,9 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    this.grantData.changeMessage(grant);
+                    //this.grantData.changeMessage(grant);
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
                     this._setEditMode(false);
@@ -1404,7 +1410,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         }
         if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
           //this.grantToUpdate.id = this.currentGrantId;
-          this.saveGrant(this.grantToUpdate);
+          //this.saveGrant();
         }
     }, 3000);
     

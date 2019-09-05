@@ -68,7 +68,7 @@ export class SidebarComponent implements OnInit {
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
-      this.buildSectionsSideNav();
+      //this.buildSectionsSideNav();
     });
     
   }

@@ -7,6 +7,8 @@ import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
 import {Time} from "@angular/common";
 import {interval} from 'rxjs';
+import {GrantDataService} from './grant.data.service';
+
 
 
 @Component({
@@ -46,7 +48,7 @@ export class AppComponent implements AfterViewChecked{
   org: string;
   public defaultClass = '';
 
-  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {
+  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private grantService: GrantDataService) {
 
   }
 
@@ -133,6 +135,8 @@ export class AppComponent implements AfterViewChecked{
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
+    this.notifications = [];
+    this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
     this.router.navigate(['/']);

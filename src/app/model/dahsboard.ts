@@ -39,6 +39,7 @@ export class WorkflowStatus {
   name: string;
   displayName: string;
   terminal: boolean;
+  internalStatus: string;
   statePermissions: StatePermission[];
   createdAt: Date;
   createdBy: string;

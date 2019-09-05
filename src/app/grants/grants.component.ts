@@ -119,11 +119,11 @@ export class GrantsComponent implements OnInit {
          this.grantsActive = [];
          this.grantsClosed = [];
         for (const grant of this.currentTenant.grants) {
-          if(grant.grantStatus.name === 'REVIEW PENDING' || grant.grantStatus.name === 'RETURNED' || ( grant.grantStatus.name === 'DRAFT' && grant.createdBy===this.appComponent.loggedInUser.emailId)){
+          if((grant.actionAuthorities) && (grant.grantStatus.internalStatus === 'DRAFT' && grant.grantStatus.name !== 'DRAFT') || ( grant.grantStatus.internalStatus === 'DRAFT' && grant.createdBy===this.appComponent.loggedInUser.emailId)){
             this.grantsDraft.push(grant); 
-          }else if(grant.grantStatus.name === 'APPROVED'){
+          }else if(grant.grantStatus.internalStatus === 'ACTIVE'){
             this.grantsActive.push(grant);
-          }else if(grant.grantStatus.name === 'CLOSED'){
+          }else if(grant.grantStatus.internalStatus === 'CLOSED'){
             this.grantsClosed.push(grant);
           }
           for (const submission of grant.submissions) {

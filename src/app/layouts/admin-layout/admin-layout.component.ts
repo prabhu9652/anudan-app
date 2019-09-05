@@ -80,7 +80,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      interval(30000).subscribe(t => {
+      interval(5000).subscribe(t => {
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';

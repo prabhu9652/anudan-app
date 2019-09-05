@@ -139,7 +139,7 @@ export class PreviewComponent implements OnInit {
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
-    this.checkGrantPermissions();
+    //this.checkGrantPermissions();
     this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
@@ -385,7 +385,7 @@ export class PreviewComponent implements OnInit {
           this.currentGrant = grant;
           this._setEditMode(false);
           this.currentSubmission = null;
-          this.checkGrantPermissions();
+          //this.checkGrantPermissions();
           this.checkCurrentSubmission();
           this.appComp.autosave = false;
         },
@@ -776,7 +776,7 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
-        this.checkGrantPermissions();
+        //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });
   }
