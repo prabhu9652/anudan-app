@@ -1,14 +1,16 @@
 import {User} from './user';
 import * as moment from 'moment';
 import _date = moment.unitOfTime._date;
+import {NativeDateAdapter} from '@angular/material';
 
 export class Organization {
   id: number;
   name: string;
   code: string;
+  organizationType: string;
+  type: string;
   createdAt: Date;
   createdBy: string;
-  type: string;
 }
 
 export class GrantorOrganization {
@@ -37,6 +39,7 @@ export class WorkflowStatus {
   name: string;
   displayName: string;
   terminal: boolean;
+  internalStatus: string;
   statePermissions: StatePermission[];
   createdAt: Date;
   createdBy: string;
@@ -175,6 +178,10 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   fieldValue: string;
+  fieldTableValue: TableData[];
+  docs: TemplateLibrary[];
+  target: string;
+  frequency: string;
   deletable: boolean;
   required: boolean;
 }
@@ -215,17 +222,34 @@ export class Grant {
   startDate: Date;
   stDate: string;
   endDate: Date;
+  duration: string;
+  amount: number;
   enDate: string;
   submissions: Submission[];
   actionAuthorities: ActionAuthorities;
   flowAuthorities: FlowAuthority[];
   grantDetails: GrantDetails;
   kpis: Kpi[];
+  representative: string;
+  templateId: number;
+  grantTemplate: GrantTemplate;
+  createdAt: Date;
+  createdBy: string;
+}
+
+export class GrantTemplate{
+  id: number;
+  name: string;
+  description: string;
+  published: boolean;
+  sections: Section[];
 }
 
 export class Tenant {
   name: string;
   grants: Grant[];
+  grantTemplates: GrantTemplate[];
+  templateLibrary: TemplateLibrary[];
 }
 
 export class Tenants {
@@ -277,4 +301,57 @@ export class SerializationHelper {
 
     return obj;
   }
+}
+
+export class Notifications{
+  id: number;
+  message: string;
+  read: boolean;
+  postedOn: Date;
+}
+
+export class ColumnData{
+  name: string;
+  value: string;
+}
+
+export class TableData {
+  name: string;
+  columns: ColumnData[];
+}
+
+export class TemplateLibrary{
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  version: number;
+  granterId: number;
+}
+
+export class FieldInfo{
+    attributeId: number;
+    grant: Grant;
+}
+
+export class SectionInfo{
+    sectionId: number;
+    sectionName: string;
+    grant: Grant;
+}
+
+export class CustomDateAdapter extends NativeDateAdapter {
+   format(date: Date, displayFormat: Object): string {
+      if (displayFormat === 'input') {
+         const day = date.getDate();
+         const month = moment(date).format("MMM");//date.getUTCMonth() + 1;
+         const year = date.getFullYear();
+         // Return the format as per your requirement
+         return `${day}-${month}-${year}`;
+      } else {
+         return date.toDateString();
+      }
+   }
+   
+   // If required extend other NativeDateAdapter methods.
 }

@@ -7,9 +7,11 @@ import {
     OnChanges,
     OnInit,
     SimpleChanges,
-    ViewChild
+    ViewChild,
+    HostListener
 } from '@angular/core';
 import {GrantDataService} from '../grant.data.service';
+import {DataService} from '../data.service';
 import {
     ActionAuthorities, AttachmentTemplates,
     Attribute, Doc,
@@ -19,9 +21,9 @@ import {
     Kpi, Note, NoteTemplates,
     QualitativeKpiSubmission,
     QuantitiaveKpisubmission,
-    Section,
+    Section, Organization,
     Submission, SubmissionStatus, Template,
-    WorkflowStatus
+    WorkflowStatus, GrantTemplate
 } from '../model/dahsboard'
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {SubmissionDataService} from '../submission.data.service';
@@ -43,7 +45,7 @@ import {BottomsheetComponent} from '../components/bottomsheet/bottomsheet.compon
 import {DatePipe} from '@angular/common';
 import {BottomsheetAttachmentsComponent} from '../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from "../components/bottomsheetNotes/bottomsheetNotes.component";
-import {interval} from "rxjs";
+import {interval,Subject} from "rxjs";
 
 declare var $: any;
 
@@ -51,7 +53,7 @@ declare var $: any;
 @Component({
     selector: 'app-grant',
     templateUrl: './grant.component.html',
-    styleUrls: ['./grant.component.scss'],
+    styleUrls: ['./grant.component.scss']
 })
 export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecked {
 
@@ -71,6 +73,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     grantToUpdate: Grant;
     erroredElement: ElementRef;
     erroredField: string;
+    currentGrantId = 0;
+    userActivity;
+    userInactive: Subject<any> = new Subject();
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -87,6 +92,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     @ViewChild('container') container: ElementRef;
 
     constructor(private grantData: GrantDataService
+        , private dataService: DataService
         , private submissionData: SubmissionDataService
         , private route: ActivatedRoute
         , private router: Router
@@ -102,9 +108,13 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.colors = new Colors();
     }
 
+
     ngOnInit() {
 
-        interval(3000).subscribe(t => {
+    this.setTimeout();
+        this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
+
+        /*interval(3000).subscribe(t => {
 
             console.log('Came here');
             if (this.editMode) {
@@ -114,14 +124,16 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             } else {
                 this.appComp.autosave = false;
             }
-        });
+        });*/
 
         this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
         this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
         this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
         this.checkGrantPermissions();
-        this.checkCurrentSubmission();
+        if(this.currentGrant.submissions){
+            this.checkCurrentSubmission();
+        }
 
         $('#editFieldModal').on('shown.bs.modal', function (event) {
             $('#editFieldInput').focus();
@@ -140,8 +152,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         });
     }
 
-    private checkGrantPermissions() {
-        if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    public checkGrantPermissions() {
+        if (this.currentGrant && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
             this.canManage = true;
         } else {
             this.canManage = false;
@@ -332,8 +344,9 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         console.log(this.currentGrant);*/
     }
 
-    saveGrant() {
+    saveGrant(grantToSave: Grant) {
 
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -349,15 +362,19 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
-                    this.currentGrant = grant;
+                    this.dataService.changeMessage(grant.id);
+                    //this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
-                    this.checkCurrentSubmission();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
                     this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
                 },
                 error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -405,7 +422,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             }
         }
 
-        this.saveGrant();
+        this.saveGrant(this.currentGrant);
 
         /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
             + this.currentGrant.id + '/submission/flow/'
@@ -727,11 +744,11 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     private _setEditMode(state: boolean) {
         this.editMode = state;
-        if (state) {
+        /*if (state) {
             $(this.actionBlock.nativeElement).prop('disabled',true);
         } else {
             $(this.actionBlock.nativeElement).prop('disabled',false);
-        }
+        }*/
     }
 
     scrollHeaderContent(event: Event) {
@@ -831,55 +848,29 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         $(scheduleModal).modal('show');
     }
 
-    createGrant() {
-        const grant = new Grant();
-        grant.submissions = new Array<Submission>();
-        grant.actionAuthorities = new ActionAuthorities();
-        grant.actionAuthorities.permissions = [];
-        grant.actionAuthorities.permissions.push('MANAGE');
-        grant.organization = this.appComp.appConfig.granteeOrgs[0];
-        grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
-        grant.substatus = this.appComp.appConfig.submissionInitialStatus;
+    createGrant(template: GrantTemplate) {
+        this.appComp.selectedTemplate = template;
+        this.appComp.currentView = 'grant';
 
-        grant.id = 0 - Math.round(Math.random() * 10000000000);
+        const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
 
-        const st = new Date;
-        grant.startDate = st;
-        grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
-        let et = new Date();
-        et = new Date(et.setFullYear(et.getFullYear() + 1));
-        grant.endDate = et;
-        grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/create/' + template.id;
 
-
-        grant.kpis = new Array<Kpi>();
-        grant.grantDetails = new GrantDetails();
-        grant.grantDetails.sections = new Array<Section>();
-        for (const defaultSection of this.appComp.appConfig.defaultSections) {
-            defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
-            for (const attr of defaultSection.attributes) {
-                attr.id = 0 - Math.round(Math.random() * 10000000000);
-                attr.fieldValue = '';
-            }
-            grant.grantDetails.sections.push(defaultSection);
-        }
-
-        /*grant.submissions = new Array<Submission>();
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-            // sub.grant = grant;
-            // sub.actionAuthorities = new ActionAuthorities();
-
-            const mnth = tmpDt.getMonth()+ (3*i);
-            const dt = new Date(tmpDt.getFullYear(),mnth ,tmpDt.getDate());
-            const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-            // sub.grant = grant;
-            grant.submissions.push(sub);
-        }*/
-
+    this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+        grant.templateId = template.id;
+        const savedgrant = grant;
         this.currentGrant = grant
         this.grantData.changeMessage(grant);
-        this.router.navigate(['grant']);
+        this.appComp.currentView = 'grant';
+
+        this.router.navigate(['grant/basic-details']);
+        });
     }
 
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
@@ -972,6 +963,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
             this._setEditMode(true);
         }
     }
+
 
     openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
 
@@ -1134,4 +1126,29 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
     }
+
+    setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          this.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined){
+          this.grantToUpdate.id = this.currentGrantId;
+          this.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
 }

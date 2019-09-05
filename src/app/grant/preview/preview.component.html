@@ -1,9 +1,8 @@
 <div class="row anu-container">
-    <div class="w-100" style="position:sticky; top:0;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
+    <div class="w-100 p-2" style="position:sticky; top:65px;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
         <ng-container *ngIf="currentGrant.flowAuthorities">
             <div *ngFor="let flow of currentGrant.flowAuthorities">
-                <a mat-stroked-button (click)="submitGrant(flow.toStateId)"
-                   id="{{flow.action}}">{{flow.action}}</a>
+                <a mat-stroked-button (click)="submitGrant(flow.toStateId)" id="{{flow.action}}" class="mr-1">{{flow.action}}</a>
             </div>
         </ng-container>
         <ng-container *ngIf="currentSubmission">
@@ -19,34 +18,50 @@
         <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
-            <span class="badge badge-dark text-white pull-right">{{currentGrant.substatus.displayName}}</span>
-            <span class="badge badge-success pull-right">{{currentGrant.grantStatus.displayName}}</span>
+            
 
             <!--MANAGEMENT SECTION-->
 
 
             <div class="row w-100">
-                <div class="col-12 mb-2">
-                    <img [src]="appComp.appConfig.logoUrl" alt="logo"/>
-                    <h4 class="ml-1" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                <div class="col-12 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
+                    <div class="row">
+                        <div class="col-3">
+                            <img [src]="appComp.appConfig.logoUrl" alt="logo"/>
+                        </div>
+                        <div class="col-7 text-left pl-3" style="display: flex;align-items: center;">
+                            <h4 class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                        </div>
+                        <div class="col-2" style="display: flex;align-items: center;">
+                            <span class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 mb-2">
-                    Description:
-                    <div class="ml-1"><b>{{currentGrant.description}}</b></div>
-                </div>
-                <div class="col-6 mb-2">
+                
+
+                <hr>
+                <div class="col-4 mb-2">
                     Start Date:
-                    <div class="ml-1"><b>{{currentGrant.stDate}}</b></div>
+                    <div class="ml-1 mb-3"><b>{{currentGrant.stDate | date:'dd-MMM-yyyy'}}</b></div>
+
+                </div>
+                <div class="col-4 mb-2">
+                    End Date:
+                    <div class="ml-1 mb-3"><b>{{currentGrant.enDate | date:'dd-MMM-yyyy'}}</b></div>
+
+                </div>
+                <div class="col-4 mb-2">
+                    Grant Duration:
+                    <div class="ml-1 mb-3"><b>{{currentGrant.duration}}</b></div>
 
                 </div>
                 <div class="col-6 mb-2">
-                    End Date:
-                    <div class="ml-1"><b>{{currentGrant.enDate}}</b></div>
-
-                </div>
-                <div class="col-12 mb-2">
                     Grantee Organization:
-                    <div class="ml-1"><b>{{currentGrant.organization.name}}</b></div>
+                    <div *ngIf="currentGrant.organization" class="ml-1 mb-3"><b>{{currentGrant.organization.name}}</b></div>
+                </div>
+                <div class="col-6 mb-2">
+                    Grantee Organization Representative:
+                    <div class="ml-1 mb-3"><b>{{currentGrant.representative}}</b></div>
                 </div>
                 <div class="col-12">
 
@@ -60,19 +75,62 @@
                             <div class="row mb-2 mt-2">
                                 <ng-container *ngFor="let attribute of section.attributes">
 
-                                    <ng-container *ngIf="attribute.fieldType=='string'" class="mb-2">
+                                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"  class="mb-2">
 
-                                        <div class="col-sm-12 col-lg-6 text-left">
+                                        <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
                                             {{attribute.fieldName}}
-                                            <div class="mt-1"><b>{{attribute.fieldValue}}</b></div>
+                                            <pre class="mt-1 text-justify"><b [innerHtml]="attribute.fieldValue"></b></pre>
                                         </div>
 
                                     </ng-container>
-                                    <ng-container *ngIf="attribute.fieldType=='document'">
-                                        <div class="col-sm-12 col-lg-6">
-                                            <a href="/api/app/grants/{{currentGrant.id}}/file/{{attribute.fieldName}}">
-                                                <b class="">{{attribute.fieldName}}</b>
-                                            </a>
+
+                                    <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
+
+                                        <div class="col-sm-12 col-lg-12 text-left mb-3">
+                                            <div class="row mx-2">
+                                                <div class="col-8">
+                                                    <div>{{attribute.fieldName}}</div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <mat-form-field>
+                                                        <input readonly matInput [value]="attribute.target" placeholder="Target/Goal">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-2">
+                                                    <mat-form-field>
+                                                        <input readonly matInput [value]="attribute.frequency | titlecase" placeholder="Frequency">
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldType==='document'">
+                                        <div class="col-sm-12 col-lg-12 mb-3">
+                                            {{attribute.fieldName}}
+                                            <ul>
+                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+
+                                                <p class="m-0">
+                                                    <ng-container *ngIf="doc.type === 'pdf'">
+                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                                        <i class="fas fa-file-excel text-success"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                                        <i class="fas fa-file-word text-primary"></i>
+                                                    </ng-container>
+                                                    {{doc.name}}</p>
+                                            </li>
+                                            </ul>
+                                        </div>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldType=='table'">
+                                        <div class="col-sm-12 col-lg-12 mb-3">
+                                            {{attribute.fieldName}}
+                                            <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldTableValue)"></div>
                                         </div>
 
                                     </ng-container>
@@ -82,160 +140,47 @@
                         </div>
                     </ng-container>
                 </div>
-            </div>
-            <hr/>
+                <div class="col-12">
+                    <hr/>
+                    <h5>
+                        ATTACHMENTS
+                    </h5>
+                    <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
 
 
-            <mat-divider></mat-divider>
-            <div class="row pt-3 submissions-block"
-                 style="background-color:#f9f9f9;overflow-x: auto;z-index: 3;"
-                 (scroll)="scrollHeaderContent($event)">
-                <div class="col-sm-12 col-lg-5"
-                     style="display: flex; align-items: center; justify-content: center;background-color:#f9f9f9; position: sticky;left: 0;z-index: 3; border-right: 0.5px solid #d4d4d4;">
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <h3>KPIs</h3>
-                        </div>
-                        <div class="col-sm-12 text-center">
-                            <p>
-                        <span class="mr-2"><mat-icon inline class="text-primary">
-                            local_activity
-                        </mat-icon>Activity</span>
-                                <span class="mr-2"><mat-icon inline color="accent">
-                            money
-                        </mat-icon>Financial</span>
-                                <span class="mr-2"><mat-icon inline class="text-info">
-                            assignment
-                        </mat-icon>Subjective</span>
-                                <span class="mr-2"><mat-icon inline class="text-warning">
-                            insert_drive_file
-                        </mat-icon>Document</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-lg-7" style="z-index: 2;">
-                    <div class="container-fluid">
-                        <div class="row flex-row flex-nowrap">
-                            <ng-container *ngFor="let submission of currentGrant.submissions">
-                                <div class="col-sm-4 col-lg-6"
-                                     style="background-color:#f9f9f9; border-right: 0.5px solid #d4d4d4;">
-                                    <div class="row">
-                                        <div class="col-sm-12 text-center">
+                        <div>
+                            <div class="row mb-2 mt-2">
+                                <ng-container *ngFor="let attribute of section.attributes">
 
-                                            <b>{{submission.title}}</b>
-                                            <div><b>{{submission.submitBy | date:'yyyy-MM-dd'}}</b></div>
 
+                                    <ng-container *ngIf="attribute.fieldType==='document'">
+                                        <div class="col-sm-12 col-lg-12 mb-3">
+                                            <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                                <a href="/api/public/grants/{{currentGrant.id}}/file/{{doc.id}}" target="_blank">
+                                                <span class="ml-3">
+                                                    <ng-container *ngIf="doc.type === 'pdf'">
+                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                                        <i class="fas fa-file-excel text-success"></i>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                                        <i class="fas fa-file-word text-primary"></i>
+                                                    </ng-container>
+                                                    {{doc.name}}</span></a>
+                                            </ng-container>
                                         </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ng-container *ngIf="currentGrant.kpis.length==0">No KPIs set for this grant</ng-container>
-            <ng-container *ngFor="let kpi of currentGrant.kpis">
-                <div class="row border-bottom kpi-block" style="overflow-x: auto;"
-                     (scroll)="scrollChildContent($event)">
-                    <div class="col-sm-12 col-lg-5 pt-2 bg-white"
-                         style="z-index: 1;position:sticky;left: 0;border-right: 0.5px solid #d4d4d4;border-left: 4px solid #d4d4d4;">
-                        <div class="row">
-                            <div class="col-sm-1" style="display:flex;align-items: center;">
-                                <mat-icon class="text-primary" *ngIf="kpi.kpiReportingType==='ACTIVITY'">
-                                    local_activity
-                                </mat-icon>
-                                <mat-icon color="accent" *ngIf="kpi.kpiReportingType==='FINANCIAL'">
-                                    money
-                                </mat-icon>
-                                <mat-icon class="text-info" *ngIf="kpi.kpiType==='QUALITATIVE'">
-                                    assignment
-                                </mat-icon>
-                                <mat-icon class="text-warning" *ngIf="kpi.kpiType==='DOCUMENT'">
-                                    insert_drive_file
-                                </mat-icon>
-                            </div>
-                            <div class="col-sm-12">
-                                <div readonly><b>{{kpi.title}}</b></div>
-                                <button mat-stroked-button class="my-2" *ngIf="kpi.templates.length > 0"
-                                        matBadge="{{kpi.templates.length}}"
-                                        matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="accent"
-                                        (click)="openBottomSheet(kpi.id, kpi.title, kpi.templates,false)">
-                                    View templates
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-lg-7">
-                        <div class="container-fluid" style="height: 100%;">
-                            <div class="row flex-row flex-nowrap" style="height: 100%;">
-                                <ng-container *ngFor="let submission of currentGrant.submissions">
-                                    <ng-container *ngIf="kpi.kpiType === 'QUANTITATIVE'">
-                                        <ng-container *ngFor="let kpiData of submission.quantitiaveKpisubmissions">
-                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
 
-                                                <div class="col-sm-4 col-lg-6"
-                                                     style="height: 100%;border-right: 0.5px solid #d4d4d4;">
-                                                    <div class="row h-100">
-                                                        <div class="col-sm-12"
-                                                             style="display:flex;align-items:center">
-
-                                                            <ng-container
-                                                                    *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">
-                                                                <span>{{kpiData.actuals}} / </span>
-                                                            </ng-container>
-                                                            <span>{{kpiData.goal}}</span>
-
-
-                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
-                                    </ng-container>
-                                    <ng-container *ngIf="kpi.kpiType === 'QUALITATIVE'">
-                                        <ng-container *ngFor="let kpiData of submission.qualitativeKpiSubmissions">
-                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                                                <div class="col-sm-4 col-lg-6"
-                                                     style="border-right: 0.5px solid #d4d4d4;">
-                                                    <div class="row h-100">
-                                                        <div class="col-sm-12"
-                                                             style="display: flex;align-items: center;">
-                                                            <div *ngIf="kpiData.actuals!==null && kpiData.actuals!==''">{{kpiData.actuals}}</div>
-                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
-
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
-                                    </ng-container>
-                                    <ng-container *ngIf="kpi.kpiType === 'DOCUMENT'">
-                                        <ng-container *ngFor="let kpiData of submission.documentKpiSubmissions">
-                                            <ng-container *ngIf="kpi.id === kpiData.grantKpi.id">
-                                                <div class="col-sm-4 col-lg-6"
-                                                     style="border-right: 0.5px solid #d4d4d4;">
-                                                    <div class="row h-100">
-                                                        <div class="col-sm-6"
-                                                             style="display: flex;align-items: center;">
-                                                            <p *ngIf="canManage">{{kpiData.toReport ? 'Required' : 'Not required'}}</p>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
                                     </ng-container>
                                 </ng-container>
                             </div>
                         </div>
-                    </div>
+                    </ng-container>
                 </div>
-            </ng-container>
+            </div>
+            
+            
+            
 
             <!--<div class="accordion" id="accordionExample">
               <ng-container *ngFor="let submission of currentGrant.submissions">

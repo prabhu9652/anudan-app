@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Grant Templates</h1>
+
+<select #templateHolder>
+	<option *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</option>
+</select>
+<pre>
+	<ul>
+		<li>Grant templates can be saved during onboarding</li>
+	</ul>
+</pre>
+<div mat-dialog-actions>
+  <button mat-button mat-flat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
+</div>

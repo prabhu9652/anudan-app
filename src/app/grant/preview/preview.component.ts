@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,TableData, TemplateLibrary
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -26,6 +26,10 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {PdfDocument} from "../../model/pdf-document";
+import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+
+
 
 @Component({
   selector: 'app-preview',
@@ -50,6 +54,8 @@ export class PreviewComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -97,10 +103,43 @@ export class PreviewComponent implements OnInit {
     });*/
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+    if(this.currentGrant.startDate && this.currentGrant.endDate){
+      var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+      time = time + 86400001;
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+    }else{
+      this.currentGrant.duration = 'No end date';
+    }
+
+    for(let section of this.currentGrant.grantDetails.sections){
+    if(section.attributes){
+      for(let attribute of section.attributes){
+        if(attribute.fieldType ==='document'){
+          let docs;
+          try {
+            docs = JSON.parse(attribute.fieldValue);
+          } catch(e){
+            docs = [];
+          }
+          if(docs.length > 0){
+            attribute.docs = new Array<TemplateLibrary>();
+            for(let i=0; i< docs.length; i++){
+              attribute.docs.push(docs[i]);
+            }
+          }
+        }
+        }
+      }
+    }
+
+    this.grantData.changeMessage(this.currentGrant);
+    console.log(this.currentGrant);
+
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
-    this.checkGrantPermissions();
+    //this.checkGrantPermissions();
     this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
@@ -120,6 +159,13 @@ export class PreviewComponent implements OnInit {
     });
   }
 
+  getDocumentName(val: string): any[] {
+    let obj;
+    if(val!==""){
+        obj = JSON.parse(val);
+    }
+    return obj;
+  }
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
@@ -139,17 +185,17 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(): void {
+  /*ngAfterViewInit(): void {
     const firstCol = $('.first-column');
     if (firstCol.length) {
       this.firstColumnInitialPosition = firstCol.position().left;
     }
-  }
+  }*/
 
-  ngAfterContentChecked(): void {
+  /*ngAfterContentChecked(): void {
     this._adjustHeights();
     //this._setFlowButtonColors();
-  }
+  }*/
 
   rememberScrollPosition(event: Event) {
     console.log(event);
@@ -206,6 +252,7 @@ export class PreviewComponent implements OnInit {
             break;
         }
       } else {
+
         dialogRef.close();
       }
     });
@@ -219,6 +266,9 @@ export class PreviewComponent implements OnInit {
         this.checkGrant();
       }
     }
+  }
+
+  saveTemplate(templateId: number, templateName: string){
   }
 
   deleteKpi(kpiId: number) {
@@ -335,7 +385,7 @@ export class PreviewComponent implements OnInit {
           this.currentGrant = grant;
           this._setEditMode(false);
           this.currentSubmission = null;
-          this.checkGrantPermissions();
+          //this.checkGrantPermissions();
           this.checkCurrentSubmission();
           this.appComp.autosave = false;
         },
@@ -670,7 +720,6 @@ export class PreviewComponent implements OnInit {
 
 
   submitGrant(toStateId: number) {
-    console.log(toStateId);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -680,6 +729,7 @@ export class PreviewComponent implements OnInit {
       })
     };
 
+    const origStatus = this.currentGrant.grantStatus.name;
     let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/flow/'
         + this.currentGrant.grantStatus.id + '/' + toStateId;
@@ -687,16 +737,48 @@ export class PreviewComponent implements OnInit {
       /*this.loading = false;
       this.grantDataService.changeMessage(grant);
       this.router.navigate(['grant']);*/
+      this.grantData.changeMessage(grant);
+      this.fetchCurrentGrant();
+      if(!grant.grantTemplate.published && origStatus==='DRAFT'){
+      const dialogRef = this.dialog.open(TemplateDialogComponent, {
+            data: this.currentGrant.grantTemplate.name
+          });
 
-      url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
+       dialogRef.afterClosed().subscribe(result => {
+             if (result.result) {
+               let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
+                   this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
+                    this.grantData.changeMessage(grant);
+                    this.appComp.selectedTemplate = grant.grantTemplate;
+                   });
+
+             } else {
+               dialogRef.close();
+             }
+           });
+        }
+
+    });
+
+  }
+
+  fetchCurrentGrant(){
+
+  const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
-        this.checkGrantPermissions();
+        //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });
-    });
-
   }
 
 
@@ -1135,5 +1217,38 @@ export class PreviewComponent implements OnInit {
             console.log(data);
             window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
         });
+    }
+
+    getTabularData(elemId: number, data: TableData[]){
+      let html = '<table width="100%" border="1"><tr>';
+      const tabData = data;
+      html += '<td>&nbsp;</td>'; 
+      for(let i=0; i< tabData[0].columns.length;i++){
+       
+          
+          if(tabData[0].columns[i].name.trim() !== ''){         
+            html+='<td>' + tabData[0].columns[i].name + '</td>';
+          }   
+      }
+      html += '</tr>';
+      for(let i=0; i< tabData.length;i++){
+       
+          html += '<tr><td>' + tabData[i].name + '</td>';
+          for(let j=0; j < tabData[i].columns.length; j++){
+            if(tabData[i].columns[j].name.trim() !== ''){  
+              html+='<td>' + tabData[i].columns[j].value + '</td>';
+            }
+          }
+          html += '</tr>';
+      }
+
+      html += '</table>'
+      //document.getElementById('attribute_' + elemId).innerHTML = '';
+      //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+      return html;
+    }
+
+    datePickerSelected(event:Event){
+        console.log(event);
     }
 }

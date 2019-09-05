@@ -11,6 +11,9 @@ import {AuthService} from 'ng-social-login-module';
 import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
 import {SocialUser} from 'ng-social-login-module';
 import {ToastrService} from 'ngx-toastr';
+import {Notifications} from '../model/dahsboard'
+import {interval} from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -90,7 +93,7 @@ export class LoginComponent implements OnInit {
       observe: 'response' as 'body'
     };
 
-    const url = '/api/authenticate';
+    let url = '/api/authenticate';
 
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
 

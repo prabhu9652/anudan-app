@@ -4,7 +4,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <button *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')"
                         class="btn btn-sm btn-primary float-right"
-                        (click)="grantComponent.createGrant()">Create Grant
+                        (click)="createGrant()">Create Grant
                 </button>
             </div>
         </div>
@@ -14,36 +14,112 @@
                     <div *ngIf="!hasTenant">There are no available grants currently.</div>
                     <div *ngIf="hasTenant">
 
-                        <div class="row flex-row flex-nowrap">
-                            <mat-card *ngFor="let grant of currentTenant.grants; let i = index" class="mx-1"
-                                      (click)="manageGrant(grant)">
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsDraft.length > 0">
+                                <mat-expansion-panel-header style="padding: 15px;">
+                                  <mat-panel-title style="display: flex; align-items: center">
+                                    <i class="material-icons">assessment</i>Draft
+                                  </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
+                                    
+                                    <div class="col-2" (click)="manageGrant(grant)">
+                                        <img class="img-fluid" 
+                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                                             alt="org logo">
+                                    </div>
+                                    <div class="col-7 text-left" (click)="manageGrant(grant)">
+                                        
+                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p>INR {{grant.amount}}</p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                {{grant.organization?grant.organization.name:null}}
+                                            </div>
+                                            <div class="col-6 text-left">
+                                                <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
+                                                <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
+                                                <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.endDate | date:'dd-MMM-yyyy'}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
+                                        <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant') && grant.grantStatus.name==='DRAFT'"
+                                                class="btn btn-sm btn-danger float-right"
+                                                (click)="deleteGrant(grant)">Delete Grant
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
 
-                                <mat-card-header>
-                                    <mat-card-title>{{grant.name}}</mat-card-title>
-                                    <mat-card-subtitle>
-                                        <mat-label>
-                                            <strong class="font-weight-bolder">{{grant.startDate | date}}</strong> to
-                                            <strong class="font-weight-bolder">{{grant.endDate | date}}</strong>
-                                        </mat-label>
-                                    </mat-card-subtitle>
-                                </mat-card-header>
-                                <mat-card-content>
-                                    <img mat-card-md-image
-                                         [src]="'api/public/images/'+grant.grantorOrganization.imageName"
-                                         alt="org logo">
-                                    <p *ngIf="hasKpisToSubmit">Upcoming submissions
-                                        for {{kpiSubmissionTitle}}.
-                                    </p>
-                                    Due date
-                                    <ng-container *ngIf="kpiSubmissionDate">
-                                        <div class="badge badge-danger">{{kpiSubmissionDate | date}}</div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!kpiSubmissionDate">
-                                        <div class="badge badge-danger">No upcoming submissions</div>
-                                    </ng-container>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsActive.length > 0">
+                                <mat-expansion-panel-header style="padding: 15px;">
+                                  <mat-panel-title style="display: flex; align-items: center">
+                                    <i class="material-icons">assessment</i>Active
+                                  </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
+                                          (click)="manageGrant(grant)">
+                                   
+                                    <div class="col-2">
+                                        <img class="img-fluid" 
+                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                                             alt="org logo">
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        
+                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p>INR {{grant.amount}}</p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span *ngIf="grant.organization">{{grant.organization.name}}</span>
+                                            </div>
+                                            <div class="col-6 text-left">
+                                                <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
+                                                <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
+                                                <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.endDate | date:'dd-MMM-yyyy'}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel class="mb-3" *ngIf="grantsClosed.length > 0">
+                                <mat-expansion-panel-header style="padding: 15px;">
+                                  <mat-panel-title style="display: flex; align-items: center">
+                                    <i class="material-icons">assessment</i>Closed
+                                  </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
+                                          (click)="manageGrant(grant)">
+                                    <div class="col-2">
+                                        <img class="img-fluid" 
+                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                                             alt="org logo">
+                                    </div>
+                                    <div class="col-9 text-left">
+                                        
+                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p>INR {{grant.amount}}</p>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                {{grant.organization.name}}
+                                            </div>
+                                            <div class="col-6 text-left">
+                                                <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
+                                                <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
+                                                <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.endDate | date:'dd-MMM-yyyy'}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
                     </div>
 
                 </div>

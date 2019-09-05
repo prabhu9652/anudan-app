@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, AfterViewChecked, HostListener} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -9,29 +9,41 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
+import {DataService} from '../../data.service';
 import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval} from 'rxjs';
+import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+
+
+
 
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
-  styleUrls: ['./sections.component.scss']
+  styleUrls: ['./sections.component.scss'],
+  providers: [SidebarComponent, DataService]
 })
-export class SectionsComponent implements OnInit {
+export class SectionsComponent implements OnInit, AfterViewChecked {
 
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
@@ -49,6 +61,25 @@ export class SectionsComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  action: string;
+  newField: any;
+
+  myControl: FormControl;
+  options: TemplateLibrary[];
+  filteredOptions: Observable<TemplateLibrary[]>;
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  fruits: TemplateLibrary[] = [];
+  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+
+  userActivity;
+  userInactive: Subject<any> = new Subject();
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -63,6 +94,8 @@ export class SectionsComponent implements OnInit {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -76,30 +109,77 @@ export class SectionsComponent implements OnInit {
       , private _bottomSheet: MatBottomSheet
       , private elem: ElementRef
       , private datepipe: DatePipe
-      , public colors: Colors) {
+      , public colors: Colors
+      , private sidebar: SidebarComponent,
+      private data: DataService) {
     this.colors = new Colors();
+
+    router.events.subscribe((val) => {
+            if(val instanceof NavigationStart){
+                this.saveGrant();
+            }
+        });
+    this.route.params.subscribe( (p) => {
+    this.action = p['action'];
+    console.log(this.action);
+    } );
   }
 
   ngOnInit() {
+  this.setTimeout();
+  this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
-    /*interval(3000).subscribe(t => {
+  this.myControl = new FormControl();
 
-      console.log('Came here');
-      if (this.editMode) {
-        this.appComp.autosave = true;
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        this.saveGrant();
-      } else {
-        this.appComp.autosave = false;
-      }
-    });*/
+    this.options = this.appComp.currentTenant.templateLibrary;
+
+    const docs = this.options.slice();
+    /*this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value),
+        map(name => name ? this._filter(name) : docs)
+      );*/
+
+      
+      
+
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+    for(let section of this.currentGrant.grantDetails.sections){
+    if(section.attributes) {
+      for(let attribute of section.attributes) {
+        if (attribute.fieldType === 'document') {
+          if(attribute.fieldValue!==""){
+          let frt = JSON.parse(attribute.fieldValue);
+          if(frt.length > 0) {
+            for(let i=0; i< frt.length; i++){
+              this.fruits.push(frt[i]);
+            }
+           }
+          }
+        }
+      }
+      }
+    }
+
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value),
+        map(name => name ? this._filter(name) : docs)
+      );
+
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
     this.checkGrantPermissions();
-    this.checkCurrentSubmission();
+    //this.checkCurrentSubmission();
+
+    $('#stDateIcon').on('click',function(event){
+        console.log('PICKER CLICKED');
+    });
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();
@@ -117,6 +197,12 @@ export class SectionsComponent implements OnInit {
       $('#kpiDescription').focus();
     });
   }
+
+   ngAfterViewChecked() {
+       if(this.newField){
+         this.scrollTo(this.newField);
+       }
+     }
 
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
@@ -181,7 +267,7 @@ export class SectionsComponent implements OnInit {
 
 
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
-
+    this.appComp.sectionInModification = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: title
     });
@@ -206,17 +292,27 @@ export class SectionsComponent implements OnInit {
       } else {
         dialogRef.close();
       }
+      this.appComp.sectionInModification = false;
     });
   }
 
   deleteFieldEntry(sectionId: number, attributeId: number) {
-    for (const section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        const index = section.attributes.findIndex(attr => attr.id === attributeId);
-        section.attributes.splice(index, 1);
-        this.checkGrant();
-      }
-    }
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/'+sectionId+'/field/'+attributeId;
+
+    this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+       this.grantData.changeMessage(grant);
+       const path = this.sidebar.buildSectionsSideNav();
+           this.router.navigate([path]);
+       });
   }
 
   deleteKpi(kpiId: number) {
@@ -248,7 +344,7 @@ export class SectionsComponent implements OnInit {
       }
     }
 
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
   saveField() {
@@ -312,40 +408,45 @@ export class SectionsComponent implements OnInit {
 
   saveGrant() {
 
-    /*const errors = this.validateFields();
-    if (errors) {
-        this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
-        $(this.erroredElement).focus();
-    } else {*/
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
-    };
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        /*const errors = this.validateFields();
+        if (errors) {
+            this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
+            $(this.erroredElement).focus();
+        } else {*/
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
-        });
-    // }
-  }
+            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+                    this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    //this.grantData.changeMessage(grant);
+                    //this.dataService.changeMessage(grant.id);
+                    //this.currentGrant = grant;
+                    this._setEditMode(false);
+                    this.currentSubmission = null;
+                    this.checkGrantPermissions();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
+                    this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                },
+                error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                        enableHtml: true
+                    });
+                });
+        // }
+    }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
@@ -383,7 +484,7 @@ export class SectionsComponent implements OnInit {
       }
     }
 
-    this.saveGrant();
+    //this.saveGrant();
 
     /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/submission/flow/'
@@ -417,20 +518,50 @@ export class SectionsComponent implements OnInit {
     $(titleElem).html(sectionName + ' - Create new field');
     $(idHolderElem).val(sectionId);
     $(createFieldModal).modal('show');*/
-    for (const section of this.currentGrant.grantDetails.sections) {
+
+    this.appComp.sectionInModification = true;
+
+    const httpOptions = {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+
+                const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/' + Number(sectionId) + '/field';
+
+                this.http.get<FieldInfo>(url, httpOptions).subscribe((info: FieldInfo) => {
+                    //this.checkGrant(null);
+                    this.grantData.changeMessage(info.grant);
+                    this.appComp.sectionInModification = false;
+                    this.appComp.selectedTemplate = info.grant.grantTemplate;
+                    this.newField = 'field_' + info.attributeId;
+                    //this.scrollTo(this.newField);
+                });
+    const id = 0 - Math.round(Math.random() * 1000000000);
+    /* for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
         const newAttr = new Attribute();
-        newAttr.fieldType = 'string';
+        newAttr.fieldType = 'multiline';
         newAttr.fieldName = '';
         newAttr.fieldValue = '';
         newAttr.deletable = true;
         newAttr.required = false;
-        newAttr.id = 0 - Math.round(Math.random() * 1000000000);
+        newAttr.id = id
         section.attributes.push(newAttr);
         break;
       }
-    }
-    this.checkGrant();
+    } */
+
+  }
+
+  scrollTo(uniqueID){
+
+    const elmnt = document.getElementById(uniqueID); // let if use typescript
+    //elmnt.scrollIntoView(true); // this will scroll elem to the top
+    elmnt.focus();
+    this.newField = null;
   }
 
 
@@ -466,6 +597,7 @@ export class SectionsComponent implements OnInit {
 
 
   addNewSection() {
+    this.appComp.sectionInModification = true;
     const createSectionModal = this.createSectionModal.nativeElement;
     const titleElem = $(createSectionModal).find('#createSectionLabel');
     $(titleElem).html('Add new section');
@@ -480,7 +612,33 @@ export class SectionsComponent implements OnInit {
       sectionName.focus();
       return;
     }
+
     const createSectionModal = this.createSectionModal.nativeElement;
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
+
+    this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+         this.grantData.changeMessage(info.grant);
+
+        sectionName.val('');
+        //$('#section_' + newSection.id).css('display', 'block');
+        this._setEditMode(true);
+        $(createSectionModal).modal('hide');
+        this.appComp.sectionAdded = true;
+        this.sidebar.buildSectionsSideNav();
+        this.appComp.sectionInModification = false;
+        this.appComp.selectedTemplate = info.grant.grantTemplate;
+        this.router.navigate(['grant/section/' + this.getCleanText(info.sectionName)]);
+    });
+    /*const createSectionModal = this.createSectionModal.nativeElement;
     const currentSections = this.currentGrant.grantDetails.sections;
     const newSection = new Section();
     newSection.attributes = [];
@@ -489,13 +647,8 @@ export class SectionsComponent implements OnInit {
     newSection.deletable = true;
 
     currentSections.push(newSection);
+    */
 
-    this.grantData.changeMessage(this.currentGrant);
-
-    sectionName.val('');
-    $('#section_' + newSection.id).css('display', 'block');
-    this._setEditMode(true);
-    $(createSectionModal).modal('hide');
   }
 
   saveSectionAndAddNew() {
@@ -943,13 +1096,95 @@ export class SectionsComponent implements OnInit {
   }
 
 
-  checkGrant() {
+  checkGrant(ev: Event) {
+  this.appComp.sectionInModification = true;
+  
+  console.log(ev);
+  
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
+    //this.saveGrant(this.currentGrant);
+    
+    //this.grantData.changeMessage(this.currentGrant);
+    if(ev){
+      this.grantData.changeMessage(this.currentGrant);
+      this.appComp.sectionUpdated = true;
+      this.sidebar.buildSectionsSideNav();
+      this.appComp.sectionInModification = false;
+      this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+    }
+     this.appComp.sectionInModification = false;
       this._setEditMode(true);
     }
   }
+
+  changeFieldType(){
+    this.appComp.sectionInModification = true
+  }
+
+  selectionClosed(){
+    console.log('Closed');
+  }
+  handleTypeChange(ev: Event, attr: Attribute){
+    attr.fieldValue = '';
+    if(ev.toString()==='table'){
+      if(attr.fieldValue.trim() === ''){
+        attr.fieldTableValue = [];
+        const data = new TableData();
+        data.name = "";
+        data.columns = [];
+
+        for(let i=0; i< 5; i++){
+          const col = new ColumnData();
+          col.name = "";
+          col.value = '';
+          data.columns.push(col);
+        }
+
+        //attr.fieldTableValue.push(data);
+      }
+    }
+
+    const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+            + this.currentGrant.id + '/field/'+attr.id;
+        this.http.post<FieldInfo>(url, attr, httpOptions).subscribe((info: FieldInfo) => {
+            this.grantData.changeMessage(info.grant);
+        this.appComp.sectionInModification = false;
+        this.appComp.selectedTemplate = info.grant.grantTemplate;
+        this.newField = 'field_' + info.attributeId;
+        });
+  }
+
+  addColumn(attr: Attribute){
+       for(let row of attr.fieldTableValue) {
+
+        const col = new ColumnData();
+          col.name = "";
+          col.value = '';
+        row.columns.push(col);
+       }
+  }
+
+  addRow(attr: Attribute){
+       const row = new TableData();
+       row.name = '';
+       row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+       for(let i=0; i<row.columns.length;i++){
+        row.columns[i].value = '';
+       }
+
+       attr.fieldTableValue.push(row);
+  }
+
 
   openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
 
@@ -968,7 +1203,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -994,7 +1229,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -1020,7 +1255,7 @@ export class SectionsComponent implements OnInit {
 
     _bSheet.afterDismissed().subscribe(result => {
       console.log(this.currentGrant);
-      this.checkGrant();
+      this.checkGrant(null);
     });
   }
 
@@ -1055,7 +1290,7 @@ export class SectionsComponent implements OnInit {
     }
 
 
-    this.checkGrant();
+    this.checkGrant(null);
     event.source.value = '';
   }
 
@@ -1080,9 +1315,28 @@ export class SectionsComponent implements OnInit {
   }
 
   deleteSection(secId: number) {
-    const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
+
+  const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
+
+      this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+           this.grantData.changeMessage(grant);
+           const path = this.sidebar.buildSectionsSideNav();
+               this.router.navigate([path]);
+           });
+    /* const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
-    this.checkGrant();
+    this.grantData.changeMessage(this.currentGrant);
+    this.checkGrant(null); */
+
+
   }
 
   handleSpacebar(ev: Event) {
@@ -1095,7 +1349,7 @@ export class SectionsComponent implements OnInit {
   setSubmissionDate(sub: Submission, event: MatDatepickerInputEvent<any>) {
     sub.submitBy = event.value;
     sub.submitDateStr = this.datepipe.transform(event.value, 'yyyy-MM-dd');
-    this.checkGrant();
+    this.checkGrant(null);
   }
 
   setKpiTypeSection(event) {
@@ -1112,4 +1366,132 @@ export class SectionsComponent implements OnInit {
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
+
+  getCleanText(name:string){
+    return name.replace(/[^0-9a-z]/gi, '');
+  }
+
+  getTabularData(elemId: number, data: string){
+      let html = '<table width="100%" border="1"><tr>';
+      const tabData = JSON.parse(data);
+      html += '<td>&nbsp;</td>'; 
+      for(let i=0; i< tabData[0].columns.length;i++){
+       
+          
+          if(tabData[0].columns[i].name.trim() !== ''){         
+            html+='<td>' + tabData[0].columns[i].name + '</td>';
+          }   
+      }
+      html += '</tr>';
+      for(let i=0; i< tabData.length;i++){
+       
+          html += '<tr><td>' + tabData[i].name + '</td>';
+          for(let j=0; j < tabData[i].columns.length; j++){
+            if(tabData[i].columns[j].name.trim() !== ''){  
+              html+='<td>' + tabData[i].columns[j].value + '</td>';
+            }
+          }
+          html += '</tr>';
+      }
+
+      html += '</table>'
+      //document.getElementById('attribute_' + elemId).innerHTML = '';
+      //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+      return html;
+    }
+
+    setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          //this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
+          //this.grantToUpdate.id = this.currentGrantId;
+          //this.saveGrant();
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
+
+  private _filter(value: any): TemplateLibrary[] {
+    let filterValue;
+    if(typeof value==='string'){
+      filterValue = value.toLowerCase();
+    }else {
+      filterValue = value.name;
+    }
+
+    const selectedDoc = this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+    
+    
+    return selectedDoc;
+  }
+
+  displayFn = doc => {
+  
+  
+  return doc ? doc.name : undefined;
+}
+
+////////////////////////
+add(event: MatChipInputEvent): void {
+    // Add fruit only when MatAutocomplete is not open
+    // To make sure this does not conflict with OptionSelected Event
+    if (!this.matAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      // Add our fruit
+      if ((value || '')) {
+        const index = this.fruits.findIndex((a) => a.name===value);
+        this.fruits.push(this.options[index]);
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.myControl.setValue(null);
+    }
+  }
+
+
+  remove(attribute: Attribute, fruit: TemplateLibrary) {
+    const index = this.fruits.findIndex((a) => a.id===fruit.id);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+      attribute.fieldValue = JSON.stringify(this.fruits);
+      console.log(this.currentGrant);
+    }
+  }
+
+  selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
+    this.fruits.push(event.option.value);
+    attribute.fieldValue = JSON.stringify(this.fruits);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+ getDocumentName(val: string): any[] {
+     let obj;
+         if(val!==""){
+             obj = JSON.parse(val);
+         }
+     return obj;
+   }
+
 }

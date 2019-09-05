@@ -1,8 +1,15 @@
 <div class="sidebar-wrapper h-100">
     <ul class="nav h-100">
-        <li *ngIf="isMobileMenu()" class="p-1 nav-item bg-info">
+        <li *ngIf="isMobileMenu()" class="p-1 nav-item">
+
+            <ng-container *ngIf="appComponent.notifications.length > 0">
+                <mat-icon class="float-right mr-3 mt-3" [matBadge]="this.appComponent.notifications.length" matBadgeColor="warn" (click)="showMessages()">notifications</mat-icon>
+            </ng-container>
+            <ng-container *ngIf="appComponent.notifications.length === 0">
+                <mat-icon class="float-right mr-3 mt-3" (click)="showMessages()">notifications_none</mat-icon>
+            </ng-container>
+            <img [src]="appComponent.appConfig.logoUrl" alt="logo">
             <a class="nav-link" (click)="showProfile()">
-                <i class="material-icons text-white">person</i>
                 <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName}}
                     , {{appComponent.loggedInUser.firstName}}</p>
                 <ng-container *ngFor="let userRole of appComponent.loggedInUser.userRoles; let i = index">
@@ -10,42 +17,74 @@
                         <ng-container *ngIf="i!=appComponent.loggedInUser.userRoles.length-1">, </ng-container></span>
                 </ng-container>
             </a>
+
         </li>
         <ng-container *ngIf="appComponent.currentView === 'grants'">
-        <li routerLinkActive="active" *ngFor="let menuItem of menuItems"
-            class="{{menuItem.class}} nav-item text-left">
-            <a class="nav-link" [routerLink]="[menuItem.path]">
-                <i class="material-icons">{{menuItem.icon}}</i>
-                <p>{{menuItem.title}}</p>
-            </a>
-        </li>
-        </ng-container>
-
-        <ng-container *ngIf="appComponent.currentView === 'grant'">
-            <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
+            <li routerLinkActive="active" *ngFor="let menuItem of menuItems"
                 class="{{menuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
                     <i class="material-icons">{{menuItem.icon}}</i>
                     <p>{{menuItem.title}}</p>
                 </a>
             </li>
-        </ng-container>
-        <!--<li class="nav-item">
-            <a class="nav-link">
-                <p>Administration</p>
-                <ul class="nav">
-                    <li routerLinkActive="active" *ngFor="let adminMenuItem of adminMenuItems"
-                        class="{{adminMenuItem.class}} nav-item">
-                        <a class="nav-link" [routerLink]="[adminMenuItem.path]">
-                            <i class="material-icons">{{adminMenuItem.icon}}</i>
-                            <p>{{adminMenuItem.title}}</p>
-                        </a>
-                    </li>
-                </ul>
-            </a>
-        </li>-->
 
-        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="position: absolute;bottom: 10px;">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                  <mat-panel-title style="display: flex; align-items: center">
+                    <i class="material-icons">build</i>Administration
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <li routerLinkActive="active" *ngFor="let adminMenuItem of adminMenuItems"
+                class="{{adminMenuItem.class}} nav-item text-left">
+                <a class="nav-link" [routerLink]="[adminMenuItem.path]">
+                    <i class="material-icons">{{adminMenuItem.icon}}</i>
+                    <p>{{adminMenuItem.title}}</p>
+                </a>
+            </li>
+            </mat-expansion-panel>
+            
+
+        </ng-container>
+         
+        
+        <ng-container *ngIf="appComponent.currentView === 'grant'">
+            <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
+                class="{{menuItem.class}} nav-item text-left">
+                <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
+                    <a class="nav-link" [routerLink]="[menuItem.path]">
+                        <i class="material-icons">{{menuItem.icon}}</i>
+                        <p style="font-size: 15px;"><b>{{menuItem.title}}</b></p>
+                    </a>
+                </ng-container>
+            
+                <ng-container *ngIf="menuItem.title === 'Grant Details'">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                          <mat-panel-title style="display: flex; align-items: center">
+                            <i class="material-icons">list</i>Grant Details
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
+                            <a class="nav-link" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
+                                <i class="material-icons">{{menuItem1.icon}}</i>
+                                <p>{{menuItem1.title}}</p>
+                            </a>
+                    </li>
+                    <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
+                class="{{menuItem.class}} nav-item text-left">
+                    <ng-container *ngIf="menuItem.title === 'Monitoring & Evaluation'">
+                        <a class="nav-link" [routerLink]="[menuItem.path]" style="padding-top: 0;padding-bottom: 0;">
+                            <i class="material-icons">{{menuItem.icon}}</i>
+                            <p>{{menuItem.title}}</p>
+                        </a>
+                    </ng-container>
+                </li>
+                    </mat-expansion-panel>
+                </ng-container>
+            </li>
+        </ng-container>
+
+        <li class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()">
             <a class="nav-link text-left" (click)="appComponent.logout()">
                 <i class="material-icons">exit_to_app</i>
                 <p>Logout</p>
@@ -55,3 +94,5 @@
     </ul>
     <hr>
 </div>
+
+

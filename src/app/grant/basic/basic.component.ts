@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input, HostListener} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -9,7 +9,9 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template
+  SubmissionStatus, Template,
+  CustomDateAdapter,
+  Organization
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -17,24 +19,48 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
+import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
-import {interval} from 'rxjs';
+import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
+
+export const APP_DATE_FORMATS = {
+   parse: {
+      dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
+   },
+   display: {
+      dateInput: 'input',
+      monthYearLabel: {year: 'numeric', month: 'short'},
+      dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+      monthYearA11yLabel: {year: 'numeric', month: 'long'},
+   }
+};
 
 @Component({
   selector: 'app-basic',
   templateUrl: './basic.component.html',
-  styleUrls: ['./basic.component.scss']
+  styleUrls: ['./basic.component.scss'],
+  providers: [SidebarComponent,{
+         provide: DateAdapter, useClass: CustomDateAdapter
+      },
+      {
+         provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+      }]
 })
 export class BasicComponent implements OnInit {
+
+  
   hasKpisToSubmit: boolean;
   kpiSubmissionTitle: string;
-  currentGrant: Grant;
+  @Input() currentGrant: Grant;
   originalGrant: Grant;
   editMode = false;
   firstColumnInitialPosition: number;
@@ -48,6 +74,16 @@ export class BasicComponent implements OnInit {
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
+  myControl: FormControl;
+  options: Organization[];
+  filteredOptions: Observable<Organization[]>;
+
+  userActivity;
+  userInactive: Subject<any> = new Subject();
+  
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -62,6 +98,9 @@ export class BasicComponent implements OnInit {
   @ViewChild('sidenav') attachmentsSideNav: any;
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
+  @ViewChild('pickerStart') pickerStart: MatDatepicker<Date>;
+  @ViewChild('pickerEnd') pickerEnd: MatDatepicker<Date>;
+
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -75,30 +114,41 @@ export class BasicComponent implements OnInit {
       , private _bottomSheet: MatBottomSheet
       , private elem: ElementRef
       , private datepipe: DatePipe
-      , public colors: Colors) {
+      , public colors: Colors
+      , public sidebar: SidebarComponent) {
     this.colors = new Colors();
   }
 
+  
   ngOnInit() {
 
-    /*interval(3000).subscribe(t => {
-
-      console.log('Came here');
-      if (this.editMode) {
-        this.appComp.autosave = true;
-        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
-        this.saveGrant();
-      } else {
-        this.appComp.autosave = false;
-      }
-    });*/
+    this.setTimeout();
+    this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    console.log(this.currentGrant);
+    
+    this.myControl = new FormControl(this.currentGrant.organization);
+
+    this.options = this.appComp.appConfig.granteeOrgs;
+
+    const orgs = this.options.slice();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : orgs)
+      );
+
+
+    this.setDateDuration();
+    
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
+ 
     this.checkGrantPermissions();
-    this.checkCurrentSubmission();
+    //this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();
@@ -115,6 +165,8 @@ export class BasicComponent implements OnInit {
     $('#createKpiModal').on('shown.bs.modal', function (event) {
       $('#kpiDescription').focus();
     });
+
+    //this.sidebar.buildSectionsSideNav(this.currentGrant);
   }
 
   private checkGrantPermissions() {
@@ -309,42 +361,48 @@ export class BasicComponent implements OnInit {
     console.log(this.currentGrant);*/
   }
 
-  saveGrant() {
+  saveGrant(grantToSave: Grant) {
 
-    /*const errors = this.validateFields();
-    if (errors) {
-        this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
-        $(this.erroredElement).focus();
-    } else {*/
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
-    };
+        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        /*const errors = this.validateFields();
+        if (errors) {
+            this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
+            $(this.erroredElement).focus();
+        } else {*/
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-    this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
-        });
-    // }
-  }
+            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
+                    this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    this.grantData.changeMessage(grant);
+                    this.setDateDuration();
+                    //this.dataService.changeMessage(grant.id);
+                    //this.currentGrant = grant;
+                    this._setEditMode(false);
+                    this.currentSubmission = null;
+                    this.checkGrantPermissions();
+                    if(grant.submissions &&grant.submissions.length>0 ){
+                        this.checkCurrentSubmission();
+                    }
+                    this.appComp.autosave = false;
+                    this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                },
+                error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                        enableHtml: true
+                    });
+                });
+        // }
+    }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
@@ -364,7 +422,7 @@ export class BasicComponent implements OnInit {
   }
 
 
-  saveSubmissionAndMove(toStateId: number) {
+  /*saveSubmissionAndMove(toStateId: number) {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -384,7 +442,7 @@ export class BasicComponent implements OnInit {
 
     this.saveGrant();
 
-    /*let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+    let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
         + this.currentGrant.id + '/submission/flow/'
         + this.currentSubmission.submissionStatus.id + '/' + toStateId;
 
@@ -406,8 +464,8 @@ export class BasicComponent implements OnInit {
           this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
             enableHtml: true
           });
-        });*/
-  }
+        });
+  }*/
 
   addNewFieldToSection(sectionId: string, sectionName: string) {
     /*const createFieldModal = this.createFieldModal.nativeElement;
@@ -703,11 +761,11 @@ export class BasicComponent implements OnInit {
 
   private _setEditMode(state: boolean) {
     this.editMode = state;
-    if (state) {
+    /*if (state) {
       $(this.actionBlock.nativeElement).prop('disabled', true);
     } else {
       $(this.actionBlock.nativeElement).prop('disabled', false);
-    }
+    }*/
   }
 
   scrollHeaderContent(event: Event) {
@@ -943,11 +1001,15 @@ export class BasicComponent implements OnInit {
 
 
   checkGrant() {
+  console.log('basic');
+
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
     } else {
       this._setEditMode(true);
+      this.grantData.changeMessage(this.currentGrant);
     }
+    this.setDateDuration();
   }
 
   openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
@@ -1074,7 +1136,7 @@ export class BasicComponent implements OnInit {
   }
 
 
-  setNewOrg(event: Event) {
+  setOrg(event: Event) {
     console.log(event);
   }
 
@@ -1110,5 +1172,109 @@ export class BasicComponent implements OnInit {
     this.currentKPIReportingType = event.value;
 
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
+  }
+
+  setDateDuration(){
+  if(this.currentGrant.startDate && this.currentGrant.endDate){
+      var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+      time = time + 86400001;
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+    }else{
+      this.currentGrant.duration = 'No end date';
+    }
+  }
+
+  manageDate(type: string, ev: Event, dt: string){
+  //const dtParsed = ev.split('/');
+    if(type==='start'){
+      this.currentGrant.startDate=new Date(ev.toString());
+    }else if(type==='end'){
+      this.currentGrant.endDate=new Date(ev.toString());
+    }
+    this.setDateDuration();
+  }
+
+  datePickerSelected(event:Event){
+    this.appComp.sectionInModification = false;
+  }
+
+  private _filter(value: string): Organization[] {
+    const filterValue = value.toLowerCase();
+    const selectedOrg = this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+    if(selectedOrg.length === 0){
+    const newOrg = new Organization();
+    newOrg.id = 0 - Math.round(Math.random() * 1000000000);
+    newOrg.organizationType = 'GRANTEE';
+    newOrg.type = 'GRANTEE';
+    newOrg.name = 'Create Grantee organization as "' + value + '"';
+    //this.currentGrant.organization = newOrg;
+    selectedOrg.push(newOrg);
+
+    }
+    
+    return selectedOrg;
+  }
+
+  displayFn = org => {
+  
+  if(org){
+      if(org.name.startsWith('Create Grantee organization as ')){
+        org.name = org.name.replace('Create Grantee organization as ','');
+        org.name = org.name.replace('"','');
+        org.name = org.name.replace('"','');
+      }
+      this.currentGrant.organization =org;
+
+    }
+  return org ? org.name : undefined;
+}
+
+setTimeout() {
+    this.userActivity = setTimeout(() => {
+    this.userInactive.next(undefined);
+
+        this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
+        if(this.currentGrant !== null){
+          //this.grantComponent.checkGrantPermissions();
+        }
+        if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
+          //this.grantToUpdate.id = this.currentGrantId;
+          this.saveGrant(this.grantToUpdate);
+        }
+    }, 3000);
+    
+  }
+
+  //@HostListener('window:mousemove')
+  @HostListener('window:keyup', ['$event'])
+  //@HostListener('window:scroll', ['$event'])
+  @HostListener('document:click', ['$event'])
+  refreshUserState() {
+    clearTimeout(this.userActivity);
+    this.setTimeout();
+  }
+
+ openStartDate(){
+    const stDateElem = this.pickerStart;
+    if(!stDateElem.opened){
+        this.appComp.sectionInModification = true;
+        stDateElem.open();
+    } else{
+        this.appComp.sectionInModification = false;
+        stDateElem.close();
+    }
+
+ }
+
+ openEndDate(){
+     const stDateElem = this.pickerEnd;
+     if(!stDateElem.opened){
+         this.appComp.sectionInModification = true;
+         stDateElem.open();
+     } else{
+         this.appComp.sectionInModification = false;
+         stDateElem.close();
+     }
+
   }
 }

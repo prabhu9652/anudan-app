@@ -4,8 +4,12 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
 import {Time} from "@angular/common";
+import {interval} from 'rxjs';
+import {GrantDataService} from './grant.data.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -20,7 +24,14 @@ export class AppComponent implements AfterViewChecked{
   title = 'anudan.org';
   loggedInUser: User;
   autosave: boolean = false;
+  autosaveDisplay = '';
   currentView = 'grants';
+  sectionAdded = false;
+  sectionUpdated = false;
+  notifications = [];
+  selectedTemplate: GrantTemplate;
+  sectionInModification = false;
+  currentTenant: Tenant;
 
   public appConfig: AppConfig = {
     appName: '',
@@ -37,7 +48,7 @@ export class AppComponent implements AfterViewChecked{
   org: string;
   public defaultClass = '';
 
-  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {
+  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private grantService: GrantDataService) {
 
   }
 
@@ -50,6 +61,12 @@ export class AppComponent implements AfterViewChecked{
     } else {
       this.router.navigate(['/']);
     }
+
+
+    interval(5000).subscribe(t => {
+      this.initAppUI();      
+    });
+
   }
 
   ngAfterViewChecked(): void {
@@ -79,7 +96,7 @@ export class AppComponent implements AfterViewChecked{
 
 
   getAppUI(hostName) {
-    console.log('hostName = ' + hostName);
+    //console.log('hostName = ' + hostName);
     const url = '/api/public/config/'.concat(hostName);
     this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
       const newObj: any = response.body;
@@ -118,6 +135,8 @@ export class AppComponent implements AfterViewChecked{
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
+    this.notifications = [];
+    this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
     this.router.navigate(['/']);
