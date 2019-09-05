@@ -261,7 +261,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
-
+    this.appComp.sectionInModification = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: title
     });
@@ -286,17 +286,27 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       } else {
         dialogRef.close();
       }
+      this.appComp.sectionInModification = false;
     });
   }
 
   deleteFieldEntry(sectionId: number, attributeId: number) {
-    for (const section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        const index = section.attributes.findIndex(attr => attr.id === attributeId);
-        section.attributes.splice(index, 1);
-        this.checkGrant(null);
-      }
-    }
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/'+sectionId+'/field/'+attributeId;
+
+    this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+       this.grantData.changeMessage(grant);
+       const path = this.sidebar.buildSectionsSideNav();
+           this.router.navigate([path]);
+       });
   }
 
   deleteKpi(kpiId: number) {
@@ -410,7 +420,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    //this.grantData.changeMessage(grant);
+                    this.grantData.changeMessage(grant);
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
                     this._setEditMode(false);
