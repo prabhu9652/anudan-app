@@ -155,7 +155,7 @@ export class PreviewComponent implements OnInit {
   }
 
   getDocumentName(val: string): any[] {
-    const obj;
+    let obj;
     if(val!==""){
         obj = JSON.parse(val);
     }
