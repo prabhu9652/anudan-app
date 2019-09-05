@@ -155,7 +155,10 @@ export class PreviewComponent implements OnInit {
   }
 
   getDocumentName(val: string): any[] {
-    const obj = JSON.parse(val);
+    const obj;
+    if(val!==""){
+        obj = JSON.parse(val);
+    }
     return obj;
   }
   private checkGrantPermissions() {
