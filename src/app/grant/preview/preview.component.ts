@@ -1226,18 +1226,18 @@ export class PreviewComponent implements OnInit {
       for(let i=0; i< tabData[0].columns.length;i++){
        
           
-          if(tabData[0].columns[i].name.trim() !== ''){         
+          //if(tabData[0].columns[i].name.trim() !== ''){
             html+='<td>' + tabData[0].columns[i].name + '</td>';
-          }   
+          //}
       }
       html += '</tr>';
       for(let i=0; i< tabData.length;i++){
        
           html += '<tr><td>' + tabData[i].name + '</td>';
           for(let j=0; j < tabData[i].columns.length; j++){
-            if(tabData[i].columns[j].name.trim() !== ''){  
+            //if(tabData[i].columns[j].name.trim() !== ''){
               html+='<td>' + tabData[i].columns[j].value + '</td>';
-            }
+            //}
           }
           html += '</tr>';
       }

@@ -15,7 +15,7 @@ import {
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router,NavigationStart, NavigationEnd} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
@@ -117,6 +117,11 @@ export class BasicComponent implements OnInit {
       , public colors: Colors
       , public sidebar: SidebarComponent) {
     this.colors = new Colors();
+    router.events.subscribe((val) => {
+                if(val instanceof NavigationStart){
+                    this.saveGrant();
+                }
+            });
   }
 
   
@@ -361,7 +366,7 @@ export class BasicComponent implements OnInit {
     console.log(this.currentGrant);*/
   }
 
-  saveGrant(grantToSave: Grant) {
+  saveGrant() {
 
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
@@ -379,7 +384,7 @@ export class BasicComponent implements OnInit {
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
                     this.setDateDuration();
@@ -1239,7 +1244,7 @@ setTimeout() {
         }
         if(this.currentGrant !== null && this.currentGrant.name !== undefined && !this.appComp.sectionInModification){
           //this.grantToUpdate.id = this.currentGrantId;
-          this.saveGrant(this.grantToUpdate);
+          //this.saveGrant(this.grantToUpdate);
         }
     }, 3000);
     

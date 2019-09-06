@@ -3,7 +3,9 @@
         <li *ngIf="isMobileMenu()" class="p-1 nav-item">
 
             <ng-container *ngIf="appComponent.notifications.length > 0">
-                <mat-icon class="float-right mr-3 mt-3" [matBadge]="this.appComponent.notifications.length" matBadgeColor="warn" (click)="showMessages()">notifications</mat-icon>
+                <div (click)="showMessages()" style="position:relative; float:right;">
+                <mat-icon class="float-right mr-3 mt-3" [matBadge]="this.appComponent.notifications.length" matBadgeColor="warn">notifications</mat-icon>
+                </div>
             </ng-container>
             <ng-container *ngIf="appComponent.notifications.length === 0">
                 <mat-icon class="float-right mr-3 mt-3" (click)="showMessages()">notifications_none</mat-icon>
