@@ -392,7 +392,7 @@ export class BasicComponent implements OnInit {
                     //this.currentGrant = grant;
                     this._setEditMode(false);
                     this.currentSubmission = null;
-                    this.checkGrantPermissions();
+                    //this.checkGrantPermissions();
                     if(grant.submissions &&grant.submissions.length>0 ){
                         this.checkCurrentSubmission();
                     }
