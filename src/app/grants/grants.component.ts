@@ -203,7 +203,7 @@ export class GrantsComponent implements OnInit {
 
                     this.http.delete(url, httpOptions).subscribe( (val: any) => {
                         const user = JSON.parse(localStorage.getItem('USER'));
-                        this.fetchDashboard(user.id);
+                        this.fetchDashboard(user.id,null);
                     });
           } else {
             dialogRef.close();
@@ -231,7 +231,7 @@ export class GrantsComponent implements OnInit {
               const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/';
 
               this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
-                      this.originalGrant = JSON.parse(JSON.stringify(grant));
+                      //this.originalGrant = JSON.parse(JSON.stringify(grant));
                       this.data.changeMessage(grant);
                       //this.setDateDuration();
                       //this.dataService.changeMessage(grant.id);
@@ -242,7 +242,7 @@ export class GrantsComponent implements OnInit {
 
                       this.appComponent.autosave = false;
                       //this.appComponent.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
-                      this.fetchDashboard(this.appComponent.loggedInUser.id,null);
+                      this.fetchDashboard(String(this.appComponent.loggedInUser.id),null);
                   },error => {
                                 const errorMsg = error as HttpErrorResponse;
                                 //console.log(error);
