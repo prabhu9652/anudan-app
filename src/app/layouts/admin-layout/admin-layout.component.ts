@@ -32,6 +32,7 @@ export class AdminLayoutComponent implements OnInit {
   action: any;
   currentGrantId: number;
   subscription: any;
+  intervalSubscription: any;
   
 
   constructor(private grantData: GrantDataService
@@ -89,7 +90,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      interval(5000).subscribe(t => {
+      this.intervalSubscription = interval(5000).subscribe(t => {
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -109,12 +110,14 @@ export class AdminLayoutComponent implements OnInit {
                   },
                      error => {
                        const errorMsg = error as HttpErrorResponse;
-                       console.log(error);
-                       const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                       const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                       const y = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                       const errorconfig: Partial<IndividualConfig> = x;
                        const config: Partial<IndividualConfig> = x;
                        if(errorMsg.error.message==='Token Expired'){
-                        this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                        setTimeout( () => { this.appComponent.logout(); }, 4000 );
+                       this.intervalSubscription.unsubscribe();
+                        this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                        setTimeout( () => { this.appComponent.logout(); }, 5000 );
                        } else {
                         this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
                        }

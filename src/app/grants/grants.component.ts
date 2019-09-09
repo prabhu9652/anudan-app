@@ -156,20 +156,20 @@ export class GrantsComponent implements OnInit {
               timeOut: 30000,
               positionClass: 'toast-bottom-center'
             });
-            setTimeout(() => 
+            setTimeout(() =>
             {
-                this.toastr.clear();   
+                this.toastr.clear();
                 this.appComponent.logout();
             },
             5000);
-            
+
           }else {
             this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
               enableHtml: true,
               positionClass: 'toast-top-center'
             });
           }
-          
+
         });
         }
   }
