@@ -320,7 +320,7 @@ ngOnDestroy(){
     this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
        this.grantData.changeMessage(grant);
        const path = this.sidebar.buildSectionsSideNav();
-           this.router.navigate([path]);
+           //this.router.navigate([path]);
        },error => {
                 const errorMsg = error as HttpErrorResponse;
                 console.log(error);
