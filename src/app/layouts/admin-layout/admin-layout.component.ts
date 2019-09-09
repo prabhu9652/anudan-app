@@ -10,6 +10,7 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications} from '../../model/dahsboard';
+import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
@@ -19,7 +20,8 @@ import {ToastrService,IndividualConfig} from 'ngx-toastr';
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  styleUrls: ['./admin-layout.component.scss'],
+  providers: [GrantComponent]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
@@ -40,7 +42,8 @@ export class AdminLayoutComponent implements OnInit {
     , private dataService: DataService
     , private grantUpdateService: GrantUpdateService
     , private http: HttpClient
-    , private toastr:ToastrService) {
+    , private toastr:ToastrService
+    , grantComponent: GrantComponent) {
     
   }
 
@@ -150,7 +153,7 @@ export class AdminLayoutComponent implements OnInit {
       return bool;
   }
 
-  showAllGrants() {
+  showAllGrants(grant: Grant) {
 
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
@@ -158,7 +161,7 @@ export class AdminLayoutComponent implements OnInit {
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
       this.grantToUpdate.id = this.currentGrantId;
-      //this.grantComponent.saveGrant(this.grantToUpdate);
+      //this.grantComponent.saveGrant(this.currentGrant);
     }
 
     this.appComponent.currentView = 'grants';
