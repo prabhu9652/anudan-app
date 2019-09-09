@@ -13,9 +13,7 @@ import {Grant, Notifications} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
-
-
-
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
 
 
 @Component({
@@ -34,7 +32,15 @@ export class AdminLayoutComponent implements OnInit {
   subscription: any;
   
 
-  constructor(private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private grantUpdateService: GrantUpdateService,private http: HttpClient) {
+  constructor(private grantData: GrantDataService
+    , public appComponent: AppComponent
+    , public location: Location
+    , private router: Router
+    , private activatedRoute: ActivatedRoute
+    , private dataService: DataService
+    , private grantUpdateService: GrantUpdateService
+    , private http: HttpClient
+    , private toastr:ToastrService) {
     
   }
 
@@ -97,7 +103,21 @@ export class AdminLayoutComponent implements OnInit {
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
                     this.grantUpdateService.changeMessage(true);
-                  });
+                  },
+                     error => {
+                       const errorMsg = error as HttpErrorResponse;
+                       console.log(error);
+                       const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                       const config: Partial<IndividualConfig> = x;
+                       if(errorMsg.error.message==='Token Expired'){
+                        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                        setTimeout( () => { this.appComponent.logout(); }, 4000 );
+                       } else {
+                        this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                       }
+
+
+                     });
                   }
                   });
   }

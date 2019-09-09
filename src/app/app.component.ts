@@ -32,6 +32,7 @@ export class AppComponent implements AfterViewChecked{
   selectedTemplate: GrantTemplate;
   sectionInModification = false;
   currentTenant: Tenant;
+  grantSaved = false;
 
   public appConfig: AppConfig = {
     appName: '',

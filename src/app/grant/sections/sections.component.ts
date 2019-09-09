@@ -15,10 +15,10 @@ import {
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
+import {ActivatedRoute, Router, NavigationStart,ActivationEnd,RouterEvent} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
@@ -77,7 +77,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   filteredFruits: Observable<string[]>;
   fruits: TemplateLibrary[] = [];
   allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
-
+  subscribers: any = {};
   userActivity;
   userInactive: Subject<any> = new Subject();
 
@@ -114,16 +114,25 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       private data: DataService) {
     this.colors = new Colors();
 
-    router.events.subscribe((val) => {
-            if(val instanceof NavigationStart){
-                this.saveGrant();
-            }
-        });
-    this.route.params.subscribe( (p) => {
+
+this.route.params.subscribe( (p) => {
     this.action = p['action'];
     console.log(this.action);
     } );
+
+    this.subscribers.name = this.router.events.subscribe((val) => {
+            console.log(this.router.url);
+                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved){
+                    this.saveGrant();
+                    this.appComp.grantSaved = false;
+                }
+                });
+
   }
+
+ngOnDestroy(){
+      this.subscribers.name.unsubscribe();
+    }
 
   ngOnInit() {
   this.setTimeout();
@@ -312,7 +321,20 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
        this.grantData.changeMessage(grant);
        const path = this.sidebar.buildSectionsSideNav();
            this.router.navigate([path]);
-       });
+       },error => {
+                const errorMsg = error as HttpErrorResponse;
+                console.log(error);
+                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                const config: Partial<IndividualConfig> = x;
+                if(errorMsg.error.message==='Token Expired'){
+                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                 setTimeout( () => { this.appComp.logout(); }, 4000 );
+                } else {
+                 this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                }
+
+
+              });
   }
 
   deleteKpi(kpiId: number) {
@@ -436,16 +458,22 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
                         this.checkCurrentSubmission();
                     }
                     this.appComp.autosave = false;
+                    this.appComp.grantSaved = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
-                },
-                error => {
-                    const errorMsg = error as HttpErrorResponse;
-                    console.log(error);
-                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                        enableHtml: true
-                    });
-                });
-        // }
+                },error => {
+                         const errorMsg = error as HttpErrorResponse;
+                         console.log(error);
+                         const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                         const config: Partial<IndividualConfig> = x;
+                         if(errorMsg.error.message==='Token Expired'){
+                          this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                          setTimeout( () => { this.appComp.logout(); }, 4000 );
+                         } else {
+                          this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                         }
+
+
+                       });
     }
 
   private validateFields() {
@@ -845,8 +873,34 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
+      },error => {
+               const errorMsg = error as HttpErrorResponse;
+               console.log(error);
+               const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+               const config: Partial<IndividualConfig> = x;
+               if(errorMsg.error.message==='Token Expired'){
+                this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                setTimeout( () => { this.appComp.logout(); }, 4000 );
+               } else {
+                this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+               }
+
+
+             });
+    } ,error => {
+        const errorMsg = error as HttpErrorResponse;
+        console.log(error);
+        const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+        const config: Partial<IndividualConfig> = x;
+        if(errorMsg.error.message==='Token Expired'){
+         this.toastr.error("Your session has expired", 'Logging you out now...', config);
+         setTimeout( () => { this.appComp.logout(); }, 4000 );
+        } else {
+         this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+        }
+
+
       });
-    });
 
   }
 
@@ -1161,7 +1215,20 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.newField = 'field_' + info.attributeId;
-        });
+        },error => {
+                 const errorMsg = error as HttpErrorResponse;
+                 console.log(error);
+                 const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                 const config: Partial<IndividualConfig> = x;
+                 if(errorMsg.error.message==='Token Expired'){
+                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                  setTimeout( () => { this.appComp.logout(); }, 4000 );
+                 } else {
+                  this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                 }
+
+
+               });
   }
 
   addColumn(attr: Attribute){
@@ -1330,7 +1397,20 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
            this.grantData.changeMessage(grant);
            const path = this.sidebar.buildSectionsSideNav();
                this.router.navigate([path]);
-           });
+           },error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    console.log(error);
+                    const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                    const config: Partial<IndividualConfig> = x;
+                    if(errorMsg.error.message==='Token Expired'){
+                     this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                     setTimeout( () => { this.appComp.logout(); }, 4000 );
+                    } else {
+                     this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                    }
+
+
+                  });
     /* const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
     this.grantData.changeMessage(this.currentGrant);
