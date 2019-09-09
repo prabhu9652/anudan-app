@@ -137,6 +137,7 @@ export class AppComponent implements AfterViewChecked{
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
     this.notifications = [];
+    this.grantService.changeMessage(null);
     this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;

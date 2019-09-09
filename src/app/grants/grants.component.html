@@ -17,7 +17,7 @@
                             <mat-expansion-panel class="mb-3" *ngIf="grantsDraft.length > 0">
                                 <mat-expansion-panel-header style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
-                                    <i class="material-icons">assessment</i>Draft
+                                    <i class="material-icons">assessment</i>Assigned to me
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
@@ -43,7 +43,15 @@
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
+                                        <div class="row w-100 text-right">
+                                            <div class="col-12"><span class="badge badge-dark text-white pull-right">{{grant.grantStatus.displayName}}</span></div>
+                                            <div class="col-12"><small>Assigned to
+                                            <ng-container class="col-12" *ngFor="let assignment of grant.currentAssignment">
+                                                <ng-container *ngIf="appComponent.loggedInUser.id===assignment.user.id">me</ng-container>
+                                                <ng-container *ngIf="appComponent.loggedInUser.id!==assignment.user.id">{{assignment.user.firstName}} {{assignment.user.lastName}}</ng-container>
+                                            </ng-container>
+                                            </small></div>
+                                        </div>
                                         <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant') && grant.grantStatus.name==='DRAFT'"
                                                 class="btn btn-sm btn-danger float-right"
                                                 (click)="deleteGrant(grant)">Delete Grant
@@ -72,7 +80,7 @@
                                         <p>INR {{grant.amount}}</p>
                                         <div class="row">
                                             <div class="col-6">
-                                                <span *ngIf="grant.organization">{{grant.organization.name}}</span>
+                                                <span *ngIf="grant.organization">{{grant.organization?grant.organization.name:null}}</span>
                                             </div>
                                             <div class="col-6 text-left">
                                                 <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
@@ -106,7 +114,7 @@
                                         <p>INR {{grant.amount}}</p>
                                         <div class="row">
                                             <div class="col-6">
-                                                {{grant.organization.name}}
+                                                {{grant.organization?grant.organization.name:null}}
                                             </div>
                                             <div class="col-6 text-left">
                                                 <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}

@@ -235,6 +235,7 @@ export class Grant {
   grantTemplate: GrantTemplate;
   createdAt: Date;
   createdBy: string;
+  currentAssignment:User[];
 }
 
 export class GrantTemplate{

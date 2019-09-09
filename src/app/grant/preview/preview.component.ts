@@ -140,7 +140,7 @@ export class PreviewComponent implements OnInit {
     this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
 
     //this.checkGrantPermissions();
-    this.checkCurrentSubmission();
+    //this.checkCurrentSubmission();
 
     $('#editFieldModal').on('shown.bs.modal', function (event) {
       $('#editFieldInput').focus();

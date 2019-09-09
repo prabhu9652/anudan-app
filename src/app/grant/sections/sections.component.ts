@@ -317,7 +317,7 @@ ngOnDestroy(){
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/'+sectionId+'/field/'+attributeId;
 
-    this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+    this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
        this.grantData.changeMessage(grant);
        const path = this.sidebar.buildSectionsSideNav();
            this.router.navigate([path]);
@@ -559,9 +559,10 @@ ngOnDestroy(){
 
                 const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/' + Number(sectionId) + '/field';
 
-                this.http.get<FieldInfo>(url, httpOptions).subscribe((info: FieldInfo) => {
+                this.http.post<FieldInfo>(url,this.currentGrant, httpOptions).subscribe((info: FieldInfo) => {
                     //this.checkGrant(null);
                     this.grantData.changeMessage(info.grant);
+                    this.currentGrant = info.grant;
                     this.appComp.sectionInModification = false;
                     this.appComp.selectedTemplate = info.grant.grantTemplate;
                     this.newField = 'field_' + info.attributeId;
