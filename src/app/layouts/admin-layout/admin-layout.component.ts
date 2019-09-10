@@ -111,9 +111,9 @@ export class AdminLayoutComponent implements OnInit {
                      error => {
                        const errorMsg = error as HttpErrorResponse;
                        const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
-                       const y = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                       const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
                        const errorconfig: Partial<IndividualConfig> = x;
-                       const config: Partial<IndividualConfig> = x;
+                       const config: Partial<IndividualConfig> = y;
                        if(errorMsg.error.message==='Token Expired'){
                        this.intervalSubscription.unsubscribe();
                         this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
