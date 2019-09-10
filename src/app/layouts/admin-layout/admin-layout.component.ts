@@ -119,8 +119,9 @@ export class AdminLayoutComponent implements OnInit {
                        const config: Partial<IndividualConfig> = y;
                        if(errorMsg.error.message==='Token Expired'){
                        this.intervalSubscription.unsubscribe();
-                        this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
-                        setTimeout( () => { this.appComponent.logout(); }, 5000 );
+                        //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                        alert("Your session has timed out. Please sign in again.")
+                        this.appComponent.logout();
                        } else {
                         this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
                        }
