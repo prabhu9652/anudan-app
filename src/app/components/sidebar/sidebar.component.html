@@ -30,7 +30,7 @@
                 </a>
             </li>
 
-            <mat-expansion-panel>
+            <mat-expansion-panel *ngIf="appComponent.loggedInUser.permissions.includes('Manage Workflows')">
                 <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                   <mat-panel-title style="display: flex; align-items: center">
                     <i class="material-icons">build</i>Administration

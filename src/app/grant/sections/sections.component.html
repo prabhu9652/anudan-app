@@ -108,7 +108,6 @@
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>
-
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
@@ -144,7 +143,6 @@
                         </div>
                         <div class="col-sm-4 col-lg-12" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
-
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"

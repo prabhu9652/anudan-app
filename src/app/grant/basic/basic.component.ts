@@ -15,10 +15,10 @@ import {
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router,NavigationStart, NavigationEnd} from '@angular/router';
+import {ActivatedRoute, Router,NavigationStart, NavigationEnd,ActivationEnd,RouterEvent} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
+import {ToastrService, IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
@@ -71,12 +71,13 @@ export class BasicComponent implements OnInit {
   currentKPIType = 'Quantitative';
   currentKPIReportingType = 'Activity';
   timer: any;
+  action: string;
   grantToUpdate: Grant;
   erroredElement: ElementRef;
   erroredField: string;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
-
+  subscribers: any = {};
   myControl: FormControl;
   options: Organization[];
   filteredOptions: Observable<Organization[]>;
@@ -117,21 +118,32 @@ export class BasicComponent implements OnInit {
       , public colors: Colors
       , public sidebar: SidebarComponent) {
     this.colors = new Colors();
-    router.events.subscribe((val) => {
-                if(val instanceof NavigationStart){
-                    this.saveGrant();
-                }
+    this.route.params.subscribe( (p) => {
+        this.action = p['action'];
+        //console.log(this.action);
+        } );
+
+        this.subscribers.name = this.router.events.subscribe((val) => {
+        //console.log(this.router.url);
+            if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved){
+                this.saveGrant();
+                this.appComp.grantSaved = false;
+            }
             });
   }
 
-  
+  ngOnDestroy(){
+      this.subscribers.name.unsubscribe();
+    }
+
   ngOnInit() {
 
-    this.setTimeout();
+    //this.setTimeout();
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
-    console.log(this.currentGrant);
+
+
     
     this.myControl = new FormControl(this.currentGrant.organization);
 
@@ -206,7 +218,7 @@ export class BasicComponent implements OnInit {
   }
 
   rememberScrollPosition(event: Event) {
-    console.log(event);
+    //console.log(event);
   }
 
   viewKpisToSubmit(submissionId: number) {
@@ -220,7 +232,7 @@ export class BasicComponent implements OnInit {
   }
 
   editFieldEntry(identifier: string) {
-    console.log(this.currentGrant);
+    //console.log(this.currentGrant);
     this._setEditMode(true);
     const editFieldModal = this.editFieldModal.nativeElement;
 
@@ -316,21 +328,21 @@ export class BasicComponent implements OnInit {
       inputField.focus();
       return;
     }
-    console.log('>>>>>> ' + identifier);
+    //console.log('>>>>>> ' + identifier);
     $('#attribute_value_id_' + identifier).html($('#editFieldInput').val());
     $('#attribute_value_id_' + identifier).addClass('bg-warning');
     const editFieldModal = this.editFieldModal.nativeElement;
     const sectionId = $('#attribute_value_id_' + identifier).attr('data-section');
     const attributeId = $('#attribute_value_id_' + identifier).attr('data-attribute');
-    console.log(sectionId + '   ' + attributeId);
+    //console.log(sectionId + '   ' + attributeId);
 
     const grant = this.currentGrant;
     for (const section of grant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
-        console.log(section);
+        //console.log(section);
         for (const attrib of section.attributes) {
           if (attrib.id === Number(attributeId)) {
-            console.log(attrib);
+            //console.log(attrib);
             attrib.fieldValue = inputField.val();
             this.grantData.changeMessage(grant);
           }
@@ -384,7 +396,7 @@ export class BasicComponent implements OnInit {
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
-            this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+            this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     this.grantData.changeMessage(grant);
                     this.setDateDuration();
@@ -398,14 +410,20 @@ export class BasicComponent implements OnInit {
                     }
                     this.appComp.autosave = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
-                },
-                error => {
-                    const errorMsg = error as HttpErrorResponse;
-                    console.log(error);
-                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                        enableHtml: true
-                    });
-                });
+                },error => {
+                              const errorMsg = error as HttpErrorResponse;
+                              //console.log(error);
+                              const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                              const config: Partial<IndividualConfig> = x;
+                              if(errorMsg.error.message==='Token Expired'){
+                               this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                               setTimeout( () => { this.appComp.logout(); }, 4000 );
+                              } else {
+                               this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                              }
+
+
+                            });
         // }
     }
 
@@ -510,7 +528,7 @@ export class BasicComponent implements OnInit {
     for (const section of grant.grantDetails.sections) {
       if (section.id === Number($(idHolderElem).val())) {
 
-        console.log('found it');
+        //console.log('found it');
         const attribute = new Attribute();
         attribute.fieldName = fieldName.val();
         attribute.fieldType = fieldType.val();
@@ -590,7 +608,7 @@ export class BasicComponent implements OnInit {
     const trgtIcon = $(event.target);
     trgt.toggle('slow');
 
-    console.log(trgtIcon.hasClass('fa-chevron-down'));
+    //console.log(trgtIcon.hasClass('fa-chevron-down'));
     if (trgtIcon.hasClass('fa-chevron-down')) {
       trgtIcon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
     } else if (trgtIcon.hasClass('fa-chevron-right')) {
@@ -708,7 +726,7 @@ export class BasicComponent implements OnInit {
     }
 
     this.grantData.changeMessage(this.currentGrant);
-    console.log();
+    //console.log();
   }
 
   updateGoal(event: Event, type: string, submissionId: number, kpiDataId: number) {
@@ -729,7 +747,7 @@ export class BasicComponent implements OnInit {
 
 
   submitGrant(toStateId: number) {
-    console.log(toStateId);
+    //console.log(toStateId);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -753,8 +771,34 @@ export class BasicComponent implements OnInit {
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
-      });
-    });
+      },error => {
+                    const errorMsg = error as HttpErrorResponse;
+                    //console.log(error);
+                    const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                    const config: Partial<IndividualConfig> = x;
+                    if(errorMsg.error.message==='Token Expired'){
+                     this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                     setTimeout( () => { this.appComp.logout(); }, 4000 );
+                    } else {
+                     this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                    }
+
+
+                  });
+    },error => {
+             const errorMsg = error as HttpErrorResponse;
+             //console.log(error);
+             const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+             const config: Partial<IndividualConfig> = x;
+             if(errorMsg.error.message==='Token Expired'){
+              this.toastr.error("Your session has expired", 'Logging you out now...', config);
+              setTimeout( () => { this.appComp.logout(); }, 4000 );
+             } else {
+              this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+             }
+
+
+           });
 
   }
 
@@ -795,7 +839,7 @@ export class BasicComponent implements OnInit {
   }
 
   updateSubmission(event: Event, kpiType: string, kpiDataId: number) {
-    console.log((<HTMLInputElement>event.target).value + '  ' + kpiType + '  ' + kpiDataId);
+    //console.log((<HTMLInputElement>event.target).value + '  ' + kpiType + '  ' + kpiDataId);
     switch (kpiType) {
       case 'QUANTITATIVE':
         for (const kpiData of this.currentSubmission.quantitiaveKpisubmissions) {
@@ -814,7 +858,7 @@ export class BasicComponent implements OnInit {
     }
 
     this.submissionData.changeMessage(this.currentSubmission);
-    console.log(this.currentSubmission);
+    //console.log(this.currentSubmission);
   }
 
   updateTitle(event: Event, kpiId: number, kpiType: string) {
@@ -861,7 +905,7 @@ export class BasicComponent implements OnInit {
     }
     this._setEditMode(true);
     this.grantData.changeMessage(this.currentGrant);
-    console.log(this.currentGrant);
+    //console.log(this.currentGrant);
   }
 
 
@@ -1006,7 +1050,7 @@ export class BasicComponent implements OnInit {
 
 
   checkGrant() {
-  console.log('basic');
+  //console.log('basic');
 
     if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
       this._setEditMode(false);
@@ -1033,7 +1077,7 @@ export class BasicComponent implements OnInit {
     });
 
     _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
+      //console.log(this.currentGrant);
       this.checkGrant();
     });
   }
@@ -1059,7 +1103,7 @@ export class BasicComponent implements OnInit {
     });
 
     _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
+      //console.log(this.currentGrant);
       this.checkGrant();
     });
   }
@@ -1085,7 +1129,7 @@ export class BasicComponent implements OnInit {
     });
 
     _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
+      //console.log(this.currentGrant);
       this.checkGrant();
     });
   }
@@ -1142,7 +1186,7 @@ export class BasicComponent implements OnInit {
 
 
   setOrg(event: Event) {
-    console.log(event);
+    //console.log(event);
   }
 
   deleteSection(secId: number) {
@@ -1153,7 +1197,7 @@ export class BasicComponent implements OnInit {
 
   handleSpacebar(ev: Event) {
 
-    console.log(ev);
+    //console.log(ev);
     ev.stopImmediatePropagation();
 
   }
@@ -1176,7 +1220,7 @@ export class BasicComponent implements OnInit {
   setKpiReportingTypeSection(event) {
     this.currentKPIReportingType = event.value;
 
-    console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
+    //console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
 
   setDateDuration(){

@@ -9,7 +9,7 @@ import {DataService} from '../data.service';
 import {GrantUpdateService} from '../grant.update.service';
 import {Grant,GrantTemplate} from '../model/dahsboard'
 import * as $ from 'jquery'
-import {ToastrService} from 'ngx-toastr';
+import {ToastrService, IndividualConfig} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
@@ -31,6 +31,7 @@ export class GrantsComponent implements OnInit {
   hasKpisToSubmit: boolean;
   kpiSubmissionDate: Date;
   kpiSubmissionTitle: string;
+  currentGrant: Grant
   currentGrantId: number;
   grantsDraft = [];
   grantsActive = [];
@@ -52,8 +53,10 @@ export class GrantsComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     console.log(this.appComponent.loggedInUser.permissions);
-    this.fetchDashboard(user.id);
+
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+    this.data.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.fetchDashboard(user.id, this.currentGrant);
     this.grantUpdateService.currentMessage.subscribe(id => {
         if(id){
         //this.fetchDashboard(user.id);
@@ -91,7 +94,11 @@ export class GrantsComponent implements OnInit {
   }
 
 
-  fetchDashboard(userId: string) {
+  fetchDashboard(userId: string, grant: Grant) {
+
+  if(grant){
+    this.saveGrant(grant);
+  }else{
   console.log('dashboard');
     const httpOptions = {
       headers: new HttpHeaders({
@@ -149,21 +156,22 @@ export class GrantsComponent implements OnInit {
               timeOut: 30000,
               positionClass: 'toast-bottom-center'
             });
-            setTimeout(() => 
+            setTimeout(() =>
             {
-                this.toastr.clear();   
+                this.toastr.clear();
                 this.appComponent.logout();
             },
             5000);
-            
+
           }else {
             this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
               enableHtml: true,
               positionClass: 'toast-top-center'
             });
           }
-          
+
         });
+        }
   }
 
   manageGrant(grant: Grant) {
@@ -195,7 +203,7 @@ export class GrantsComponent implements OnInit {
 
                     this.http.delete(url, httpOptions).subscribe( (val: any) => {
                         const user = JSON.parse(localStorage.getItem('USER'));
-                        this.fetchDashboard(user.id);
+                        this.fetchDashboard(user.id,null);
                     });
           } else {
             dialogRef.close();
@@ -203,4 +211,52 @@ export class GrantsComponent implements OnInit {
         });
 
   }
+
+  saveGrant(grant: Grant) {
+
+          this.appComponent.autosaveDisplay = 'Saving changes...     ';
+          /*const errors = this.validateFields();
+          if (errors) {
+              this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
+              $(this.erroredElement).focus();
+          } else {*/
+              const httpOptions = {
+                  headers: new HttpHeaders({
+                      'Content-Type': 'application/json',
+                      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                      'Authorization': localStorage.getItem('AUTH_TOKEN')
+                  })
+              };
+
+              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/';
+
+              this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
+                      //this.originalGrant = JSON.parse(JSON.stringify(grant));
+                      this.data.changeMessage(grant);
+                      //this.setDateDuration();
+                      //this.dataService.changeMessage(grant.id);
+                      //this.currentGrant = grant;
+                      //this._setEditMode(false);
+                      //this.currentSubmission = null;
+                      //this.checkGrantPermissions();
+
+                      this.appComponent.autosave = false;
+                      //this.appComponent.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                      this.fetchDashboard(String(this.appComponent.loggedInUser.id),null);
+                  },error => {
+                                const errorMsg = error as HttpErrorResponse;
+                                //console.log(error);
+                                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                const config: Partial<IndividualConfig> = x;
+                                if(errorMsg.error.message==='Token Expired'){
+                                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                 setTimeout( () => { this.appComponent.logout(); }, 4000 );
+                                } else {
+                                 this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                }
+
+
+                              });
+          // }
+      }
 }

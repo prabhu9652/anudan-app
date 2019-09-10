@@ -10,18 +10,18 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications} from '../../model/dahsboard';
+import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
-
-
-
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
 
 
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  styleUrls: ['./admin-layout.component.scss'],
+  providers: [GrantComponent]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
@@ -32,9 +32,19 @@ export class AdminLayoutComponent implements OnInit {
   action: any;
   currentGrantId: number;
   subscription: any;
+  intervalSubscription: any;
   
 
-  constructor(private grantData: GrantDataService, public appComponent: AppComponent, public location: Location, private router: Router, private activatedRoute: ActivatedRoute, private dataService: DataService,private grantUpdateService: GrantUpdateService,private http: HttpClient) {
+  constructor(private grantData: GrantDataService
+    , public appComponent: AppComponent
+    , public location: Location
+    , private router: Router
+    , private activatedRoute: ActivatedRoute
+    , private dataService: DataService
+    , private grantUpdateService: GrantUpdateService
+    , private http: HttpClient
+    , private toastr:ToastrService
+    , grantComponent: GrantComponent) {
     
   }
 
@@ -80,7 +90,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      interval(5000).subscribe(t => {
+      this.intervalSubscription = interval(5000).subscribe(t => {
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -97,7 +107,23 @@ export class AdminLayoutComponent implements OnInit {
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
                     this.grantUpdateService.changeMessage(true);
-                  });
+                  },
+                     error => {
+                       const errorMsg = error as HttpErrorResponse;
+                       const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                       const y = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                       const errorconfig: Partial<IndividualConfig> = x;
+                       const config: Partial<IndividualConfig> = x;
+                       if(errorMsg.error.message==='Token Expired'){
+                       this.intervalSubscription.unsubscribe();
+                        this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                        setTimeout( () => { this.appComponent.logout(); }, 5000 );
+                       } else {
+                        this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                       }
+
+
+                     });
                   }
                   });
   }
@@ -130,7 +156,7 @@ export class AdminLayoutComponent implements OnInit {
       return bool;
   }
 
-  showAllGrants() {
+  showAllGrants(grant: Grant) {
 
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
@@ -138,7 +164,7 @@ export class AdminLayoutComponent implements OnInit {
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
       this.grantToUpdate.id = this.currentGrantId;
-      //this.grantComponent.saveGrant(this.grantToUpdate);
+      //this.grantComponent.saveGrant(this.currentGrant);
     }
 
     this.appComponent.currentView = 'grants';
