@@ -44,7 +44,9 @@ export class AppComponent implements AfterViewChecked{
     defaultSections: [],
     grantInitialStatus: new WorkflowStatus(),
     submissionInitialStatus: new WorkflowStatus(),
-    granteeOrgs: []
+    granteeOrgs: [],
+    workflowStatuses: [],
+    tenantUsers: []
   };
 
   org: string;

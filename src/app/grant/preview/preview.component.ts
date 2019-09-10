@@ -721,6 +721,13 @@ export class PreviewComponent implements OnInit {
 
   submitGrant(toStateId: number) {
 
+    for(let assignment of this.currentGrant.workflowAssignment){
+        if(assignment.assignments === null || assignment.assignments === undefined){
+            alert("Workflow assignments need to be configured.");
+            return;
+        }
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

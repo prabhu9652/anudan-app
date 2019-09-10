@@ -22,6 +22,8 @@ import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
+import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
+
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
   AgmCoreModule
@@ -59,7 +61,8 @@ export function provideConfig() {
     AdminLayoutComponent,
     LoginComponent,
     KpisubmissionComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    WfassignmentComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -103,6 +106,7 @@ export function provideConfig() {
       DatePipe,
       Colors
   ],
+  entryComponents:[WfassignmentComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })

@@ -2,14 +2,16 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
+import {MatDialog} from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { CarouselComponent} from 'angular-bootstrap-md';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
-import {Grant, Notifications} from '../../model/dahsboard';
+import {Grant, Notifications,WorkflowAssignmentModel,WorkflowAssignment} from '../../model/dahsboard';
 import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -44,7 +46,8 @@ export class AdminLayoutComponent implements OnInit {
     , private grantUpdateService: GrantUpdateService
     , private http: HttpClient
     , private toastr:ToastrService
-    , grantComponent: GrantComponent) {
+    , grantComponent: GrantComponent
+    , private dialog: MatDialog) {
     
   }
 
@@ -171,6 +174,43 @@ export class AdminLayoutComponent implements OnInit {
     this.router.navigate(['grants']);
   }
 
-  
+  showWorkflowAssigments(){
+  const wfModel = new WorkflowAssignmentModel();
+   wfModel.users = this.appComponent.appConfig.tenantUsers;
+   wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
+   wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+    const dialogRef = this.dialog.open(WfassignmentComponent, {
+          data: wfModel
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result.result) {
+            const ass:WorkflowAssignment[] = [];
+            for(let data of result.data){
+                const wa = new WorkflowAssignment();
+                wa.id=data.id;
+                wa.assignments = data.userId;
+                ass.push(wa);
+            }
+
+            const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+
+                    let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
+                        + this.currentGrant.id + '/assignment';
+                    this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
+                        this.grantData.changeMessage(grant);
+                        this.currentGrant = grant;
+                    });
+          } else {
+            dialogRef.close();
+          }
+          });
+  }
 
 }
