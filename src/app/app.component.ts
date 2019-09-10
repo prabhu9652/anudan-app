@@ -33,6 +33,7 @@ export class AppComponent implements AfterViewChecked{
   sectionInModification = false;
   currentTenant: Tenant;
   grantSaved = false;
+  confgSubscription: any;
 
   public appConfig: AppConfig = {
     appName: '',
@@ -99,7 +100,7 @@ export class AppComponent implements AfterViewChecked{
   getAppUI(hostName) {
     //console.log('hostName = ' + hostName);
     const url = '/api/public/config/'.concat(hostName);
-    this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
+    this.confgSubscription = this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
       const newObj: any = response.body;
       this.appConfig = newObj as AppConfig;
       localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
@@ -138,6 +139,8 @@ export class AppComponent implements AfterViewChecked{
     localStorage.removeItem('USER');
     this.notifications = [];
     this.grantService.changeMessage(null);
+    this.confgSubscription.unsubscribe();
+    this.loggedInUser = null;
     this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
