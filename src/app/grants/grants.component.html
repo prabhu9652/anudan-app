@@ -15,47 +15,45 @@
                     <div *ngIf="hasTenant">
 
                             <mat-expansion-panel class="mb-3" *ngIf="grantsDraft.length > 0">
-                                <mat-expansion-panel-header style="padding: 15px;">
+                                <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
                                     <i class="material-icons">assessment</i>Assigned to me
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
+                                <div class="row w-100 p-3 mb-2 mx-0" style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
                                     
-                                    <div class="col-2" (click)="manageGrant(grant)">
-                                        <img class="img-fluid" 
-                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
-                                             alt="org logo">
-                                    </div>
-                                    <div class="col-7 text-left" (click)="manageGrant(grant)">
+
+                                    <div class="col-8 text-left" (click)="manageGrant(grant)">
                                         
-                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p class="text-header">{{grant.name}}</p>
                                         <p>INR {{grant.amount}}</p>
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-6 text-subheader">
                                                 {{grant.organization?grant.organization.name:null}}
                                             </div>
-                                            <div class="col-6 text-left">
+                                            <div class="col-6 text-subheader">
                                                 <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
                                                 <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
                                                 <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.endDate | date:'dd-MMM-yyyy'}}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4 text-right">
                                         <div class="row w-100 text-right">
                                             <div class="col-12"><span class="badge badge-dark text-white pull-right">{{grant.grantStatus.displayName}}</span></div>
-                                            <div class="col-12"><small>Assigned to
+                                            <!--div class="col-12"><small>Assigned to
                                             <ng-container class="col-12" *ngFor="let assignment of grant.currentAssignment">
                                                 <ng-container *ngIf="appComponent.loggedInUser.id===assignment.user.id">me</ng-container>
                                                 <ng-container *ngIf="appComponent.loggedInUser.id!==assignment.user.id">{{assignment.user.firstName}} {{assignment.user.lastName}}</ng-container>
                                             </ng-container>
-                                            </small></div>
+                                            </small></div-->
                                         </div>
+                                        <div class="col-12 h-100" style="display: flex; align-items: center; justify-content: flex-end;">
                                         <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant') && grant.grantStatus.name==='DRAFT'"
-                                                class="btn btn-sm btn-danger float-right"
+                                                class="btn btn-sm btn-red"
                                                 (click)="deleteGrant(grant)">Delete Grant
                                         </button>
+                                        </div>
                                     </div>
                                 </div>
                             </mat-expansion-panel>

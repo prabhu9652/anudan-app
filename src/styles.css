@@ -233,3 +233,64 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-expansion-indicator::after{
     color: rgba(255,255,255,1) !important;
 }
+
+.grant-expansion-panel> .mat-expansion-indicator, .mat-expansion-indicator:after {
+    color: black !important;
+}
+
+input:-internal-autofill-selected{
+    background-color: #fff !important;
+}
+
+.btn-google{
+    background-color: #fff !important;
+    border: 1px solid #D84830;
+    color: #D84830 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-red{
+    background-color: #fff !important;
+    border: 1px solid #D84830;
+    color: #D84830 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-linkedin{
+    background-color: #fff !important;
+    border: 1px solid #0A66C2;
+    color: #0A66C2 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn{
+    border-radius: 4px !important;
+}
+
+.f-12{
+    font-size: 12px !important;
+}
+
+
+
+.text-green{
+    color: #39743C !important;
+}
+.text-header{
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.text-subheader{
+    color: rgba(14, 16, 14, 0.68);
+    font-size: 12px;
+}
