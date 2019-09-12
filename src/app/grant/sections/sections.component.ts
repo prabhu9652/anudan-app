@@ -160,11 +160,12 @@ ngOnDestroy(){
     if(section.attributes) {
       for(let attribute of section.attributes) {
         if (attribute.fieldType === 'document') {
+          attribute.docs = [];
           if(attribute.fieldValue!==""){
           let frt = JSON.parse(attribute.fieldValue);
           if(frt.length > 0) {
             for(let i=0; i< frt.length; i++){
-              this.fruits.push(frt[i]);
+              attribute.docs.push(frt[i]);
             }
            }
           }
@@ -1566,7 +1567,7 @@ ngOnDestroy(){
 }
 
 ////////////////////////
-add(event: MatChipInputEvent): void {
+add(attribute: Attribute,event: MatChipInputEvent): void {
     // Add fruit only when MatAutocomplete is not open
     // To make sure this does not conflict with OptionSelected Event
     if (!this.matAutocomplete.isOpen) {
@@ -1575,8 +1576,8 @@ add(event: MatChipInputEvent): void {
 
       // Add our fruit
       if ((value || '')) {
-        const index = this.fruits.findIndex((a) => a.name===value);
-        this.fruits.push(this.options[index]);
+        const index = attribute.docs.findIndex((a) => a.name===value);
+        attribute.docs.push(this.options[index]);
       }
 
       // Reset the input value
@@ -1590,18 +1591,18 @@ add(event: MatChipInputEvent): void {
 
 
   remove(attribute: Attribute, fruit: TemplateLibrary) {
-    const index = this.fruits.findIndex((a) => a.id===fruit.id);
+    const index = attribute.docs.findIndex((a) => a.id===fruit.id);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
-      attribute.fieldValue = JSON.stringify(this.fruits);
+      attribute.docs.splice(index, 1);
+      attribute.fieldValue = JSON.stringify(attribute.docs);
       console.log(this.currentGrant);
     }
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.value);
-    attribute.fieldValue = JSON.stringify(this.fruits);
+    attribute.docs.push(event.option.value);
+    attribute.fieldValue = JSON.stringify(attribute.docs);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
   }

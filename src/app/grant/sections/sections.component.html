@@ -280,7 +280,7 @@
                                       <mat-form-field class="example-chip-list">
                                         <mat-chip-list #chipList aria-label="Fruit selection">
                                           <mat-chip
-                                            *ngFor="let fruit of fruits"
+                                            *ngFor="let fruit of attribute.docs"
                                             [selectable]="selectable"
                                             [removable]="removable"
                                             (removed)="remove(attribute, fruit)">
@@ -295,7 +295,7 @@
                                             [matChipInputFor]="chipList"
                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                             [matChipInputAddOnBlur]="addOnBlur"
-                                            (matChipInputTokenEnd)="add($event)">
+                                            (matChipInputTokenEnd)="add(attribute,$event)">
                                         </mat-chip-list>
                                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(attribute, $event)">
                                           <mat-option *ngFor="let doc of filteredOptions | async" [value]="doc">
