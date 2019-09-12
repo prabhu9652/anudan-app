@@ -28,6 +28,9 @@ import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/botto
 import {PdfDocument} from "../../model/pdf-document";
 import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
+import * as $ from 'jquery'
 
 
 
@@ -71,6 +74,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild('selectScheduleModal') selectScheduleModal: ElementRef;
   @ViewChild('container') container: ElementRef;
   @ViewChild('grantSummary') grantSummary: ElementRef;
+  @ViewChild('previewarea') previewArea: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -721,6 +725,13 @@ export class PreviewComponent implements OnInit {
 
   submitGrant(toStateId: number) {
 
+    for(let assignment of this.currentGrant.workflowAssignment){
+        if(assignment.assignments === null || assignment.assignments === undefined){
+            alert("Workflow assignments need to be configured.");
+            return;
+        }
+    }
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -1200,8 +1211,39 @@ export class PreviewComponent implements OnInit {
 
 
     saveAsPdf() {
+    const preview = this.grantSummary.nativeElement;
+    var opt = {
+      margin:       [0.7,0,1,0],
+      filename:     this.currentGrant.name+'.pdf',
+      image:        { type: 'png', quality: 1 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    var worker = html2pdf().set(opt).from(preview).save();
+    /* console.log(preview.innerHTML);
+    html2canvas(preview).then(function(canvas) {
+        var img = canvas.toDataURL("image/png");
+        var imgWidth = 210;
+      var pageHeight = 270;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
 
-        const httpOptions = {
+      var doc = new jsPDF('p', 'mm');
+      var position = 0;
+
+      doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      doc.save( 'file.pdf');﻿
+    }); */
+
+/*        const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
@@ -1216,7 +1258,7 @@ export class PreviewComponent implements OnInit {
         this.http.post(url, grantSummaryElem, httpOptions).subscribe((data: PdfDocument) => {
             console.log(data);
             window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
-        });
+        }); */
     }
 
     getTabularData(elemId: number, data: TableData[]){

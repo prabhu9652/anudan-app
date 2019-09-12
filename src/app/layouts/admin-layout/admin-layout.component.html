@@ -9,7 +9,10 @@
 
     <div class="main-panel">
         <!--<app-navbar></app-navbar>-->
-        <div *ngIf="appComponent.currentView !== 'grants'" class="p-4 text-left" style="position: sticky;top:0;background-color: rgb(229, 229, 229);z-index: 1050;background: #333;color: #fff;"><a (click)="showAllGrants(currentGrant)" class="text-info"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
+        <div *ngIf="appComponent.currentView !== 'grants'" class="p-4 text-left" style="position: sticky;top:0;z-index: 1050;color: #000;background-color:#E4E4E4"><a (click)="showAllGrants(currentGrant)" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
+            <div class="float-right ml-4">
+                <a (click)="showWorkflowAssigments()"><i class="fa fa-cog ml-2" aria-hidden="true"></i>Workflow Assignments</a>
+            </div>
             <div class="float-right ml-4">
                 <b>{{ appComponent.autosaveDisplay}}</b>
             </div>

@@ -40,6 +40,7 @@ export class WorkflowStatus {
   displayName: string;
   terminal: boolean;
   internalStatus: string;
+  verb: string;
   statePermissions: StatePermission[];
   createdAt: Date;
   createdBy: string;
@@ -236,8 +237,19 @@ export class Grant {
   createdAt: Date;
   createdBy: string;
   currentAssignment:User[];
+  workflowAssignment: WorkflowAssignment[];
 }
 
+export class WorkflowAssignment{
+    id: number;
+    grantId: number;
+    stateName: WorkflowStatus;
+    stateId: number;
+    assignments: number;
+    assignmentUser: User;
+    anchor: boolean;
+    constructor(){}
+}
 export class GrantTemplate{
   id: number;
   name: string;
@@ -312,6 +324,7 @@ export class Notifications{
 }
 
 export class ColumnData{
+  id: number;
   name: string;
   value: string;
 }
@@ -341,6 +354,13 @@ export class SectionInfo{
     grant: Grant;
 }
 
+export class WorkflowAssignmentModel{
+ users: User[];
+ workflowStatuses: WorkflowStatus[];
+ workflowAssignment: WorkflowAssignment[];
+ constructor(){}
+}
+
 export class CustomDateAdapter extends NativeDateAdapter {
    format(date: Date, displayFormat: Object): string {
       if (displayFormat === 'input') {
@@ -353,6 +373,5 @@ export class CustomDateAdapter extends NativeDateAdapter {
          return date.toDateString();
       }
    }
-   
-   // If required extend other NativeDateAdapter methods.
 }
+

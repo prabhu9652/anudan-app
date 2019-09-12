@@ -12,9 +12,9 @@
                    id="{{flow.action}}">{{flow.action}}</a>
             </div>
         </ng-container>
-        <a mat-flat-button color="primary" (click)="saveAsPdf()"><mat-icon class="text-white ml-1">picture_as_pdf</mat-icon>Export as PDF</a>
+        <a mat-flat-button class="btn-blue" (click)="saveAsPdf()"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export as PDF</a>
     </div>
-    <div #grantSummary class="col-lg-12" id="grantSummary">
+    <div #grantSummary class="col-lg-12">
         <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
@@ -23,7 +23,7 @@
             <!--MANAGEMENT SECTION-->
 
 
-            <div class="row w-100">
+            <div class="row w-100" id="grantSummary">
                 <div class="col-12 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
                     <div class="row">
                         <div class="col-3">
@@ -33,7 +33,7 @@
                             <h4 class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
                         </div>
                         <div class="col-2" style="display: flex;align-items: center;">
-                            <span class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
+                            <span data-html2canvas-ignore class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-12 mb-2">
                     Grant Amount:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.amount}}</b></div>
+                    <div class="ml-1 mb-3">₹ <b>{{currentGrant.amount}}</b></div>
 
                 </div>
                 <div class="col-6 mb-2">
@@ -145,7 +145,7 @@
                         </div>
                     </ng-container>
                 </div>
-                <div class="col-12">
+                <div data-html2canvas-ignore class="col-12">
                     <hr/>
                     <h5>
                         ATTACHMENTS

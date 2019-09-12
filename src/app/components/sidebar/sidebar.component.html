@@ -10,7 +10,7 @@
             <ng-container *ngIf="appComponent.notifications.length === 0">
                 <mat-icon class="float-right mr-3 mt-3" (click)="showMessages()">notifications_none</mat-icon>
             </ng-container>
-            <img [src]="appComponent.appConfig.logoUrl" alt="logo">
+            <img [src]="appComponent.appConfig.logoUrl" alt="logo" class="w-25 float-left">
             <a class="nav-link" (click)="showProfile()">
                 <p class="text-white font-weight-bolder">{{appComponent.loggedInUser.lastName}}
                     , {{appComponent.loggedInUser.firstName}}</p>

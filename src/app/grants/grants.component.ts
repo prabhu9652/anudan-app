@@ -20,7 +20,12 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
   selector: 'app-dashboard',
   templateUrl: './grants.component.html',
   styleUrls: ['./grants.component.css'],
-  providers: [GrantComponent]
+  providers: [GrantComponent],
+  styles: [`
+      ::ng-deep .specific-class > .mat-expansion-indicator:after {
+        color: black;
+      }
+    `]
 })
 export class GrantsComponent implements OnInit {
 

@@ -170,6 +170,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .anu-container{
   margin: 80px 64px;
   background: #fff;
+  border-radius: 4px;
+  padding: 5px;
 }
 .anu-input{
   border: 1px solid #d4d4d4 !important;
@@ -193,6 +195,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 120px !important;
 }
 
+.badge{
+    border-radius: 2px !important;
+    min-width: 100px !important;
+    padding: 5px !important;
+}
+
 .badge-black{
   background-color: #fff !important;
   color: #000 !important;
@@ -201,6 +209,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-input-element, .mat-form-field-label{
   font-size: 14px !important;
+}
+
+.sidebar{
+    z-index: 1060 !important;
 }
 
 .sidebar .sidebar-wrapper{
@@ -232,4 +244,106 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-expansion-indicator::after{
     color: rgba(255,255,255,1) !important;
+}
+
+.grant-expansion-panel> .mat-expansion-indicator, .grant-expansion-panel > .mat-expansion-indicator:after {
+    color: black !important;
+}
+
+.grants-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
+    background: #e5e5e5 !important;
+    padding: 10px !important;
+}
+
+.grants-section{
+    background: #fff;
+    border-radius: 4px;
+    padding:10px;
+}
+
+input:-internal-autofill-selected{
+    background-color: #fff !important;
+}
+
+.btn-google{
+    background-color: #fff !important;
+    border: 1px solid #D84830;
+    color: #D84830 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-red{
+    background-color: #fff !important;
+    border: 1px solid #D84830;
+    color: #D84830 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-green{
+    background-color: transparent !important;
+    border: 1px solid #39743C !important;
+    color: #39743C !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-blue{
+    background-color: transparent !important;
+    border: 1px solid #3f51b5 !important;
+    color: #3f51b5 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn-linkedin{
+    background-color: #fff !important;
+    border: 1px solid #0A66C2;
+    color: #0A66C2 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn{
+    border-radius: 4px !important;
+}
+
+.f-12{
+    font-size: 12px !important;
+}
+
+
+
+.text-green{
+    color: #39743C !important;
+}
+
+.text-blue{
+    color: #3f51b5 !important;
+}
+.text-header{
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.text-header-light{
+    font-size: 18px !important;
+    font-weight: bold;
+    color: #757575;
+}
+
+.text-subheader{
+    color: rgba(14, 16, 14, 0.68);
+    font-size: 12px;
 }
