@@ -1618,15 +1618,18 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
    moveColsLeft(){
     $('#tableArea').animate({
         scrollLeft: "+=200px"
-      }, "slow");
-      console.log($("#tablePlaceholder").width() - $('#tableArea').scrollLeft());
-   }
+      }, "100","linear",function(){
+       console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+     });
+     }
 
    moveColsRight(){
     $('#tableArea').animate({
         scrollLeft: "-=200px"
-      }, "slow");
-      console.log($("#tablePlaceholder").width() - $('#tableArea').scrollLeft());
+      }, "100","linear",function(){
+        console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+      });
+
    }
 
 }
