@@ -324,6 +324,7 @@ export class Notifications{
 }
 
 export class ColumnData{
+  id: number;
   name: string;
   value: string;
 }

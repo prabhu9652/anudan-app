@@ -293,7 +293,12 @@ ngOnDestroy(){
           case 'clearSubmissions':
             this.clearSubmissions();
             break;
-
+          case 'row':
+            this.deleteRow(sectionId,attributeId,kpiId);
+            break;
+          case 'col':
+            this.deleteColumn(sectionId,attributeId,kpiId);
+            break;
           case 'kpi':
             this.deleteKpi(kpiId);
             break;
@@ -589,7 +594,9 @@ ngOnDestroy(){
 
     const elmnt = document.getElementById(uniqueID); // let if use typescript
     //elmnt.scrollIntoView(true); // this will scroll elem to the top
-    elmnt.focus();
+    if(elmnt){
+        elmnt.focus();
+    }
     this.newField = null;
   }
 
@@ -1236,10 +1243,12 @@ ngOnDestroy(){
        for(let row of attr.fieldTableValue) {
 
         const col = new ColumnData();
+          col.id = Math.round(Math.random() * 1000000000);
           col.name = "";
           col.value = '';
         row.columns.push(col);
        }
+       this.newField = 'column_' + attr.fieldTableValue[0].columns[attr.fieldTableValue[0].columns.length-1].id;
   }
 
   addRow(attr: Attribute){
@@ -1252,6 +1261,36 @@ ngOnDestroy(){
 
        attr.fieldTableValue.push(row);
   }
+
+  deleteRow(sectionId, attributeId,rowIndex){
+  console.log(sectionId + ' ' + attributeId + ' ' + rowIndex);
+  for(let section of this.currentGrant.grantDetails.sections){
+    if(section.id === sectionId){
+        for(let attrib of section.attributes){
+            if(attrib.id == attributeId){
+                console.log(attrib.fieldTableValue);
+                const tableData = attrib.fieldTableValue;
+                tableData.splice(rowIndex,1);
+            }
+        }
+    }
+  }
+  }
+
+  deleteColumn(sectionId, attributeId,colIndex){
+    for(let section of this.currentGrant.grantDetails.sections){
+      if(section.id === sectionId){
+          for(let attrib of section.attributes){
+              if(attrib.id == attributeId){
+                  console.log(attrib.fieldTableValue);
+                  for(let row of attrib.fieldTableValue){
+                    row.columns.splice(colIndex, 1);
+                  }
+              }
+          }
+      }
+    }
+    }
 
 
   openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {

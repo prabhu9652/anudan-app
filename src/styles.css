@@ -211,6 +211,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 14px !important;
 }
 
+.sidebar{
+    z-index: 1060 !important;
+}
+
 .sidebar .sidebar-wrapper{
   background: #424652;
   color: #fff;
@@ -323,6 +327,10 @@ input:-internal-autofill-selected{
 
 .text-green{
     color: #39743C !important;
+}
+
+.text-blue{
+    color: #3f51b5 !important;
 }
 .text-header{
     font-size: 18px !important;
