@@ -58,13 +58,13 @@
                                 </div>
                             </mat-expansion-panel>
 
-                            <mat-expansion-panel class="mb-3" *ngIf="grantsActive.length > 0">
-                                <mat-expansion-panel-header style="padding: 15px;">
+                            <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngIf="grantsActive.length > 0">
+                                <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
                                     <i class="material-icons">assessment</i>Active
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
+                                <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
                                           (click)="manageGrant(grant)">
                                    
                                     <div class="col-2">
@@ -93,13 +93,13 @@
                                 </div>
                             </mat-expansion-panel>
 
-                            <mat-expansion-panel class="mb-3" *ngIf="grantsClosed.length > 0">
-                                <mat-expansion-panel-header style="padding: 15px;">
+                            <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngIf="grantsClosed.length > 0">
+                                <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
                                   <mat-panel-title style="display: flex; align-items: center">
                                     <i class="material-icons">assessment</i>Closed
                                   </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <div class="row w-100 p-3 mb-2 bg-white" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
+                                <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
                                           (click)="manageGrant(grant)">
                                     <div class="col-2">
                                         <img class="img-fluid" 
