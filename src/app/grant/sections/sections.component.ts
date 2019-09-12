@@ -1495,7 +1495,7 @@ ngOnDestroy(){
   getTabularData(elemId: number, data: string){
       let html = '<table width="100%" border="1"><tr>';
       const tabData = JSON.parse(data);
-      html += '<td>&nbsp;</td>'; 
+      html += '<td>&nbsp;</td>';
       for(let i=0; i< tabData[0].columns.length;i++){
        
           
@@ -1613,6 +1613,20 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
              obj = JSON.parse(val);
          }
      return obj;
+   }
+
+   moveColsLeft(){
+    $('#tableArea').animate({
+        scrollLeft: "+=200px"
+      }, "slow");
+      console.log($("#tablePlaceholder").width() - $('#tableArea').scrollLeft());
+   }
+
+   moveColsRight(){
+    $('#tableArea').animate({
+        scrollLeft: "-=200px"
+      }, "slow");
+      console.log($("#tablePlaceholder").width() - $('#tableArea').scrollLeft());
    }
 
 }

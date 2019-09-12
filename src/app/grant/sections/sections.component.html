@@ -186,9 +186,11 @@
                         <div class="col-sm-12 col-lg-11 text-left" *ngIf="attribute.fieldType==='table'">
                           <div class="row"><div class="col-12 text-right">
                             <span (click)="addColumn(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a column</span>
-                          </div></div>
-                          <div class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
-                          <table>
+                          </div>
+                              <div style="margin-left:250px;"><i (click)="moveColsLeft()" class="fas fa-arrow-alt-circle-left mr-3"></i><i (click)="moveColsRight()" class="fas fa-arrow-alt-circle-right"></i></div>
+                          </div>
+                          <div id="tableArea" class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
+                          <table id="tablePlaceholder">
                             <tr>
                               <td width="20%" style="min-width:250px;position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">&nbsp;</td>
                             <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
@@ -225,7 +227,7 @@
                                   </mat-form-field>
                                 </td>
                                 <ng-container *ngFor="let column of row.columns">
-                                  <td style="border: 1px solid #e4e4e4;min-width:200px;">
+                                  <td style="border: 1px solid #e4e4e4;min-width:200px;padding-top:0;">
                                     <mat-form-field>
                                     <input matInput [(ngModel)]="column.value" class="anu-input"
                                            [ngModelOptions]="{standAlone:true}"
