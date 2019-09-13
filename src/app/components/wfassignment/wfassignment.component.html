@@ -8,7 +8,7 @@
   <div class="col-12">
     <ng-container *ngIf="assignment.assignmentUser">
       <select id="assignment_{{assignment.id}}" class="anu-input" value="{{assignment.assignmentUser.id}}">
-        <option value="0">--Assign a user--</option>
+        <option value="0">--Assign an owner--</option>
         <option *ngFor="let user of message.users" value="{{user.id}}">
           {{user.firstName}} {{user.lastName}} {{getRoles(user)}}
         </option>
@@ -16,7 +16,7 @@
     </ng-container>
     <ng-container *ngIf="!assignment.assignmentUser">
       <select id="assignment_{{assignment.id}}" class="anu-input">
-        <option value="0">--Assign a user1--</option>
+        <option value="0">--Assign an owner--</option>
         <option style="font-size:5px;" *ngFor="let user of message.users" value="{{user.id}}">
           {{user.firstName}} {{user.lastName}} <small>{{getRoles(user)}}</small>
         </option>
