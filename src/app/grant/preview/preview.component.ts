@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData, TemplateLibrary
+  SubmissionStatus, Template,TableData, TemplateLibrary, WorkflowAssignmentModel, WorkflowAssignment
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -23,6 +23,7 @@ import {Colors} from '../../model/app-config';
 import {interval} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
+import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {PdfDocument} from "../../model/pdf-document";
@@ -250,7 +251,9 @@ export class PreviewComponent implements OnInit {
           case 'clearSubmissions':
             this.clearSubmissions();
             break;
-
+          case 'wfassignment':
+            this.showWorkflowAssigments(sectionId);
+            break;
           case 'kpi':
             this.deleteKpi(kpiId);
             break;
@@ -726,8 +729,8 @@ export class PreviewComponent implements OnInit {
   submitGrant(toStateId: number) {
 
     for(let assignment of this.currentGrant.workflowAssignment){
-        if(assignment.assignments === null || assignment.assignments === undefined){
-            alert("Workflow assignments need to be configured.");
+        if(assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0){
+           this.confirm(toStateId, 0, [], 0, 'wfassignment', 'Would you like carry out Workflow assignments?')
             return;
         }
     }
@@ -1293,4 +1296,44 @@ export class PreviewComponent implements OnInit {
     datePickerSelected(event:Event){
         console.log(event);
     }
+
+    showWorkflowAssigments(toStateId){
+      const wfModel = new WorkflowAssignmentModel();
+       wfModel.users = this.appComp.appConfig.tenantUsers;
+       wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
+       wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+        const dialogRef = this.dialog.open(WfassignmentComponent, {
+              data: wfModel
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result.result) {
+                const ass:WorkflowAssignment[] = [];
+                for(let data of result.data){
+                    const wa = new WorkflowAssignment();
+                    wa.id=data.id;
+                    wa.assignments = data.userId;
+                    ass.push(wa);
+                }
+
+                const httpOptions = {
+                            headers: new HttpHeaders({
+                                'Content-Type': 'application/json',
+                                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                            })
+                        };
+
+                        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                            + this.currentGrant.id + '/assignment';
+                        this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
+                            this.grantData.changeMessage(grant);
+                            this.currentGrant = grant;
+                            this.submitGrant(toStateId);
+                        });
+              } else {
+                dialogRef.close();
+              }
+              });
+      }
 }
