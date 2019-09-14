@@ -1,6 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 import {WorkflowAssignmentModel} from '../../model/dahsboard';
+import {WorkflowTransition} from '../../model/workflow-transition';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+
 
 declare var $: any;
 
@@ -13,15 +16,38 @@ declare var $: any;
 export class WfassignmentComponent implements OnInit {
 
     assignmentData: any;
+    transitions: WorkflowTransition[];
+    elemRef: ElementRef;
 
-  constructor(public dialogRef: MatDialogRef<WfassignmentComponent>
-      , @Inject(MAT_DIALOG_DATA) public message: WorkflowAssignmentModel) {
+    @ViewChild("flowContainer") flowContainer: ElementRef;
+
+  constructor(
+    public dialogRef: MatDialogRef<WfassignmentComponent>
+     , @Inject(MAT_DIALOG_DATA) public message: WorkflowAssignmentModel
+     , private http: HttpClient
+     , private renderer: Renderer2
+     , @Inject(ElementRef)er: ElementRef
+     ) {
     this.dialogRef.disableClose = true;
+    this.elemRef = er;
   }
 
   ngOnInit() {
-  //console.log(message);
+  const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+          const url = '/api/admin/workflow/grant';
+
+          this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
+          this.transitions = transitions;
+
+          });
   }
+
 
   onNoClick(): void {
     this.dialogRef.close(false);

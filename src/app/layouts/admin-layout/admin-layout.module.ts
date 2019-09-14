@@ -44,6 +44,10 @@ import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttac
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 import {GrantsComponent} from '../../grants/grants.component';
+import {ApplicationsComponent} from '../../applications/applications.component';
+import {DetailsComponent} from '../../organization/details/details.component';
+import {OrgadminComponent} from '../../organization/orgadmin/orgadmin.component';
+import {RfpsComponent} from '../../rfps/rfps.component';
 import {BasicComponent} from '../../grant/basic/basic.component';
 import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
@@ -100,7 +104,11 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         BottomsheetComponent,
         BottomsheetAttachmentsComponent,
         BottomsheetNotesComponent,
-        WorkflowManagementComponent
+        WorkflowManagementComponent,
+        ApplicationsComponent,
+        RfpsComponent,
+        DetailsComponent,
+        OrgadminComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent],
     schemas: [NO_ERRORS_SCHEMA]

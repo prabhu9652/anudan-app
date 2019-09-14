@@ -13,7 +13,11 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
+
 export const ROUTES: RouteInfo[] = [
+  { path: '/organization', title: 'Organization',  icon: 'account_balance', class: '' },
+  { path: '/rfps', title: 'RFPs',  icon: 'description', class: '' },
+  { path: '/applications', title: 'Applications',  icon: 'inbox', class: '' },
   { path: '/grants', title: 'Grants',  icon: 'list', class: '' }/*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
@@ -30,7 +34,10 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
 
-
+export const ORGANIZATION_ROUTES: RouteInfo[] = [
+  { path: '/organization/details', title: 'Details',  icon: 'description', class: '' },
+  { path: '/organization/administration', title: 'Administration',  icon: 'description', class: '' },
+];
 export let SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
@@ -47,6 +54,7 @@ export class SidebarComponent implements OnInit {
   grantMenuItems: any[];
   sectionMenuItems: any[];
   adminMenuItems: any[];
+  orgMenuItems: any[];
   currentGrant: Grant;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -65,6 +73,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
+    this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;

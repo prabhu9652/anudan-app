@@ -349,3 +349,10 @@ input:-internal-autofill-selected{
     color: rgba(14, 16, 14, 0.68);
     font-size: 12px;
 }
+
+.state-node{
+    min-width: 70px;
+    max-width: 70px;
+    height: 70px;
+    border: 1px solid #e4e4e4;
+}
