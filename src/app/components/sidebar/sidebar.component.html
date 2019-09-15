@@ -40,7 +40,7 @@
                     <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
                         class="{{orgMenuItem.class}} nav-item text-left">
                         <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
-                            <i class="material-icons">{{orgMenuItem.icon}}</i>
+                            <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
                             <p>{{orgMenuItem.title}}</p>
                         </a>
                     </li>
@@ -87,7 +87,7 @@
                         </mat-expansion-panel-header>
                         <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
                             <a class="nav-link  py-0" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
-                                <i class="material-icons">{{menuItem1.icon}}</i>
+                                <i class="material-icons" style="font-size:18px;">{{menuItem1.icon}}</i>
                                 <p>{{menuItem1.title}}</p>
                             </a>
                     </li>

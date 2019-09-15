@@ -35,8 +35,8 @@ export const GRANT_ROUTES: RouteInfo[] = [
 ];
 
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
-  { path: '/organization/details', title: 'Details',  icon: 'description', class: '' },
-  { path: '/organization/administration', title: 'Administration',  icon: 'description', class: '' },
+  { path: '/organization/details', title: 'Details',  icon: 'stop', class: '' },
+  { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
 
@@ -124,9 +124,9 @@ export class SidebarComponent implements OnInit {
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){
-        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
+        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
       }
-      
+
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);
       this.appComponent.sectionAdded = false;
       return SECTION_ROUTES[0].path;

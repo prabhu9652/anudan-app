@@ -1,14 +1,15 @@
-<h1 mat-dialog-title>Workflow Assignments</h1>
-<div class="row" *ngFor="let assignment of message.workflowAssignment">
+<!--<button (click)="showFlow()">Show Flow</button>
+<div id="ranjit1" class="state-node my-2">One</div>
+<div id="ranjit2" class="state-node my-2">Two</div>-->
+<!--<div class="row" *ngFor="let assignment of message.workflowAssignment">
   <ng-container *ngIf="!assignment.anchor">
   <div class="col-12">
     {{assignment.stateName.verb}}
   </div>
-
   <div class="col-12">
     <ng-container *ngIf="assignment.assignmentUser">
       <select id="assignment_{{assignment.id}}" class="anu-input" value="{{assignment.assignmentUser.id}}">
-        <option value="0">--Assign an owner--</option>
+        <option value="0">&#45;&#45;Assign an owner&#45;&#45;</option>
         <option *ngFor="let user of message.users" value="{{user.id}}">
           {{user.firstName}} {{user.lastName}} {{getRoles(user)}}
         </option>
@@ -16,7 +17,7 @@
     </ng-container>
     <ng-container *ngIf="!assignment.assignmentUser">
       <select id="assignment_{{assignment.id}}" class="anu-input">
-        <option value="0">--Assign an owner--</option>
+        <option value="0">&#45;&#45;Assign an owner&#45;&#45;</option>
         <option style="font-size:5px;" *ngFor="let user of message.users" value="{{user.id}}">
           {{user.firstName}} {{user.lastName}} <small>{{getRoles(user)}}</small>
         </option>
@@ -24,8 +25,8 @@
     </ng-container>
   </div>
   </ng-container>
-</div>
-<div #flowContainer id="flowContainer">
+</div>-->
+<div #flowContainer id="flowContainer" class="text-center">
 
 </div>
 <div mat-dialog-actions>
