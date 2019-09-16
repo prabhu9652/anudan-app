@@ -70,7 +70,9 @@ export class WfassignmentComponent implements OnInit {
                 for(let option of this.message.users){
                     const nodeOwnerOptions = this.renderer.createElement('option');
                     this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
-                    if(assignment.length > 0 && assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0 === Number(option.id)) nodeOwnerOptions.selected = true;
+                    if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
+                        this.renderer.setAttribute(nodeOwnerOptions,'selected','selected');
+                    }
                     let username = option.firstName + ' '  + option.lastName + this.getRoles(option);
 
                     this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
@@ -109,6 +111,14 @@ export class WfassignmentComponent implements OnInit {
               this.renderer.addClass(node,'state-node');
               this.renderer.addClass(node,'my-5');
               this.renderer.appendChild(this.flowContainer.nativeElement,node);
+
+              if(transition.toStateId === this.message.grant.grantStatus.id){
+                  const indicator = this.renderer.createElement('i');
+                  this.renderer.addClass(indicator,'fa');
+                  this.renderer.addClass(indicator,'fa-arrow-circle-right');
+                  this.renderer.addClass(indicator,'status-indicator');
+                  this.renderer.appendChild(node,indicator);
+              }
           }
         }
 
@@ -196,10 +206,10 @@ this.jsPlumbInstance.repaintEverything();
 
       getColorCodeByStatus(status): string{
         if(status === 'DRAFT'){
-        return 'draft';
+        return 'state-draft';
         }else if(status === 'ACTIVE'){
-         return'active';
+         return'state-active';
         }
-        return 'closed';
+        return 'state-closed';
       }
 }

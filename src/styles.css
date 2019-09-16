@@ -368,7 +368,7 @@ input:-internal-autofill-selected{
 
 .status-indicator{
     position: relative;
-    left: -340px;
+    float: left;
     font-size: 18px;
     color: #338136;
 }
@@ -388,14 +388,14 @@ z-index: 2001;
     border-radius: 5px;
 }
 
-.draft{
+.state-draft{
 background:#FDFD98;
 }
 
-.active{
+.state-active{
 background:#77DD77;
 }
 
-.closed{
+.state-closed{
 background:#DAE3D9;
 }

@@ -749,8 +749,9 @@ export class PreviewComponent implements OnInit {
         + this.currentGrant.grantStatus.id + '/' + toStateId;
     this.http.post(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
       /*this.loading = false;
-      this.grantDataService.changeMessage(grant);
+
       this.router.navigate(['grant']);*/
+      //this.grantDataService.changeMessage(grant);
       this.grantData.changeMessage(grant);
       this.fetchCurrentGrant();
       if(!grant.grantTemplate.published && origStatus==='DRAFT'){
