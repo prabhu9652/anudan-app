@@ -180,9 +180,12 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.users = this.appComponent.appConfig.tenantUsers;
    wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+   wfModel.grant = this.currentGrant;
     const dialogRef = this.dialog.open(WfassignmentComponent, {
-          data: wfModel
-        });
+          data: wfModel,
+          width: '600px'
+          }
+          );
 
         dialogRef.afterClosed().subscribe(result => {
           if (result.result) {
