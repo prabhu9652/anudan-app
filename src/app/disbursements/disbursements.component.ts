@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 
 
 @Component({
-  selector: 'submissions-dashboard',
-  templateUrl: './submissions.component.html',
-  styleUrls: ['./submissions.component.css']
+  selector: 'disbursements-dashboard',
+  templateUrl: './disbursements.component.html',
+  styleUrls: ['./disbursements.component.css']
 })
-export class SubmissionsComponent implements OnInit {
+export class DisbursementsComponent implements OnInit {
 
 
 

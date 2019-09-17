@@ -153,30 +153,23 @@ export class GrantsComponent implements OnInit {
         this.grantUpdateService.changeMessage(false);
       }
     },
-        error1 => {
-      const errorMsg = error1 as HttpErrorResponse;
-          if(errorMsg.error.message === 'Token Expired'){
-            const logoutMsg = this.toastr.error("Your session is expired. Please log back in", errorMsg.error.messageTitle, {
-              tapToDismiss: false,
-              timeOut: 30000,
-              positionClass: 'toast-bottom-center'
-            });
-            setTimeout(() =>
-            {
-                this.toastr.clear();
-                this.appComponent.logout();
-            },
-            5000);
+        error => {
+                               const errorMsg = error as HttpErrorResponse;
+                               const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                               const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                               const errorconfig: Partial<IndividualConfig> = x;
+                               const config: Partial<IndividualConfig> = y;
+                               if(errorMsg.error.message==='Token Expired'){
+                                //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                                alert("Your session has timed out. Please sign in again.")
+                                this.appComponent.logout();
+                               } else {
+                                this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                               }
 
-          }else {
-            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-              enableHtml: true,
-              positionClass: 'toast-top-center'
-            });
-          }
 
-        });
-        }
+                             });
+                          }
   }
 
   manageGrant(grant: Grant) {

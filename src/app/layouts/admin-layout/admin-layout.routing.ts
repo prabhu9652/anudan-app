@@ -11,7 +11,7 @@ import {UpgradeComponent} from '../../upgrade/upgrade.component';
 import {GrantComponent} from '../../grant/grant.component';
 import {ApplicationsComponent} from '../../applications/applications.component';
 import {ReportsComponent} from '../../reports/reports.component';
-import {SubmissionsComponent} from '../../submissions/submissions.component';
+import {DisbursementsComponent} from '../../disbursements/disbursements.component';
 import {DetailsComponent} from '../../organization//details/details.component';
 import {OrgadminComponent} from '../../organization//orgadmin/orgadmin.component';
 import {RfpsComponent} from '../../rfps/rfps.component';
@@ -69,7 +69,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'grants', component: GrantsComponent},
   {path: 'applications', component: ApplicationsComponent},
   {path: 'reports', component: ReportsComponent},
-  {path: 'submissions', component: SubmissionsComponent},
+  {path: 'disbursements', component: DisbursementsComponent},
   {path: 'organization/details', component: DetailsComponent},
   {path: 'organization/administration', component: OrgadminComponent},
   {path: 'rfps', component: RfpsComponent},
