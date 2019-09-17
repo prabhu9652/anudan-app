@@ -45,6 +45,8 @@ import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/botto
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 import {GrantsComponent} from '../../grants/grants.component';
 import {ApplicationsComponent} from '../../applications/applications.component';
+import {ReportsComponent} from '../../reports/reports.component';
+import {SubmissionsComponent} from '../../submissions/submissions.component';
 import {DetailsComponent} from '../../organization/details/details.component';
 import {OrgadminComponent} from '../../organization/orgadmin/orgadmin.component';
 import {OrganizationComponent} from '../../organization/organization.component';
@@ -110,7 +112,9 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         RfpsComponent,
         DetailsComponent,
         OrgadminComponent,
-        OrganizationComponent
+        OrganizationComponent,
+        ReportsComponent,
+        SubmissionsComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent],
     schemas: [NO_ERRORS_SCHEMA]
