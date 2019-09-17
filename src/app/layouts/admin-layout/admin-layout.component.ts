@@ -17,6 +17,8 @@ import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+
 
 
 @Component({
@@ -35,6 +37,8 @@ export class AdminLayoutComponent implements OnInit {
   currentGrantId: number;
   subscription: any;
   intervalSubscription: any;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   
 
   constructor(private grantData: GrantDataService
@@ -180,9 +184,12 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.users = this.appComponent.appConfig.tenantUsers;
    wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+   wfModel.grant = this.currentGrant;
     const dialogRef = this.dialog.open(WfassignmentComponent, {
-          data: wfModel
-        });
+          data: wfModel,
+          width: '600px'
+          }
+          );
 
         dialogRef.afterClosed().subscribe(result => {
           if (result.result) {
@@ -206,6 +213,7 @@ export class AdminLayoutComponent implements OnInit {
                         + this.currentGrant.id + '/assignment';
                     this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
                         this.grantData.changeMessage(grant);
+                        this.setDateDuration();
                         this.currentGrant = grant;
                     });
           } else {
@@ -213,5 +221,15 @@ export class AdminLayoutComponent implements OnInit {
           }
           });
   }
+
+  setDateDuration(){
+    if(this.currentGrant.startDate && this.currentGrant.endDate){
+        var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+        time = time + 86400001;
+        this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+      }else{
+        this.currentGrant.duration = 'No end date';
+      }
+    }
 
 }

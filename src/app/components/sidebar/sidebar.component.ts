@@ -13,8 +13,15 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
+
 export const ROUTES: RouteInfo[] = [
-  { path: '/grants', title: 'Grants',  icon: 'list', class: '' }/*,
+  { path: '/organization', title: 'Organization',  icon: 'account_balance', class: '' },
+  { path: '/rfps', title: 'RFPs',  icon: 'description', class: '' },
+  { path: '/applications', title: 'Applications',  icon: 'inbox', class: '' },
+  { path: '/grants', title: 'Grants',  icon: 'list', class: '' },
+  { path: '/reports', title: 'Reports',  icon: 'bar_chart', class: '' },
+  { path: '/disbursements', title: 'Disbursements',  icon: 'assignment_returned', class: '' },
+  /*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
   { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
@@ -30,7 +37,10 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
 ];
 
-
+export const ORGANIZATION_ROUTES: RouteInfo[] = [
+  { path: '/organization/details', title: 'Details',  icon: 'stop', class: '' },
+  { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
+];
 export let SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
@@ -47,6 +57,7 @@ export class SidebarComponent implements OnInit {
   grantMenuItems: any[];
   sectionMenuItems: any[];
   adminMenuItems: any[];
+  orgMenuItems: any[];
   currentGrant: Grant;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -65,6 +76,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
+    this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
@@ -115,9 +127,9 @@ export class SidebarComponent implements OnInit {
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       for (let section of this.currentGrant.grantDetails.sections){
-        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'description', class:''});
+        SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
       }
-      
+
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);
       this.appComponent.sectionAdded = false;
       return SECTION_ROUTES[0].path;

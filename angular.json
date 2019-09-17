@@ -44,7 +44,9 @@
               "node_modules/chartist/dist/chartist.js",
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/hammerjs/hammer.min.js",
-              "src/assets/js/oauth.min.js"
+              "src/assets/js/oauth.min.js",
+              "src/assets/js/jquery.connections.js",
+              "node_modules/jsplumb/dist/js/jsplumb.js"
             ]
           },
           "configurations": {

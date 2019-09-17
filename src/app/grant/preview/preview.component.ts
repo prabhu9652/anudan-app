@@ -729,7 +729,8 @@ export class PreviewComponent implements OnInit {
   submitGrant(toStateId: number) {
 
     for(let assignment of this.currentGrant.workflowAssignment){
-        if(assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0){
+        const status1 = this.appComp.appConfig.workflowStatuses.filter((status) => status.id===assignment.stateId);
+        if(assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0 && !status1[0].terminal){
            this.confirm(toStateId, 0, [], 0, 'wfassignment', 'Would you like carry out Workflow assignments?')
             return;
         }
@@ -749,8 +750,9 @@ export class PreviewComponent implements OnInit {
         + this.currentGrant.grantStatus.id + '/' + toStateId;
     this.http.post(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
       /*this.loading = false;
-      this.grantDataService.changeMessage(grant);
+
       this.router.navigate(['grant']);*/
+      //this.grantDataService.changeMessage(grant);
       this.grantData.changeMessage(grant);
       this.fetchCurrentGrant();
       if(!grant.grantTemplate.published && origStatus==='DRAFT'){
@@ -1302,8 +1304,10 @@ export class PreviewComponent implements OnInit {
        wfModel.users = this.appComp.appConfig.tenantUsers;
        wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+       wfModel.grant = this.currentGrant;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
-              data: wfModel
+              data: wfModel,
+              width: '600px'
             });
 
             dialogRef.afterClosed().subscribe(result => {

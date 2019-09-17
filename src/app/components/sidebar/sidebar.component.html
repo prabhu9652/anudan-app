@@ -21,14 +21,33 @@
             </a>
 
         </li>
-        <ng-container *ngIf="appComponent.currentView === 'grants'">
-            <li routerLinkActive="active" *ngFor="let menuItem of menuItems"
+
+        <ng-container *ngIf="appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications'">
+            <ng-container *ngFor="let menuItem of menuItems">
+            <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization'"
                 class="{{menuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
                     <i class="material-icons">{{menuItem.icon}}</i>
-                    <p>{{menuItem.title}}</p>
+                    <p><b>{{menuItem.title}}</b></p>
                 </a>
             </li>
+                <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
+                    <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                        <mat-panel-title style="display: flex; align-items: center">
+                            <i class="material-icons">account_balance</i>Organization
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
+                        class="{{orgMenuItem.class}} nav-item text-left">
+                        <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
+                            <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
+                            <p>{{orgMenuItem.title}}</p>
+                        </a>
+                    </li>
+                </mat-expansion-panel>
+            </ng-container>
+
+
 
             <mat-expansion-panel *ngIf="appComponent.loggedInUser.permissions.includes('Manage Workflows')">
                 <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
@@ -67,8 +86,8 @@
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
-                            <a class="nav-link" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
-                                <i class="material-icons">{{menuItem1.icon}}</i>
+                            <a class="nav-link  py-0" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
+                                <i class="material-icons" style="font-size:18px;">{{menuItem1.icon}}</i>
                                 <p>{{menuItem1.title}}</p>
                             </a>
                     </li>

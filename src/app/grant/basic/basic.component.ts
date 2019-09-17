@@ -345,6 +345,7 @@ export class BasicComponent implements OnInit {
             //console.log(attrib);
             attrib.fieldValue = inputField.val();
             this.grantData.changeMessage(grant);
+            this.setDateDuration();
           }
         }
       }
@@ -539,6 +540,7 @@ export class BasicComponent implements OnInit {
       }
     }
     this.grantData.changeMessage(grant);
+    this.setDateDuration();
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -571,6 +573,7 @@ export class BasicComponent implements OnInit {
     currentSections.push(newSection);
 
     this.grantData.changeMessage(this.currentGrant);
+    this.setDateDuration();
 
     sectionName.val('');
     $('#section_' + newSection.id).css('display', 'block');
@@ -597,6 +600,7 @@ export class BasicComponent implements OnInit {
     currentSections.push(newSection);
 
     this.grantData.changeMessage(this.currentGrant);
+    this.setDateDuration();
 
     sectionName.val('');
     this.addNewSection();
@@ -726,6 +730,7 @@ export class BasicComponent implements OnInit {
     }
 
     this.grantData.changeMessage(this.currentGrant);
+    this.setDateDuration();
     //console.log();
   }
 
@@ -768,6 +773,7 @@ export class BasicComponent implements OnInit {
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
+        this.setDateDuration();
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
@@ -858,6 +864,7 @@ export class BasicComponent implements OnInit {
     }
 
     this.submissionData.changeMessage(this.currentSubmission);
+    this.setDateDuration();
     //console.log(this.currentSubmission);
   }
 
@@ -905,6 +912,7 @@ export class BasicComponent implements OnInit {
     }
     this._setEditMode(true);
     this.grantData.changeMessage(this.currentGrant);
+    this.setDateDuration();
     //console.log(this.currentGrant);
   }
 
@@ -963,6 +971,7 @@ export class BasicComponent implements OnInit {
     this.currentGrant = grant
     this.grantData.changeMessage(grant);
     this.router.navigate(['grant']);
+    this.setDateDuration();
   }
 
   private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
@@ -1057,6 +1066,7 @@ export class BasicComponent implements OnInit {
     } else {
       this._setEditMode(true);
       this.grantData.changeMessage(this.currentGrant);
+      this.setDateDuration();
     }
     this.setDateDuration();
   }

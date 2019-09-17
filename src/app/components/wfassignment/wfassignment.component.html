@@ -1,29 +1,5 @@
-<h1 mat-dialog-title>Workflow Assignments</h1>
-<div class="row" *ngFor="let assignment of message.workflowAssignment">
-  <ng-container *ngIf="!assignment.anchor">
-  <div class="col-12">
-    {{assignment.stateName.verb}}
-  </div>
+<div #flowContainer id="flowContainer" class="text-center">
 
-  <div class="col-12">
-    <ng-container *ngIf="assignment.assignmentUser">
-      <select id="assignment_{{assignment.id}}" class="anu-input" value="{{assignment.assignmentUser.id}}">
-        <option value="0">--Assign an owner--</option>
-        <option *ngFor="let user of message.users" value="{{user.id}}">
-          {{user.firstName}} {{user.lastName}} {{getRoles(user)}}
-        </option>
-      </select>
-    </ng-container>
-    <ng-container *ngIf="!assignment.assignmentUser">
-      <select id="assignment_{{assignment.id}}" class="anu-input">
-        <option value="0">--Assign an owner--</option>
-        <option style="font-size:5px;" *ngFor="let user of message.users" value="{{user.id}}">
-          {{user.firstName}} {{user.lastName}} <small>{{getRoles(user)}}</small>
-        </option>
-      </select>
-    </ng-container>
-  </div>
-  </ng-container>
 </div>
 <div mat-dialog-actions>
   <button class="btn text-dark" (click)="onNoClick()">Do it later</button>

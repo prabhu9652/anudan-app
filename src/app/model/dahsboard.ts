@@ -358,6 +358,7 @@ export class WorkflowAssignmentModel{
  users: User[];
  workflowStatuses: WorkflowStatus[];
  workflowAssignment: WorkflowAssignment[];
+ grant: Grant;
  constructor(){}
 }
 
