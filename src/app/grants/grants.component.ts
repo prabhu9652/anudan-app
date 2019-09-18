@@ -179,7 +179,11 @@ export class GrantsComponent implements OnInit {
 
                 this.appComponent.selectedTemplate = grant.grantTemplate;
 
-        this.router.navigate(['grant/basic-details']);
+        if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+            this.router.navigate(['grant/basic-details']);
+        } else{
+            this.router.navigate(['grant/preview']);
+        }
   }
 
   deleteGrant(grant: Grant){

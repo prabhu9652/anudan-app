@@ -61,7 +61,9 @@ export class WfassignmentComponent implements OnInit {
                 const assignment = this.message.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);
                 if(assignment.length>0){
                     this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
-                    this.renderer.setAttribute(nodeOwner,'id','assignment_' + assignment[0].id);
+                    this.renderer.setAttribute(nodeOwner,'id','assignment_' + assignment[0].id  + '_' + transition.fromStateId + '_' + this.message.grant.id);
+                }else{
+                    this.renderer.setAttribute(nodeOwner,'id','assignment_'+transition.fromStateId+'_'+this.message.grant.id);
                 }
                 const nodeOwnerOptions = this.renderer.createElement('option');
                 this.renderer.setAttribute(nodeOwnerOptions,'value','0');
@@ -191,7 +193,12 @@ this.jsPlumbInstance.repaintEverything();
     const assignmentElems = $('[id^="assignment_"]');
     const assignMentResult=[];
      for(let i=0; i< assignmentElems.length;i++){
-         assignMentResult.push({'id':$(assignmentElems[i]).attr('id').split('_')[1],'userId':$(assignmentElems[i]).val()});
+         var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
+         if(assignmentTokens.length===4){
+            assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'grantId':assignmentTokens[3]});
+         }else{
+            assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'grantId':assignmentTokens[2]});
+         }
      }
     this.dialogRef.close({'result':true,data:assignMentResult});
   }

@@ -58,7 +58,11 @@ export class UserProfileComponent implements OnInit {
         this.http.post(url, newPwdElem.value, httpOptions).subscribe((user: User) => {
           localStorage.removeItem('USER');
           localStorage.setItem('USER', JSON.stringify(user));
+          this.appComp.loggedInUser = user;
           const changePwdModalElem = this.elem.nativeElement.querySelector('#changePwdModal');
+          oldPwdElem.value='';
+          newPwdElem.value='';
+          repeatPwdElem.value='';
           $(changePwdModalElem).modal('hide');
         });
       }
