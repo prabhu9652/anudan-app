@@ -1675,4 +1675,21 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             }
         });
     }
+
+    checkIfSelected(doc):boolean{
+        for(let section of this.currentGrant.grantDetails.sections){
+            if(section){
+                for(let attr of section.attributes){
+                    if(attr.fieldType==='document' && attr.attachments.length > 0){
+                        for(let attach of attr.attachments){
+                            if(attach.name === doc.name){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

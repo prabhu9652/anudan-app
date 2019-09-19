@@ -289,34 +289,42 @@
                                             {{fruit.name}}
                                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                                           </mat-chip>-->
-                                          <input id="templateLib_{{attribute.id}}" class="anu-input"
-                                            placeholder="Document Attachments"
+                                          <button class="btn btn-sm btn-blue" [matAutocomplete]="auto">Attach from library</button>
+                                          <input id="templateLib_{{attribute.id}}" class="anu-input" style="max-width: 0; height: 0; padding: 0 !important; margin: 0;"
                                             #fruitInput
                                             [formControl]="myControl"
                                             [matAutocomplete]="auto"
                                             [matChipInputFor]="chipList"
                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                            [matChipInputAddOnBlur]="addOnBlur"
-                                            (matChipInputTokenEnd)="add(attribute,$event)">
+                                            [matChipInputAddOnBlur]="addOnBlur">
+                                          <button class="btn btn-sm btn-green">Attach from your device</button>
                                         </mat-chip-list>
                                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(attribute, $event)">
-                                          <mat-option *ngFor="let doc of filteredOptions | async" [value]="doc">
-                                            {{doc.name}}
-                                          </mat-option>
+                                          <ng-container *ngFor="let doc of filteredOptions | async">
+                                            <mat-option [value]="doc" [disabled]="checkIfSelected(doc)">
+                                              {{doc.name}}
+                                            </mat-option>
+                                          </ng-container>
+
                                         </mat-autocomplete>
                                       </mat-form-field>
                                   </form>
                           <mat-nav-list>
                           <ng-container *ngFor="let attachment of attribute.attachments">
                             <mat-list-item>
+                              <div><mat-icon (click)="deleteAttachment(attribute.id, attachment.id)"
+                                             aria-hidden="false"
+                                             aria-label="Example home icon" inline="true" title="Delete this field">
+                                delete_outline
+                              </mat-icon>
+                              </div>
 
-                              <i class="fa fa-trash" style="cursor:pointer;" (click)="deleteAttachment(attribute.id, attachment.id)"></i>
                               <p id="fileAttachment_{{attachment.id}}" mat-line>{{attachment.name + '.' + attachment.type}} <small>(version {{attachment.version}})</small></p>
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
                             <mat-list-item>
-                              <button class="btn btn-sm btn-green">Upload new file</button>
+
                               <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled>Download Selected Files</button>
                             </mat-list-item>
                           </mat-nav-list>
