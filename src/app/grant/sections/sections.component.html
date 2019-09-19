@@ -323,9 +323,9 @@
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
-                            <mat-list-item>
+                            <mat-list-item *ngIf="attribute.attachments.length >0">
 
-                              <button *ngIf="attribute.attachments.length >0" id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled>
+                              <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled>
                                 Download Selected Files
                               </button>
                             </mat-list-item>
