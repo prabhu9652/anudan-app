@@ -363,6 +363,11 @@ export class FieldInfo{
     grant: Grant;
 }
 
+export class DocInfo{
+    attachmentId: number;
+    grant: Grant;
+}
+
 export class SectionInfo{
     sectionId: number;
     sectionName: string;

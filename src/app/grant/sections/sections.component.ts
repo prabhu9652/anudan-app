@@ -10,7 +10,7 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -63,6 +63,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   erroredField: string;
   action: string;
   newField: any;
+  allowScroll = true;
 
   myControl: FormControl;
   options: TemplateLibrary[];
@@ -247,9 +248,7 @@ ngOnDestroy(){
     this._setFlowButtonColors();
   }
 
-  rememberScrollPosition(event: Event) {
-    console.log(event);
-  }
+
 
   viewKpisToSubmit(submissionId: number) {
     for (const submission of this.currentGrant.submissions) {
@@ -916,11 +915,6 @@ ngOnDestroy(){
   }
 
 
-  postionFirstColumn(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.first-column').css('left', dist + 'px');
-  }
-
   private _setEditMode(state: boolean) {
     this.editMode = state;
     /*if (state) {
@@ -930,26 +924,7 @@ ngOnDestroy(){
     }*/
   }
 
-  scrollHeaderContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.kpi-block').scrollLeft(dist);
-    /*const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');*/
-  }
 
-  scrollChildContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    const submissionBlock = this.elem.nativeElement.querySelector('.submissions-block');
-    submissionBlock.scrollLeft = dist;
-    const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');
-  }
 
   updateSubmission(event: Event, kpiType: string, kpiDataId: number) {
     console.log((<HTMLInputElement>event.target).value + '  ' + kpiType + '  ' + kpiDataId);
@@ -1548,6 +1523,13 @@ ngOnDestroy(){
     this.setTimeout();
   }
 
+  @HostListener('wheel', ['$event'])
+  preventScroll(event){
+  if(!this.allowScroll){
+    //event.preventDefault();
+  }
+  }
+
   private _filter(value: any): TemplateLibrary[] {
     let filterValue;
     if(typeof value==='string'){
@@ -1603,7 +1585,23 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    //attribute.docs.push(event.option.value);
+    for(let section of this.currentGrant.grantDetails.sections){
+    if(section){
+        for(let attr of section.attributes){
+            if(attr && attr.fieldType==='document'){
+                if(attr.attachments.length > 0){
+                    for(let attach of attr.attachments){
+                        if(attach.name === event.option.value.name){
+                            alert("Template " + attach.name + ' is already attached under ' + attr.fieldName);
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    }
     const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -1614,13 +1612,17 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
         const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
 
-        this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-            this.grantData.changeMessage(grant);
-            //this.currentGrant = grant;
-        });
+        this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
+            this.grantData.changeMessage(info.grant);
+
+            /* this.currentGrant = info.grant; */
+            this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
+            this.allowScroll = false;
     attribute.fieldValue = JSON.stringify(attribute.docs);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
+        });
+
   }
 
  getDocumentName(val: string): any[] {
@@ -1631,22 +1633,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
      return obj;
    }
 
-   moveColsLeft(){
-    $('#tableArea').animate({
-        scrollLeft: "+=200px"
-      }, "100","linear",function(){
-       console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
-     });
-     }
 
-   moveColsRight(){
-    $('#tableArea').animate({
-        scrollLeft: "-=200px"
-      }, "100","linear",function(){
-        console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
-      });
-
-   }
 
    handleSelection(attribId,attachmentId){
    const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
@@ -1654,13 +1641,38 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
    for(let singleElem of elems){
     if(singleElem.checked){
         this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = false;
-        this.elem.nativeElement.querySelector('[id^="attachments_delete_'+attribId+'"]').disabled = false;
         return;
     }
     this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = true;
-    this.elem.nativeElement.querySelector('[id^="attachments_delete_'+attribId+'"]').disabled = true;
    }
    }
    }
 
+    deleteAttachment(attributeId, attachmentId){
+
+    const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
+        this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+            this.grantData.changeMessage(grant);
+            this.currentGrant = grant;
+            for(let section of this.currentGrant.grantDetails.sections){
+                if(section){
+                    for(let attr of section.attributes){
+                    if(attributeId===attr.id){
+                        if(attr.attachments.length>0){
+                        this.newField = 'attriute_'+attributeId+'_attachment_' + attr.attachments[attr.attachments.length-1].id;
+                        }
+                    }
+                    }
+                }
+            }
+        });
+    }
 }

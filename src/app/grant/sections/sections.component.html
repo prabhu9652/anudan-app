@@ -289,7 +289,7 @@
                                             {{fruit.name}}
                                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                                           </mat-chip>-->
-                                          <input id="templateLib" class="anu-input"
+                                          <input id="templateLib_{{attribute.id}}" class="anu-input"
                                             placeholder="Document Attachments"
                                             #fruitInput
                                             [formControl]="myControl"
@@ -310,15 +310,14 @@
                           <ng-container *ngFor="let attachment of attribute.attachments">
                             <mat-list-item>
 
-                              <a class="btn btn-sm btn-red">Replace</a><i class="fa fa-trash"></i>
-                              <p mat-line>{{attachment.name + '.' + attachment.type}} <small>(version {{attachment.version}})</small></p>
+                              <i class="fa fa-trash" style="cursor:pointer;" (click)="deleteAttachment(attribute.id, attachment.id)"></i>
+                              <p id="fileAttachment_{{attachment.id}}" mat-line>{{attachment.name + '.' + attachment.type}} <small>(version {{attachment.version}})</small></p>
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
                             <mat-list-item>
                               <button class="btn btn-sm btn-green">Upload new file</button>
                               <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled>Download Selected Files</button>
-                              <button id="attachments_delete_{{attribute.id}}" class="btn btn-sm btn-red" disabled>Delete Selected Files</button>
                             </mat-list-item>
                           </mat-nav-list>
                         </div>
