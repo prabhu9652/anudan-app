@@ -96,6 +96,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   @ViewChild('container') container: ElementRef;
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('downloadSelected') downloadSelected: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -166,6 +167,7 @@ ngOnDestroy(){
           if(frt.length > 0) {
             for(let i=0; i< frt.length; i++){
               attribute.docs.push(frt[i]);
+              //attribute.attachments.push(frt[i]);
             }
            }
           }
@@ -1601,7 +1603,21 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    attribute.docs.push(event.option.value);
+    //attribute.docs.push(event.option.value);
+    const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
+
+        this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+            this.grantData.changeMessage(grant);
+            //this.currentGrant = grant;
+        });
     attribute.fieldValue = JSON.stringify(attribute.docs);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
@@ -1630,6 +1646,21 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
       });
 
+   }
+
+   handleSelection(attribId,attachmentId){
+   const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+   if(elems.length>0){
+   for(let singleElem of elems){
+    if(singleElem.checked){
+        this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = false;
+        this.elem.nativeElement.querySelector('[id^="attachments_delete_'+attribId+'"]').disabled = false;
+        return;
+    }
+    this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = true;
+    this.elem.nativeElement.querySelector('[id^="attachments_delete_'+attribId+'"]').disabled = true;
+   }
+   }
    }
 
 }
