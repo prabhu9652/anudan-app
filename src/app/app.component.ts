@@ -1,8 +1,8 @@
 import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
-
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
 import {Time} from "@angular/common";
@@ -52,7 +52,7 @@ export class AppComponent implements AfterViewChecked{
   org: string;
   public defaultClass = '';
 
-  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private grantService: GrantDataService) {
+  constructor(private toastr:ToastrService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private grantService: GrantDataService) {
 
   }
 
@@ -107,7 +107,22 @@ export class AppComponent implements AfterViewChecked{
       this.appConfig = newObj as AppConfig;
       localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
 
-    });
+    },error => {
+                            const errorMsg = error as HttpErrorResponse;
+                            const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                            const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                            const errorconfig: Partial<IndividualConfig> = x;
+                            const config: Partial<IndividualConfig> = y;
+                            if(errorMsg.error.message==='Token Expired'){
+                             //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                             alert("Your session has timed out. Please sign in again.")
+                             this.logout();
+                            } else {
+                             this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                            }
+
+
+                          });
     if (!hostName) {
       this.defaultClass = ' navbar fixed-top navbar-expand-lg navbar-light';
 

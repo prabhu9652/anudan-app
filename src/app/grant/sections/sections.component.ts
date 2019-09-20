@@ -64,6 +64,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   action: string;
   newField: any;
   allowScroll = true;
+  filesToUpload = FileList;
 
   myControl: FormControl;
   options: TemplateLibrary[];
@@ -112,8 +113,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       , private elem: ElementRef
       , private datepipe: DatePipe
       , public colors: Colors
-      , private sidebar: SidebarComponent,
-      private data: DataService) {
+      , private sidebar: SidebarComponent
+      , private data: DataService) {
     this.colors = new Colors();
 
 
@@ -1585,22 +1586,9 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    for(let section of this.currentGrant.grantDetails.sections){
-    if(section){
-        for(let attr of section.attributes){
-            if(attr && attr.fieldType==='document'){
-                if(attr.attachments.length > 0){
-                    for(let attach of attr.attachments){
-                        if(attach.name === event.option.value.name){
-                            alert("Template " + attach.name + ' is already attached under ' + attr.fieldName);
-                            return;
-                        }
-                    }
-                }
-
-            }
-        }
-    }
+    if(this._checkAttachmentExists(event.option.value.name)){
+        alert("Template " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
+        return;
     }
     const httpOptions = {
             headers: new HttpHeaders({
@@ -1615,7 +1603,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
             this.grantData.changeMessage(info.grant);
 
-            /* this.currentGrant = info.grant; */
+            this.currentGrant = info.grant;
             this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
             this.allowScroll = false;
     attribute.fieldValue = JSON.stringify(attribute.docs);
@@ -1691,5 +1679,54 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             }
         }
         return false;
+    }
+
+    processSelectedFiles(attribute,event){
+        const files = event.target.files;
+
+
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/attribute/'+attribute.id+'/upload';
+              let formData = new FormData();
+              for( let i=0; i< files.length; i++){
+              formData.append('file', files.item(i));
+                if(this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')))){
+                                alert("Template " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
+                                return;
+                            }
+              }
+
+
+              const httpOptions = {
+                  headers: new HttpHeaders({
+                      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                      'Authorization': localStorage.getItem('AUTH_TOKEN')
+                  })
+              };
+
+                  this.http.post<DocInfo>(endpoint,formData, httpOptions).subscribe((info: DocInfo) => {
+                  this.grantData.changeMessage(info.grant)
+                  this.currentGrant = info.grant;
+                   this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
+                  });
+    }
+
+    _checkAttachmentExists(filename){
+        for(let section of this.currentGrant.grantDetails.sections){
+            if(section){
+                for(let attr of section.attributes){
+                    if(attr && attr.fieldType==='document'){
+                        if(attr.attachments.length > 0){
+                            for(let attach of attr.attachments){
+                                if(attach.name === filename){
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            }
+            return false;
     }
 }

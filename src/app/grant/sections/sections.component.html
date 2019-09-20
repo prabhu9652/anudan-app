@@ -278,6 +278,8 @@
                                    (ngModelChange)="checkGrant()"></textarea>
                         </div>
                         <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='document'">
+                          <div style="display:flex;align-items: baseline;" class="attachments-wrapper">
+                            <div class="col-4">
                                    <form class="example-form">
                                       <mat-form-field class="example-chip-list">
                                         <mat-chip-list #chipList aria-label="Fruit selection">
@@ -297,7 +299,6 @@
                                             [matChipInputFor]="chipList"
                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                             [matChipInputAddOnBlur]="addOnBlur">
-                                          <button class="btn btn-sm btn-green">Attach from your device</button>
                                         </mat-chip-list>
                                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(attribute, $event)">
                                           <ng-container *ngFor="let doc of filteredOptions | async">
@@ -309,6 +310,12 @@
                                         </mat-autocomplete>
                                       </mat-form-field>
                                   </form>
+                            </div>
+                            <div class="col-5">
+                              <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green">Attach from your device</label>
+                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(attribute,$event)">
+                            </div>
+                          </div>
                           <mat-nav-list>
                           <ng-container *ngFor="let attachment of attribute.attachments">
                             <mat-list-item>
@@ -319,7 +326,7 @@
                               </mat-icon>
                               </div>
 
-                              <p id="fileAttachment_{{attachment.id}}" mat-line>{{attachment.name + '.' + attachment.type}} <small>(version {{attachment.version}})</small></p>
+                              <p id="fileAttachment_{{attachment.id}}" mat-line>{{attachment.name + '.' + attachment.type}}</p>
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
