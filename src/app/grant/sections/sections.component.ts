@@ -10,7 +10,7 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -33,7 +33,7 @@ import {map, startWith} from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
-
+import { saveAs } from 'file-saver';
 
 
 
@@ -125,7 +125,7 @@ this.route.params.subscribe( (p) => {
 
     this.subscribers.name = this.router.events.subscribe((val) => {
             console.log(this.router.url);
-                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved){
+                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
                     this.saveGrant();
                     this.appComp.grantSaved = false;
                 }
@@ -1136,7 +1136,6 @@ ngOnDestroy(){
     }
   }
 
-
   checkGrant(ev: Event) {
   this.appComp.sectionInModification = true;
   
@@ -1148,17 +1147,51 @@ ngOnDestroy(){
     //this.saveGrant(this.currentGrant);
     
     //this.grantData.changeMessage(this.currentGrant);
-    if(ev){
+    if(ev!==null && ev!==undefined){
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
       this.sidebar.buildSectionsSideNav();
       this.appComp.sectionInModification = false;
-      this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+      if(ev.toString()!==''){
+        this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+      }else{
+        this.router.navigate(['grant/section/_']);
+      }
     }
+
      this.appComp.sectionInModification = false;
       this._setEditMode(true);
     }
   }
+
+  verifyGrant(section:Section, ev: Event) {
+    this.appComp.sectionInModification = true;
+
+    console.log(ev);
+
+      if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
+        this._setEditMode(false);
+      } else {
+      //this.saveGrant(this.currentGrant);
+
+      //this.grantData.changeMessage(this.currentGrant);
+      if(ev!==null || ev!==undefined){
+
+        this.grantData.changeMessage(this.currentGrant);
+        this.appComp.sectionUpdated = true;
+        this.sidebar.buildSectionsSideNav();
+        this.appComp.sectionInModification = false;
+        if(ev.toString()!==''){
+          this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+        }else{
+          this.router.navigate(['grant/section/_']);
+        }
+      }
+
+       this.appComp.sectionInModification = false;
+        this._setEditMode(true);
+      }
+    }
 
   changeFieldType(){
     this.appComp.sectionInModification = true
@@ -1467,7 +1500,10 @@ ngOnDestroy(){
   }
 
   getCleanText(name:string){
-    return name.replace(/[^0-9a-z]/gi, '');
+    if(name === ''){
+        return '_';
+    }
+    return name.replace(/[^_0-9a-z]/gi, '');
   }
 
   getTabularData(elemId: number, data: string){
@@ -1636,6 +1672,33 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
    }
    }
 
+   downloadSelection(attribId){
+      const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+      const selectedAttachments = new AttachmentDownloadRequest();
+      if(elems.length>0){
+      selectedAttachments.attachmentIds = [];
+      for(let singleElem of elems){
+       if(singleElem.checked){
+           selectedAttachments.attachmentIds.push(singleElem.id.split('_')[3]);
+       }
+      }
+        const httpOptions = {
+              responseType: 'blob' as 'json',
+              headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+            };
+
+            let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                + this.currentGrant.id + '/attachments';
+            this.http.post(url, selectedAttachments, httpOptions).subscribe((data) => {
+                saveAs(data,this.currentGrant.name+'.zip');
+            });
+     }
+   }
+
     deleteAttachment(attributeId, attachmentId){
 
     const httpOptions = {
@@ -1729,4 +1792,13 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             }
             return false;
     }
+
+    /* beforeChange(section, sectionev: Event){
+        if(sectionev===''){
+            section.name = '_';
+            this.grantData.changeMessage(this.currentGrant);
+        }
+        console.log(section);
+    } */
+
 }

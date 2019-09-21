@@ -88,13 +88,13 @@
                   <div class="col-10">
                     <mat-form-field>
                       <input [(ngModel)]="section.sectionName" [ngModelOptions]="{standAlone:true}"
-                                     (ngModelChange)="checkGrant($event)"
+                                     (ngModelChange)="verifyGrant(section,$event)"
                                      matInput placeholder="Section Name" class="anu-input">
                     </mat-form-field>
                   </div>
                   <div class="col-2 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
                     
-                    <a class="mr-2 text-gray"
+                    <a class="mr-2 text-gray" *ngIf="currentGrant.grantDetails.sections.length > 1"
                        (click)="confirm(section.id,0,[],0,'section','Delete section ' + section.sectionName + '?')"><i
                             class="fa fa-trash"></i></a>
                     <a (click)="addNewFieldToSection(section.id,section.sectionName)"
@@ -332,7 +332,7 @@
                           </ng-container>
                             <mat-list-item *ngIf="attribute.attachments.length >0">
 
-                              <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled>
+                              <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled (click)="downloadSelection(attribute.id)">
                                 Download Selected Files
                               </button>
                             </mat-list-item>

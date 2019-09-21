@@ -95,6 +95,8 @@ export class PreviewComponent implements OnInit {
 
   ngOnInit() {
 
+  this.appComp.sectionUpdated = false;;
+
     /*interval(3000).subscribe(t => {
 
       console.log('Came here');

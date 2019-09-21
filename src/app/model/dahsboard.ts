@@ -382,6 +382,10 @@ export class WorkflowAssignmentModel{
  constructor(){}
 }
 
+export class AttachmentDownloadRequest{
+    attachmentIds: number[];
+}
+
 export class CustomDateAdapter extends NativeDateAdapter {
    format(date: Date, displayFormat: Object): string {
       if (displayFormat === 'input') {
