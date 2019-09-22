@@ -1216,7 +1216,7 @@ ngOnDestroy(){
           data.columns.push(col);
         }
 
-        //attr.fieldTableValue.push(data);
+        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
       }
     }
 
@@ -1717,7 +1717,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                 if(section){
                     for(let attr of section.attributes){
                     if(attributeId===attr.id){
-                        if(attr.attachments.length>0){
+                        if(attr.attachments && attr.attachments.length>0){
                         this.newField = 'attriute_'+attributeId+'_attachment_' + attr.attachments[attr.attachments.length-1].id;
                         }
                     }
@@ -1731,7 +1731,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         for(let section of this.currentGrant.grantDetails.sections){
             if(section){
                 for(let attr of section.attributes){
-                    if(attr.fieldType==='document' && attr.attachments.length > 0){
+                    if(attr.fieldType==='document' && attr.attachments && attr.attachments.length > 0){
                         for(let attach of attr.attachments){
                             if(attach.name === doc.name){
                                 return true;
@@ -1778,7 +1778,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             if(section){
                 for(let attr of section.attributes){
                     if(attr && attr.fieldType==='document'){
-                        if(attr.attachments.length > 0){
+                        if(attr.attachments && attr.attachments.length > 0){
                             for(let attach of attr.attachments){
                                 if(attach.name === filename){
                                     return true;
@@ -1793,12 +1793,23 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             return false;
     }
 
-    /* beforeChange(section, sectionev: Event){
-        if(sectionev===''){
-            section.name = '_';
-            this.grantData.changeMessage(this.currentGrant);
-        }
-        console.log(section);
-    } */
+
+
+    moveColsLeft(){
+        $('#tableArea').animate({
+            scrollLeft: "+=200px"
+          }, "100","linear",function(){
+           console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+         });
+         }
+
+       moveColsRight(){
+        $('#tableArea').animate({
+            scrollLeft: "-=200px"
+          }, "100","linear",function(){
+            console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+          });
+
+       }
 
 }

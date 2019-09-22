@@ -192,7 +192,7 @@
                           <div id="tableArea" class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
                           <table id="tablePlaceholder">
                             <tr>
-                              <td width="20%" style="min-width:250px;position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">&nbsp;</td>
+                              <td width="20%" style="min-width:250px;position: sticky; left: 0; z-index: 1020;background: rgb(244,244,244)">&nbsp;</td>
                             <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
                               
                                 <td style="border: 1px solid #e4e4e4;">
@@ -213,7 +213,7 @@
                             </tr>
                             <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                               <tr>
-                                <td width="20%" style="position: sticky; left: 0; z-index: 1040;background: rgb(244,244,244)">
+                                <td width="20%" style="position: sticky; left: 0; z-index: 1020;background: rgb(244,244,244)">
                                   <mat-icon (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
                                             aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:2;cursor:pointer;"
                                             aria-label="Example home icon" inline="true" title="Delete this row">
@@ -330,7 +330,7 @@
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
-                            <mat-list-item *ngIf="attribute.attachments.length >0">
+                            <mat-list-item *ngIf="attribute.attachments && attribute.attachments.length >0">
 
                               <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled (click)="downloadSelection(attribute.id)">
                                 Download Selected Files
