@@ -207,6 +207,7 @@ export class Section {
   sectionName: string;
   attributes: Attribute[];
   deletable: boolean;
+  order: number;
 }
 
 export class GrantDetails {

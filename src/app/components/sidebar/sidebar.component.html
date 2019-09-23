@@ -83,15 +83,18 @@
                 </ng-container>
             
                 <ng-container *ngIf="menuItem.title === 'Grant Details' && (currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
-                    <mat-expansion-panel>
+                    <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                           <mat-panel-title style="display: flex; align-items: center">
                             <i class="material-icons">list</i>Grant Details
                           </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <li routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left">
-                            <a class="nav-link  py-0" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;">
-                                <i class="material-icons" style="font-size:18px;">{{menuItem1.icon}}</i>
+                        <li cdkDrag (cdkDragStarted)="dragStarted($event)" routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left" style="cursor:move">
+                            <i *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')" cdkDragHandle class="material-icons" style="margin:0px 14px 0px 20px">drag_indicator</i>
+                            <p *cdkDragPreview style="color:#fff;">{{menuItem1.title}}</p>
+                            <a class="nav-link  py-0" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;padding-left:30px;">
+
+                                <i *ngIf="!currentGrant.actionAuthorities.permissions.includes('MANAGE')" class="material-icons" style="font-size:18px;">{{menuItem1.icon}}</i>
                                 <p>{{menuItem1.title}}</p>
                             </a>
                     </li>

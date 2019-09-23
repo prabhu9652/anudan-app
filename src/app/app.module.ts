@@ -40,6 +40,7 @@ import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
 
+
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,

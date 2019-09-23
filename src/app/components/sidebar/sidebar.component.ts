@@ -4,7 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
 import {Grant} from '../../model/dahsboard';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
-
+import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -62,15 +62,29 @@ export class SidebarComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
-
   action: number;
   sub: any;
 
 
   constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef, private elRef: ElementRef) {
-
-    
   }
+
+drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
+    event.item.element.nativeElement.classList.remove('section-dragging');
+    for(let i=0; i<this.sectionMenuItems.length;i++){
+        for(let section of this.currentGrant.grantDetails.sections){
+            if(section.sectionName === this.sectionMenuItems[i].title){
+                section.order = i+1;
+            }
+        }
+    }
+    //this.grantData.changeMessage(this.currentGrant);
+
+  }
+    dragStarted(event: CdkDragStart<String[]>){
+       event.source.element.nativeElement.style.zIndex='1070';
+    }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -130,9 +144,10 @@ export class SidebarComponent implements OnInit {
         if(section.sectionName!=='' && section.sectionName!=='_'){
             SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
         }else{
-            SECTION_ROUTES.push({path: '/grant/section/_',title: '_', icon: 'stop', class:''});
+            SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:''});
         }
       }
+
       this.sectionMenuItems = SECTION_ROUTES.filter(menuItem => menuItem);
       this.appComponent.sectionAdded = false;
       return SECTION_ROUTES[0].path;
