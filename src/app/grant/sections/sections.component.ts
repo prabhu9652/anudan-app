@@ -10,7 +10,7 @@ import {
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -33,7 +33,7 @@ import {map, startWith} from 'rxjs/operators';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
-
+import { saveAs } from 'file-saver';
 
 
 
@@ -63,6 +63,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   erroredField: string;
   action: string;
   newField: any;
+  allowScroll = true;
+  filesToUpload = FileList;
 
   myControl: FormControl;
   options: TemplateLibrary[];
@@ -96,6 +98,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   @ViewChild('container') container: ElementRef;
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('downloadSelected') downloadSelected: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -110,8 +113,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       , private elem: ElementRef
       , private datepipe: DatePipe
       , public colors: Colors
-      , private sidebar: SidebarComponent,
-      private data: DataService) {
+      , private sidebar: SidebarComponent
+      , private data: DataService) {
     this.colors = new Colors();
 
 
@@ -122,7 +125,7 @@ this.route.params.subscribe( (p) => {
 
     this.subscribers.name = this.router.events.subscribe((val) => {
             console.log(this.router.url);
-                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved){
+                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
                     this.saveGrant();
                     this.appComp.grantSaved = false;
                 }
@@ -166,6 +169,7 @@ ngOnDestroy(){
           if(frt.length > 0) {
             for(let i=0; i< frt.length; i++){
               attribute.docs.push(frt[i]);
+              //attribute.attachments.push(frt[i]);
             }
            }
           }
@@ -245,9 +249,7 @@ ngOnDestroy(){
     this._setFlowButtonColors();
   }
 
-  rememberScrollPosition(event: Event) {
-    console.log(event);
-  }
+
 
   viewKpisToSubmit(submissionId: number) {
     for (const submission of this.currentGrant.submissions) {
@@ -914,11 +916,6 @@ ngOnDestroy(){
   }
 
 
-  postionFirstColumn(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.first-column').css('left', dist + 'px');
-  }
-
   private _setEditMode(state: boolean) {
     this.editMode = state;
     /*if (state) {
@@ -928,26 +925,7 @@ ngOnDestroy(){
     }*/
   }
 
-  scrollHeaderContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.kpi-block').scrollLeft(dist);
-    /*const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');*/
-  }
 
-  scrollChildContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    const submissionBlock = this.elem.nativeElement.querySelector('.submissions-block');
-    submissionBlock.scrollLeft = dist;
-    const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');
-  }
 
   updateSubmission(event: Event, kpiType: string, kpiDataId: number) {
     console.log((<HTMLInputElement>event.target).value + '  ' + kpiType + '  ' + kpiDataId);
@@ -1158,7 +1136,6 @@ ngOnDestroy(){
     }
   }
 
-
   checkGrant(ev: Event) {
   this.appComp.sectionInModification = true;
   
@@ -1170,17 +1147,51 @@ ngOnDestroy(){
     //this.saveGrant(this.currentGrant);
     
     //this.grantData.changeMessage(this.currentGrant);
-    if(ev){
+    if(ev!==null && ev!==undefined){
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
       this.sidebar.buildSectionsSideNav();
       this.appComp.sectionInModification = false;
-      this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+      if(ev.toString()!==''){
+        this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+      }else{
+        this.router.navigate(['grant/section/_']);
+      }
     }
+
      this.appComp.sectionInModification = false;
       this._setEditMode(true);
     }
   }
+
+  verifyGrant(section:Section, ev: Event) {
+    this.appComp.sectionInModification = true;
+
+    console.log(ev);
+
+      if (JSON.stringify(this.currentGrant) === JSON.stringify(this.originalGrant)) {
+        this._setEditMode(false);
+      } else {
+      //this.saveGrant(this.currentGrant);
+
+      //this.grantData.changeMessage(this.currentGrant);
+      if(ev!==null || ev!==undefined){
+
+        this.grantData.changeMessage(this.currentGrant);
+        this.appComp.sectionUpdated = true;
+        this.sidebar.buildSectionsSideNav();
+        this.appComp.sectionInModification = false;
+        if(ev.toString()!==''){
+          this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+        }else{
+          this.router.navigate(['grant/section/_']);
+        }
+      }
+
+       this.appComp.sectionInModification = false;
+        this._setEditMode(true);
+      }
+    }
 
   changeFieldType(){
     this.appComp.sectionInModification = true
@@ -1205,7 +1216,7 @@ ngOnDestroy(){
           data.columns.push(col);
         }
 
-        //attr.fieldTableValue.push(data);
+        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
       }
     }
 
@@ -1489,7 +1500,10 @@ ngOnDestroy(){
   }
 
   getCleanText(name:string){
-    return name.replace(/[^0-9a-z]/gi, '');
+    if(name === ''){
+        return '_';
+    }
+    return name.replace(/[^_0-9a-z]/gi, '');
   }
 
   getTabularData(elemId: number, data: string){
@@ -1544,6 +1558,13 @@ ngOnDestroy(){
   refreshUserState() {
     clearTimeout(this.userActivity);
     this.setTimeout();
+  }
+
+  @HostListener('wheel', ['$event'])
+  preventScroll(event){
+  if(!this.allowScroll){
+    //event.preventDefault();
+  }
   }
 
   private _filter(value: any): TemplateLibrary[] {
@@ -1601,10 +1622,31 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    attribute.docs.push(event.option.value);
+    if(this._checkAttachmentExists(event.option.value.name)){
+        alert("Template " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
+        return;
+    }
+    const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
+
+        this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
+            this.grantData.changeMessage(info.grant);
+
+            this.currentGrant = info.grant;
+            this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
+            this.allowScroll = false;
     attribute.fieldValue = JSON.stringify(attribute.docs);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
+        });
+
   }
 
  getDocumentName(val: string): any[] {
@@ -1615,21 +1657,159 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
      return obj;
    }
 
-   moveColsLeft(){
-    $('#tableArea').animate({
-        scrollLeft: "+=200px"
-      }, "100","linear",function(){
-       console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
-     });
-     }
 
-   moveColsRight(){
-    $('#tableArea').animate({
-        scrollLeft: "-=200px"
-      }, "100","linear",function(){
-        console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
-      });
 
+   handleSelection(attribId,attachmentId){
+   const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+   if(elems.length>0){
+   for(let singleElem of elems){
+    if(singleElem.checked){
+        this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = false;
+        return;
+    }
+    this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = true;
    }
+   }
+   }
+
+   downloadSelection(attribId){
+      const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+      const selectedAttachments = new AttachmentDownloadRequest();
+      if(elems.length>0){
+      selectedAttachments.attachmentIds = [];
+      for(let singleElem of elems){
+       if(singleElem.checked){
+           selectedAttachments.attachmentIds.push(singleElem.id.split('_')[3]);
+       }
+      }
+        const httpOptions = {
+              responseType: 'blob' as 'json',
+              headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+            };
+
+            let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                + this.currentGrant.id + '/attachments';
+            this.http.post(url, selectedAttachments, httpOptions).subscribe((data) => {
+                saveAs(data,this.currentGrant.name+'.zip');
+            });
+     }
+   }
+
+    deleteAttachment(attributeId, attachmentId){
+
+    const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
+        this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+            this.grantData.changeMessage(grant);
+            this.currentGrant = grant;
+            for(let section of this.currentGrant.grantDetails.sections){
+                if(section){
+                    for(let attr of section.attributes){
+                    if(attributeId===attr.id){
+                        if(attr.attachments && attr.attachments.length>0){
+                        this.newField = 'attriute_'+attributeId+'_attachment_' + attr.attachments[attr.attachments.length-1].id;
+                        }
+                    }
+                    }
+                }
+            }
+        });
+    }
+
+    checkIfSelected(doc):boolean{
+        for(let section of this.currentGrant.grantDetails.sections){
+            if(section){
+                for(let attr of section.attributes){
+                    if(attr.fieldType==='document' && attr.attachments && attr.attachments.length > 0){
+                        for(let attach of attr.attachments){
+                            if(attach.name === doc.name){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    processSelectedFiles(attribute,event){
+        const files = event.target.files;
+
+
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/attribute/'+attribute.id+'/upload';
+              let formData = new FormData();
+              for( let i=0; i< files.length; i++){
+              formData.append('file', files.item(i));
+                if(this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')))){
+                                alert("Template " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
+                                return;
+                            }
+              }
+
+
+              const httpOptions = {
+                  headers: new HttpHeaders({
+                      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                      'Authorization': localStorage.getItem('AUTH_TOKEN')
+                  })
+              };
+
+                  this.http.post<DocInfo>(endpoint,formData, httpOptions).subscribe((info: DocInfo) => {
+                  this.grantData.changeMessage(info.grant)
+                  this.currentGrant = info.grant;
+                   this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
+                  });
+    }
+
+    _checkAttachmentExists(filename){
+        for(let section of this.currentGrant.grantDetails.sections){
+            if(section){
+                for(let attr of section.attributes){
+                    if(attr && attr.fieldType==='document'){
+                        if(attr.attachments && attr.attachments.length > 0){
+                            for(let attach of attr.attachments){
+                                if(attach.name === filename){
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            }
+            return false;
+    }
+
+
+
+    moveColsLeft(){
+        $('#tableArea').animate({
+            scrollLeft: "+=200px"
+          }, "100","linear",function(){
+           console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+         });
+         }
+
+       moveColsRight(){
+        $('#tableArea').animate({
+            scrollLeft: "-=200px"
+          }, "100","linear",function(){
+            console.log($('#tablePlaceholder').width() - $('#tableArea').scrollLeft());
+          });
+
+       }
 
 }

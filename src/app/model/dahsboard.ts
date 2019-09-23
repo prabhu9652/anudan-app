@@ -181,10 +181,25 @@ export class Attribute {
   fieldValue: string;
   fieldTableValue: TableData[];
   docs: TemplateLibrary[];
+  attachments: Attachment[];
   target: string;
   frequency: string;
   deletable: boolean;
   required: boolean;
+}
+
+export class Attachment{
+    id: number;
+    name: string;
+    description: string;
+    location: string;
+    version: number;
+    title: string;
+    type: string;
+    createdOn: Date;
+    createdBy: string;
+    updatedOn: Date;
+    updatedBy: string;
 }
 
 export class Section {
@@ -348,6 +363,11 @@ export class FieldInfo{
     grant: Grant;
 }
 
+export class DocInfo{
+    attachmentId: number;
+    grant: Grant;
+}
+
 export class SectionInfo{
     sectionId: number;
     sectionName: string;
@@ -360,6 +380,10 @@ export class WorkflowAssignmentModel{
  workflowAssignment: WorkflowAssignment[];
  grant: Grant;
  constructor(){}
+}
+
+export class AttachmentDownloadRequest{
+    attachmentIds: number[];
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {

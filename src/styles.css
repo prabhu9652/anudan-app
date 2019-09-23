@@ -399,3 +399,11 @@ background:#A2E0DB;
 .state-closed{
 background:#DAE3D9;
 }
+
+.attachments-wrapper{
+    margin: 0;
+}
+
+.attachments-wrapper .mat-form-field-wrapper{
+    padding: 0;
+}

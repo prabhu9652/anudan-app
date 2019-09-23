@@ -36,6 +36,7 @@ import {
     MatProgressSpinnerModule,
     MatAutocompleteModule
 } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
 import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
@@ -84,7 +85,8 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         MatTableModule,
         MatProgressSpinnerModule,
         NgxGraphModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatTabsModule
     ],
     declarations: [
         GrantComponent,

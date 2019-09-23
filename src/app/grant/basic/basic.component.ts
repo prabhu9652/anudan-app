@@ -138,7 +138,7 @@ export class BasicComponent implements OnInit {
 
   ngOnInit() {
 
-    //this.setTimeout();
+    this.appComp.sectionUpdated = false;
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
