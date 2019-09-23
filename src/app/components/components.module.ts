@@ -7,6 +7,8 @@ import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
 import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule} from "@angular/material";
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 @NgModule({
     imports: [
@@ -15,7 +17,8 @@ import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModu
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatBadgeModule,
-        MatIconModule
+        MatIconModule,
+        DragDropModule
     ],
   declarations: [
     FooterComponent,

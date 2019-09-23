@@ -123,13 +123,6 @@ this.route.params.subscribe( (p) => {
     console.log(this.action);
     } );
 
-    this.subscribers.name = this.router.events.subscribe((val) => {
-            console.log(this.router.url);
-                if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
-                    this.saveGrant();
-                    this.appComp.grantSaved = false;
-                }
-                });
 
   }
 
@@ -157,7 +150,17 @@ ngOnDestroy(){
       
 
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.grantData.currentMessage.subscribe(grant => {
+        this.currentGrant = grant
+    });
+
+    this.subscribers.name = this.router.events.subscribe((val) => {
+                console.log(this.router.url);
+                    if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
+                        this.saveGrant();
+                        this.appComp.grantSaved = false;
+                    }
+                    });
 
     for(let section of this.currentGrant.grantDetails.sections){
     if(section.attributes) {
@@ -675,7 +678,7 @@ ngOnDestroy(){
         this.sidebar.buildSectionsSideNav();
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
-        this.router.navigate(['grant/section/' + this.getCleanText(info.sectionName)]);
+        this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
     });
     /*const createSectionModal = this.createSectionModal.nativeElement;
     const currentSections = this.currentGrant.grantDetails.sections;
@@ -1147,7 +1150,7 @@ ngOnDestroy(){
     //this.saveGrant(this.currentGrant);
     
     //this.grantData.changeMessage(this.currentGrant);
-    if(ev!==null && ev!==undefined){
+    /* if(ev!==null && ev!==undefined){
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
       this.sidebar.buildSectionsSideNav();
@@ -1157,7 +1160,7 @@ ngOnDestroy(){
       }else{
         this.router.navigate(['grant/section/_']);
       }
-    }
+    } */
 
      this.appComp.sectionInModification = false;
       this._setEditMode(true);
@@ -1182,9 +1185,9 @@ ngOnDestroy(){
         this.sidebar.buildSectionsSideNav();
         this.appComp.sectionInModification = false;
         if(ev.toString()!==''){
-          this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
+          this.router.navigate(['grant/section/' + this.getCleanText(section)]);
         }else{
-          this.router.navigate(['grant/section/_']);
+          this.router.navigate(['grant/section/'+section.id]);
         }
       }
 
@@ -1230,7 +1233,7 @@ ngOnDestroy(){
 
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
             + this.currentGrant.id + '/field/'+attr.id;
-        this.http.post<FieldInfo>(url, attr, httpOptions).subscribe((info: FieldInfo) => {
+        this.http.post<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
             this.grantData.changeMessage(info.grant);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
@@ -1499,11 +1502,11 @@ ngOnDestroy(){
     console.log(this.currentKPIType + ' - ' + this.currentKPIReportingType);
   }
 
-  getCleanText(name:string){
-    if(name === ''){
-        return '_';
+  getCleanText(section:Section): string{
+    if(section.sectionName === ''){
+        return String(section.id);
     }
-    return name.replace(/[^_0-9a-z]/gi, '');
+    return section.sectionName.replace(/[^_0-9a-z]/gi, '');
   }
 
   getTabularData(elemId: number, data: string){
@@ -1623,7 +1626,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
     if(this._checkAttachmentExists(event.option.value.name)){
-        alert("Template " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
+        alert("Document " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
         return;
     }
     const httpOptions = {
@@ -1729,7 +1732,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
     checkIfSelected(doc):boolean{
         for(let section of this.currentGrant.grantDetails.sections){
-            if(section){
+            if(section && section.attributes){
                 for(let attr of section.attributes){
                     if(attr.fieldType==='document' && attr.attachments && attr.attachments.length > 0){
                         for(let attach of attr.attachments){
@@ -1812,4 +1815,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
        }
 
+  checkSectionName(event){
+  console.log(event);
+  }
 }
