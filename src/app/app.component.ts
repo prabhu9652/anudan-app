@@ -10,7 +10,7 @@ import {interval} from 'rxjs';
 import {GrantDataService} from './grant.data.service';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app.module';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 
 
 @Component({
@@ -60,12 +60,10 @@ export class AppComponent implements AfterViewChecked{
 
   ngOnInit() {
 
-    if (environment.production) {
-      enableProdMode();
-    }
 
 
-    if ('serviceWorker' in navigator){
+
+    if ('serviceWorker' in navigator && environment.production){
         navigator.serviceWorker.register('/ngsw-worker.js')
         console.log('Registered as service worker');
     }
