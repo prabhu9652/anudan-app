@@ -313,7 +313,7 @@
                             </div>
                             <div class="col-5">
                               <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green">Attach from your device</label>
-                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(attribute,$event)">
+                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(section,attribute,$event)">
                             </div>
                           </div>
                           <mat-nav-list>

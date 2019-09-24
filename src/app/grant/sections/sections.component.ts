@@ -1625,8 +1625,9 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    if(this._checkAttachmentExists(event.option.value.name)){
-        alert("Document " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
+    const fileExistsCheck=this._checkAttachmentExists(event.option.value.name);
+    if(fileExistsCheck.status){
+        alert("Document " + event.option.value.name + ' is already attached under ' + fileExistsCheck.message);
         return;
     }
     const httpOptions = {
@@ -1747,7 +1748,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         return false;
     }
 
-    processSelectedFiles(attribute,event){
+    processSelectedFiles(section,attribute,event){
         const files = event.target.files;
 
 
@@ -1755,8 +1756,10 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
-                if(this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')))){
-                                alert("Document " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
+              const fileExistsCheck=this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')));
+                if(fileExistsCheck.status){
+                                alert("Document " + files.item(i).name + ' is already attached under ' + fileExistsCheck.message);
+                                event.target.value='';
                                 return;
                             }
               }
@@ -1776,7 +1779,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                   });
     }
 
-    _checkAttachmentExists(filename){
+    _checkAttachmentExists(filename):any{
         for(let section of this.currentGrant.grantDetails.sections){
             if(section){
                 for(let attr of section.attributes){
@@ -1784,7 +1787,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                         if(attr.attachments && attr.attachments.length > 0){
                             for(let attach of attr.attachments){
                                 if(attach.name === filename){
-                                    return true;
+                                    return {'status':true,'message':section.sectionName + ' | ' + attr.fieldName};
                                 }
                             }
                         }
@@ -1793,7 +1796,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                 }
             }
             }
-            return false;
+            return {'status':false,'message':''};
     }
 
 
