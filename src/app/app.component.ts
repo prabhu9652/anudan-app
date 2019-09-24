@@ -1,4 +1,4 @@
-import {AfterViewChecked, ChangeDetectorRef, Component} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode} from '@angular/core';
 import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
@@ -8,7 +8,9 @@ import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from
 import {Time} from "@angular/common";
 import {interval} from 'rxjs';
 import {GrantDataService} from './grant.data.service';
-
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app.module';
+import { environment } from '../environments/environment';
 
 
 @Component({
@@ -57,6 +59,16 @@ export class AppComponent implements AfterViewChecked{
   }
 
   ngOnInit() {
+
+
+
+
+    if ('serviceWorker' in navigator && environment.production){
+        navigator.serviceWorker.register('/ngsw-worker.js')
+        console.log('Registered as service worker');
+    }
+
+
     this.loggedInUser = localStorage.getItem('USER') === 'undefined' ? {} : JSON.parse(localStorage.getItem('USER'));
     this.initAppUI();
     const isLocal = this.isLocalhost();
