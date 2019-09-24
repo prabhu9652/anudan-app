@@ -90,7 +90,7 @@
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <li cdkDrag (cdkDragStarted)="dragStarted($event)" routerLinkActive="active" *ngFor="let menuItem1 of sectionMenuItems" class="{{menuItem1.class}} nav-item text-left" style="cursor:move">
-                            <i *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')" cdkDragHandle class="material-icons" style="margin:0px 14px 0px 20px">drag_indicator</i>
+                            <i *ngIf="false" cdkDragHandle class="material-icons" style="margin:0px 14px 0px 20px">drag_indicator</i>
                             <p *cdkDragPreview style="color:#fff;">{{menuItem1.title}}</p>
                             <a class="nav-link  py-0" [routerLink]="[menuItem1.path]" style="padding-top: 0;padding-bottom: 0;padding-left:30px;">
 
