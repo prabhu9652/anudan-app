@@ -576,7 +576,7 @@ ngOnDestroy(){
                     this.currentGrant = info.grant;
                     this.appComp.sectionInModification = false;
                     this.appComp.selectedTemplate = info.grant.grantTemplate;
-                    this.newField = 'field_' + info.attributeId;
+                    this.newField = 'field_' + info.stringAttributeId;
                     //this.scrollTo(this.newField);
                 });
     const id = 0 - Math.round(Math.random() * 1000000000);
@@ -1237,7 +1237,7 @@ ngOnDestroy(){
             this.grantData.changeMessage(info.grant);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
-        this.newField = 'field_' + info.attributeId;
+        this.newField = 'field_' + info.stringAttributeId;
         },error => {
                  const errorMsg = error as HttpErrorResponse;
                  console.log(error);

@@ -361,6 +361,7 @@ export class TemplateLibrary{
 
 export class FieldInfo{
     attributeId: number;
+    stringAttributeId: number;
     grant: Grant;
 }
 
