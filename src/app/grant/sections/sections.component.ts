@@ -1756,7 +1756,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
                 if(this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')))){
-                                alert("Template " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
+                                alert("Document " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
                                 return;
                             }
               }
