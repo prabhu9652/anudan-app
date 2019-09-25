@@ -27,14 +27,14 @@
             <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization'"
                 class="{{menuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
-                    <i class="material-icons">{{menuItem.icon}}</i>
-                    <p><b>{{menuItem.title}}</b></p>
+                    <!--<i class="material-icons">{{menuItem.icon}}</i>-->
+                    <p><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>{{menuItem.title}}</b></p>
                 </a>
             </li>
                 <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
                     <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                         <mat-panel-title style="display: flex; align-items: center">
-                            <i class="material-icons">account_balance</i>Organization
+                            <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
