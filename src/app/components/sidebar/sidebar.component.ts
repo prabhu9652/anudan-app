@@ -50,7 +50,13 @@ export const ADMIN_ROUTES: RouteInfo[] = [
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
+  styles: [`
+        ::ng-deep .profilearea > .mat-expansion-indicator:after {
+          transform: rotate(225deg) !important;
+          border-width: 0 1px 1px 0 !important;
+        }
+      `]
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
