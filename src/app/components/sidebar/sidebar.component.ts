@@ -85,7 +85,7 @@ drop(event: CdkDragDrop<string[]>) {
             }
         }
     }
-    //this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant);
 
   }
     dragStarted(event: CdkDragStart<String[]>){
@@ -146,6 +146,7 @@ drop(event: CdkDragDrop<string[]>) {
   if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
+      this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
       for (let section of this.currentGrant.grantDetails.sections){
         if(section.sectionName!=='' && section.sectionName!=='_'){
             SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
