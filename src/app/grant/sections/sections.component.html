@@ -103,8 +103,10 @@
                 </div>
                 <hr>
                 <div>
-                  <ng-container #sectionsContainer *ngFor="let attribute of section.attributes">
-                    <div class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
+                  <ng-container #sectionsContainer *ngFor="let attribute of section.attributes; let i=index">
+                    <div id="fieldBlock_{{attribute.id}}" class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
+                      <a [class]="i===0?'isDisabled':''" (click)="moveTo(section,attribute,i===0?null:section.attributes[i-1])"><mat-icon style="position: absolute;left: -25px;">keyboard_arrow_up</mat-icon></a>
+                      <a [class]="i===section.attributes.length-1?'isDisabled':''" (click)="moveTo(section,attribute,i===section.attributes.length-1?null:section.attributes[i+1])"><mat-icon style="position: absolute;left: -25px;margin-top: 25px;">keyboard_arrow_down</mat-icon></a>
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>

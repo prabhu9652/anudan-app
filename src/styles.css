@@ -462,3 +462,10 @@ background:#DAE3D9;
 .section-dragging{
     z-index: 1061;
 }
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}

@@ -120,7 +120,6 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 this.route.params.subscribe( (p) => {
     this.action = p['action'];
-    console.log(this.action);
     } );
 
 
@@ -601,6 +600,10 @@ ngOnDestroy(){
     const elmnt = document.getElementById(uniqueID); // let if use typescript
     //elmnt.scrollIntoView(true); // this will scroll elem to the top
     if(elmnt){
+        const elementRect = elmnt.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        const middle = absoluteElementTop - (window.innerHeight / 2);
+        window.scrollTo(0, middle);
         elmnt.focus();
     }
     this.newField = null;
@@ -1820,5 +1823,16 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
   checkSectionName(event){
   console.log(event);
+  }
+
+  moveTo(section,fromAttr,toAttr){
+  if(toAttr === null){
+    return;
+  }
+    const from = fromAttr.attributeOrder;
+    fromAttr.attributeOrder = toAttr.attributeOrder;
+    toAttr.attributeOrder = from;
+    section.attributes.sort((a, b) => (a.attributeOrder > b.attributeOrder) ? 1 : -1)
+    this.newField = 'fieldBlock_'+ fromAttr.id;
   }
 }

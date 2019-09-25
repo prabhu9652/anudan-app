@@ -68,13 +68,12 @@
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
                 <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
-                    <a class="nav-link" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p style="font-size: 15px;"><b>{{menuItem.title}}</b></p>
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
+
+                        <p style="font-size: 15px;"><b><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</b></p>
                     </a>
-                    <a class="nav-link" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p style="font-size: 15px;"><b>Preview</b></p>
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>Preview</b></p>
                     </a>
                 </ng-container>
             

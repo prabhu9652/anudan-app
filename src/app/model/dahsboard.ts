@@ -178,6 +178,7 @@ export class Attribute {
   id: number;
   fieldName: string;
   fieldType: string;
+  attributeOrder: number;
   fieldValue: string;
   fieldTableValue: TableData[];
   docs: TemplateLibrary[];
