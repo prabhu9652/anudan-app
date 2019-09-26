@@ -41,7 +41,12 @@ import { saveAs } from 'file-saver';
   selector: 'app-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
-  providers: [SidebarComponent, DataService]
+  providers: [SidebarComponent, DataService],
+  styles: [`
+        ::ng-deep .cdk-overlay-pane {
+              min-width:auto !important;
+        }
+      `]
 })
 export class SectionsComponent implements OnInit, AfterViewChecked {
 
