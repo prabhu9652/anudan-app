@@ -37,6 +37,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
 
@@ -94,7 +95,8 @@ export function provideConfig() {
         enableHtml: true
       }),
       MatDatepickerModule,
-      MatNativeDateModule
+      MatNativeDateModule,
+      MatSnackBarModule
   ],
   providers: [
 
@@ -104,6 +106,7 @@ export function provideConfig() {
     },
       MatDatepickerModule,
       MatBottomSheet,
+      MatSnackBarModule,
       DatePipe,
       Colors
   ],

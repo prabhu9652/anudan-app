@@ -1,16 +1,8 @@
 {
   "index": "/index.html",
-  "dataGroups": [{
-    "name": "api-performance",
-    "urls": [
-      "/api/**"
-    ],
-    "cacheConfig": {
-      "strategy": "performance",
-      "maxSize": 100,
-      "maxAge": "3d"
-    }
-  }],
+  "appData": {
+    "version": 1.0
+  },
   "assetGroups": [
     {
       "name": "app",
