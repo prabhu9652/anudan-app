@@ -7,4 +7,5 @@ export class WorkflowTransition {
     toStateId: number;
     _performedby: string;
     roleId: number;
+    noteRequired: boolean;
 }

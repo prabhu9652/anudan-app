@@ -1,0 +1,22 @@
+<mat-card-title>Note</mat-card-title>
+<span class="fixed-top" style="right: 10px; left: auto;top: 10px;" (click)="close(false)"><mat-icon>close</mat-icon></span>
+<!--<mat-card-subtitle></mat-card-subtitle>-->
+<!--<div #scrollContainer style="min-height: 300px;max-height: 300px;overflow-y: scroll;">
+&lt;!&ndash;<mat-nav-list>
+  <ng-container *ngFor="let note of passedNotesInfo.notes">
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <p mat-line mat-card-subtitle>{{note.postedBy.firstName +', '+ note.postedBy.lastName}}<small class="ml-2">[{{note.postedOn | date:'dd-MMMM-yyyy'}}]</small></p>
+      <p mat-line>{{note.message}}</p>
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>&ndash;&gt;
+</div>-->
+<ng-container *ngIf="passedNotesInfo.canManage">
+
+  <mat-form-field>
+    <textarea matInput #inputMessage></textarea>
+  </mat-form-field>
+  <button mat-button mat-flat-button (click)="close(false)">Cancel</button>
+  <button mat-raised-button color="primary" (click)="close(true)">Proceed</button>
+</ng-container>

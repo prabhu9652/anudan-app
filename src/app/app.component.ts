@@ -5,6 +5,7 @@ import { User} from './model/user';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
+import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
 import {concat, interval} from 'rxjs';
 import {GrantDataService} from './grant.data.service';
@@ -42,6 +43,7 @@ export class AppComponent implements AfterViewChecked{
   grantSaved = false;
   confgSubscription: any;
 
+
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -53,6 +55,7 @@ export class AppComponent implements AfterViewChecked{
     submissionInitialStatus: new WorkflowStatus(),
     granteeOrgs: [],
     workflowStatuses: [],
+    transitions: [],
     tenantUsers: []
   };
 
@@ -110,7 +113,9 @@ export class AppComponent implements AfterViewChecked{
 
 interval(10000).subscribe(t => {
       console.log('checking updates');
-      this.updates.checkForUpdate();
+      if(environment.production){
+        this.updates.checkForUpdate();
+      }
     });
 
 

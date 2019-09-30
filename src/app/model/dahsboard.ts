@@ -255,6 +255,7 @@ export class Grant {
   createdBy: string;
   currentAssignment:User[];
   workflowAssignment: WorkflowAssignment[];
+  note: String;
 }
 
 export class WorkflowAssignment{

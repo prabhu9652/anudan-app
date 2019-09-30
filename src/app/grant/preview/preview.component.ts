@@ -26,6 +26,7 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import {GrantNotesComponent} from '../../components/grantNotes/grantNotes.component';
 import {PdfDocument} from "../../model/pdf-document";
 import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
@@ -738,46 +739,53 @@ export class PreviewComponent implements OnInit {
         }
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-        'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
-    };
+    const statusTransition = this.appComp.appConfig.transitions.filter((transition) => transition.fromStateId===this.currentGrant.grantStatus.id && transition.toStateId===toStateId);
 
-    const origStatus = this.currentGrant.grantStatus.name;
-    let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-        + this.currentGrant.id + '/flow/'
-        + this.currentGrant.grantStatus.id + '/' + toStateId;
-    this.http.post(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-      /*this.loading = false;
+    if(statusTransition && statusTransition[0].noteRequired){
+        this.openBottomSheetForGrantNotes(toStateId);
+    }
+  }
 
-      this.router.navigate(['grant']);*/
-      //this.grantDataService.changeMessage(grant);
-      this.grantData.changeMessage(grant);
-      this.fetchCurrentGrant();
-      if(!grant.grantTemplate.published && origStatus==='DRAFT'){
-      const dialogRef = this.dialog.open(TemplateDialogComponent, {
-            data: this.currentGrant.grantTemplate.name
-          });
+  submitAndSaveGrant(toStateId:number, message:String){
+  const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+      };
 
-       dialogRef.afterClosed().subscribe(result => {
-             if (result.result) {
-               let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                   this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
-                    this.grantData.changeMessage(grant);
-                    this.appComp.selectedTemplate = grant.grantTemplate;
-                   });
+      const origStatus = this.currentGrant.grantStatus.name;
+      let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+          + this.currentGrant.id + '/flow/'
+          + this.currentGrant.grantStatus.id + '/' + toStateId;
+      this.http.post(url, message, httpOptions).subscribe((grant: Grant) => {
+        /*this.loading = false;
 
-             } else {
-               dialogRef.close();
-             }
-           });
-        }
+        this.router.navigate(['grant']);*/
+        //this.grantDataService.changeMessage(grant);
+        this.grantData.changeMessage(grant);
+        this.fetchCurrentGrant();
+        if(!grant.grantTemplate.published && origStatus==='DRAFT'){
+        const dialogRef = this.dialog.open(TemplateDialogComponent, {
+              data: this.currentGrant.grantTemplate.name
+            });
 
-    });
+         dialogRef.afterClosed().subscribe(result => {
+               if (result.result) {
+                 let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
+                     this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
+                      this.grantData.changeMessage(grant);
+                      this.appComp.selectedTemplate = grant.grantTemplate;
+                     });
 
+               } else {
+                 dialogRef.close();
+               }
+             });
+          }
+
+      });
   }
 
   fetchCurrentGrant(){
@@ -1101,29 +1109,17 @@ export class PreviewComponent implements OnInit {
     });
   }
 
-  openBottomSheetForSubmittionNotes(kpiDataId: number
-      , kpiDataType: string
-      , title: string
-      , notes: Note[]
-      , canManage: boolean): void {
+  openBottomSheetForGrantNotes(toStateId: number): void {
 
-    const noteTemplates = new NoteTemplates();
-    noteTemplates.kpiDataId = kpiDataId;
-    noteTemplates.kpiDataType = kpiDataType;
-    noteTemplates.subTitle = title;
-    noteTemplates.grantId = this.currentGrant.id;
-    noteTemplates.title = 'KPI Notes';
-    noteTemplates.notes = notes;
-    noteTemplates.canManage = canManage;
-
-    const _bSheet = this._bottomSheet.open(BottomsheetNotesComponent, {
+    const _bSheet = this._bottomSheet.open(GrantNotesComponent, {
       hasBackdrop: false,
-      data: noteTemplates
+      data: {canManage:true}
     });
 
     _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
-      this.checkGrant();
+      if(result.result){
+        this.submitAndSaveGrant(toStateId,result.message);
+      }
     });
   }
 

@@ -1,4 +1,5 @@
 import {Organization, Section, WorkflowStatus} from './dahsboard';
+import {WorkflowTransition} from './workflow-transition';
 import {User} from './user';
 
 export class AppConfig {
@@ -13,6 +14,7 @@ export class AppConfig {
   granteeOrgs: Organization[];
   workflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
+  transitions: WorkflowTransition[];
 }
 
 export class Colors {
