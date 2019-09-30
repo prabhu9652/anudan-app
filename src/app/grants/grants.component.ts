@@ -175,6 +175,7 @@ export class GrantsComponent implements OnInit {
   manageGrant(grant: Grant) {
         this.dataService.changeMessage(grant.id);
         this.data.changeMessage(grant);
+        this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
         this.appComponent.currentView = 'grant';
 
                 this.appComponent.selectedTemplate = grant.grantTemplate;

@@ -865,7 +865,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
         grant.templateId = template.id;
         const savedgrant = grant;
-        this.currentGrant = grant
+        this.appComp.originalGrant = JSON.parse(JSON.stringify(grant));
+        this.currentGrant = grant;
         this.grantData.changeMessage(grant);
         this.appComp.currentView = 'grant';
 

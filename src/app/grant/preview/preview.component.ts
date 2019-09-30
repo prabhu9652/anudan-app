@@ -1113,7 +1113,7 @@ export class PreviewComponent implements OnInit {
 
     const _bSheet = this._bottomSheet.open(GrantNotesComponent, {
       hasBackdrop: false,
-      data: {canManage:true}
+      data: {canManage:true,currentGrant: this.currentGrant, originalGrant: this.appComp.originalGrant}
     });
 
     _bSheet.afterDismissed().subscribe(result => {

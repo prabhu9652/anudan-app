@@ -318,6 +318,12 @@ export class NoteTemplates {
     canManage: boolean;
 }
 
+export class GrantNote{
+    currentGrant: Grant;
+    originalGrant: Grant;
+    canManage: boolean;
+}
+
 export class SerializationHelper {
   static toInstance<T>(obj: T, json: string): T {
     const jsonObj = JSON.parse(json);

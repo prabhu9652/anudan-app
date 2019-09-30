@@ -4,7 +4,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
 import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
 import {concat, interval} from 'rxjs';
@@ -42,6 +42,7 @@ export class AppComponent implements AfterViewChecked{
   currentTenant: Tenant;
   grantSaved = false;
   confgSubscription: any;
+  originalGrant: Grant;
 
 
   public appConfig: AppConfig = {
