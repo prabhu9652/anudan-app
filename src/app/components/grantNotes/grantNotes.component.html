@@ -17,7 +17,7 @@
   <mat-form-field>
     <textarea class="anu-input" matInput #inputMessage></textarea>
   </mat-form-field>
-  <ng-container *ngIf="changes.length > 0">
+  <ng-container *ngIf="changes.length > 0 && data.currentGrant.grantStatus.name!=='DRAFT'">
     <ng-container *ngFor="let change of changes;let i=index">
       <ng-container *ngIf="i===0">
         <div class="row">

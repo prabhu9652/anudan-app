@@ -747,6 +747,10 @@ export class PreviewComponent implements OnInit {
   }
 
   submitAndSaveGrant(toStateId:number, message:String){
+
+  if(!message){
+    message='';
+  }
   const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
