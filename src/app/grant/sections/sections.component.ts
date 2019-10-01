@@ -44,7 +44,7 @@ import { saveAs } from 'file-saver';
   providers: [SidebarComponent, DataService],
   styles: [`
         ::ng-deep .cdk-overlay-pane {
-              min-width:auto !important;
+              min-width:400px !important;
         }
       `]
 })
@@ -1726,11 +1726,11 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
       };
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
-        this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+        this.http.delete<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
             this.grantData.changeMessage(grant);
             this.currentGrant = grant;
             for(let section of this.currentGrant.grantDetails.sections){
-                if(section){
+                if(section && section.attributes){
                     for(let attr of section.attributes){
                     if(attributeId===attr.id){
                         if(attr.attachments && attr.attachments.length>0){
@@ -1793,7 +1793,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
     _checkAttachmentExists(filename):any{
         for(let section of this.currentGrant.grantDetails.sections){
-            if(section){
+            if(section && section.attributes){
                 for(let attr of section.attributes){
                     if(attr && attr.fieldType==='document'){
                         if(attr.attachments && attr.attachments.length > 0){
