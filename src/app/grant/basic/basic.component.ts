@@ -381,6 +381,10 @@ export class BasicComponent implements OnInit {
 
   saveGrant() {
 
+        if(!this.canManage){
+            return;
+        }
+
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
         if (errors) {
