@@ -1726,7 +1726,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
       };
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
-        this.http.delete<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+        this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
             this.grantData.changeMessage(grant);
             this.currentGrant = grant;
             for(let section of this.currentGrant.grantDetails.sections){
