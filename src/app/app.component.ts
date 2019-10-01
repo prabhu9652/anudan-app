@@ -43,6 +43,7 @@ export class AppComponent implements AfterViewChecked{
   grantSaved = false;
   confgSubscription: any;
   originalGrant: Grant;
+  action: string;
 
 
   public appConfig: AppConfig = {

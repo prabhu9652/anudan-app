@@ -125,6 +125,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 this.route.params.subscribe( (p) => {
     this.action = p['action'];
+    this.appComp.action = this.action;
     } );
 
 
@@ -159,7 +160,12 @@ ngOnDestroy(){
     });
 
     this.subscribers.name = this.router.events.subscribe((val) => {
-                console.log(this.router.url);
+                    if(val instanceof NavigationStart && val.url ==='/grant/preview'){
+                        this.appComp.action='preview';
+                    }else if(val instanceof NavigationStart && val.url !=='/grant/preview'){
+                        this.appComp.action='';
+                    }
+
                     if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
                         this.saveGrant();
                         this.appComp.grantSaved = false;
