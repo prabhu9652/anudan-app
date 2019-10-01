@@ -12,27 +12,59 @@
   </ng-container>
 </mat-nav-list>&ndash;&gt;
 </div>-->
-<ng-container *ngIf="passedNotesInfo.canManage">
+<ng-container>
 
   <mat-form-field>
     <textarea class="anu-input" matInput #inputMessage></textarea>
   </mat-form-field>
-  <ng-container *ngIf="changes.length > 0 && data.currentGrant.grantStatus.name!=='DRAFT'">
-    <ng-container *ngFor="let change of changes;let i=index">
-      <ng-container *ngIf="i===0">
-        <div class="row">
-          <div class="col-4"><small>&nbsp;</small></div>
-          <div class="col-4"><small><b>Old (Action)</b></small></div>
-          <div class="col-4"><small><b>New (Action)</b></small></div>
-        </div>
+  <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngIf="(changes[0].length > 0 || changes[1].length > 0) && data.currentGrant.grantStatus.name!=='DRAFT'">
+    <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
+      <mat-panel-title style="display: flex; align-items: center">
+        <small>View changes</small>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="background:#fff;padding:5px;">
+
+    <div *ngIf="changes[0].length > 0">Grant Header</div>
+    <ng-container *ngFor="let change of changes[0];let i=index">
+      <ng-container *ngIf="change.order===1">
+        <table width="100%"  style="border:1px solid #d4d4d4;">
+          <tr>
+            <td width="50%" rowspan="2" valign="top" style="padding:2px;">{{change.name}}</td>
+            <ng-container *ngFor="let thisChange of change.change"><td><pre>{{thisChange.old}}</pre></td></ng-container>
+          </tr>
+          <tr><ng-container *ngFor="let thisChange of change.change">
+            <td valign="top" style="padding:2px;"><pre>{{thisChange.new}}</pre>
+            </td></ng-container></tr>
+        </table>
       </ng-container>
-      <div class="row">
-        <div class="col-4"><small>{{change.name}}</small></div>
-        <div class="col-4"><small>{{change.change.old}}</small></div>
-        <div class="col-4"><small>{{change.change.new}}</small></div>
-      </div>
     </ng-container>
-  </ng-container>
+    <div *ngIf="changes[1].length > 0">Grant Details</div>
+    <ng-container *ngFor="let change of changes[1];let j=index">
+      <ng-container *ngIf="change.order===2">
+        <table width="100%" style="border:1px solid #d4d4d4;">
+          <tr>
+            <td width="50%" rowspan="2" valign="top" style="padding:2px;">{{change.name}}</td>
+            <ng-container *ngFor="let thisChange of change.change">
+              <td>
+
+                <pre *ngIf="thisChange.type===undefined">{{thisChange.old}}</pre>
+                <pre *ngIf="thisChange.type==='table'" [innerHtml]="thisChange.old"></pre>
+              </td>
+            </ng-container>
+          </tr>
+          <tr><ng-container *ngFor="let thisChange of change.change">
+            <td valign="top" style="padding:2px;">
+              <pre *ngIf="thisChange.type===undefined">{{thisChange.new}}</pre>
+              <pre *ngIf="thisChange.type==='table'" [innerHtml]="thisChange.new"></pre>
+            </td>
+          </ng-container></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+  </div>
+  </mat-expansion-panel>
+
   <button mat-button mat-flat-button (click)="close(false)">Cancel</button>
   <button mat-raised-button color="primary" (click)="close(true)">Proceed</button>
 </ng-container>
