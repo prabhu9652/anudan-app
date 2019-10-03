@@ -255,6 +255,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .grants-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
     background: #e5e5e5 !important;
     padding: 10px !important;
+    max-height:200px !important;
+    overflow: scroll !important;
 }
 
 .grants-section{

@@ -397,6 +397,28 @@ export class AttachmentDownloadRequest{
     attachmentIds: number[];
 }
 
+export class GrantDiffModel{
+    oldGrantName: string;
+    newGrantName: string;
+    oldGrantStartDate: Date;
+    newGrantStartDate: Date;
+    oldGrantEndDate: Date;
+    newGrantEndDate: Date;
+    oldGrantAmount: number;
+    newGrantAmount: number;
+    oldGrantee: Organization;
+    newGrantee: Organization;
+    oldRep: string;
+    newRep: string;
+    oldSection: Section;
+    newSection: Section;
+}
+
+export class AttributeDiffModel{
+    sectionName: String;
+    attribute: Attribute[];
+}
+
 export class CustomDateAdapter extends NativeDateAdapter {
    format(date: Date, displayFormat: Object): string {
       if (displayFormat === 'input') {
