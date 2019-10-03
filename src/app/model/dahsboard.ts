@@ -255,7 +255,42 @@ export class Grant {
   createdBy: string;
   currentAssignment:User[];
   workflowAssignment: WorkflowAssignment[];
-  note: String;
+  note: string;
+  noteAdded: Date;
+  noteAddedBy: User;
+}
+
+export class GrantHistory {
+  seqid: number;
+  id: number;
+  organization: Organization;
+  grantorOrganization: GrantorOrganization;
+  name: string;
+  description: string;
+  grantStatus: WorkflowStatus;
+  substatus: WorkflowStatus
+  statusName: string;
+  startDate: Date;
+  stDate: string;
+  endDate: Date;
+  duration: string;
+  amount: number;
+  enDate: string;
+  submissions: Submission[];
+  actionAuthorities: ActionAuthorities;
+  flowAuthorities: FlowAuthority[];
+  grantDetails: GrantDetails;
+  kpis: Kpi[];
+  representative: string;
+  templateId: number;
+  grantTemplate: GrantTemplate;
+  createdAt: Date;
+  createdBy: string;
+  currentAssignment:User[];
+  workflowAssignment: WorkflowAssignment[];
+  note: string;
+  noteAdded: Date;
+  noteAddedBy: User;
 }
 
 export class WorkflowAssignment{

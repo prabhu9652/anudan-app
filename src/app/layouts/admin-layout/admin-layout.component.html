@@ -11,7 +11,10 @@
         <!--<app-navbar></app-navbar>-->
         <div *ngIf="appComponent.currentView !== 'grants'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #000;background-color:#E4E4E4"><a (click)="showAllGrants(currentGrant)" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
             <div class="float-right ml-4">
-                <a (click)="showWorkflowAssigments()"><i class="fa fa-cog ml-2" aria-hidden="true"></i>Workflow Assignments</a>
+                <a (click)="showWorkflowAssigments()"><i class="fa fa-cog mr-1" aria-hidden="true"></i>Workflow Assignments</a>
+            </div>
+            <div class="float-right ml-4">
+                <a (click)="showGrantHistory('notes')"><i class="fa fa-cog mr-1" aria-hidden="true"></i>View Notes</a>
             </div>
             <div class="float-right ml-4" *ngIf="appComponent.action !== 'preview'">
                 <b>{{ appComponent.autosaveDisplay}}</b>

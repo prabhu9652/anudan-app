@@ -3,6 +3,7 @@ import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from 
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
+import {GranthistoryComponent} from '../../components/granthistory/granthistory.component';
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 import {MatDialog} from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -178,6 +179,14 @@ export class AdminLayoutComponent implements OnInit {
     this.appComponent.currentView = 'grants';
     this.router.navigate(['grants']);
   }
+
+  showGrantHistory(what2Show){
+    const dialogRef = this.dialog.open(GranthistoryComponent, {
+      data: this.currentGrant,
+      width: '600px'
+      });
+  }
+
 
   showWorkflowAssigments(){
   const wfModel = new WorkflowAssignmentModel();

@@ -23,6 +23,7 @@ import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
+import {GranthistoryComponent} from './components/granthistory/granthistory.component';
 
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
@@ -64,7 +65,8 @@ export function provideConfig() {
     LoginComponent,
     KpisubmissionComponent,
     RegistrationComponent,
-    WfassignmentComponent
+    WfassignmentComponent,
+    GranthistoryComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -110,7 +112,7 @@ export function provideConfig() {
       DatePipe,
       Colors
   ],
-  entryComponents:[WfassignmentComponent],
+  entryComponents:[WfassignmentComponent,GranthistoryComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
