@@ -4,7 +4,6 @@ import {WorkflowAssignmentModel} from '../../model/dahsboard';
 import {WorkflowTransition} from '../../model/workflow-transition';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
-
 declare var $: any;
 declare var jsPlumb: any;
 
@@ -56,7 +55,8 @@ export class WfassignmentComponent implements OnInit {
                 this.renderer.appendChild(node, nodeStateName);
 
                 const nodeOwner = this.renderer.createElement('select');
-                if(!this.message.canManage){
+                const currentUserAssignment = this.message.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
+                if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
                     this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                 }
                 this.renderer.addClass(nodeOwner,'ml-3');
