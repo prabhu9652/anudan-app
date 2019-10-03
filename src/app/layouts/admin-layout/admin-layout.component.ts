@@ -185,6 +185,7 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
    wfModel.grant = this.currentGrant;
+   wfModel.canManage = this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
     const dialogRef = this.dialog.open(WfassignmentComponent, {
           data: wfModel,
           width: '600px'

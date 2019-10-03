@@ -102,6 +102,10 @@ drop(event: CdkDragDrop<string[]>) {
       this.currentGrant = grant;
       this.buildSectionsSideNav();
     });
+
+    if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
+      this.appComponent.action = 'preview';
+    }
     
   }
 

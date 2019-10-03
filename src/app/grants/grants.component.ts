@@ -183,6 +183,7 @@ export class GrantsComponent implements OnInit {
         if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
             this.router.navigate(['grant/basic-details']);
         } else{
+            this.appComponent.action = 'preview';
             this.router.navigate(['grant/preview']);
         }
   }

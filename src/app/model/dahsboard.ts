@@ -389,6 +389,7 @@ export class WorkflowAssignmentModel{
  workflowStatuses: WorkflowStatus[];
  workflowAssignment: WorkflowAssignment[];
  grant: Grant;
+ canManage: boolean;
  constructor(){}
 }
 

@@ -56,6 +56,9 @@ export class WfassignmentComponent implements OnInit {
                 this.renderer.appendChild(node, nodeStateName);
 
                 const nodeOwner = this.renderer.createElement('select');
+                if(!this.message.canManage){
+                    this.renderer.setAttribute(nodeOwner,'disabled','disabled');
+                }
                 this.renderer.addClass(nodeOwner,'ml-3');
                 this.renderer.addClass(nodeOwner,'px-2');
                 const assignment = this.message.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);

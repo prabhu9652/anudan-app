@@ -807,6 +807,10 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
+        if(this.currentGrant.actionAuthorities===undefined){
+            this.appComp.currentView = 'grants';
+            this.router.navigate(['grants']);
+        }
         //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });
