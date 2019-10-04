@@ -39,24 +39,7 @@ import * as $ from 'jquery'
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
-  styleUrls: ['./preview.component.scss'],
-  styles: [`
-        ::ng-deep .grant-notes-class {
-          animation: slideUp 0.5s forwards 0s ease-in;
-        }
-
-        @Keyframes slideUp{
-         0%{ opacity: 0 }
-         100%{
-          opacity: 1;
-          transform: translateY(-50%);
-         }
-        }
-
-        ::ng-deep .cdk-overlay-container > * {
-         animation: none !important;
-        }
-      `]
+  styleUrls: ['./preview.component.scss']
 })
 export class PreviewComponent implements OnInit {
 
@@ -1137,13 +1120,13 @@ export class PreviewComponent implements OnInit {
 
   openBottomSheetForGrantNotes(toStateId: number): void {
 
-    const _bSheet = this._bottomSheet.open(GrantNotesComponent, {
+    const _bSheet = this.dialog.open(GrantNotesComponent, {
       hasBackdrop: false,
       data: {canManage:true,currentGrant: this.currentGrant, originalGrant: this.appComp.originalGrant},
       panelClass: 'grant-notes-class'
     });
 
-    _bSheet.afterDismissed().subscribe(result => {
+    _bSheet.afterClosed().subscribe(result => {
       if(result.result){
         this.submitAndSaveGrant(toStateId,result.message);
       }

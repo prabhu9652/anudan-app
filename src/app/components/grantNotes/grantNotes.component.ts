@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatBottomSheetRef,MatDialogRef} from '@angular/material';
 import {Grant, AttachmentTemplates, Doc, Note, GrantNote, Template} from '../../model/dahsboard';
 import {User} from "../../model/user";
 
@@ -17,8 +17,8 @@ export class GrantNotesComponent implements OnInit {
     @ViewChild("inputMessage") inputMessage: ElementRef;
 
     constructor(
-        private _bottomSheetRef: MatBottomSheetRef<GrantNotesComponent>
-        , @Inject(MAT_BOTTOM_SHEET_DATA) public data: GrantNote) {
+        private _bottomSheetRef: MatDialogRef<GrantNotesComponent>
+        , @Inject(MAT_DIALOG_DATA) public data: GrantNote) {
         this.passedNotesInfo = this.data;
        this._diff(data.currentGrant,data.originalGrant);
     }
@@ -28,12 +28,12 @@ export class GrantNotesComponent implements OnInit {
     }
 
     openLink(event: MouseEvent): void {
-        this._bottomSheetRef.dismiss();
+        this._bottomSheetRef.close();
         event.preventDefault();
     }
 
     close(status) {
-        this._bottomSheetRef.dismiss({'message':this.inputMessage.nativeElement.value, 'result':status});
+        this._bottomSheetRef.close({'message':this.inputMessage.nativeElement.value, 'result':status});
     }
 
     _diff(newGrant: Grant, oldGrant:Grant):any[] {
