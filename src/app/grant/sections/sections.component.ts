@@ -44,7 +44,7 @@ import { saveAs } from 'file-saver';
   providers: [SidebarComponent, DataService],
   styles: [`
         ::ng-deep .cdk-overlay-pane {
-              min-width:400px !important;
+              width:auto !important;
         }
       `]
 })
