@@ -23,7 +23,7 @@
         <small>View changes</small>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div style="background:#fff;padding:5px;">
+    <div style="background:#fff;padding:5px;max-height:200px;overflow:scroll;">
 
     <div *ngIf="changes[0].length > 0">Grant Header</div>
     <ng-container *ngFor="let change of changes[0];let i=index">

@@ -257,7 +257,8 @@ export class Grant {
   workflowAssignment: WorkflowAssignment[];
   note: string;
   noteAdded: Date;
-  noteAddedBy: User;
+  noteAddedBy: string;
+  noteAddedByUser: User;
 }
 
 export class GrantHistory {
@@ -290,7 +291,8 @@ export class GrantHistory {
   workflowAssignment: WorkflowAssignment[];
   note: string;
   noteAdded: Date;
-  noteAddedBy: User;
+  noteAddedBy: string;
+  noteAddedByUser: User;
 }
 
 export class WorkflowAssignment{

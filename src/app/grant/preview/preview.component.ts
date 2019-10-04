@@ -770,7 +770,7 @@ export class PreviewComponent implements OnInit {
         this.router.navigate(['grant']);*/
         //this.grantDataService.changeMessage(grant);
         this.grantData.changeMessage(grant);
-        this.fetchCurrentGrant();
+
         if(!grant.grantTemplate.published && origStatus==='DRAFT'){
         const dialogRef = this.dialog.open(TemplateDialogComponent, {
               data: this.currentGrant.grantTemplate.name
@@ -782,6 +782,7 @@ export class PreviewComponent implements OnInit {
                      this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
                       this.grantData.changeMessage(grant);
                       this.appComp.selectedTemplate = grant.grantTemplate;
+                      this.fetchCurrentGrant();
                      });
 
                } else {
