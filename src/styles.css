@@ -471,3 +471,16 @@ background:#DAE3D9;
   opacity: 0.5;
   text-decoration: none;
 }
+
+.ng-animating .mat-expansion-panel & {
+    min-height: 48px;
+  }
+
+  .ng-animating .mat-expansion-panel.mat-expanded & {
+    min-height: 64px;
+  }
+
+  .ng-animating .mat-expansion-panel:not(.mat-expanded) & {
+      height: 0;
+      overflow: hidden;
+    }

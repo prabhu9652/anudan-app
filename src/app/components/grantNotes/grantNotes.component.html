@@ -17,7 +17,7 @@
   <mat-form-field>
     <textarea class="anu-input" matInput #inputMessage></textarea>
   </mat-form-field>
-  <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngIf="(changes[0].length > 0 || changes[1].length > 0) && data.currentGrant.grantStatus.name!=='DRAFT'">
+  <mat-expansion-panel [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="(changes[0].length > 0 || changes[1].length > 0) && data.currentGrant.grantStatus.name!=='DRAFT'">
     <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
       <mat-panel-title style="display: flex; align-items: center">
         <small>View changes</small>
