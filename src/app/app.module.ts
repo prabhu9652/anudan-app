@@ -23,6 +23,7 @@ import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
+import {GranthistoryComponent} from './components/granthistory/granthistory.component';
 
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
@@ -37,6 +38,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
 
@@ -63,7 +65,8 @@ export function provideConfig() {
     LoginComponent,
     KpisubmissionComponent,
     RegistrationComponent,
-    WfassignmentComponent
+    WfassignmentComponent,
+    GranthistoryComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -94,7 +97,8 @@ export function provideConfig() {
         enableHtml: true
       }),
       MatDatepickerModule,
-      MatNativeDateModule
+      MatNativeDateModule,
+      MatSnackBarModule
   ],
   providers: [
 
@@ -104,10 +108,11 @@ export function provideConfig() {
     },
       MatDatepickerModule,
       MatBottomSheet,
+      MatSnackBarModule,
       DatePipe,
       Colors
   ],
-  entryComponents:[WfassignmentComponent],
+  entryComponents:[WfassignmentComponent,GranthistoryComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })

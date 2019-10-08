@@ -178,6 +178,7 @@ export class Attribute {
   id: number;
   fieldName: string;
   fieldType: string;
+  attributeOrder: number;
   fieldValue: string;
   fieldTableValue: TableData[];
   docs: TemplateLibrary[];
@@ -254,6 +255,44 @@ export class Grant {
   createdBy: string;
   currentAssignment:User[];
   workflowAssignment: WorkflowAssignment[];
+  note: string;
+  noteAdded: Date;
+  noteAddedBy: string;
+  noteAddedByUser: User;
+}
+
+export class GrantHistory {
+  seqid: number;
+  id: number;
+  organization: Organization;
+  grantorOrganization: GrantorOrganization;
+  name: string;
+  description: string;
+  grantStatus: WorkflowStatus;
+  substatus: WorkflowStatus
+  statusName: string;
+  startDate: Date;
+  stDate: string;
+  endDate: Date;
+  duration: string;
+  amount: number;
+  enDate: string;
+  submissions: Submission[];
+  actionAuthorities: ActionAuthorities;
+  flowAuthorities: FlowAuthority[];
+  grantDetails: GrantDetails;
+  kpis: Kpi[];
+  representative: string;
+  templateId: number;
+  grantTemplate: GrantTemplate;
+  createdAt: Date;
+  createdBy: string;
+  currentAssignment:User[];
+  workflowAssignment: WorkflowAssignment[];
+  note: string;
+  noteAdded: Date;
+  noteAddedBy: string;
+  noteAddedByUser: User;
 }
 
 export class WorkflowAssignment{
@@ -313,6 +352,12 @@ export class NoteTemplates {
     title: string;
     subTitle: string;
     notes: Note[];
+    canManage: boolean;
+}
+
+export class GrantNote{
+    currentGrant: Grant;
+    originalGrant: Grant;
     canManage: boolean;
 }
 
@@ -381,11 +426,34 @@ export class WorkflowAssignmentModel{
  workflowStatuses: WorkflowStatus[];
  workflowAssignment: WorkflowAssignment[];
  grant: Grant;
+ canManage: boolean;
  constructor(){}
 }
 
 export class AttachmentDownloadRequest{
     attachmentIds: number[];
+}
+
+export class GrantDiffModel{
+    oldGrantName: string;
+    newGrantName: string;
+    oldGrantStartDate: Date;
+    newGrantStartDate: Date;
+    oldGrantEndDate: Date;
+    newGrantEndDate: Date;
+    oldGrantAmount: number;
+    newGrantAmount: number;
+    oldGrantee: Organization;
+    newGrantee: Organization;
+    oldRep: string;
+    newRep: string;
+    oldSection: Section;
+    newSection: Section;
+}
+
+export class AttributeDiffModel{
+    sectionName: String;
+    attribute: Attribute[];
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {

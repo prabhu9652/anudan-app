@@ -15,12 +15,12 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/organization', title: 'Organization',  icon: 'account_balance', class: '' },
-  { path: '/rfps', title: 'RFPs',  icon: 'description', class: '' },
-  { path: '/applications', title: 'Applications',  icon: 'inbox', class: '' },
-  { path: '/grants', title: 'Grants',  icon: 'list', class: '' },
-  { path: '/reports', title: 'Reports',  icon: 'bar_chart', class: '' },
-  { path: '/disbursements', title: 'Disbursements',  icon: 'assignment_returned', class: '' },
+  { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '' },
+  { path: '/rfps', title: 'RFPs',  icon: 'rfp.svg', class: '' },
+  { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '' },
+  { path: '/grants', title: 'Grants',  icon: 'grant.svg', class: '' },
+  { path: '/reports', title: 'Reports',  icon: 'report.svg', class: '' },
+  { path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '' },
   /*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
@@ -32,9 +32,9 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_ROUTES: RouteInfo[] = [
-    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'description', class: '' },
+    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'grant.svg', class: '' },
     { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '' },
-    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'done', class: '' }
+    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
@@ -50,7 +50,13 @@ export const ADMIN_ROUTES: RouteInfo[] = [
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
+  styles: [`
+        ::ng-deep .profilearea > .mat-expansion-indicator:after {
+          transform: rotate(225deg) !important;
+          border-width: 0 1px 1px 0 !important;
+        }
+      `]
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
@@ -79,7 +85,7 @@ drop(event: CdkDragDrop<string[]>) {
             }
         }
     }
-    //this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant);
 
   }
     dragStarted(event: CdkDragStart<String[]>){
@@ -96,6 +102,10 @@ drop(event: CdkDragDrop<string[]>) {
       this.currentGrant = grant;
       this.buildSectionsSideNav();
     });
+
+    if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
+      this.appComponent.action = 'preview';
+    }
     
   }
 
@@ -140,6 +150,7 @@ drop(event: CdkDragDrop<string[]>) {
   if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
+      this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
       for (let section of this.currentGrant.grantDetails.sections){
         if(section.sectionName!=='' && section.sectionName!=='_'){
             SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});

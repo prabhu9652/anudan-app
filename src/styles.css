@@ -255,6 +255,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .grants-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
     background: #e5e5e5 !important;
     padding: 10px !important;
+
 }
 
 .grants-section{
@@ -462,3 +463,23 @@ background:#DAE3D9;
 .section-dragging{
     z-index: 1061;
 }
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.ng-animating .mat-expansion-panel & {
+    min-height: 48px;
+  }
+
+  .ng-animating .mat-expansion-panel.mat-expanded & {
+    min-height: 64px;
+  }
+
+  .ng-animating .mat-expansion-panel:not(.mat-expanded) & {
+      height: 0;
+      overflow: hidden;
+    }

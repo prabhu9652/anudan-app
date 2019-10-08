@@ -3,6 +3,7 @@ import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from 
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
+import {GranthistoryComponent} from '../../components/granthistory/granthistory.component';
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 import {MatDialog} from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -179,12 +180,21 @@ export class AdminLayoutComponent implements OnInit {
     this.router.navigate(['grants']);
   }
 
+  showGrantHistory(what2Show){
+    const dialogRef = this.dialog.open(GranthistoryComponent, {
+      data: this.currentGrant,
+      width: '600px'
+      });
+  }
+
+
   showWorkflowAssigments(){
   const wfModel = new WorkflowAssignmentModel();
    wfModel.users = this.appComponent.appConfig.tenantUsers;
    wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
    wfModel.grant = this.currentGrant;
+   wfModel.canManage = this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
     const dialogRef = this.dialog.open(WfassignmentComponent, {
           data: wfModel,
           width: '600px'

@@ -41,7 +41,12 @@ import { saveAs } from 'file-saver';
   selector: 'app-sections',
   templateUrl: './sections.component.html',
   styleUrls: ['./sections.component.scss'],
-  providers: [SidebarComponent, DataService]
+  providers: [SidebarComponent, DataService],
+  styles: [`
+        ::ng-deep .cdk-overlay-pane {
+              width:auto !important;
+        }
+      `]
 })
 export class SectionsComponent implements OnInit, AfterViewChecked {
 
@@ -120,7 +125,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
 
 this.route.params.subscribe( (p) => {
     this.action = p['action'];
-    console.log(this.action);
+    this.appComp.action = this.action;
     } );
 
 
@@ -155,7 +160,12 @@ ngOnDestroy(){
     });
 
     this.subscribers.name = this.router.events.subscribe((val) => {
-                console.log(this.router.url);
+                    if(val instanceof NavigationStart && val.url ==='/grant/preview'){
+                        this.appComp.action='preview';
+                    }else if(val instanceof NavigationStart && val.url !=='/grant/preview'){
+                        this.appComp.action='';
+                    }
+
                     if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved && !this.appComp.sectionUpdated){
                         this.saveGrant();
                         this.appComp.grantSaved = false;
@@ -441,6 +451,10 @@ ngOnDestroy(){
 
   saveGrant() {
 
+        if(!this.canManage){
+            return;
+        }
+
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
         if (errors) {
@@ -601,6 +615,10 @@ ngOnDestroy(){
     const elmnt = document.getElementById(uniqueID); // let if use typescript
     //elmnt.scrollIntoView(true); // this will scroll elem to the top
     if(elmnt){
+        const elementRect = elmnt.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        const middle = absoluteElementTop - (window.innerHeight / 2);
+        window.scrollTo(0, middle);
         elmnt.focus();
     }
     this.newField = null;
@@ -1625,8 +1643,9 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   }
 
   selected(attribute: Attribute, event: MatAutocompleteSelectedEvent): void {
-    if(this._checkAttachmentExists(event.option.value.name)){
-        alert("Document " + event.option.value.name + ' is already attached under ' + attribute.fieldName);
+    const fileExistsCheck=this._checkAttachmentExists(event.option.value.name);
+    if(fileExistsCheck.status){
+        alert("Document " + event.option.value.name + ' is already attached under ' + fileExistsCheck.message);
         return;
     }
     const httpOptions = {
@@ -1713,11 +1732,11 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
       };
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
-        this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+        this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
             this.grantData.changeMessage(grant);
             this.currentGrant = grant;
             for(let section of this.currentGrant.grantDetails.sections){
-                if(section){
+                if(section && section.attributes){
                     for(let attr of section.attributes){
                     if(attributeId===attr.id){
                         if(attr.attachments && attr.attachments.length>0){
@@ -1747,7 +1766,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         return false;
     }
 
-    processSelectedFiles(attribute,event){
+    processSelectedFiles(section,attribute,event){
         const files = event.target.files;
 
 
@@ -1755,8 +1774,10 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
-                if(this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')))){
-                                alert("Document " + files.item(i).name + ' is already attached under ' + attribute.fieldName);
+              const fileExistsCheck=this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')));
+                if(fileExistsCheck.status){
+                                alert("Document " + files.item(i).name + ' is already attached under ' + fileExistsCheck.message);
+                                event.target.value='';
                                 return;
                             }
               }
@@ -1776,15 +1797,15 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                   });
     }
 
-    _checkAttachmentExists(filename){
+    _checkAttachmentExists(filename):any{
         for(let section of this.currentGrant.grantDetails.sections){
-            if(section){
+            if(section && section.attributes){
                 for(let attr of section.attributes){
                     if(attr && attr.fieldType==='document'){
                         if(attr.attachments && attr.attachments.length > 0){
                             for(let attach of attr.attachments){
                                 if(attach.name === filename){
-                                    return true;
+                                    return {'status':true,'message':section.sectionName + ' | ' + attr.fieldName};
                                 }
                             }
                         }
@@ -1793,7 +1814,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                 }
             }
             }
-            return false;
+            return {'status':false,'message':''};
     }
 
 
@@ -1817,5 +1838,16 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
   checkSectionName(event){
   console.log(event);
+  }
+
+  moveTo(section,fromAttr,toAttr){
+  if(toAttr === null){
+    return;
+  }
+    const from = fromAttr.attributeOrder;
+    fromAttr.attributeOrder = toAttr.attributeOrder;
+    toAttr.attributeOrder = from;
+    section.attributes.sort((a, b) => (a.attributeOrder > b.attributeOrder) ? 1 : -1)
+    this.newField = 'fieldBlock_'+ fromAttr.id;
   }
 }

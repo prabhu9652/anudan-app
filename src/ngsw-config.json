@@ -1,5 +1,8 @@
 {
   "index": "/index.html",
+  "appData": {
+    "version": 1.0
+  },
   "assetGroups": [
     {
       "name": "app",
@@ -7,7 +10,9 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html"
+          "/index.html",
+          "/*.css",
+          "/*.js"
         ]
       }
     }, {

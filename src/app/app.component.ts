@@ -1,22 +1,28 @@
-import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode, ApplicationRef} from '@angular/core';
 import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
+import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
-import {interval} from 'rxjs';
+import {concat, interval} from 'rxjs';
 import {GrantDataService} from './grant.data.service';
+import {UpdateService} from './update.service';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app.module';
 import { environment } from '../environments/environment';
+import { SwUpdate } from '@angular/service-worker';
+import { first,tap,switchMap } from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [UpdateService]
 })
 export class AppComponent implements AfterViewChecked{
 
@@ -36,6 +42,9 @@ export class AppComponent implements AfterViewChecked{
   currentTenant: Tenant;
   grantSaved = false;
   confgSubscription: any;
+  originalGrant: Grant;
+  action: string;
+
 
   public appConfig: AppConfig = {
     appName: '',
@@ -48,20 +57,39 @@ export class AppComponent implements AfterViewChecked{
     submissionInitialStatus: new WorkflowStatus(),
     granteeOrgs: [],
     workflowStatuses: [],
+    transitions: [],
     tenantUsers: []
   };
 
   org: string;
   public defaultClass = '';
 
-  constructor(private toastr:ToastrService, private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private grantService: GrantDataService) {
+  constructor(private toastr:ToastrService,
+    private httpClient: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
+    private grantService: GrantDataService,
+    private updateService: UpdateService,
+    private appRef: ApplicationRef,
+    private updates: SwUpdate,
+    private snackbar: MatSnackBar) {
+
+
+
+    this.updates.available.subscribe(event => {
+          const snack = this.snackbar.open('A newer version of the Anudan app is now available. Please save your work and refresh the page.', 'Dismiss',{'verticalPosition':'top'});
+
+                snack
+                  .onAction()
+                  .subscribe(() => {
+                    snack.dismiss();
+                  });
+    });
 
   }
 
   ngOnInit() {
-
-
-
 
     if ('serviceWorker' in navigator && environment.production){
         navigator.serviceWorker.register('/ngsw-worker.js')
@@ -82,6 +110,16 @@ export class AppComponent implements AfterViewChecked{
     interval(5000).subscribe(t => {
       this.initAppUI();      
     });
+
+
+
+interval(10000).subscribe(t => {
+      console.log('checking updates');
+      if(environment.production){
+        this.updates.checkForUpdate();
+      }
+    });
+
 
   }
 

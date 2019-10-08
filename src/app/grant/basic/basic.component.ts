@@ -120,11 +120,16 @@ export class BasicComponent implements OnInit {
     this.colors = new Colors();
     this.route.params.subscribe( (p) => {
         this.action = p['action'];
-        //console.log(this.action);
+        this.appComp.action = this.action;
         } );
 
         this.subscribers.name = this.router.events.subscribe((val) => {
-        //console.log(this.router.url);
+            if(val instanceof NavigationStart && val.url ==='/grant/preview'){
+                this.appComp.action='preview';
+            }else if(val instanceof NavigationStart && val.url !=='/grant/preview'){
+                this.appComp.action='';
+            }
+
             if(val instanceof NavigationStart && this.currentGrant && !this.appComp.grantSaved){
                 this.saveGrant();
                 this.appComp.grantSaved = false;
@@ -380,6 +385,10 @@ export class BasicComponent implements OnInit {
   }
 
   saveGrant() {
+
+        if(!this.canManage){
+            return;
+        }
 
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
