@@ -34,7 +34,8 @@ import {
     MatRadioModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatMenuModule
 } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
@@ -71,6 +72,7 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         MatInputModule,
         MatSelectModule,
         MatTooltipModule,
+        MatMenuModule,
         MatDatepickerModule,
         MatExpansionModule,
         MatIconModule,

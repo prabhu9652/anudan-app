@@ -1,12 +1,27 @@
 <div class="row anu-container">
 
-  <div class="col-12 bg-white" style="position:sticky;top:60px;z-index:1040;">
-    <span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
-    <h4 class="col-12 text-left pl-4 ml-3 my-3">Grant Details</h4>
+  <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
+    <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
+
     <div class="row">
-      <div class="col-12 text-right">
-        <button *ngIf="canManage" class="btn btn-sm btn-green float-right" (click)="addNewSection()" >
-          <i class="fas fa-plus-square mr-2"></i>Add new Section</button>
+      <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+        <ng-container *ngIf="action === getCleanText(section)">
+          <h4 class="col-8 text-left my-3 section-header">{{section.sectionName}}</h4>
+        </ng-container>
+      </ng-container>
+      <div class="col-4 text-right" style="display: flex;align-items: center;justify-content: flex-end;">
+        <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
+          <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
+        <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="addNewSection()">Add new Section</button>
+          <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
+            <ng-container *ngIf="action === getCleanText(section)">
+              <button mat-menu-item>Edit Section</button>
+              <button mat-menu-item (click)="confirm(section.id,0,[],0,'section','Delete section ' + section.sectionName + '?')">Delete Section</button>
+            </ng-container>
+          </ng-container>
+        </mat-menu>
       </div>
     </div>
   </div>
@@ -84,7 +99,7 @@
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
               <div *ngIf="action === getCleanText(section)">
                 
-                <div class="row">
+                <!--<div class="row">
                   <div class="col-10">
                     <mat-form-field>
                       <input [(ngModel)]="section.sectionName" [ngModelOptions]="{standAlone:true}"
@@ -101,19 +116,17 @@
                        class="mr-2 text-gray"><i class="fa fa-plus-square"></i></a>
                   </div>
                 </div>
-                <hr>
+                <hr>-->
                 <div>
                   <ng-container #sectionsContainer *ngFor="let attribute of section.attributes; let i=index">
-                    <div id="fieldBlock_{{attribute.id}}" class="row mb-4 mt-2" style="border-left: solid #d4d4d4; box-shadow: 0px 2px 13px #d4d4d4; padding: 20px; background: #f4f4f4;">
-                      <a [class]="i===0?'isDisabled':''" (click)="moveTo(section,attribute,i===0?null:section.attributes[i-1])"><mat-icon style="position: absolute;left: -25px;">keyboard_arrow_up</mat-icon></a>
-                      <a [class]="i===section.attributes.length-1?'isDisabled':''" (click)="moveTo(section,attribute,i===section.attributes.length-1?null:section.attributes[i+1])"><mat-icon style="position: absolute;left: -25px;margin-top: 25px;">keyboard_arrow_down</mat-icon></a>
+                    <div id="fieldBlock_{{attribute.id}}" class="row mb-4 mt-2" style="border:1px solid #ececec;border-radius:4px; padding: 20px; background: #FCFCFC;">
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
-                                   matInput placeholder="Field Name">
+                                   matInput placeholder="Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
@@ -122,7 +135,7 @@
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
-                                   matInput placeholder="Field Name">
+                                   matInput placeholder="Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
@@ -131,7 +144,7 @@
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
-                                   matInput placeholder="Field Name">
+                                   matInput placeholder="Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
@@ -140,7 +153,7 @@
                             <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
-                                   matInput placeholder="Field Name">
+                                   matInput placeholder="Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
@@ -148,7 +161,7 @@
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
-                                   matInput placeholder="KPI Title">
+                                   matInput placeholder="Title">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left">
@@ -171,11 +184,6 @@
 
                           </mat-form-field>
                         </div>
-                        <mat-icon style="position: relative; left: 99%; top: -108px; font-size: 18px; cursor: pointer;" (click)="confirm(section.id,attribute.id,[],0,'field','Delete field ' + attribute.fieldName + '?')"
-                                  aria-hidden="false"
-                                  aria-label="Example home icon" inline="true" title="Delete this field">
-                          delete_outline
-                        </mat-icon>
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
@@ -247,7 +255,7 @@
                           </div></div>
 
                         </div>
-                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
@@ -256,7 +264,7 @@
                                    (ngModelChange)="checkGrant()">
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='kpi'">
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
                             <mat-label>Reporting Frequency</mat-label>
                             <mat-select [(ngModel)]="attribute.frequency"  class="anu-input"
@@ -273,15 +281,15 @@
 
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='multiline'">
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='multiline'">
                           <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
                                    [required]="attribute.deletable?'required':''"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"></textarea>
                         </div>
-                        <div class="col-sm-7 col-lg-11 text-left" *ngIf="attribute.fieldType==='document'">
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='document'">
                           <div style="display:flex;align-items: baseline;" class="attachments-wrapper">
-                            <div class="col-4">
+                            <div class="col-8 pl-0 pr-1">
                                    <form class="example-form">
                                       <mat-form-field class="example-chip-list">
                                         <mat-chip-list #chipList aria-label="Fruit selection">
@@ -293,7 +301,7 @@
                                             {{fruit.name}}
                                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                                           </mat-chip>-->
-                                          <button class="btn btn-sm btn-blue" [matAutocomplete]="auto">Attach from library</button>
+                                          <button class="btn btn-sm btn-blue w-100" [matAutocomplete]="auto"><img src="./assets/img/library.svg" class="w-10 mr-2" style="width:24px;">Browse from library</button>
                                           <input id="templateLib_{{attribute.id}}" class="anu-input" style="max-width: 0; height: 0; padding: 0 !important; margin: 0;"
                                             #fruitInput
                                             [formControl]="myControl"
@@ -313,22 +321,19 @@
                                       </mat-form-field>
                                   </form>
                             </div>
-                            <div class="col-5">
-                              <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green">Attach from your device</label>
+                            <div class="col-4 pr-0">
+                              <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green w-100"><img src="./assets/img/computer.svg" class="w-10 mr-2" style="width:24px;">Browse from system</label>
                               <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(section,attribute,$event)">
                             </div>
                           </div>
                           <mat-nav-list>
                           <ng-container *ngFor="let attachment of attribute.attachments">
                             <mat-list-item>
-                              <div><mat-icon (click)="deleteAttachment(attribute.id, attachment.id)"
-                                             aria-hidden="false"
-                                             aria-label="Example home icon" inline="true" title="Delete this field">
-                                delete_outline
-                              </mat-icon>
-                              </div>
+                              <a>
+                                <img src="./assets/img/trash.svg" (click)="deleteAttachment(attribute.id, attachment.id)" style="width: 16px;opacity: 0.75;">
+                              </a>
 
-                              <p id="fileAttachment_{{attachment.id}}" mat-line>{{attachment.name + '.' + attachment.type}}</p>
+                              <p id="fileAttachment_{{attachment.id}}" mat-line style="border-bottom: 1px solid #d4d4d4;padding-left: 0;">{{attachment.name + '.' + attachment.type}}</p>
                               <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
                             </mat-list-item>
                           </ng-container>
@@ -341,6 +346,18 @@
                           </mat-nav-list>
                         </div>
                       </ng-container>
+                      <div class="col-12">
+                        <div class="row mt-3">
+                          <div class="col-12 text-right">
+                            <a [class]="i===0?'isDisabled':''" (click)="moveTo(section,attribute,i===0?null:section.attributes[i-1])"><img src="./assets/img/chevron-up.svg" class="w-10 mr-2" style="width:24px;"></a>
+                            <a [class]="i===section.attributes.length-1?'isDisabled':''" (click)="moveTo(section,attribute,i===section.attributes.length-1?null:section.attributes[i+1])"><img src="./assets/img/chevron-down.svg" class="w-10 mr-2" style="width:24px;"></a>
+                            <a><img src="./assets/img/Line.svg" class="w-10 mr-2" style="width:1px;"></a>
+                            <a>
+                              <img src="./assets/img/trash.svg" (click)="confirm(section.id,attribute.id,[],0,'field','Delete field ' + attribute.fieldName + '?')" class="w-10 mr-2" style="width:24px;">
+                            </a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </ng-container>
                 </div>
