@@ -45,6 +45,7 @@
     "chartist": "0.11.0",
     "classlist.js": "1.1.20150312",
     "core-js": "2.4.1",
+    "deep-object-diff": "^1.1.0",
     "dragula": "^3.7.2",
     "express": "4.16.3",
     "file-saver": "^2.0.2",
@@ -69,7 +70,7 @@
     "popper.js": "1.14.3",
     "rxjs": "6.3.3",
     "rxjs-compat": "6.3.3",
-    "ts-stream": "^2.0.0",
+    "ts-stream": "^2.0.1",
     "web-animations-js": "2.3.1",
     "zone.js": "0.8.26"
   },

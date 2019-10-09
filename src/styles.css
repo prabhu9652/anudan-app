@@ -483,3 +483,35 @@ background:#DAE3D9;
       height: 0;
       overflow: hidden;
     }
+
+
+.change-box{
+    border:1px solid #d8d8d8 !important;
+    padding: 5px;
+    background: #404450 !important;
+}
+
+.change-title{
+    color: #fff;
+    font-style: italic;
+}
+
+.change-new{
+    border-left: 6px solid #009900 !important;
+    padding-left: 5px;
+    margin-bottom: 5px !important;
+    background: #e1ffd8 !important;
+}
+
+.change-old{
+    border-left: 6px solid #DBDB70 !important;
+    padding-left: 5px;
+    margin-top: 5px !important;
+    background: #fcfcd4 !important;
+}
+
+.change-delete{
+    border-left: 6px solid #DC143C !important;
+    padding-left: 5px;
+    background: #ffd3db !important;
+}

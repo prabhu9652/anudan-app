@@ -434,26 +434,31 @@ export class AttachmentDownloadRequest{
     attachmentIds: number[];
 }
 
-export class GrantDiffModel{
-    oldGrantName: string;
-    newGrantName: string;
-    oldGrantStartDate: Date;
-    newGrantStartDate: Date;
-    oldGrantEndDate: Date;
-    newGrantEndDate: Date;
-    oldGrantAmount: number;
-    newGrantAmount: number;
+export class GrantDiff{
+    oldGrantName: Grant;
+    newGrantName: Grant;
+    oldGrantStartDate: Grant;
+    newGrantStartDate: Grant;
+    oldGrantEndDate: Grant;
+    newGrantEndDate: Grant;
+    oldGrantAmount: Grant;
+    newGrantAmount: Grant;
     oldGrantee: Organization;
     newGrantee: Organization;
-    oldRep: string;
-    newRep: string;
+    oldRep: Grant;
+    newRep: Grant;
+    sectionDiffs: SectionDiff[];
+    attributesDiffs: AttributeDiff[]
+}
+
+export class SectionDiff{
     oldSection: Section;
     newSection: Section;
 }
-
-export class AttributeDiffModel{
-    sectionName: String;
-    attribute: Attribute[];
+export class AttributeDiff{
+    section: string;
+    oldAttribute: Attribute;
+    newAttribute: Attribute;
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {
