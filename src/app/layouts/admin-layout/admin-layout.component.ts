@@ -223,7 +223,7 @@ export class AdminLayoutComponent implements OnInit {
 
                     let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
                         + this.currentGrant.id + '/assignment';
-                    this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
+                    this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
                         this.grantData.changeMessage(grant);
                         this.setDateDuration();
                         this.currentGrant = grant;
