@@ -9,6 +9,9 @@
     </ng-container>
   </ng-container>
 </div>
+<ng-container *ngIf="!grant.noteAddedByUser && history.length===0">
+  <p>No notes have been added until now.</p>
+</ng-container>
 
 <div mat-dialog-actions>
   <button class="btn btn-light text-dark" (click)="onNoClick()">Close</button>

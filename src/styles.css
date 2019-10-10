@@ -541,3 +541,7 @@ background:#DAE3D9;
     font-size: 28px;
     color: #0E100E;
 }
+
+.grant-notes-class{
+    min-width: 400px;
+}

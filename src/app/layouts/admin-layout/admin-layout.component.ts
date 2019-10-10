@@ -183,7 +183,7 @@ export class AdminLayoutComponent implements OnInit {
   showGrantHistory(what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
       data: this.currentGrant,
-      width: '600px'
+      panelClass: 'grant-notes-class'
       });
   }
 
