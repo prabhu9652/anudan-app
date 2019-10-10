@@ -72,7 +72,13 @@ export class SidebarComponent implements OnInit {
   sub: any;
 
 
-  constructor(public appComponent: AppComponent, private router: Router, private activatedRoute: ActivatedRoute, private grantData: GrantDataService, private ref:ChangeDetectorRef, private elRef: ElementRef) {
+  constructor(public appComponent: AppComponent,
+  private router: Router,
+  private activatedRoute: ActivatedRoute,
+  private grantData: GrantDataService,
+  private ref:ChangeDetectorRef,
+  private elRef: ElementRef
+  ) {
   }
 
 drop(event: CdkDragDrop<string[]>) {
@@ -102,6 +108,8 @@ drop(event: CdkDragDrop<string[]>) {
       this.currentGrant = grant;
       this.buildSectionsSideNav();
     });
+
+
 
     if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
       this.appComponent.action = 'preview';
@@ -175,6 +183,10 @@ drop(event: CdkDragDrop<string[]>) {
 
   showProfile() {
     this.router.navigate(['user-profile']);
+  }
+
+  createNewSection(){
+    this.appComponent.createNewSection.next(true);
   }
 }
 

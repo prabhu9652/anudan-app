@@ -139,6 +139,11 @@ ngOnDestroy(){
   this.setTimeout();
   this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
+    this.appComp.createNewSection.subscribe((val) =>{
+        if(val){
+            this.addNewSection();
+        }
+    });
   this.myControl = new FormControl();
 
     this.options = this.appComp.currentTenant.templateLibrary;
@@ -696,6 +701,7 @@ ngOnDestroy(){
         this.sidebar.buildSectionsSideNav();
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
+        this.appComp.createNewSection.next(false);
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
     });
     /*const createSectionModal = this.createSectionModal.nativeElement;

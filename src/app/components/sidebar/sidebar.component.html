@@ -92,7 +92,10 @@
                                 <i *ngIf="this.currentGrant.actionAuthorities && !this.currentGrant.actionAuthorities.permissions.includes('MANAGE')" class="material-icons" style="font-size:18px;">{{menuItem1.icon}}</i>
                                 <p>{{menuItem1.title}}</p>
                             </a>
-                    </li>
+                        </li>
+                        <li>
+                            <button (click)="createNewSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
+                        </li>
                     <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
                     <ng-container *ngIf="menuItem.title === 'Monitoring & Evaluation'">

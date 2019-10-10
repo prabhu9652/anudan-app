@@ -318,6 +318,16 @@ input:-internal-autofill-selected{
 
 }
 
+.btn-white{
+    background-color: #fff !important;
+    border: 1px solid #3f51b5 !important;
+    color: #343434 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
 .btn-linkedin{
     background-color: #fff !important;
     border: 1px solid #0A66C2;

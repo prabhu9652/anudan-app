@@ -7,7 +7,7 @@ import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
 import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
-import {concat, interval} from 'rxjs';
+import {concat, interval,BehaviorSubject} from 'rxjs';
 import {GrantDataService} from './grant.data.service';
 import {UpdateService} from './update.service';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -44,6 +44,7 @@ export class AppComponent implements AfterViewChecked{
   confgSubscription: any;
   originalGrant: Grant;
   action: string;
+  createNewSection = new BehaviorSubject<boolean>(false);
 
 
   public appConfig: AppConfig = {
