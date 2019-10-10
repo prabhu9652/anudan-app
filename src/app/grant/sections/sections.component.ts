@@ -132,8 +132,10 @@ this.route.params.subscribe( (p) => {
   }
 
 ngOnDestroy(){
+    if(this.subscribers.name){
       this.subscribers.name.unsubscribe();
-    }
+     }
+}
 
   ngOnInit() {
   this.setTimeout();
@@ -141,7 +143,10 @@ ngOnDestroy(){
 
     this.appComp.createNewSection.subscribe((val) =>{
         if(val){
+            $('.modal-backdrop').remove();
+
             this.addNewSection();
+            this.appComp.createNewSection.next(false);
         }
     });
   this.myControl = new FormControl();
@@ -701,20 +706,8 @@ ngOnDestroy(){
         this.sidebar.buildSectionsSideNav();
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
-        this.appComp.createNewSection.next(false);
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
     });
-    /*const createSectionModal = this.createSectionModal.nativeElement;
-    const currentSections = this.currentGrant.grantDetails.sections;
-    const newSection = new Section();
-    newSection.attributes = [];
-    newSection.id = 0 - Math.round(Math.random() * 10000000000);
-    newSection.sectionName = sectionName.val();
-    newSection.deletable = true;
-
-    currentSections.push(newSection);
-    */
-
   }
 
   saveSectionAndAddNew() {
