@@ -772,7 +772,7 @@ export class PreviewComponent implements OnInit {
         this.grantData.changeMessage(grant);
 
         if(!grant.grantTemplate.published && origStatus==='DRAFT'){
-        const dialogRef = this.dialog.open(TemplateDialogComponent, {
+            const dialogRef = this.dialog.open(TemplateDialogComponent, {
               data: this.currentGrant.grantTemplate.name
             });
 
@@ -789,7 +789,9 @@ export class PreviewComponent implements OnInit {
                  dialogRef.close();
                }
              });
-          }
+        }else{
+            this.fetchCurrentGrant();
+        }
 
       });
   }
