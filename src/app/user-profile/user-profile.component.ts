@@ -75,16 +75,25 @@ export class UserProfileComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
       })
     };
 
     const url = '/api/users/';
     this.http.put(url, this.user, httpOptions).subscribe((user: User) => {
-
       localStorage.removeItem('USER');
-      localStorage.setItem('USER', JSON.stringify(user));
+
+      user.permissions = new Array();
+              for (const userRole of user.userRoles) {
+                if (userRole.role.permissions) {
+                  for (const perm of userRole.role.permissions) {
+                    user.permissions.push(perm.permission);
+                  }
+                }
+              }
       this.appComp.loggedInUser = user;
+      localStorage.setItem('USER', JSON.stringify(user));
     });
   }
 }

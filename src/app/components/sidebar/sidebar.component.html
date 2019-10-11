@@ -1,5 +1,5 @@
 <div class="sidebar-wrapper h-100">
-    <ul class="nav">
+    <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTER'">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="min-height:100px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
 
             <ng-container *ngIf="appComponent.notifications.length > 0">
@@ -110,6 +110,16 @@
             </li>
         </ng-container>
     </ul>
+    <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='PLATFORM'">
+        <ng-container *ngFor="let platformMenuItem of platformMenuItems">
+            <li routerLinkActive="active" class="{{platformMenuItem.class}} nav-item text-left">
+                <a class="nav-link" [routerLink]="[platformMenuItem.path]">
+                    <!--<i class="material-icons">{{menuItem.icon}}</i>-->
+                    <p><img src="./assets/img/{{platformMenuItem.icon}}" class="mr-2"><b>{{platformMenuItem.title}}</b></p>
+                </a>
+            </li>
+        </ng-container>
+    </ul>
 
 </div>
 <mat-expansion-panel class="w-100 m-0 p-0" style="position: absolute; bottom: 0; z-index: 5;">
@@ -118,6 +128,11 @@
             <p class="text-white font-weight-bolder text-left m-0"><img src="./assets/img/avatar.svg" class="w-10 mr-2" style="width:10%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}</p>
         </mat-panel-title>
     </mat-expansion-panel-header>
+    <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
+        <a class="" (click)="showProfile()">
+            <p class="pl-5 pt-2 text-left text-light">Profile</p>
+        </a>
+    </div>
     <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
         <a class="" (click)="appComponent.logout()">
             <p class="pl-5 pt-2 text-left text-light">Logout</p>

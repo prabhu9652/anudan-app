@@ -122,7 +122,7 @@ export class GrantsComponent implements OnInit {
       this.tenants = tenants;
       console.log(this.tenants);
       // this.tenants = tenants;
-        if (this.tenants.tenants && this.tenants.tenants.length > 0) {
+        if (this.tenants && this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
         this.appComponent.currentTenant = this.currentTenant;
         this.hasTenant = true;

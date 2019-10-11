@@ -58,6 +58,7 @@ import {BasicComponent} from '../../grant/basic/basic.component';
 import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
+import {TenantsComponent} from '../../admin/tenants/tenants.component';
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import {PreviewComponent} from '../../grant/preview/preview.component';
         OrgadminComponent,
         OrganizationComponent,
         ReportsComponent,
-        DisbursementsComponent
+        DisbursementsComponent,
+        TenantsComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]

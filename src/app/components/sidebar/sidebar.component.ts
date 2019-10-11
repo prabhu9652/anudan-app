@@ -37,6 +37,11 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
+export const PLATFORM_ROUTES: RouteInfo[] = [
+    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '' }
+];
+
+
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
   { path: '/organization/details', title: 'Details',  icon: 'stop', class: '' },
   { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
@@ -63,6 +68,7 @@ export class SidebarComponent implements OnInit {
   grantMenuItems: any[];
   sectionMenuItems: any[];
   adminMenuItems: any[];
+  platformMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
@@ -103,6 +109,7 @@ drop(event: CdkDragDrop<string[]>) {
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
+    this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
