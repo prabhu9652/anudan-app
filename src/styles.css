@@ -520,20 +520,23 @@ background:#DAE3D9;
     border-left: 6px solid #009900 !important;
     padding-left: 5px;
     margin-bottom: 5px !important;
-    background: #e1ffd8 !important;
+    background: #f7fff4 !important;
+    padding-bottom: 5px;
 }
 
 .change-old{
     border-left: 6px solid #DBDB70 !important;
     padding-left: 5px;
     margin-top: 5px !important;
-    background: #fcfcd4 !important;
+    background: #fffeed !important;
+    padding-bottom: 5px;
 }
 
 .change-delete{
     border-left: 6px solid #DC143C !important;
     padding-left: 5px;
-    background: #ffd3db !important;
+    background: #ffeff2 !important;
+    padding-bottom: 5px;
 }
 
 .section-header{
@@ -543,5 +546,8 @@ background:#DAE3D9;
 }
 
 .grant-notes-class{
-    min-width: 400px;
+    min-width: calc(100% - 300px) !important;
+    max-width: calc(100% - 300px) !important;
+    position: relative !important;
+    left: 150px !important;
 }

@@ -340,36 +340,6 @@
     </div>
 </div>
 
-<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createSectionLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
-                    <input id="sectionTitleInput" class="form-control" value="">
-                </div>
-            </div>
-            <div class="">
-                <button type="button" class="btn btn-primary pull-right"
-                        (click)="saveSection()">Done
-                </button>
-                <button type="button" class="btn btn-warning pull-right"
-                        (click)="saveSectionAndAddNew()">Save & Add New Section
-                </button>
-                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
-
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div #createKpiModal id="createKpiModal" class="modal fade" tabindex="-1"
      role="dialog"
@@ -467,3 +437,29 @@
 
 
 
+<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSectionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+                    <input id="sectionTitleInput" class="form-control" value="">
+                </div>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveSection()">Done
+                </button>
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -261,6 +261,22 @@ export class Grant {
   noteAddedByUser: User;
 }
 
+export class GrantSnapshot {
+  id: number;
+  assignedToId: number;
+  grantId: number;
+  grantee: string;
+  stringAttributes: string;
+  name: string;
+  description: string;
+  amount: number;
+  startDate: Date;
+  endDate: Date;
+  representative: string;
+  grantStatusId: number;
+  grantDetails: GrantDetails;
+}
+
 export class GrantHistory {
   seqid: number;
   id: number;
@@ -435,18 +451,18 @@ export class AttachmentDownloadRequest{
 }
 
 export class GrantDiff{
-    oldGrantName: Grant;
-    newGrantName: Grant;
-    oldGrantStartDate: Grant;
-    newGrantStartDate: Grant;
-    oldGrantEndDate: Grant;
-    newGrantEndDate: Grant;
-    oldGrantAmount: Grant;
-    newGrantAmount: Grant;
-    oldGrantee: Organization;
-    newGrantee: Organization;
-    oldRep: Grant;
-    newRep: Grant;
+    oldGrantName: string;
+    newGrantName: string;
+    oldGrantStartDate: Date;
+    newGrantStartDate: Date;
+    oldGrantEndDate: Date;
+    newGrantEndDate: Date;
+    oldGrantAmount: number;
+    newGrantAmount: number;
+    oldGrantee: string;
+    newGrantee: string;
+    oldRep: string;
+    newRep: string;
     sectionDiffs: SectionDiff[];
     attributesDiffs: AttributeDiff[]
 }

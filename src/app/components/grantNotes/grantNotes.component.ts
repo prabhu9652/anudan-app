@@ -1,8 +1,9 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatBottomSheetRef,MatDialogRef} from '@angular/material';
-import {Grant, AttachmentTemplates, Doc, Note, GrantNote, Template, GrantDiff,SectionDiff,AttributeDiff} from '../../model/dahsboard';
+import {Grant, AttachmentTemplates, Doc, Note, GrantNote, Template, GrantDiff,SectionDiff,AttributeDiff,GrantSnapshot} from '../../model/dahsboard';
 import {User} from "../../model/user";
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
 
 @Component({
@@ -15,17 +16,38 @@ export class GrantNotesComponent implements OnInit {
     passedNotesInfo: GrantNote;
     changes: any[] = [];
     grantDiff:GrantDiff;
+    grantSnapshot: GrantSnapshot;
 
     @ViewChild("scrollContainer") scrollContainer: ElementRef;
     @ViewChild("inputMessage") inputMessage: ElementRef;
 
     constructor(
         private _bottomSheetRef: MatDialogRef<GrantNotesComponent>
-        , @Inject(MAT_DIALOG_DATA) public data: GrantNote) {
-        this.passedNotesInfo = this.data;
-       this._diff(data.currentGrant,data.originalGrant);
+        , @Inject(MAT_DIALOG_DATA) public data: GrantNote,private http: HttpClient) {
+
+const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+          const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/grant/'+data.currentGrant.id+'/changeHistory';
+
+          this.http.get<GrantSnapshot>(url, httpOptions).subscribe((snapshot: GrantSnapshot) => {
+            this.grantSnapshot = snapshot;
+            if(this.grantSnapshot){
+                this.grantSnapshot.grantDetails = JSON.parse(this.grantSnapshot.stringAttributes);
+                this.passedNotesInfo = this.data;
+                this._diff(data.currentGrant,this.grantSnapshot);
+            }
+
+          });
+
+
        //this._differences(data.currentGrant,data.originalGrant);
        //console.log(detailedDiff(data.currentGrant,data.originalGrant));
+
     }
 
     ngOnInit() {
@@ -41,55 +63,55 @@ export class GrantNotesComponent implements OnInit {
         this._bottomSheetRef.close({'message':this.inputMessage.nativeElement.value, 'result':status});
     }
 
-    _diff(newGrant: Grant, oldGrant:Grant):any[] {
+    _diff(newGrant: Grant, oldGrant:GrantSnapshot):any[] {
         const resultHeader = [];
         const resultSections = [];
 
         if(oldGrant.name!==newGrant.name){
             this._getGrantDiff();
             resultHeader.push({'order':1,'category':'Grant Header', 'name':'Grant Name changed','change':[{'old': oldGrant.name,'new':newGrant.name}]});
-            this.grantDiff.oldGrantName = oldGrant;
-            this.grantDiff.newGrantName = newGrant;
+            this.grantDiff.oldGrantName = oldGrant.name;
+            this.grantDiff.newGrantName = newGrant.name;
         }
         if(oldGrant.startDate!==newGrant.startDate){
             this._getGrantDiff();
-            resultHeader.push({'order':1,'category':'Grant Header','name':'Grant Start Date changed','change':[{'old': oldGrant.stDate,'new':newGrant.stDate}]});
-            this.grantDiff.oldGrantStartDate = oldGrant;
-            this.grantDiff.newGrantStartDate = newGrant;
+            //resultHeader.push({'order':1,'category':'Grant Header','name':'Grant Start Date changed','change':[{'old': oldGrant.stDate,'new':newGrant.stDate}]});
+            this.grantDiff.oldGrantStartDate = oldGrant.startDate;
+            this.grantDiff.newGrantStartDate = newGrant.startDate;
         }
         if(oldGrant.endDate!==newGrant.endDate){
-            resultHeader.push({'order':1,'category':'Grant Header','name':'Grant End Date changed','change':[{'old': oldGrant.enDate,'new':newGrant.enDate}]});
+            //resultHeader.push({'order':1,'category':'Grant Header','name':'Grant End Date changed','change':[{'old': oldGrant.enDate,'new':newGrant.enDate}]});
             this._getGrantDiff();
-            this.grantDiff.oldGrantEndDate = oldGrant;
-            this.grantDiff.newGrantEndDate = newGrant;
+            this.grantDiff.oldGrantEndDate = oldGrant.endDate;
+            this.grantDiff.newGrantEndDate = newGrant.endDate;
         }
         if(oldGrant.amount!==newGrant.amount){
             //resultHeader.push({'order':1,'category':'Grant Header','name':'Grant End Date changed','change':[{'old': oldGrant.enDate,'new':newGrant.enDate}]});
             this._getGrantDiff();
-            this.grantDiff.oldGrantAmount = oldGrant;
-            this.grantDiff.newGrantAmount = newGrant;
+            this.grantDiff.oldGrantAmount = oldGrant.amount;
+            this.grantDiff.newGrantAmount = newGrant.amount;
         }
-        if(oldGrant.organization && newGrant.organization){
-            if(oldGrant.organization.name!==newGrant.organization.name){
-                resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee changed','change':[{'old': oldGrant.organization.name,'new':newGrant.organization.name}]});
+        if(oldGrant.grantee!='' && newGrant.organization){
+            if(oldGrant.grantee!==newGrant.organization.name){
+                //resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee changed','change':[{'old': oldGrant.organization.name,'new':newGrant.organization.name}]});
                 this._getGrantDiff();
-                this.grantDiff.oldGrantee = oldGrant.organization;
-                this.grantDiff.newGrantee = newGrant.organization;
+                this.grantDiff.oldGrantee = oldGrant.grantee;
+                this.grantDiff.newGrantee = newGrant.organization.name;
             }
-        }else if(!oldGrant.organization && newGrant.organization){
+        }else if(oldGrant.grantee==='' && newGrant.organization){
                 this._getGrantDiff();
-               resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee added','change':[{'old': '','new':newGrant.organization.name}]});
-               this.grantDiff.newGrantee = newGrant.organization;
-        }else if(oldGrant.organization && !newGrant.organization){
-               resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee removed','change':[{'old': oldGrant.organization.name,'new':''}]});
+               //resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee added','change':[{'old': '','new':newGrant.organization.name}]});
+               this.grantDiff.newGrantee = newGrant.organization.name;
+        }else if(oldGrant.grantee!='' && !newGrant.organization){
+               //resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee removed','change':[{'old': oldGrant.organization.name,'new':''}]});
                this._getGrantDiff();
-               this.grantDiff.oldGrantee = oldGrant.organization;
+               this.grantDiff.oldGrantee = oldGrant.grantee;
         }
         if(oldGrant.representative!==newGrant.representative){
-            resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee Representative changed','change':[{'old': oldGrant.representative,'new':newGrant.representative}]});
+            //resultHeader.push({'order':1,'category':'Grant Header','name':'Grantee Representative changed','change':[{'old': oldGrant.representative,'new':newGrant.representative}]});
             this._getGrantDiff();
-            this.grantDiff.oldRep = oldGrant;
-            this.grantDiff.newRep = newGrant;
+            this.grantDiff.oldRep = oldGrant.representative;
+            this.grantDiff.newRep = newGrant.representative;
         }
 
 
@@ -106,14 +128,37 @@ export class GrantNotesComponent implements OnInit {
                 }
                 if(section.attributes){
                     for(let attr of section.attributes){
-                        const currAttr = currentSection.attributes.filter((a) => a.id===attr.id)[0];
-                        if(currAttr && (currAttr.fieldName!==attr.fieldName || attr.fieldValue!==currAttr.fieldValue)){
+                        let currAttr = null;
+                         if(currentSection.attributes){
+                            currAttr = currentSection.attributes.filter((a) => a.id===attr.id)[0];
+                         }
+                        if(currAttr && (currAttr.fieldName!==attr.fieldName || attr.fieldValue!==currAttr.fieldValue || attr.fieldType!==currAttr.fieldType || (attr.fieldType==='table' && currAttr.fieldType==='table' && (JSON.stringify(attr.fieldTableValue)!==JSON.stringify(currAttr.fieldTableValue)) ))){
                             this._getGrantDiffAttributes();
                             const attrDiff = new AttributeDiff();
                             attrDiff.section = currentSection.sectionName;
                             attrDiff.oldAttribute = attr;
                             attrDiff.newAttribute = currAttr;
                             this.grantDiff.attributesDiffs.push(attrDiff);
+                        } else if(!currAttr){
+                            const attrDiff = new AttributeDiff();
+                            attrDiff.section = currentSection.sectionName;
+                            attrDiff.oldAttribute = attr;
+                            this.grantDiff.attributesDiffs.push(attrDiff);
+                        }
+                    }
+
+                    if(currentSection.attributes){
+                        for(let attr of currentSection.attributes){
+                            let oldAttr = null;
+
+                            oldAttr = section.attributes.filter((a) => a.id===attr.id)[0];
+                            if(!oldAttr){
+                                const attrDiff = new AttributeDiff();
+                                attrDiff.section = currentSection.sectionName;
+                                attrDiff.oldAttribute = null;
+                                attrDiff.newAttribute = attr;
+                                this.grantDiff.attributesDiffs.push(attrDiff);
+                            }
                         }
                     }
                 }
@@ -320,4 +365,17 @@ _differences (obj1: Grant, obj2: Grant) {
     return diffs;
 
 };
+
+
+getType(type: String){
+    if(type==='multiline'){
+        return 'Text';
+    } else if(type==='table'){
+        return 'Tabular';
+    } else if(type === 'document'){
+        return 'Document';
+    } else if (type === 'kpi'){
+        return 'KPI';
+    }
+}
 }
