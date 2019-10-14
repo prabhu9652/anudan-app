@@ -140,6 +140,7 @@ const httpOptions = {
                             attrDiff.newAttribute = currAttr;
                             this.grantDiff.attributesDiffs.push(attrDiff);
                         } else if(!currAttr){
+                            this._getGrantDiffAttributes();
                             const attrDiff = new AttributeDiff();
                             attrDiff.section = currentSection.sectionName;
                             attrDiff.oldAttribute = attr;
@@ -153,6 +154,7 @@ const httpOptions = {
 
                             oldAttr = section.attributes.filter((a) => a.id===attr.id)[0];
                             if(!oldAttr){
+                                this._getGrantDiffAttributes();
                                 const attrDiff = new AttributeDiff();
                                 attrDiff.section = currentSection.sectionName;
                                 attrDiff.oldAttribute = null;
