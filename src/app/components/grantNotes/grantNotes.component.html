@@ -85,7 +85,9 @@
                 <label>Target/Goal:</label><p>{{attrDiff.newAttribute.target}}</p>
               </div>
               <div *ngIf="attrDiff.newAttribute.fieldType==='kpi'" class="col-3">
-                <label>Frequency:</label><p>{{attrDiff.newAttribute.frequency}}</p>
+                <label>Frequency:</label>
+                <p *ngIf="attrDiff.newAttribute.frequency!=='half-yearly'">{{attrDiff.newAttribute.frequency | titlecase}}</p>
+                <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
               </div>
               <div *ngIf="attrDiff.newAttribute.fieldType==='table'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
               </div>
@@ -105,7 +107,9 @@
                 <label>Target/Goal:</label><p>{{attrDiff.oldAttribute.target}}</p>
               </div>
               <div *ngIf="attrDiff.oldAttribute.fieldType==='kpi'" class="col-3">
-                <label>Frequency:</label><p>{{attrDiff.oldAttribute.frequency}}</p>
+                <label>Frequency:</label>
+                <p *ngIf="attrDiff.newAttribute.frequency!=='half-yearly'">{{attrDiff.newAttribute.frequency | titlecase}}</p>
+                <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
               </div>
               <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
               </div>
@@ -128,7 +132,9 @@
                 <label>Target/Goal:</label><p>{{attrDiff.oldAttribute.target}}</p>
               </div>
               <div *ngIf="attrDiff.oldAttribute.fieldType==='kpi'" class="col-3">
-                <label>Frequency:</label><p>{{attrDiff.oldAttribute.frequency}}</p>
+                <label>Frequency:</label>
+                <p *ngIf="attrDiff.newAttribute.frequency!=='half-yearly'">{{attrDiff.newAttribute.frequency | titlecase}}</p>
+                <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
               </div>
               <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
               </div>
@@ -151,7 +157,9 @@
                 <label>Target/Goal:</label><p>{{attrDiff.newAttribute.target}}</p>
               </div>
               <div *ngIf="attrDiff.newAttribute.fieldType==='kpi'" class="col-3">
-                <label>Frequency:</label><p>{{attrDiff.newAttribute.frequency}}</p>
+                <label>Frequency:</label>
+                <p *ngIf="attrDiff.newAttribute.frequency!=='half-yearly'">{{attrDiff.newAttribute.frequency | titlecase}}</p>
+                <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
               </div>
               <div *ngIf="attrDiff.newAttribute.fieldType==='table'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
               </div>
