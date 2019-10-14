@@ -1346,7 +1346,7 @@ export class PreviewComponent implements OnInit {
        wfModel.grant = this.currentGrant;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: wfModel,
-              width: '600px'
+              panelClass: 'wf-assignment-class'
             });
 
             dialogRef.afterClosed().subscribe(result => {

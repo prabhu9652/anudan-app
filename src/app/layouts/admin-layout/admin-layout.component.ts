@@ -197,7 +197,7 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.canManage = this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
     const dialogRef = this.dialog.open(WfassignmentComponent, {
           data: wfModel,
-          width: '600px'
+          panelClass: 'wf-assignment-class'
           }
           );
 

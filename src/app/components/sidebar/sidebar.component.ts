@@ -189,6 +189,7 @@ drop(event: CdkDragDrop<string[]>) {
   };
 
   showProfile() {
+    this.appComponent.currentView = 'user-profile'
     this.router.navigate(['user-profile']);
   }
 

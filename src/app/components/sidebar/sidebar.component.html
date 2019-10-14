@@ -128,14 +128,16 @@
             <p class="text-white font-weight-bolder text-left m-0"><img src="./assets/img/avatar.svg" class="w-10 mr-2" style="width:10%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}</p>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
-        <a class="" (click)="showProfile()">
-            <p class="pl-5 pt-2 text-left text-light">Profile</p>
-        </a>
-    </div>
-    <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
-        <a class="" (click)="appComponent.logout()">
-            <p class="pl-5 pt-2 text-left text-light">Logout</p>
-        </a>
+    <div style="background:#424652;">
+        <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
+            <a class="" (click)="showProfile()">
+                <p class="pl-5 pt-2 text-left text-light">Profile</p>
+            </a>
+        </div>
+        <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
+            <a class="" (click)="appComponent.logout()">
+                <p class="pl-5 pt-2 text-left text-light">Logout</p>
+            </a>
+        </div>
     </div>
 </mat-expansion-panel>
