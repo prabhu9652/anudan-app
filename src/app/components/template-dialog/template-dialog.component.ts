@@ -10,6 +10,7 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@
 export class TemplateDialogComponent implements OnInit {
 
 @ViewChild('templateName') templateName: ElementRef;
+@ViewChild('templateDescription') templateDescription: ElementRef;
 
 
   constructor(public dialogRef: MatDialogRef<TemplateDialogComponent>
@@ -26,6 +27,7 @@ export class TemplateDialogComponent implements OnInit {
 
   onYesClick(): void {
     const elemTemplateName = this.templateName.nativeElement;
-    this.dialogRef.close({result:true,name:elemTemplateName.value});
+    const elemTemplateDesc = this.templateDescription.nativeElement;
+    this.dialogRef.close({result:true,name:elemTemplateName.value,desc:elemTemplateDesc.value});
   }
 }

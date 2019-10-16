@@ -242,7 +242,7 @@ ngOnDestroy(){
      }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -465,7 +465,8 @@ ngOnDestroy(){
             return;
         }
 
-        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        this.appComp.autosaveDisplay = '
+        ';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');

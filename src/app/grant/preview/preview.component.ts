@@ -192,7 +192,7 @@ export class PreviewComponent implements OnInit {
     return obj;
   }
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -799,15 +799,16 @@ export class PreviewComponent implements OnInit {
         //this.grantDataService.changeMessage(grant);
         this.grantData.changeMessage(grant);
 
-        if(!grant.grantTemplate.published && origStatus==='DRAFT'){
+        if(!grant.grantTemplate.published){
             const dialogRef = this.dialog.open(TemplateDialogComponent, {
-              data: this.currentGrant.grantTemplate.name
+              data: this.currentGrant.grantTemplate.name,
+              panelClass: 'grant-notes-class'
             });
 
          dialogRef.afterClosed().subscribe(result => {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                     this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
+                     this.http.put(url, result.desc, httpOptions).subscribe((grant: Grant) => {
                       this.grantData.changeMessage(grant);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();

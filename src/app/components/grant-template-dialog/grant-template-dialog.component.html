@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Grant Templates</h1>
 
-<select #templateHolder>
-	<option *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</option>
-</select>
+<mat-select [(value)]="selected">
+	<mat-option  matTooltip="{{template.description}}" matTooltipPosition="right" *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</mat-option>
+</mat-select>
 <pre>
 	<ul>
 		<li>Grant templates can be saved during onboarding</li>

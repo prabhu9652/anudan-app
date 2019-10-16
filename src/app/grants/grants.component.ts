@@ -25,6 +25,11 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
       ::ng-deep .specific-class > .mat-expansion-indicator:after {
         color: black;
       }
+
+      ::ng-deep .mat-tooltip {
+        color: #fff;
+        opacity:1;
+      }
     `]
 })
 export class GrantsComponent implements OnInit {

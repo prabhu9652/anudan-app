@@ -94,7 +94,7 @@
                             </a>
                         </li>
                         <li>
-                            <button *ngIf="currentGrant.actionAuthorities.permissions.includes('MANAGE')" (click)="createNewSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
+                            <button *ngIf="currentGrant.actionAuthorities && currentGrant.actionAuthorities.permissions.includes('MANAGE')" (click)="createNewSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
                         </li>
                     <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
@@ -128,7 +128,7 @@
             <p class="text-white font-weight-bolder text-left m-0"><img src="./assets/img/avatar.svg" class="w-10 mr-2" style="width:10%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}</p>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <div style="background:#424652;">
+    <div style="background:#424652; height:100%;">
         <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
             <a class="" (click)="showProfile()">
                 <p class="pl-5 pt-2 text-left text-light">Profile</p>

@@ -24,7 +24,7 @@ import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
 import {GranthistoryComponent} from './components/granthistory/granthistory.component';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
   AgmCoreModule
@@ -75,6 +75,7 @@ export function provideConfig() {
     HttpModule,
     ComponentsModule,
     RouterModule,
+    MatTooltipModule,
     AppRoutingModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
@@ -111,6 +112,7 @@ export function provideConfig() {
       MatBottomSheet,
       MatSnackBarModule,
       MatIconModule,
+      MatTooltipModule,
       DatePipe,
       Colors
   ],

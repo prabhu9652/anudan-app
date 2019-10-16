@@ -558,3 +558,8 @@ background:#DAE3D9;
     position: relative !important;
     left: 150px !important;
 }
+
+.mat-tooltip {
+    color: #3d3d3d !important;
+    background-color: azure !important;
+}
