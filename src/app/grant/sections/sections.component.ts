@@ -466,7 +466,6 @@ ngOnDestroy(){
         }
 
         this.appComp.autosaveDisplay = '';
-        ';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
