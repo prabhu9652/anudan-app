@@ -465,7 +465,7 @@ ngOnDestroy(){
             return;
         }
 
-        this.appComp.autosaveDisplay = '
+        this.appComp.autosaveDisplay = '';
         ';
         /*const errors = this.validateFields();
         if (errors) {
