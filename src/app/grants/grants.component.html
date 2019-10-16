@@ -69,7 +69,7 @@
                                    
                                     <div class="col-2">
                                         <img class="img-fluid" 
-                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                                             [src]="'api/public/images/'+grant.grantorOrganization.code+'/'+grant.grantorOrganization.imageName"
                                              alt="org logo">
                                     </div>
                                     <div class="col-9 text-left">
@@ -103,7 +103,7 @@
                                           (click)="manageGrant(grant)">
                                     <div class="col-2">
                                         <img class="img-fluid" 
-                                             [src]="'api/public/images/'+grant.grantorOrganization.imageName"
+                                             [src]="'api/public/images/'+grant.grantorOrganization.code+'/'+grant.grantorOrganization.imageName"
                                              alt="org logo">
                                     </div>
                                     <div class="col-9 text-left">

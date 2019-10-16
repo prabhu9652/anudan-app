@@ -11,7 +11,7 @@ import {
   Submission,
   SubmissionStatus, Template,
   CustomDateAdapter,
-  Organization
+  Organization,SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -30,6 +30,7 @@ import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/botto
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {FormControl} from '@angular/forms';
+import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
 
 export const APP_DATE_FORMATS = {
@@ -53,7 +54,7 @@ export const APP_DATE_FORMATS = {
       },
       {
          provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-      }]
+      }, SectionsComponent]
 })
 export class BasicComponent implements OnInit {
 
@@ -116,7 +117,8 @@ export class BasicComponent implements OnInit {
       , private elem: ElementRef
       , private datepipe: DatePipe
       , public colors: Colors
-      , public sidebar: SidebarComponent) {
+      , public sidebar: SidebarComponent
+      , private sectionsRef: SectionsComponent) {
     this.colors = new Colors();
     this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -143,6 +145,14 @@ export class BasicComponent implements OnInit {
 
   ngOnInit() {
 
+    this.appComp.createNewSection.subscribe((val) =>{
+        if(val){
+            $('.modal-backdrop').remove();
+
+            this.addNewSection();
+            this.appComp.createNewSection.next(false);
+        }
+    });
     this.appComp.sectionUpdated = false;
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
@@ -192,7 +202,7 @@ export class BasicComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -390,7 +400,7 @@ export class BasicComponent implements OnInit {
             return;
         }
 
-        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        this.appComp.autosaveDisplay = '';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -557,38 +567,49 @@ export class BasicComponent implements OnInit {
 
 
   addNewSection() {
-    const createSectionModal = this.createSectionModal.nativeElement;
-    const titleElem = $(createSectionModal).find('#createSectionLabel');
-    $(titleElem).html('Add new section');
-    $(createSectionModal).modal('show');
-  }
-
-
-  saveSection() {
-    const sectionName = $('#sectionTitleInput');
-    if (sectionName.val().trim() === '') {
-      this.toastr.warning('Section name cannot be left blank', 'Warning');
-      sectionName.focus();
-      return;
+      this.appComp.sectionInModification = true;
+      const createSectionModal = this.createSectionModal.nativeElement;
+      const titleElem = $(createSectionModal).find('#createSectionLabel');
+      $(titleElem).html('Add new section');
+      $(createSectionModal).modal('show');
     }
-    const createSectionModal = this.createSectionModal.nativeElement;
-    const currentSections = this.currentGrant.grantDetails.sections;
-    const newSection = new Section();
-    newSection.attributes = [];
-    newSection.id = 0 - Math.round(Math.random() * 10000000000);
-    newSection.sectionName = sectionName.val();
-    newSection.deletable = true;
 
-    currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
-    this.setDateDuration();
+    saveSection() {
+      const sectionName = $('#sectionTitleInput');
+      if (sectionName.val().trim() === '') {
+        this.toastr.warning('Section name cannot be left blank', 'Warning');
+        sectionName.focus();
+        return;
+      }
 
-    sectionName.val('');
-    $('#section_' + newSection.id).css('display', 'block');
-    this._setEditMode(true);
-    $(createSectionModal).modal('hide');
-  }
+      const createSectionModal = this.createSectionModal.nativeElement;
+
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
+
+      this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+           this.grantData.changeMessage(info.grant);
+
+          sectionName.val('');
+          //$('#section_' + newSection.id).css('display', 'block');
+          this._setEditMode(true);
+          $(createSectionModal).modal('hide');
+          this.appComp.sectionAdded = true;
+          this.sidebar.buildSectionsSideNav();
+          this.appComp.sectionInModification = false;
+          this.appComp.selectedTemplate = info.grant.grantTemplate;
+
+          this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
+      });
+    }
 
   saveSectionAndAddNew() {
 
@@ -1345,4 +1366,11 @@ setTimeout() {
      }
 
   }
+
+  getCleanText(section:Section): string{
+      if(section.sectionName === ''){
+          return String(section.id);
+      }
+      return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
 }

@@ -183,7 +183,7 @@ export class AdminLayoutComponent implements OnInit {
   showGrantHistory(what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
       data: this.currentGrant,
-      width: '600px'
+      panelClass: 'grant-notes-class'
       });
   }
 
@@ -194,10 +194,10 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
    wfModel.grant = this.currentGrant;
-   wfModel.canManage = this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
+   wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
     const dialogRef = this.dialog.open(WfassignmentComponent, {
           data: wfModel,
-          width: '600px'
+          panelClass: 'wf-assignment-class'
           }
           );
 
@@ -223,7 +223,7 @@ export class AdminLayoutComponent implements OnInit {
 
                     let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
                         + this.currentGrant.id + '/assignment';
-                    this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
+                    this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
                         this.grantData.changeMessage(grant);
                         this.setDateDuration();
                         this.currentGrant = grant;

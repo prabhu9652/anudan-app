@@ -132,13 +132,23 @@ this.route.params.subscribe( (p) => {
   }
 
 ngOnDestroy(){
+    if(this.subscribers.name){
       this.subscribers.name.unsubscribe();
-    }
+     }
+}
 
   ngOnInit() {
   this.setTimeout();
   this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
+    this.appComp.createNewSection.subscribe((val) =>{
+        if(val){
+            $('.modal-backdrop').remove();
+
+            this.addNewSection();
+            this.appComp.createNewSection.next(false);
+        }
+    });
   this.myControl = new FormControl();
 
     this.options = this.appComp.currentTenant.templateLibrary;
@@ -232,7 +242,7 @@ ngOnDestroy(){
      }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -455,7 +465,7 @@ ngOnDestroy(){
             return;
         }
 
-        this.appComp.autosaveDisplay = 'Saving changes...     ';
+        this.appComp.autosaveDisplay = '';
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -698,17 +708,6 @@ ngOnDestroy(){
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
     });
-    /*const createSectionModal = this.createSectionModal.nativeElement;
-    const currentSections = this.currentGrant.grantDetails.sections;
-    const newSection = new Section();
-    newSection.attributes = [];
-    newSection.id = 0 - Math.round(Math.random() * 10000000000);
-    newSection.sectionName = sectionName.val();
-    newSection.deletable = true;
-
-    currentSections.push(newSection);
-    */
-
   }
 
   saveSectionAndAddNew() {

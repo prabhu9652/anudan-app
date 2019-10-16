@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData, TemplateLibrary, WorkflowAssignmentModel, WorkflowAssignment
+  SubmissionStatus, Template,TableData, TemplateLibrary, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -20,6 +20,7 @@ import {ToastrService} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
+import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import {interval} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
@@ -32,14 +33,19 @@ import {TemplateDialogComponent} from '../../components/template-dialog/template
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import html2canvas from 'html2canvas';
 import html2pdf from 'html2pdf.js';
-import * as $ from 'jquery'
 
 
 
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
-  styleUrls: ['./preview.component.scss']
+  styleUrls: ['./preview.component.scss'],
+  providers:[SidebarComponent],
+  styles: [`
+    ::ng-deep .cdk-global-overlay-wrapper {
+    justify-content:center !important;
+    }
+  `]
 })
 export class PreviewComponent implements OnInit {
 
@@ -91,13 +97,23 @@ export class PreviewComponent implements OnInit {
       , private _bottomSheet: MatBottomSheet
       , private elem: ElementRef
       , private datepipe: DatePipe
-      , public colors: Colors) {
+      , public colors: Colors
+      , private sidebar: SidebarComponent) {
     this.colors = new Colors();
   }
 
   ngOnInit() {
 
-  this.appComp.sectionUpdated = false;;
+  this.appComp.sectionUpdated = false;
+
+  this.appComp.createNewSection.subscribe((val) =>{
+        if(val){
+            $('.modal-backdrop').remove();
+
+            this.addNewSection();
+            this.appComp.createNewSection.next(false);
+        }
+    });
 
     /*interval(3000).subscribe(t => {
 
@@ -176,7 +192,7 @@ export class PreviewComponent implements OnInit {
     return obj;
   }
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -529,37 +545,49 @@ export class PreviewComponent implements OnInit {
 
 
   addNewSection() {
-    const createSectionModal = this.createSectionModal.nativeElement;
-    const titleElem = $(createSectionModal).find('#createSectionLabel');
-    $(titleElem).html('Add new section');
-    $(createSectionModal).modal('show');
-  }
-
-
-  saveSection() {
-    const sectionName = $('#sectionTitleInput');
-    if (sectionName.val().trim() === '') {
-      this.toastr.warning('Section name cannot be left blank', 'Warning');
-      sectionName.focus();
-      return;
+      this.appComp.sectionInModification = true;
+      const createSectionModal = this.createSectionModal.nativeElement;
+      const titleElem = $(createSectionModal).find('#createSectionLabel');
+      $(titleElem).html('Add new section');
+      $(createSectionModal).modal('show');
     }
-    const createSectionModal = this.createSectionModal.nativeElement;
-    const currentSections = this.currentGrant.grantDetails.sections;
-    const newSection = new Section();
-    newSection.attributes = [];
-    newSection.id = 0 - Math.round(Math.random() * 10000000000);
-    newSection.sectionName = sectionName.val();
-    newSection.deletable = true;
 
-    currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    saveSection() {
+      const sectionName = $('#sectionTitleInput');
+      if (sectionName.val().trim() === '') {
+        this.toastr.warning('Section name cannot be left blank', 'Warning');
+        sectionName.focus();
+        return;
+      }
 
-    sectionName.val('');
-    $('#section_' + newSection.id).css('display', 'block');
-    this._setEditMode(true);
-    $(createSectionModal).modal('hide');
-  }
+      const createSectionModal = this.createSectionModal.nativeElement;
+
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
+
+      this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+           this.grantData.changeMessage(info.grant);
+
+          sectionName.val('');
+          //$('#section_' + newSection.id).css('display', 'block');
+          this._setEditMode(true);
+          $(createSectionModal).modal('hide');
+          this.appComp.sectionAdded = true;
+          this.sidebar.buildSectionsSideNav();
+          this.appComp.sectionInModification = false;
+          this.appComp.selectedTemplate = info.grant.grantTemplate;
+
+          this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
+      });
+    }
 
   saveSectionAndAddNew() {
 
@@ -771,15 +799,16 @@ export class PreviewComponent implements OnInit {
         //this.grantDataService.changeMessage(grant);
         this.grantData.changeMessage(grant);
 
-        if(!grant.grantTemplate.published && origStatus==='DRAFT'){
-        const dialogRef = this.dialog.open(TemplateDialogComponent, {
-              data: this.currentGrant.grantTemplate.name
+        if(!grant.grantTemplate.published){
+            const dialogRef = this.dialog.open(TemplateDialogComponent, {
+              data: this.currentGrant.grantTemplate.name,
+              panelClass: 'grant-notes-class'
             });
 
          dialogRef.afterClosed().subscribe(result => {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                     this.http.put(url, {}, httpOptions).subscribe((grant: Grant) => {
+                     this.http.put(url, result.desc, httpOptions).subscribe((grant: Grant) => {
                       this.grantData.changeMessage(grant);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();
@@ -789,7 +818,9 @@ export class PreviewComponent implements OnInit {
                  dialogRef.close();
                }
              });
-          }
+        }else{
+            this.fetchCurrentGrant();
+        }
 
       });
   }
@@ -1316,7 +1347,7 @@ export class PreviewComponent implements OnInit {
        wfModel.grant = this.currentGrant;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: wfModel,
-              width: '600px'
+              panelClass: 'wf-assignment-class'
             });
 
             dialogRef.afterClosed().subscribe(result => {
@@ -1339,7 +1370,7 @@ export class PreviewComponent implements OnInit {
 
                         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                             + this.currentGrant.id + '/assignment';
-                        this.http.post(url, ass, httpOptions).subscribe((grant: Grant) => {
+                        this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
                             this.grantData.changeMessage(grant);
                             this.currentGrant = grant;
                             this.submitGrant(toStateId);
@@ -1349,4 +1380,11 @@ export class PreviewComponent implements OnInit {
               }
               });
       }
+
+getCleanText(section:Section): string{
+      if(section.sectionName === ''){
+          return String(section.id);
+      }
+      return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
 }

@@ -24,7 +24,7 @@ import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
 import {GranthistoryComponent} from './components/granthistory/granthistory.component';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
   AgmCoreModule
@@ -37,7 +37,7 @@ import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {ToastrModule} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
+import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule,MatIconModule} from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
@@ -75,6 +75,7 @@ export function provideConfig() {
     HttpModule,
     ComponentsModule,
     RouterModule,
+    MatTooltipModule,
     AppRoutingModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
@@ -98,7 +99,8 @@ export function provideConfig() {
       }),
       MatDatepickerModule,
       MatNativeDateModule,
-      MatSnackBarModule
+      MatSnackBarModule,
+      MatIconModule
   ],
   providers: [
 
@@ -109,6 +111,8 @@ export function provideConfig() {
       MatDatepickerModule,
       MatBottomSheet,
       MatSnackBarModule,
+      MatIconModule,
+      MatTooltipModule,
       DatePipe,
       Colors
   ],

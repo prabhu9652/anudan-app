@@ -25,6 +25,11 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
       ::ng-deep .specific-class > .mat-expansion-indicator:after {
         color: black;
       }
+
+      ::ng-deep .mat-tooltip {
+        color: #fff;
+        opacity:1;
+      }
     `]
 })
 export class GrantsComponent implements OnInit {
@@ -122,7 +127,7 @@ export class GrantsComponent implements OnInit {
       this.tenants = tenants;
       console.log(this.tenants);
       // this.tenants = tenants;
-        if (this.tenants.tenants && this.tenants.tenants.length > 0) {
+        if (this.tenants && this.tenants.tenants && this.tenants.tenants.length > 0) {
         this.currentTenant = this.tenants.tenants[0];
         this.appComponent.currentTenant = this.currentTenant;
         this.hasTenant = true;

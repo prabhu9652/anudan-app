@@ -6,7 +6,7 @@
 
         <div class="card-body px-lg-5 py-lg-5">
           <div class="card-img-top">
-            <img [src]="appComponent.appConfig.logoUrl" alt="logo">
+            <img [src]="appComponent.appConfig.logoUrl" alt="logo" class="img-fluid">
             <p class="mt-4" style="font-size: 14px;">Grant management simplified.</p>
           </div>
           <form id="formLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -50,7 +50,7 @@
         <div class="w-100">Seeking Grants?<a class="ml-2 text-green" (click)="signup()">Sign up!</a></div>
       </div>
       <div class="text-center f-12">
-        <div class="w-100">v1.0.0 build 175</div>
+        <div class="w-100">v1.0.0 build 176</div>
       </div>
     </div>
   </div>

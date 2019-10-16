@@ -21,6 +21,7 @@ import {BasicComponent} from '../../grant/basic/basic.component';
 import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
+import {TenantsComponent} from '../../admin/tenants/tenants.component';
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -86,5 +87,6 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'maps', component: MapsComponent},
   {path: 'notifications', component: NotificationsComponent},
   {path: 'upgrade', component: UpgradeComponent},
-  {path: 'workflow-management', component: WorkflowManagementComponent}
+  {path: 'workflow-management', component: WorkflowManagementComponent},
+  {path: 'admin/tenants', component: TenantsComponent}
 ];

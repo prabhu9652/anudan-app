@@ -15,7 +15,7 @@ declare var jsPlumb: any;
 })
 export class GranthistoryComponent implements OnInit {
 
-    history: GrantHistory[];
+    history: GrantHistory[]=[];
 
   constructor(
     public dialogRef: MatDialogRef<GranthistoryComponent>

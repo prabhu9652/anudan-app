@@ -127,9 +127,16 @@ export class WfassignmentComponent implements OnInit {
           }
         }
 
+        jsPlumb.Defaults.Endpoint = "Blank";
+        this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
+
         this.showFlow(this.transitions);
 
-          });
+        $('.owner-class').on('change',function(){
+            this.onYesClick();
+        });
+
+});
 
 
   }
@@ -145,8 +152,7 @@ const curves = [30, 40, 50, 60, 70, 80, 90, 100];
 const labelPositions = [0.5, 0.25,0.5, 0.25,0.5, 0.25];
 let curvesCnt = 0;
 let posCnt = 0;
-jsPlumb.Defaults.Endpoint = "Blank";
-this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
+
     this.jsPlumbInstance.Defaults.Overlays = [];
     for(let transition of transitions){
 
@@ -182,10 +188,16 @@ this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
 
 
     }
-this.jsPlumbInstance.repaintEverything();
-    $(window).resize(function(){
-          //jsPlumbInstance.repaintEverything();
-      });
+
+}
+
+@HostListener('window:resize', ['$event'])
+onResize(event) {
+    this.jsPlumbInstance.repaintEverything();
+}
+
+redrawOnScroll(){
+    console.log('jhg');
 }
 
   onNoClick(): void {

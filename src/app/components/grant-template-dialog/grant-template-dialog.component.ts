@@ -11,13 +11,16 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@
 export class GrantTemplateDialogComponent implements OnInit {
 
   @ViewChild('templateHolder') templateHolder: ElementRef;
+  selected:any;
 
   constructor(public dialogRef: MatDialogRef<GrantTemplateDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public templates: GrantTemplate[]) {
     this.dialogRef.disableClose = true;
+    this.selected=String(this.templates[0].id);
   }
 
   ngOnInit() {
+
   }
 
   onNoClick(): void {
@@ -25,14 +28,17 @@ export class GrantTemplateDialogComponent implements OnInit {
   }
 
   onYesClick(): void {
-  const selectedTemplateId = this.templateHolder.nativeElement;
   let selectedTemplate;
     for(let template of this.templates){
-        if(template.id === Number(selectedTemplateId.value)){
+        if(template.id === Number(this.selected)){
             selectedTemplate = template;
             break;
         }
     }
     this.dialogRef.close({result:true,selectedTemplate:selectedTemplate});
+  }
+
+  showDesc(){
+    console.log('here');
   }
 }

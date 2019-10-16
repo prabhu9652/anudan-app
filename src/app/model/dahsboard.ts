@@ -261,6 +261,22 @@ export class Grant {
   noteAddedByUser: User;
 }
 
+export class GrantSnapshot {
+  id: number;
+  assignedToId: number;
+  grantId: number;
+  grantee: string;
+  stringAttributes: string;
+  name: string;
+  description: string;
+  amount: number;
+  startDate: Date;
+  endDate: Date;
+  representative: string;
+  grantStatusId: number;
+  grantDetails: GrantDetails;
+}
+
 export class GrantHistory {
   seqid: number;
   id: number;
@@ -434,7 +450,7 @@ export class AttachmentDownloadRequest{
     attachmentIds: number[];
 }
 
-export class GrantDiffModel{
+export class GrantDiff{
     oldGrantName: string;
     newGrantName: string;
     oldGrantStartDate: Date;
@@ -443,17 +459,22 @@ export class GrantDiffModel{
     newGrantEndDate: Date;
     oldGrantAmount: number;
     newGrantAmount: number;
-    oldGrantee: Organization;
-    newGrantee: Organization;
+    oldGrantee: string;
+    newGrantee: string;
     oldRep: string;
     newRep: string;
+    sectionDiffs: SectionDiff[];
+    attributesDiffs: AttributeDiff[]
+}
+
+export class SectionDiff{
     oldSection: Section;
     newSection: Section;
 }
-
-export class AttributeDiffModel{
-    sectionName: String;
-    attribute: Attribute[];
+export class AttributeDiff{
+    section: string;
+    oldAttribute: Attribute;
+    newAttribute: Attribute;
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {
