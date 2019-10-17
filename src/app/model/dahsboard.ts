@@ -326,6 +326,7 @@ export class GrantTemplate{
   name: string;
   description: string;
   published: boolean;
+  _private: boolean;
   sections: Section[];
 }
 
@@ -464,12 +465,14 @@ export class GrantDiff{
     oldRep: string;
     newRep: string;
     sectionDiffs: SectionDiff[];
-    attributesDiffs: AttributeDiff[]
 }
 
 export class SectionDiff{
+    hasSectionLevelChanges = false;
+    order: number;
     oldSection: Section;
     newSection: Section;
+    attributesDiffs: AttributeDiff[]
 }
 export class AttributeDiff{
     section: string;
