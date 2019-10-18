@@ -115,80 +115,108 @@ const httpOptions = {
         }
 
 
-        for(const section of oldGrant.grantDetails.sections){
-            const currentSection = newGrant.grantDetails.sections.filter((sec) => sec.id===section.id)[0];
-            if(currentSection){
-                if(currentSection.sectionName !== section.sectionName){
-                    this._getGrantDiffSections();
-                    resultSections.push({'order':2,'category':'Grant Details','name':'Section name changed','change':[{'old': section.sectionName,'new':currentSection.sectionName}]});
-                    let secDiff = new SectionDiff();
-                    secDiff.oldSection = section;
-                    secDiff.newSection = currentSection;
-                    this.grantDiff.sectionDiffs.push(secDiff);
-                }
+        for(const section of newGrant.grantDetails.sections){
+            const oldSection = oldGrant.grantDetails.sections.filter((sec) => sec.id===section.id)[0];
+            if(oldSection){
+
                 if(section.attributes){
                     for(let attr of section.attributes){
-                        let currAttr = null;
-                         if(currentSection.attributes){
-                            currAttr = currentSection.attributes.filter((a) => a.id===attr.id)[0];
+                        let oldAttr = null;
+                         if(oldSection.attributes){
+                            oldAttr = oldSection.attributes.filter((a) => a.id===attr.id)[0];
                          }
-                        if(currAttr && (currAttr.fieldName!==attr.fieldName || attr.fieldValue!==currAttr.fieldValue || attr.fieldType!==currAttr.fieldType || (attr.fieldType==='table' && currAttr.fieldType==='table' && (JSON.stringify(attr.fieldTableValue)!==JSON.stringify(currAttr.fieldTableValue)) ))){
-                            this._getGrantDiffAttributes();
+                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || attr.fieldValue!==oldAttr.fieldValue || attr.fieldType!==oldAttr.fieldType || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (JSON.stringify(attr.fieldTableValue)!==JSON.stringify(oldAttr.fieldTableValue)) ))){
+                            this._getGrantDiffSections();
                             const attrDiff = new AttributeDiff();
-                            attrDiff.section = currentSection.sectionName;
-                            attrDiff.oldAttribute = attr;
-                            attrDiff.newAttribute = currAttr;
-                            this.grantDiff.attributesDiffs.push(attrDiff);
-                        } else if(!currAttr){
-                            this._getGrantDiffAttributes();
+                            attrDiff.section = section.sectionName;
+                            attrDiff.oldAttribute = oldAttr;
+                            attrDiff.newAttribute = attr;
+                            const sectionDiff = new SectionDiff();
+                            sectionDiff.oldSection = oldSection;
+                            sectionDiff.newSection = section;
+                            sectionDiff.attributesDiffs = [];
+                            sectionDiff.order = section.order
+                            sectionDiff.attributesDiffs.push(attrDiff);
+                            this.grantDiff.sectionDiffs.push(sectionDiff);
+                        } else if(!oldAttr){
+                            this._getGrantDiffSections();
                             const attrDiff = new AttributeDiff();
-                            attrDiff.section = currentSection.sectionName;
-                            attrDiff.oldAttribute = attr;
-                            this.grantDiff.attributesDiffs.push(attrDiff);
+                            attrDiff.section = section.sectionName;
+                            attrDiff.newAttribute = attr;
+                            const sectionDiff = new SectionDiff();
+                            sectionDiff.oldSection = oldSection;
+                            sectionDiff.newSection = section;
+                            sectionDiff.attributesDiffs = [];
+                            sectionDiff.order = section.order
+                            sectionDiff.attributesDiffs.push(attrDiff);
+                            this.grantDiff.sectionDiffs.push(sectionDiff);
                         }
                     }
 
-                    if(currentSection.attributes){
-                        for(let attr of currentSection.attributes){
+                    if(oldSection.attributes){
+                        for(let attr of oldSection.attributes){
                             let oldAttr = null;
 
                             oldAttr = section.attributes.filter((a) => a.id===attr.id)[0];
                             if(!oldAttr){
-                                this._getGrantDiffAttributes();
+                                this._getGrantDiffSections();
                                 const attrDiff = new AttributeDiff();
-                                attrDiff.section = currentSection.sectionName;
-                                attrDiff.oldAttribute = null;
-                                attrDiff.newAttribute = attr;
-                                this.grantDiff.attributesDiffs.push(attrDiff);
+                                attrDiff.section = section.sectionName;
+                                attrDiff.oldAttribute = attr;
+                                attrDiff.newAttribute = null;
+                                const sectionDiff = new SectionDiff();
+                                sectionDiff.oldSection = oldSection;
+                                sectionDiff.newSection = section;
+                                sectionDiff.order = section.order
+                                sectionDiff.attributesDiffs = [];
+                                sectionDiff.attributesDiffs.push(attrDiff);
+                                this.grantDiff.sectionDiffs.push(sectionDiff);
                             }
                         }
                     }
                 }
+                if(oldSection.sectionName !== section.sectionName){
+                    this._getGrantDiffSections();
+                    //resultSections.push({'order':2,'category':'Grant Details','name':'Section name changed','change':[{'old': section.sectionName,'new':currentSection.sectionName}]});
+                    let secDiff = new SectionDiff();
+                    secDiff.oldSection = oldSection;
+                    secDiff.newSection = section;
+                    secDiff.order = section.order
+                    secDiff.hasSectionLevelChanges = true;
+                    this.grantDiff.sectionDiffs.push(secDiff);
+                }
             }else{
-                resultSections.push({'order':2,'category':'Grant Details','name':'Section deleted','change':[{'old': section.sectionName,'new':''}]});
+                //resultSections.push({'order':2,'category':'Grant Details','name':'Section deleted','change':[{'old': section.sectionName,'new':''}]});
                  this._getGrantDiffSections();
                 let secDiff = new SectionDiff();
-                secDiff.oldSection = section;
-                secDiff.newSection = null;
+                secDiff.oldSection = null;
+                secDiff.newSection = section;
+                secDiff.order = section.order;
+                secDiff.hasSectionLevelChanges = true;
                 this.grantDiff.sectionDiffs.push(secDiff);
             }
         }
 
-        for(const section of newGrant.grantDetails.sections){
-            const currentSection = oldGrant.grantDetails.sections.filter((sec) => sec.id===section.id)[0];
+        for(const section of oldGrant.grantDetails.sections){
+            const currentSection = newGrant.grantDetails.sections.filter((sec) => sec.id===section.id)[0];
             if(!currentSection){
-                    resultSections.push({'order':2,'category':'Grant Details','name':'New section created','change':[{'old': '','new':section.sectionName}]});
-                     this._getGrantDiffSections();
+                    //resultSections.push({'order':2,'category':'Grant Details','name':'New section created','change':[{'old': '','new':section.sectionName}]});
+                    this._getGrantDiffSections();
                     let secDiff = new SectionDiff();
-                    secDiff.oldSection = null;
-                    secDiff.newSection = section;
+                    secDiff.oldSection = section;
+                    secDiff.newSection = null;
+                    secDiff.order = section.order;
+                    secDiff.hasSectionLevelChanges = true
                     this.grantDiff.sectionDiffs.push(secDiff);
             }
          }
 
          this.changes.push(resultHeader);
          this.changes.push(resultSections);
-
+         if(this.grantDiff && this.grantDiff.sectionDiffs){
+            this.grantDiff.sectionDiffs.sort((a,b) => a.order>=b.order?1:-1);
+         }
+        console.log(this.grantDiff);
         return this.changes;
     }
 
@@ -204,13 +232,13 @@ const httpOptions = {
             }
 
     }
-    _getGrantDiffAttributes(){
-                this._getGrantDiff();
-                if(!this.grantDiff.attributesDiffs){
-                    this.grantDiff.attributesDiffs = [];
+    /* _getGrantDiffAttributes(){
+                this._getGrantDiffSections();
+                if(!this.grantDiff.sectionDiffs.attributesDiffs){
+                    this.grantDiff.sectionDiffs.attributesDiffs = [];
                 }
 
-        }
+        } */
     getTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';
                 const tabData = data;
@@ -371,13 +399,13 @@ _differences (obj1: Grant, obj2: Grant) {
 
 getType(type: String){
     if(type==='multiline'){
-        return 'Text';
+        return 'Descriptive';
     } else if(type==='table'){
         return 'Tabular';
     } else if(type === 'document'){
         return 'Document';
     } else if (type === 'kpi'){
-        return 'KPI';
+        return 'Measurement/KPI';
     }
 }
 }

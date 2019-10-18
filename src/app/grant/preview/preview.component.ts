@@ -808,14 +808,21 @@ export class PreviewComponent implements OnInit {
          dialogRef.afterClosed().subscribe(result => {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                     this.http.put(url, result.desc, httpOptions).subscribe((grant: Grant) => {
+                     this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).subscribe((grant: Grant) => {
                       this.grantData.changeMessage(grant);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();
                      });
 
                } else {
-                 dialogRef.close();
+                 let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
+                  this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).subscribe((grant: Grant) => {
+                   this.grantData.changeMessage(grant);
+                   this.appComp.selectedTemplate = grant.grantTemplate;
+                   dialogRef.close();
+                   this.fetchCurrentGrant();
+                   });
+
                }
              });
         }else{
@@ -839,7 +846,7 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
-        if(this.currentGrant.actionAuthorities===undefined){
+        if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
             this.router.navigate(['grants']);
         }
