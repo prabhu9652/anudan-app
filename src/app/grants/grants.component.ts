@@ -136,7 +136,7 @@ export class GrantsComponent implements OnInit {
          this.grantsActive = [];
          this.grantsClosed = [];
         for (const grant of this.currentTenant.grants) {
-          if(grant.grantStatus.internalStatus === 'DRAFT'){
+          if(grant.grantStatus.internalStatus === 'DRAFT' || grant.grantStatus.internalStatus === 'REVIEW'){
             this.grantsDraft.push(grant); 
           }else if(grant.grantStatus.internalStatus === 'ACTIVE'){
             this.grantsActive.push(grant);
