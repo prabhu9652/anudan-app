@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -98,7 +98,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      this.intervalSubscription = interval(5000).subscribe(t => {
+      this.intervalSubscription = interval(15000).subscribe(t => {
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -111,9 +111,18 @@ export class AdminLayoutComponent implements OnInit {
                   };
 
 
-
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
+                    this.appComponent.unreadMessages = 0;
+                    for(let notice of this.appComponent.notifications){
+                        if(!notice.read){
+                            this.appComponent.unreadMessages += 1;
+                        }
+                    }
+                    if(!JSON.parse(localStorage.getItem("MESSAGE_COUNT")) || JSON.parse(localStorage.getItem("MESSAGE_COUNT"))!==this.appComponent.unreadMessages){
+                        localStorage.setItem("MESSAGE_COUNT",String(this.appComponent.unreadMessages));
+                        this.appComponent.hasUnreadMessages = true;
+                    }
                     this.grantUpdateService.changeMessage(true);
                   },
                      error => {
@@ -140,6 +149,7 @@ export class AdminLayoutComponent implements OnInit {
   ngAfterViewInit() {
       this.runOnRouteChange();
   }
+
   isMaps(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
       titlee = titlee.slice( 1 );
@@ -258,5 +268,33 @@ export class AdminLayoutComponent implements OnInit {
         this.currentGrant.duration = 'No end date';
       }
     }
+
+
+manageGrant(grantId: number) {
+              //this.dataService.changeMessage(grant.id);
+              const grant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+              this.grantData.changeMessage(grant);
+              this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+              this.appComponent.currentView = 'grant';
+
+                      this.appComponent.selectedTemplate = grant.grantTemplate;
+
+              if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                  this.router.navigate(['grant/basic-details']);
+              } else{
+                  this.appComponent.action = 'preview';
+                  this.router.navigate(['grant/preview']);
+              }
+              $("#messagepopover").css('display','none');
+        }
+
+getHumanTime(notification): string{
+    var time = new Date().getTime() - new Date(notification.postedOn).getTime();
+    return this.humanizer.humanize(time, { largest: 1, round: true})
+    }
+
+closeMessagePopup(){
+    $("#messagepopover").css('display','none');
+}
 
 }

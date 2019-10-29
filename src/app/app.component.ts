@@ -37,6 +37,8 @@ export class AppComponent implements AfterViewChecked{
   sectionAdded = false;
   sectionUpdated = false;
   notifications = [];
+  hasUnreadMessages = false;
+  unreadMessages = 0;
   selectedTemplate: GrantTemplate;
   sectionInModification = false;
   currentTenant: Tenant;
@@ -205,7 +207,9 @@ interval(10000).subscribe(t => {
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
+    localStorage.removeItem('MESSAGE_COUNT');
     this.notifications = [];
+
     this.grantService.changeMessage(null);
     this.confgSubscription.unsubscribe();
     this.loggedInUser = null;

@@ -71,6 +71,8 @@ export class SidebarComponent implements OnInit {
   platformMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
+  hasUnreadMessages = false;
+  unreadMessages = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
@@ -126,7 +128,9 @@ drop(event: CdkDragDrop<string[]>) {
 
 
   showMessages(){
-  $("#messagepopover").html('');
+  /* $("#messagepopover").html('');
+  this.appComponent.hasUnreadMessages = false;
+  this.appComponent.unreadMessages = 0;
   if(this.appComponent.notifications.length === 0){
     $("#messagepopover").append('<p>No messages</p>');
   }else{
@@ -136,15 +140,13 @@ drop(event: CdkDragDrop<string[]>) {
        
         var time = new Date().getTime() - new Date(posted).getTime();
         
-        
-        $("#messagepopover").append('<div class="row"><div class="col-8"><p>'+this.appComponent.notifications[i].message+'</p><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div><div class="col-4"><button id="notificationBtn_' + this.appComponent.notifications[i].id + '" class="btn btn-sm">Mark as read</button></div></div>');
+        if(!this.appComponent.notifications[i].grantId){
+            $("#messagepopover").append('<div class="row pb-3" style="border-bottom: 1px inset #727272;"><div class="col-12"><p class="m-0">'+this.appComponent.notifications[i].message+'</p><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div></div>');
+        }else{
+            $("#messagepopover").append('<div class="row pb-3" style="border-bottom: 1px inset #727272;"><div class="col-12"><a id="messageForGrant_'+this.appComponent.notifications[i].grantId+'" class="m-0 text-primary messageWithLink" data-grantId='+ this.appComponent.notifications[i].grantId + '><b>'+this.appComponent.notifications[i].message+'</b></a><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div></div>');
+        }
     }
-
-    $('[id^="notificationBtn_"]').on('click',function(ev){
-      console.log($(this).attr('id'));
-    });
-
-  }
+  } */
   
   
   if($("#messagepopover").css('display')==='none'){

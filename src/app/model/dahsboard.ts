@@ -399,6 +399,7 @@ export class Notifications{
   message: string;
   read: boolean;
   postedOn: Date;
+  grantId: number;
 }
 
 export class ColumnData{
