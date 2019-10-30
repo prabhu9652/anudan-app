@@ -99,6 +99,9 @@ export class AdminLayoutComponent implements OnInit {
 
 
       this.intervalSubscription = interval(15000).subscribe(t => {
+           if($("#messagepopover").css('display')==='block'){
+            return;
+           }
 
             if(localStorage.getItem('USER')){
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -270,22 +273,50 @@ export class AdminLayoutComponent implements OnInit {
     }
 
 
-manageGrant(grantId: number) {
-              //this.dataService.changeMessage(grant.id);
-              const grant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
-              this.grantData.changeMessage(grant);
-              this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
-              this.appComponent.currentView = 'grant';
+manageGrant(notification: Notifications, grantId: number) {
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+               let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
+                                      + notification.id;
 
-                      this.appComponent.selectedTemplate = grant.grantTemplate;
+                this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
+                    notification = notif;
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
 
-              if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-                  this.router.navigate(['grant/basic-details']);
-              } else{
-                  this.appComponent.action = 'preview';
-                  this.router.navigate(['grant/preview']);
-              }
-              $("#messagepopover").css('display','none');
+                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+                    this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+                    let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+                    if(localgrant){
+                    localgrant = grant;
+                    }else{
+                        this.appComponent.currentTenant.grants.push(grant);
+                    }
+                      this.grantData.changeMessage(grant);
+                      this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+                      this.appComponent.currentView = 'grant';
+
+                              this.appComponent.selectedTemplate = grant.grantTemplate;
+
+                      if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                          this.router.navigate(['grant/basic-details']);
+                      } else{
+                          this.appComponent.action = 'preview';
+                          this.router.navigate(['grant/preview']);
+                      }
+                      $("#messagepopover").css('display','none');
+                    });
+                });
         }
 
 getHumanTime(notification): string{

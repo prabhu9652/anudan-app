@@ -3,15 +3,19 @@
             <div class="row">
                 <div class="col-12 text-right"><mat-icon (click)="closeMessagePopup()">close</mat-icon></div>
             </div>
-            <div *ngFor="let notification of appComponent.notifications" class="row py-2" style="border-bottom: 1px inset #727272;">
-                <div class="col-12">
-                    <p class="m-0" *ngIf="!notification.grantId">{{notification.message}}</p>
-                    <p class="m-0"><b><a *ngIf="notification.grantId" style="color:#4DC252;" (click)="manageGrant(notification.grantId)">{{notification.message}}</a></b></p>
-                    <small>Received {{getHumanTime(notification)}} ago</small>
-                </div>
-            </div>
-
-    </div>
+                    <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngFor="let notification of appComponent.notifications">
+                        <mat-expansion-panel-header class="grant-expansion-panel-notifications" style="padding: 5px;height: auto !important;">
+                            <mat-panel-title style="display: flex; align-items: center">
+                                <p class="my-0 mr-2" *ngIf="!notification.grantId">{{notification.title}}</p>
+                                <p class="my-0 mr-2 text-green" *ngIf="notification.grantId && !notification.read"><b>{{notification.title}}</b></p>
+                                <p class="my-0 mr-2" *ngIf="notification.grantId && notification.read">{{notification.title}}</p>
+                                <small>(Received {{getHumanTime(notification)}} ago)</small>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div>{{notification.message}}</div>
+                        <button class="btn btn-sm btn-green" *ngIf="notification.grantId" (click)="manageGrant(notification,notification.grantId)">Go to grant</button>
+                    </mat-expansion-panel>
+   </div>
     <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
         <app-sidebar></app-sidebar>
         <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>

@@ -397,6 +397,7 @@ export class SerializationHelper {
 export class Notifications{
   id: number;
   message: string;
+  title: string;
   read: boolean;
   postedOn: Date;
   grantId: number;
