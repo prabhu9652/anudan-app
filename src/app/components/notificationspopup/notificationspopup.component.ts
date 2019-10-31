@@ -4,6 +4,10 @@ import {Grant, GrantHistory,Notifications} from '../../model/dahsboard';
 import {WorkflowTransition} from '../../model/workflow-transition';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import { Router} from '@angular/router';
+import {GrantDataService} from '../../grant.data.service';
+
+
 
 declare var $: any;
 declare var jsPlumb: any;
@@ -26,6 +30,8 @@ export class NotificationspopupComponent implements OnInit {
      , private http: HttpClient
      , private renderer: Renderer2
      , @Inject(ElementRef)er: ElementRef
+     , private router: Router
+     , private grantData: GrantDataService
      ) {
     this.dialogRef.disableClose = false;
     this.messages = notifications;
@@ -48,4 +54,7 @@ getHumanTime(notification): string{
     return this.humanizer.humanize(time, { largest: 1, round: true})
     }
 
+manageGrant(notification: Notifications){
+    this.dialogRef.close({result:true, data: notification});
+}
 }

@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@ang
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
-import {Grant} from '../../model/dahsboard';
+import {Grant, Notifications} from '../../model/dahsboard';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatDialog} from '@angular/material';
 import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 
 
@@ -103,7 +104,8 @@ export class SidebarComponent implements OnInit {
   private grantData: GrantDataService,
   private ref:ChangeDetectorRef,
   private elRef: ElementRef,
-  private dialog: MatDialog) {
+  private dialog: MatDialog,
+  private http: HttpClient) {
   }
 
 drop(event: CdkDragDrop<string[]>) {
@@ -145,42 +147,72 @@ drop(event: CdkDragDrop<string[]>) {
 
 
   showMessages(){
-  /* $("#messagepopover").html('');
-  this.appComponent.hasUnreadMessages = false;
-  this.appComponent.unreadMessages = 0;
-  if(this.appComponent.notifications.length === 0){
-    $("#messagepopover").append('<p>No messages</p>');
-  }else{
-    for(let i=0; i< this.appComponent.notifications.length;i++){
-      
-        const posted = this.appComponent.notifications[i].postedOn;
-       
-        var time = new Date().getTime() - new Date(posted).getTime();
-        
-        if(!this.appComponent.notifications[i].grantId){
-            $("#messagepopover").append('<div class="row pb-3" style="border-bottom: 1px inset #727272;"><div class="col-12"><p class="m-0">'+this.appComponent.notifications[i].message+'</p><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div></div>');
-        }else{
-            $("#messagepopover").append('<div class="row pb-3" style="border-bottom: 1px inset #727272;"><div class="col-12"><a id="messageForGrant_'+this.appComponent.notifications[i].grantId+'" class="m-0 text-primary messageWithLink" data-grantId='+ this.appComponent.notifications[i].grantId + '><b>'+this.appComponent.notifications[i].message+'</b></a><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div></div>');
-        }
-    }
-  } */
-  
-  
-  /* if($("#messagepopover").css('display')==='none'){
-    $("#messagepopover").css('display','block');
-  }else{
-    $("#messagepopover").css('display','none');
-  } */
 
   const dialogRef = this.dialog.open(NotificationspopupComponent, {
            data: this.appComponent.notifications,
            panelClass: 'notifications-class'
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+                  if(!result){
+                    return;
+                  }
+                  if (result.result) {
+                    this.manageGrant(result.data,result.data.grantId);
+                  }
+                  });
+
   }
 
   messageRead() {
     console.log("Read");
   }
+
+  manageGrant(notification: Notifications, grantId: number) {
+          const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+     let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
+                            + notification.id;
+
+      this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
+          notification = notif;
+          const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+
+          url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+          this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+          let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+          if(localgrant){
+          localgrant = grant;
+          }else{
+              this.appComponent.currentTenant.grants.push(grant);
+          }
+            this.grantData.changeMessage(grant);
+            this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+            this.appComponent.currentView = 'grant';
+
+                    this.appComponent.selectedTemplate = grant.grantTemplate;
+
+            if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                this.router.navigate(['grant/basic-details']);
+            } else{
+                this.appComponent.action = 'preview';
+                this.router.navigate(['grant/preview']);
+            }
+            $("#messagepopover").css('display','none');
+          });
+      });
+}
 
   buildSectionsSideNav(): string {
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
