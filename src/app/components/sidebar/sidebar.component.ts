@@ -72,9 +72,6 @@ export const ADMIN_ROUTES: RouteInfo[] = [
             justify-content: flex-start !important;
         }
 
-        ::ng-deep .mat-dialog-container{
-            background: #424652 !important;
-        }
 
         ::ng-deep .mat-expansion-indicator::after {
             color: #424652 !important;

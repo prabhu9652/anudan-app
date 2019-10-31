@@ -549,7 +549,7 @@ background:#DAE3D9;
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
     position: relative !important;
-    left: 150px !important;
+    left: 300px !important;
 }
 
 .notifications-class{
@@ -565,7 +565,7 @@ background:#DAE3D9;
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
     position: relative !important;
-    left: 150px !important;
+    left: 300px !important;
 }
 
 .mat-tooltip {

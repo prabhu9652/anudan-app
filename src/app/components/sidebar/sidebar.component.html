@@ -4,8 +4,8 @@
 
             <ng-container *ngIf="appComponent.notifications.length > 0">
                 <div (click)="showMessages()" style="position:relative; float:right;">
-                <mat-icon *ngIf="this.appComponent.hasUnreadMessages" class="float-right mr-3 mt-3" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
-                <mat-icon *ngIf="!this.appComponent.hasUnreadMessages" class="float-right mr-3 mt-3 text-light">notifications</mat-icon>
+                <mat-icon *ngIf="this.appComponent.hasUnreadMessages && this.appComponent.unreadMessages>0" class="float-right mr-3 mt-3" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
+                <mat-icon *ngIf="!this.appComponent.hasUnreadMessages || this.appComponent.unreadMessages===0" class="float-right mr-3 mt-3 text-light">notifications</mat-icon>
                 </div>
             </ng-container>
             <ng-container *ngIf="appComponent.notifications.length === 0">
