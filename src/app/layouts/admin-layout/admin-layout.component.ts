@@ -98,7 +98,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      this.intervalSubscription = interval(15000).subscribe(t => {
+      this.intervalSubscription = interval(5000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
@@ -196,7 +196,8 @@ export class AdminLayoutComponent implements OnInit {
   showGrantHistory(what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
       data: this.currentGrant,
-      panelClass: 'grant-notes-class'
+      panelClass: 'grant-notes-class',
+      disableClose: false
       });
   }
 

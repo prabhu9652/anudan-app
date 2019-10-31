@@ -24,6 +24,7 @@ import {LoginComponent} from './login/login.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
 import {GranthistoryComponent} from './components/granthistory/granthistory.component';
+import {NotificationspopupComponent} from './components/notificationspopup/notificationspopup.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {
@@ -66,7 +67,8 @@ export function provideConfig() {
     KpisubmissionComponent,
     RegistrationComponent,
     WfassignmentComponent,
-    GranthistoryComponent
+    GranthistoryComponent,
+    NotificationspopupComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -120,7 +122,7 @@ export function provideConfig() {
       DatePipe,
       Colors
   ],
-  entryComponents:[WfassignmentComponent,GranthistoryComponent],
+  entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })

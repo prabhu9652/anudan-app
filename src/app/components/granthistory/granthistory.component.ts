@@ -24,7 +24,7 @@ export class GranthistoryComponent implements OnInit {
      , private renderer: Renderer2
      , @Inject(ElementRef)er: ElementRef
      ) {
-    this.dialogRef.disableClose = true;
+    this.dialogRef.disableClose = false;
   }
 
   ngOnInit() {

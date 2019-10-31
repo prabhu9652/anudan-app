@@ -5,6 +5,10 @@ import {GrantDataService} from '../../grant.data.service';
 import {Grant} from '../../model/dahsboard';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatDialog} from '@angular/material';
+import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
+
+
 
 declare const $: any;
 declare interface RouteInfo {
@@ -61,6 +65,19 @@ export const ADMIN_ROUTES: RouteInfo[] = [
           transform: rotate(225deg) !important;
           border-width: 0 1px 1px 0 !important;
         }
+
+        ::ng-deep .cdk-global-overlay-wrapper{
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+        }
+
+        ::ng-deep .mat-dialog-container{
+            background: #424652 !important;
+        }
+
+        ::ng-deep .mat-expansion-indicator::after {
+            color: #424652 !important;
+        }
       `]
 })
 export class SidebarComponent implements OnInit {
@@ -85,8 +102,8 @@ export class SidebarComponent implements OnInit {
   private activatedRoute: ActivatedRoute,
   private grantData: GrantDataService,
   private ref:ChangeDetectorRef,
-  private elRef: ElementRef
-  ) {
+  private elRef: ElementRef,
+  private dialog: MatDialog) {
   }
 
 drop(event: CdkDragDrop<string[]>) {
@@ -149,12 +166,16 @@ drop(event: CdkDragDrop<string[]>) {
   } */
   
   
-  if($("#messagepopover").css('display')==='none'){
+  /* if($("#messagepopover").css('display')==='none'){
     $("#messagepopover").css('display','block');
   }else{
     $("#messagepopover").css('display','none');
-  }
-  
+  } */
+
+  const dialogRef = this.dialog.open(NotificationspopupComponent, {
+           data: this.appComponent.notifications,
+           panelClass: 'notifications-class'
+        });
   }
 
   messageRead() {

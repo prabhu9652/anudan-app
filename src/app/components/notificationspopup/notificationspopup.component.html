@@ -1,0 +1,14 @@
+<div #messagepopover id="messagepopover">
+  <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngFor="let notification of messages">
+    <mat-expansion-panel-header class="grant-expansion-panel-notifications" style="padding: 5px;height: auto !important;">
+      <mat-panel-title style="display: flex; align-items: center">
+        <p class="my-0 mr-2" *ngIf="!notification.grantId">{{notification.title}}</p>
+        <p class="my-0 mr-2 text-green" *ngIf="notification.grantId && !notification.read"><b>{{notification.title}}</b></p>
+        <p class="my-0 mr-2" *ngIf="notification.grantId && notification.read">{{notification.title}}</p>
+        <small>(Received {{getHumanTime(notification)}} ago)</small>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>{{notification.message}}</div>
+    <button class="btn btn-sm btn-green" *ngIf="notification.grantId" (click)="manageGrant(notification,notification.grantId)">Go to grant</button>
+  </mat-expansion-panel>
+</div>

@@ -552,6 +552,15 @@ background:#DAE3D9;
     left: 150px !important;
 }
 
+.notifications-class{
+    min-width: calc(80% - 300px) !important;
+    max-width: calc(80% - 300px) !important;
+    max-height: calc(70%) !important;
+    overflow: scroll;
+    position: relative !important;
+    left: 300px !important;
+}
+
 .wf-assignment-class{
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
