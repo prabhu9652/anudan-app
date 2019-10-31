@@ -546,10 +546,10 @@ background:#DAE3D9;
 }
 
 .grant-notes-class{
-    min-width: calc(100% - 300px) !important;
-    max-width: calc(100% - 300px) !important;
+    min-width: calc(90% - 300px) !important;
+    max-width: calc(90% - 300px) !important;
     position: relative !important;
-    left: 300px !important;
+    left: 150px !important;
 }
 
 .notifications-class{
@@ -557,15 +557,23 @@ background:#DAE3D9;
     max-width: calc(80% - 300px) !important;
     max-height: calc(70%) !important;
     overflow: scroll;
-    position: relative !important;
+    position: absolute !important;
     left: 300px !important;
+    top: 0;
 }
 
 .wf-assignment-class{
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
     position: relative !important;
-    left: 300px !important;
+    left: 150px !important;
+}
+
+.grant-template-class{
+    min-width: calc(90% - 300px) !important;
+    max-width: calc(90% - 300px) !important;
+    position: relative !important;
+    left: 150px !important;
 }
 
 .mat-tooltip {

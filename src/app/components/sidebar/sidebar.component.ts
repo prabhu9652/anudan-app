@@ -67,12 +67,6 @@ export const ADMIN_ROUTES: RouteInfo[] = [
           border-width: 0 1px 1px 0 !important;
         }
 
-        ::ng-deep .cdk-global-overlay-wrapper{
-            align-items: flex-start !important;
-            justify-content: flex-start !important;
-        }
-
-
         ::ng-deep .mat-expansion-indicator::after {
             color: #424652 !important;
         }

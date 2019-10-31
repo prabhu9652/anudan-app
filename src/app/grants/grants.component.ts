@@ -87,7 +87,8 @@ export class GrantsComponent implements OnInit {
       const url = '/api/user/' + user.id + '/grant/templates';
       this.http.get<GrantTemplate[]>(url, httpOptions).subscribe((templates: GrantTemplate[]) => {
           const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
-                data: templates
+                data: templates,
+                panelClass: 'grant-template-class'
               });
 
               dialogRef.afterClosed().subscribe(result => {

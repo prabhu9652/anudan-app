@@ -8,7 +8,7 @@
         <small>(Received {{getHumanTime(notification)}} ago)</small>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div>{{notification.message}}</div>
+    <div [innerHTML]="notification.message"></div>
     <button class="btn btn-sm btn-green" *ngIf="notification.grantId" (click)="manageGrant(notification)">Go to grant</button>
   </mat-expansion-panel>
 </div>
