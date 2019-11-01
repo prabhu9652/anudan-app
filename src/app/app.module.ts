@@ -42,7 +42,7 @@ import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule,MatIconModule,M
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
-
+import { ExportAsModule } from 'ngx-export-as';
 
 const config = new AuthServiceConfig([
   {
@@ -83,6 +83,7 @@ export function provideConfig() {
     AppRoutingModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
+    ExportAsModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),

@@ -59,6 +59,7 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import {TenantsComponent} from '../../admin/tenants/tenants.component';
         MatProgressSpinnerModule,
         NgxGraphModule,
         MatAutocompleteModule,
-        MatTabsModule
+        MatTabsModule,
+        PDFExportModule
     ],
     declarations: [
         GrantComponent,

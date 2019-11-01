@@ -580,3 +580,22 @@ background:#DAE3D9;
     color: #3d3d3d !important;
     background-color: azure !important;
 }
+
+.pageWrapper {
+  margin-top: 50px;
+}
+
+button {
+    padding: 15px;
+}
+
+kendo-pdf-export {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+  font-size: 16px;
+}
+
+.content {
+  width: 800px;
+  margin: 0 auto;
+  line-height: 20px;
+}
