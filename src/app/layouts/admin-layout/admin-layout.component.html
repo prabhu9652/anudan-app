@@ -9,24 +9,31 @@
     <div class="main-panel">
         <!--<app-navbar></app-navbar>-->
         <div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'user-profile'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #000;background-color:#E4E4E4"><a (click)="showAllGrants(currentGrant)" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
-            <div class="float-right ml-4">
-                <a (click)="showWorkflowAssigments()"><i class="fas fa-user-cog fa-lg" aria-hidden="true"></i></a>
-            </div>
-            <div class="float-right ml-4">
-                <a (click)="showGrantHistory('notes')"><i class="fa fa-comment mr-1" aria-hidden="true"></i></a>
-            </div>
-            <div class="float-right ml-4" *ngIf="appComponent.action !== 'preview'">
-                <b>{{ appComponent.autosaveDisplay}}</b>
-            </div>
-            <br>
-            <div class="float-right ml-4" *ngIf="appComponent.action !== 'preview'">
-                <b><small>Based on template '{{appComponent.selectedTemplate.name}}'</small></b>
-            </div>
 
+        </div>
+        <div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
+            <div class="col-12">
+                <div class="float-right ml-2">
+                    <a (click)="showWorkflowAssigments()"><img src="./assets/img/wfassignmnet.svg" style="width:25px;"></a>
+                </div>
+                <div class="float-right ml-4">
+                    <a (click)="showGrantHistory('notes')"><img src="./assets/img/note.svg" style="width:25px;"></a>
+                </div>
+
+
+                <div class="float-left" *ngIf="appComponent.action !== 'preview'">
+                    <b>{{ appComponent.autosaveDisplay}}</b>
+                </div>
+                <br>
+                <div class="float-left" *ngIf="appComponent.action !== 'preview'">
+                    <b><small>Based on template '{{appComponent.selectedTemplate.name}}'</small></b>
+                </div>
+            </div>
         </div>
         <router-outlet></router-outlet>
         <div *ngIf="isMaps('maps')">
             <app-footer></app-footer>
         </div>
     </div>
+
 </div>
