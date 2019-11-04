@@ -599,3 +599,9 @@ kendo-pdf-export {
   margin: 0 auto;
   line-height: 20px;
 }
+
+.pageNum {
+      font-family: "DejaVu Sans", "Arial", sans-serif;
+      position: absolute;
+      bottom: 50px;
+    }

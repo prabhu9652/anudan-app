@@ -125,17 +125,17 @@
                                         <div class="col-sm-12 col-lg-12 mb-3">
                                             <span style="font-weight:600px;">{{attribute.fieldName}}</span>
                                             <ul>
-                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)" style="list-style-type:none;">
 
                                                 <p class="m-0"  style="font-family:Roboto;font-size:14px;">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
-                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                        <img src="./assets/img/pdf.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                                        <i class="fas fa-file-excel text-success"></i>
+                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                                        <i class="fas fa-file-word text-primary"></i>
+                                                        <img src="./assets/img/msword.png" style="width:20px;">
                                                     </ng-container>
                                                     {{doc.name}}</p>
                                             </li>
@@ -186,15 +186,15 @@
                                                 <a href="/api/public/grants/{{currentGrant.id}}/file/{{doc.id}}" target="_blank">
                                                 <span class="ml-3">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
-                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                        <img src="./assets/img/pdf.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                                        <i class="fas fa-file-excel text-success"></i>
+                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                                        <i class="fas fa-file-word text-primary"></i>
+                                                        <img src="./assets/img/msword.png" style="width:20px;">
                                                     </ng-container>
-                                                    {{doc.name}}</span></a>
+                                                    {{doc.name}}</span></a><br>
                                             </ng-container>
                                         </div>
 
@@ -204,7 +204,14 @@
                         </div>
                     </ng-container>
                 </div>
+
             </div>
+                <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                    <div class="pageNum">
+                        Page {{ pageNum }} of {{ totalPages }}
+                    </div>
+                </ng-template>
+
             </kendo-pdf-export>
 
 
