@@ -20,7 +20,7 @@ export class GrantTemplateDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.selected = this.templates[0].id;
   }
 
   onNoClick(): void {
@@ -40,5 +40,9 @@ export class GrantTemplateDialogComponent implements OnInit {
 
   showDesc(){
     console.log('here');
+  }
+
+  setSelectedTemplate(id,ev: Event){
+    this.selected = id;
   }
 }

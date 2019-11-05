@@ -30,6 +30,14 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
         color: #fff;
         opacity:1;
       }
+
+      ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: #39743C !important;
+      }
+
+      ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+        background-color: #39743C !important;
+      }
     `]
 })
 export class GrantsComponent implements OnInit {
