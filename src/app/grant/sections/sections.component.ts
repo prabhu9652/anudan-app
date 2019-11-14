@@ -361,7 +361,7 @@ ngOnDestroy(){
                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                 } else {
-                 this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                 this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.", config);
                 }
 
 
@@ -479,7 +479,7 @@ ngOnDestroy(){
                 })
             };
 
-            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
             this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
@@ -504,7 +504,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                          this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
                          }
 
 
@@ -602,7 +602,14 @@ ngOnDestroy(){
                     this.appComp.selectedTemplate = info.grant.grantTemplate;
                     this.newField = 'field_' + info.stringAttributeId;
                     //this.scrollTo(this.newField);
-                });
+                } ,
+                          error => {
+                            const errorMsg = error as HttpErrorResponse;
+                            console.log(error);
+                            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                              enableHtml: true
+                            });
+                          });
     const id = 0 - Math.round(Math.random() * 1000000000);
     /* for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
@@ -707,7 +714,15 @@ ngOnDestroy(){
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-    });
+    },
+              error => {
+                const errorMsg = error as HttpErrorResponse;
+                console.log(error);
+                this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                  enableHtml: true
+                });
+                $(createSectionModal).modal('hide');
+              });
   }
 
   saveSectionAndAddNew() {
@@ -913,7 +928,7 @@ ngOnDestroy(){
                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
                 setTimeout( () => { this.appComp.logout(); }, 4000 );
                } else {
-                this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
                }
 
 
@@ -927,7 +942,7 @@ ngOnDestroy(){
          this.toastr.error("Your session has expired", 'Logging you out now...', config);
          setTimeout( () => { this.appComp.logout(); }, 4000 );
         } else {
-         this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+         this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
         }
 
 
@@ -1220,7 +1235,7 @@ ngOnDestroy(){
   selectionClosed(){
     console.log('Closed');
   }
-  handleTypeChange(ev: Event, attr: Attribute){
+  handleTypeChange(ev: Event, attr: Attribute, section: Section){
     attr.fieldValue = '';
     if(ev.toString()==='table'){
       if(attr.fieldValue.trim() === ''){
@@ -1249,8 +1264,8 @@ ngOnDestroy(){
         };
 
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-            + this.currentGrant.id + '/field/'+attr.id;
-        this.http.post<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
+            + this.currentGrant.id + '/section/'+section.id+'/field/'+attr.id;
+        this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
             this.grantData.changeMessage(info.grant);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
@@ -1264,7 +1279,7 @@ ngOnDestroy(){
                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
                   setTimeout( () => { this.appComp.logout(); }, 4000 );
                  } else {
-                  this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                  this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
                  }
 
 
@@ -1478,7 +1493,7 @@ ngOnDestroy(){
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                     this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
                     }
 
 

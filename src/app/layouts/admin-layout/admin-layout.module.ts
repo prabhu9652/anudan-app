@@ -60,6 +60,9 @@ import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcoming-reports.component';
+import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
+import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
 
 
 @NgModule({
@@ -124,7 +127,10 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
         OrganizationComponent,
         ReportsComponent,
         DisbursementsComponent,
-        TenantsComponent
+        TenantsComponent,
+        UpcomingReportsComponent,
+        SubmittedReportsComponent,
+        ApprovedReportsComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]

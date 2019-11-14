@@ -414,7 +414,7 @@ export class BasicComponent implements OnInit {
                 })
             };
 
-            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));

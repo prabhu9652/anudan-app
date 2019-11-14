@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {WorkflowTransition} from "../model/workflow-transition";
 import {WorkflowLinks, WorkflowNode} from '../model/graph';
+import {MAT_DIALOG_DATA} from '@angular/material';
+
 
 @Component({
     selector: 'app-workflow-management',
@@ -15,8 +17,8 @@ export class WorkflowManagementComponent implements OnInit {
     links: WorkflowLinks[];
 
     constructor(
-        private http: HttpClient
-    ) {
+        private http: HttpClient,
+        @Inject(MAT_DIALOG_DATA) public data: any) {
     }
 
     ngOnInit() {
@@ -35,7 +37,7 @@ export class WorkflowManagementComponent implements OnInit {
                 'Authorization': localStorage.getItem('AUTH_TOKEN')
             })
         };
-        const url = '/api/admin/workflow/grant';
+        const url = '/api/admin/workflow/grant/user/'+ this.data.userId;
 
         this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
             this.transitions = transitions;

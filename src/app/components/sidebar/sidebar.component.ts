@@ -42,6 +42,12 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
+export const REPORT_ROUTES: RouteInfo[] = [
+    { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '' },
+    { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '' },
+    { path: '/grant/approved', title: 'Approved',  icon: 'preview.svg', class: '' }
+];
+
 export const PLATFORM_ROUTES: RouteInfo[] = [
     { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '' }
 ];
@@ -67,7 +73,7 @@ export const ADMIN_ROUTES: RouteInfo[] = [
           border-width: 0 1px 1px 0 !important;
         }
 
-        ::ng-deep .mat-expansion-indicator::after {
+        ::ng-deep .grant-expansion-panel-notifications > .mat-expansion-indicator::after {
             color: #424652 !important;
         }
       `]
@@ -78,6 +84,7 @@ export class SidebarComponent implements OnInit {
   sectionMenuItems: any[];
   adminMenuItems: any[];
   platformMenuItems: any[];
+  reportMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
   hasUnreadMessages = false;
@@ -122,6 +129,7 @@ drop(event: CdkDragDrop<string[]>) {
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
+    this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;

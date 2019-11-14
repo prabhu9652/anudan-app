@@ -21,7 +21,7 @@
 
         <ng-container *ngIf="appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications'">
             <ng-container *ngFor="let menuItem of menuItems">
-            <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization'"
+            <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
                 class="{{menuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[menuItem.path]">
                     <!--<i class="material-icons">{{menuItem.icon}}</i>-->
@@ -39,6 +39,21 @@
                         <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
                             <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
                             <p>{{orgMenuItem.title}}</p>
+                        </a>
+                    </li>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel *ngIf="menuItem.title === 'Reports'">
+                    <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                        <mat-panel-title style="display: flex; align-items: center">
+                            <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <li routerLinkActive="active" *ngFor="let reportMenuItem of reportMenuItems"
+                        class="{{reportMenuItem.class}} nav-item text-left">
+                        <a class="nav-link py-0" [routerLink]="[reportMenuItem.path]">
+                            <i class="material-icons" style="font-size:18px;">remove</i>
+                            <p>{{reportMenuItem.title}}</p>
                         </a>
                     </li>
                 </mat-expansion-panel>

@@ -415,7 +415,7 @@ export class PreviewComponent implements OnInit {
       })
     };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
@@ -1371,7 +1371,7 @@ export class PreviewComponent implements OnInit {
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
        wfModel.grant = this.currentGrant;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
-              data: wfModel,
+              data: {model:wfModel,userId:this.appComp.loggedInUser.id},
               panelClass: 'wf-assignment-class'
             });
 
@@ -1382,6 +1382,7 @@ export class PreviewComponent implements OnInit {
                     const wa = new WorkflowAssignment();
                     wa.id=data.id;
                     wa.assignments = data.userId;
+                    wa.stateId = data.stateId;
                     ass.push(wa);
                 }
 
@@ -1399,7 +1400,15 @@ export class PreviewComponent implements OnInit {
                             this.grantData.changeMessage(grant);
                             this.currentGrant = grant;
                             this.submitGrant(toStateId);
-                        });
+                        },
+                                  error => {
+                                    const errorMsg = error as HttpErrorResponse;
+                                    console.log(error);
+                                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                                      enableHtml: true
+                                    });
+                                    dialogRef.close(false);
+                                  });
               } else {
                 dialogRef.close();
               }

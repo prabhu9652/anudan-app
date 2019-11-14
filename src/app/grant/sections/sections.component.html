@@ -172,7 +172,7 @@
                             <mat-label>Type</mat-label>
                             <mat-select [(ngModel)]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}" (click)="changeFieldType()" (blur)="selectionClosed()"
-                                        (ngModelChange)="handleTypeChange($event,attribute)">
+                                        (ngModelChange)="handleTypeChange($event,attribute,section)">
                               <mat-option value="none" aria-selected="true">--Select type
                                 of field--
                               </mat-option>

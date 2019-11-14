@@ -61,7 +61,8 @@ export class AppComponent implements AfterViewChecked{
     granteeOrgs: [],
     workflowStatuses: [],
     transitions: [],
-    tenantUsers: []
+    tenantUsers: [],
+    daysBeforePublishingReport: 30
   };
 
   org: string;

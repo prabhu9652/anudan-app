@@ -15,6 +15,7 @@ export class AppConfig {
   workflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
   transitions: WorkflowTransition[];
+  daysBeforePublishingReport: number;
 }
 
 export class Colors {

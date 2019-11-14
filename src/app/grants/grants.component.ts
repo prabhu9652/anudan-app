@@ -91,7 +91,7 @@ export class GrantsComponent implements OnInit {
           'Authorization': localStorage.getItem('AUTH_TOKEN')
         })
       };
-        const user = JSON.parse(localStorage.getItem('USER'));
+      const user = JSON.parse(localStorage.getItem('USER'));
       const url = '/api/user/' + user.id + '/grant/templates';
       this.http.get<GrantTemplate[]>(url, httpOptions).subscribe((templates: GrantTemplate[]) => {
           const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
@@ -246,7 +246,7 @@ export class GrantsComponent implements OnInit {
                   })
               };
 
-              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/';
+              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
               this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));

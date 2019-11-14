@@ -263,7 +263,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .grants-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
-    background: #e5e5e5 !important;
+    background: #fff !important;
     padding: 10px !important;
 
 }
@@ -271,7 +271,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .grants-section{
     background: #fff;
     border-radius: 4px;
-    padding:10px;
+    border:1px solid #E5E5E5;
 }
 
 input:-internal-autofill-selected{
@@ -616,3 +616,12 @@ kendo-pdf-export {
       position: absolute;
       bottom: 50px;
     }
+
+.text-bold-highlight{
+    font-weight: 500;
+    color: #6B6C6B;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]){
+    box-shadow:none !important;
+}

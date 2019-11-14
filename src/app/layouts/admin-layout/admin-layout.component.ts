@@ -98,7 +98,7 @@ export class AdminLayoutComponent implements OnInit {
       }
 
 
-      this.intervalSubscription = interval(5000).subscribe(t => {
+      this.intervalSubscription = interval(10000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
@@ -210,7 +210,7 @@ export class AdminLayoutComponent implements OnInit {
    wfModel.grant = this.currentGrant;
    wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
     const dialogRef = this.dialog.open(WfassignmentComponent, {
-          data: wfModel,
+          data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
           panelClass: 'wf-assignment-class'
           }
           );

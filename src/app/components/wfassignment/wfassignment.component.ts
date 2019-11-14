@@ -3,10 +3,10 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@
 import {WorkflowAssignmentModel} from '../../model/dahsboard';
 import {WorkflowTransition} from '../../model/workflow-transition';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 declare var jsPlumb: any;
-
 
 @Component({
   selector: 'app-wfassignment-dialog',
@@ -24,55 +24,56 @@ export class WfassignmentComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<WfassignmentComponent>
-     , @Inject(MAT_DIALOG_DATA) public message: WorkflowAssignmentModel
+     , @Inject(MAT_DIALOG_DATA) public data: any
      , private http: HttpClient
      , private renderer: Renderer2
      , @Inject(ElementRef)er: ElementRef
+     , private toastr: ToastrService
      ) {
     this.dialogRef.disableClose = true;
     this.elemRef = er;
   }
 
-  ngOnInit() {
-  const httpOptions = {
+ngOnInit() {
+    const httpOptions = {
               headers: new HttpHeaders({
                   'Content-Type': 'application/json',
                   'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
                   'Authorization': localStorage.getItem('AUTH_TOKEN')
               })
-          };
-          const url = '/api/admin/workflow/grant';
+    };
+          const url = '/api/admin/workflow/grant/'+this.data.model.grant.id+'/user/'+ this.data.userId;
 
-          this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
+    this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
           this.transitions = transitions;
 
           for(let transition of transitions){
             const nodeId = 'state_' + transition.fromStateId;
             if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
                 const node = this.renderer.createElement('div');
-                this.renderer.addClass(node,this.getColorCodeByStatus(this.message.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus))
+                this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus))
                 const nodeStateName = this.renderer.createText(transition._from);
                 this.renderer.appendChild(node, nodeStateName);
 
                 const nodeOwner = this.renderer.createElement('select');
-                const currentUserAssignment = this.message.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
+                const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
                 if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
                     this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                 }
                 this.renderer.addClass(nodeOwner,'ml-3');
                 this.renderer.addClass(nodeOwner,'px-2');
-                const assignment = this.message.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);
+                const assignment = this.data.model.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);
                 if(assignment.length>0){
                     this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
-                    this.renderer.setAttribute(nodeOwner,'id','assignment_' + assignment[0].id  + '_' + transition.fromStateId + '_' + this.message.grant.id);
+                    this.renderer.setAttribute(nodeOwner,'id','assignment_' + assignment[0].id  + '_' + transition.fromStateId + '_' + this.data.model.grant.id);
                 }else{
-                    this.renderer.setAttribute(nodeOwner,'id','assignment_'+transition.fromStateId+'_'+this.message.grant.id);
+                    this.renderer.setAttribute(nodeOwner,'id','assignment_'+transition.fromStateId+'_'+this.data.model.grant.id);
                 }
                 const nodeOwnerOptions = this.renderer.createElement('option');
                 this.renderer.setAttribute(nodeOwnerOptions,'value','0');
                 this.renderer.appendChild(nodeOwnerOptions,document.createTextNode('Select an owner'));
                 this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
-                for(let option of this.message.users){
+                for(let option of this.data.model.users){
                     const nodeOwnerOptions = this.renderer.createElement('option');
                     this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
                     if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
@@ -93,7 +94,7 @@ export class WfassignmentComponent implements OnInit {
 
                 this.renderer.setAttribute(node, 'id', nodeId);
                 this.renderer.addClass(node,'state-node');
-                if(transition.fromStateId === this.message.grant.grantStatus.id){
+                if(transition.fromStateId === this.data.model.grant.grantStatus.id){
                     const indicator = this.renderer.createElement('i');
                     this.renderer.addClass(indicator,'fa');
                     this.renderer.addClass(indicator,'fa-arrow-circle-right');
@@ -110,14 +111,14 @@ export class WfassignmentComponent implements OnInit {
           if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
               const node = this.renderer.createElement('div');
               const nodeStateName = this.renderer.createText(transition._to);
-              this.renderer.addClass(node,this.getColorCodeByStatus(this.message.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
+              this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
               this.renderer.appendChild(node, nodeStateName);
               this.renderer.setAttribute(node, 'id', nodeId);
               this.renderer.addClass(node,'state-node');
               this.renderer.addClass(node,'my-5');
               this.renderer.appendChild(this.flowContainer.nativeElement,node);
 
-              if(transition.toStateId === this.message.grant.grantStatus.id){
+              if(transition.toStateId === this.data.model.grant.grantStatus.id){
                   const indicator = this.renderer.createElement('i');
                   this.renderer.addClass(indicator,'fa');
                   this.renderer.addClass(indicator,'fa-arrow-circle-right');
@@ -136,10 +137,18 @@ export class WfassignmentComponent implements OnInit {
             this.onYesClick();
         });
 
-});
+  },
+         error => {
+           const errorMsg = error as HttpErrorResponse;
+           console.log(error);
+           this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+             enableHtml: true
+           });
+           this.dialogRef.close(false);
+         });
 
 
-  }
+}
 
 
   ngAfterViewInit(){
