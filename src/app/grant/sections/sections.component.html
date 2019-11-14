@@ -20,7 +20,7 @@
         <mat-menu #menu="matMenu">
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
             <ng-container *ngIf="action === getCleanText(section)">
-              <button mat-menu-item>Edit Section</button>
+              <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
               <button mat-menu-item (click)="confirm(section.id,0,[],0,'section','Delete section ' + section.sectionName + '?')">Delete Section</button>
             </ng-container>
           </ng-container>

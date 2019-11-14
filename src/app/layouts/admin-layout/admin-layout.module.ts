@@ -63,6 +63,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcoming-reports.component';
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
 import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
+import { SectionEditComponent } from '../../components/section-edit/section-edit.component';
 
 
 @NgModule({
@@ -130,9 +131,10 @@ import { ApprovedReportsComponent } from '../../reports/approved-reports/approve
         TenantsComponent,
         UpcomingReportsComponent,
         SubmittedReportsComponent,
-        ApprovedReportsComponent
+        ApprovedReportsComponent,
+        SectionEditComponent
     ],
-    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent],
+    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

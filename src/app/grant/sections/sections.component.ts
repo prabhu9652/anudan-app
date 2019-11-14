@@ -24,6 +24,7 @@ import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {SectionEditComponent} from '../../components/section-edit/section-edit.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
@@ -1863,5 +1864,23 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
     toAttr.attributeOrder = from;
     section.attributes.sort((a, b) => (a.attributeOrder > b.attributeOrder) ? 1 : -1)
     this.newField = 'fieldBlock_'+ fromAttr.id;
+  }
+
+  editSection(section){
+    const dialogRef = this.dialog.open(SectionEditComponent, {
+        data: section,
+        panelClass: 'field-class'
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+        if(result===undefined || result.trim()===''){
+            return;
+        }
+        section.sectionName = result;
+        this.grantData.changeMessage(this.currentGrant);
+        this.router.navigate(['grant/section/' + this.getCleanText(section)]);
+        this.sidebar.buildSectionsSideNav();
+    });
   }
 }

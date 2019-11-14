@@ -1,5 +1,4 @@
 <h4>Notes</h4>
-<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="onNoClick()"><mat-icon>close</mat-icon></span>
 <div #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
   <p class="mb-0 bg-light p-1" *ngIf="grant.noteAddedByUser"><b>{{grant.noteAddedByUser.firstName}} {{grant.noteAddedByUser.lastName}}</b> <small> ({{grant.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
   <p *ngIf="grant.noteAddedByUser" style="border-bottom:1px solid #d4d4d4;">{{grant.note}}</p>

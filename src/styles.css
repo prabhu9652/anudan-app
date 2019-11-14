@@ -625,3 +625,7 @@ kendo-pdf-export {
 .mat-expansion-panel:not([class*=mat-elevation-z]){
     box-shadow:none !important;
 }
+
+.field-class{
+    min-width: 300px !important;
+}
