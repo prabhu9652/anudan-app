@@ -2,15 +2,7 @@
     <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTER'">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="min-height:100px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
 
-            <ng-container *ngIf="appComponent.notifications.length > 0">
-                <div (click)="showMessages()" style="position:relative; float:right;">
-                <mat-icon *ngIf="this.appComponent.hasUnreadMessages && this.appComponent.unreadMessages>0" class="float-right mr-3 mt-3" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
-                <mat-icon *ngIf="!this.appComponent.hasUnreadMessages || this.appComponent.unreadMessages===0" class="float-right mr-3 mt-3 text-light">notifications</mat-icon>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="appComponent.notifications.length === 0">
-                <mat-icon class="float-right mr-3 mt-3" (click)="showMessages()">notifications_none</mat-icon>
-            </ng-container>
+
 
             <div style="display:flex;align-items:center;">
                 <img [src]="appComponent.appConfig.logoUrl" alt="logo" class="nav-link float-left" style="width:40%;">
@@ -139,7 +131,7 @@
 
 </div>
 <mat-expansion-panel class="w-100 m-0 p-0" style="position: absolute; bottom: 0; z-index: 5;">
-    <mat-expansion-panel-header class="profilearea" style="background: #24262E;height: 40px !important;">
+    <mat-expansion-panel-header class="profilearea" style="background: #24262E;height: 64px !important;">
         <mat-panel-title style="display: flex; align-items: center">
             <p class="text-white font-weight-bolder text-left m-0"><img src="./assets/img/avatar.svg" class="w-10 mr-2" style="width:10%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}</p>
         </mat-panel-title>

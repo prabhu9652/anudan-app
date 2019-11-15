@@ -562,8 +562,8 @@ background:#DAE3D9;
     max-height: calc(70%) !important;
     overflow: scroll;
     position: absolute !important;
-    left: 300px !important;
-    top: 0;
+    right: 36px;
+    top: 50px;
 }
 
 .wf-assignment-class{
@@ -628,4 +628,16 @@ kendo-pdf-export {
 
 .field-class{
     min-width: 300px !important;
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid #fff;
+    position: absolute;
+    top: 40px;
+    right: 32px;
+    z-index: 4;
 }

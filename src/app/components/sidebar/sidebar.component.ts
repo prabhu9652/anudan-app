@@ -6,7 +6,6 @@ import {Grant, Notifications} from '../../model/dahsboard';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatDialog} from '@angular/material';
-import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 
@@ -145,23 +144,7 @@ drop(event: CdkDragDrop<string[]>) {
   }
 
 
-  showMessages(){
 
-  const dialogRef = this.dialog.open(NotificationspopupComponent, {
-           data: this.appComponent.notifications,
-           panelClass: 'notifications-class'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-                  if(!result){
-                    return;
-                  }
-                  if (result.result) {
-                    this.manageGrant(result.data,result.data.grantId);
-                  }
-                  });
-
-  }
 
   messageRead() {
     console.log("Read");

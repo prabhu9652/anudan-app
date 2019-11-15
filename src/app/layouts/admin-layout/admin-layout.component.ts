@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, HostListener,ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -19,6 +19,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular
 import {interval} from 'rxjs';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
 
 
 
@@ -26,7 +27,17 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss'],
-  providers: [GrantComponent]
+  providers: [GrantComponent],
+  styles: [`
+    ::ng-deep .mat-dialog-container{
+        padding: 0 !important;
+    }
+
+    ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
+        background:#EBEBEB !important;
+        padding: 5px 20px !important;
+    }
+  `]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
@@ -40,7 +51,6 @@ export class AdminLayoutComponent implements OnInit {
   intervalSubscription: any;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
-  
 
   constructor(private grantData: GrantDataService
     , public appComponent: AppComponent
@@ -328,5 +338,30 @@ getHumanTime(notification): string{
 closeMessagePopup(){
     $("#messagepopover").css('display','none');
 }
+
+
+showMessages(){
+   let notifs: Notifications[] = [];
+   for(let i=0; i<this.appComponent.notifications.length;i++){
+    if(i<10){
+        notifs.push(this.appComponent.notifications[i]);
+    }
+   }
+  this.appComponent.notifications = notifs;
+  const dialogRef = this.dialog.open(NotificationspopupComponent, {
+           data: this.appComponent.notifications,
+           panelClass: 'notifications-class'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+                  if(!result){
+                    return;
+                  }
+                  if (result.result) {
+                    this.manageGrant(result.data,result.data.grantId);
+                  }
+                  });
+
+  }
 
 }

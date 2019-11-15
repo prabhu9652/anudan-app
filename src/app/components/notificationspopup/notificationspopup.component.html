@@ -1,11 +1,11 @@
 <div #messagepopover id="messagepopover">
-  <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngFor="let notification of messages">
-    <mat-expansion-panel-header class="grant-expansion-panel-notifications" style="padding: 5px 10px !important;height: auto !important;">
-      <mat-panel-title style="display: flex; align-items: center">
+  <mat-expansion-panel class="notifications-panel"  *ngFor="let notification of messages" style="border-bottom:1px solid #E5E5E5;">
+    <mat-expansion-panel-header class="grant-expansion-panel-notifications" style="padding: 5px 10px !important;height: auto !important; " [collapsedHeight]="'140px'" [expandedHeight]="'140px'">
+      <mat-panel-title style="display: flex; align-items: flex-start; flex-direction: column;">
         <p class="my-0 mr-2" *ngIf="!notification.grantId">{{notification.title}}</p>
         <p class="my-0 mr-2 text-green" *ngIf="notification.grantId && !notification.read"><b>{{notification.title}}</b></p>
         <p class="my-0 mr-2" *ngIf="notification.grantId && notification.read">{{notification.title}}</p>
-        <small>(Received {{getHumanTime(notification)}} ago)</small>
+        <small style="display:flex;aligh-items:center;color:#C7C8C7;margin-top:10px;"><img src="./assets/img/clock.svg" class="mr-2">{{getHumanTime(notification)}}</small>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div [innerHTML]="notification.message"></div>

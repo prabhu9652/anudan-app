@@ -1,5 +1,17 @@
 <div class="wrapper">
 
+    <ng-container *ngIf="appComponent.notifications.length > 0">
+        <div (click)="showMessages()" style="position:absolute; right:20px;z-index:3;">
+            <mat-icon *ngIf="this.appComponent.hasUnreadMessages && this.appComponent.unreadMessages>0" class="float-right mr-3 mt-3" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
+            <mat-icon *ngIf="!this.appComponent.hasUnreadMessages || this.appComponent.unreadMessages===0" class="float-right mr-3 mt-3 text-dark">notifications</mat-icon>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="appComponent.notifications.length === 0">
+        <div style="position:absolute; right:20px;z-index:3;">
+            <mat-icon class="float-right mr-3 mt-3">notifications_none</mat-icon>
+        </div>
+    </ng-container>
+
     <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
         <app-sidebar></app-sidebar>
         <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
