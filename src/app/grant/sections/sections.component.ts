@@ -479,7 +479,7 @@ ngOnDestroy(){
                 })
             };
 
-            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
             this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
@@ -695,7 +695,7 @@ ngOnDestroy(){
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
-    this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+    this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
          this.grantData.changeMessage(info.grant);
 
         sectionName.val('');
@@ -707,7 +707,20 @@ ngOnDestroy(){
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-    });
+    },error => {
+                         const errorMsg = error as HttpErrorResponse;
+                         console.log(error);
+                         const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                         const config: Partial<IndividualConfig> = x;
+                         if(errorMsg.error.message==='Token Expired'){
+                          this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                          setTimeout( () => { this.appComp.logout(); }, 4000 );
+                         } else {
+                          this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                         }
+
+
+                       });
   }
 
   saveSectionAndAddNew() {
@@ -1220,7 +1233,7 @@ ngOnDestroy(){
   selectionClosed(){
     console.log('Closed');
   }
-  handleTypeChange(ev: Event, attr: Attribute){
+  handleTypeChange(ev: Event, attr: Attribute,sec:Section){
     attr.fieldValue = '';
     if(ev.toString()==='table'){
       if(attr.fieldValue.trim() === ''){
@@ -1249,8 +1262,8 @@ ngOnDestroy(){
         };
 
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-            + this.currentGrant.id + '/field/'+attr.id;
-        this.http.post<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
+            + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
+        this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
             this.grantData.changeMessage(info.grant);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
@@ -1465,7 +1478,7 @@ ngOnDestroy(){
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
 
-      this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+      this.http.put<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
            this.grantData.changeMessage(grant);
            const path = this.sidebar.buildSectionsSideNav();
                this.router.navigate([path]);

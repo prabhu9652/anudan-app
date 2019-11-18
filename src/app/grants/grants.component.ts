@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders,HTTP_INTERCEPTORS} from '@angular/common/http';
 import {User} from '../model/user';
 import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
@@ -14,7 +14,6 @@ import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -47,7 +46,8 @@ export class GrantsComponent implements OnInit {
   grantsActive = [];
   grantsClosed = [];
 
-  constructor(private http: HttpClient,
+  constructor(
+              private http: HttpClient,
               public appComponent: AppComponent,
               private router: Router,
               private route: ActivatedRoute,
@@ -237,7 +237,7 @@ export class GrantsComponent implements OnInit {
                   })
               };
 
-              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/';
+              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'+grant.id;
 
               this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));

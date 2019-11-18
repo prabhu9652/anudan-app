@@ -100,7 +100,7 @@ export class AdminLayoutComponent implements OnInit {
 
       this.intervalSubscription = interval(5000).subscribe(t => {
 
-            if(localStorage.getItem('USER')){
+            if(localStorage.getItem('USER')) {
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
                   const httpOptions = {
                     headers: new HttpHeaders({
@@ -134,7 +134,8 @@ export class AdminLayoutComponent implements OnInit {
 
                      });
                   }
-                  });
+                  }
+      );
   }
 
   ngAfterViewInit() {

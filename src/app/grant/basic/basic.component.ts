@@ -414,7 +414,7 @@ export class BasicComponent implements OnInit {
                 })
             };
 
-            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
+            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
@@ -595,7 +595,7 @@ export class BasicComponent implements OnInit {
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
-      this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+      this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
            this.grantData.changeMessage(info.grant);
 
           sectionName.val('');
@@ -608,7 +608,20 @@ export class BasicComponent implements OnInit {
           this.appComp.selectedTemplate = info.grant.grantTemplate;
 
           this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-      });
+      },error => {
+                                const errorMsg = error as HttpErrorResponse;
+                                console.log(error);
+                                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                const config: Partial<IndividualConfig> = x;
+                                if(errorMsg.error.message==='Token Expired'){
+                                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                 setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                } else {
+                                 this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                }
+
+
+                              });
     }
 
   saveSectionAndAddNew() {

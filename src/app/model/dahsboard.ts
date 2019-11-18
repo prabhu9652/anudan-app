@@ -259,6 +259,7 @@ export class Grant {
   noteAdded: Date;
   noteAddedBy: string;
   noteAddedByUser: User;
+  securityCode: string;
 }
 
 export class GrantSnapshot {
