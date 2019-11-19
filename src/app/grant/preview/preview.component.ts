@@ -68,6 +68,7 @@ export class PreviewComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   action: string;
+  logoUrl:string;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -114,6 +115,9 @@ export class PreviewComponent implements OnInit {
             this.appComp.createNewSection.next(false);
         }
     });
+
+  const tenantCode = localStorage.getItem('X-TENANT-CODE');
+  this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
     /*interval(3000).subscribe(t => {
 
@@ -872,10 +876,12 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
+
         if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
             this.router.navigate(['grants']);
         }
+
         //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });

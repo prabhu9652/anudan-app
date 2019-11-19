@@ -97,6 +97,10 @@ export class AdminLayoutComponent implements OnInit {
           ps = new PerfectScrollbar(elemSidebar);
       }
 
+      this.appComponent.initAppUI();
+      interval(30000).subscribe(t => {
+            this.appComponent.initAppUI();
+          });
 
       this.intervalSubscription = interval(5000).subscribe(t => {
 

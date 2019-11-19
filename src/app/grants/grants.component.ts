@@ -45,6 +45,7 @@ export class GrantsComponent implements OnInit {
   grantsDraft = [];
   grantsActive = [];
   grantsClosed = [];
+  logoURL:string;
 
   constructor(
               private http: HttpClient,
@@ -72,6 +73,9 @@ export class GrantsComponent implements OnInit {
         //this.fetchDashboard(user.id);
         }
     });
+
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoURL = "/api/public/images/"+tenantCode+"/logo";
   }
 
   createGrant(){
@@ -106,6 +110,7 @@ export class GrantsComponent implements OnInit {
 
   fetchDashboard(userId: string, grant: Grant) {
 
+  grant = null;
   if(grant){
     this.saveGrant(grant);
   }else{
@@ -239,7 +244,7 @@ export class GrantsComponent implements OnInit {
 
               const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'+grant.id;
 
-              this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
+              this.http.put<Grant>(url, grant, httpOptions).subscribe((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));
                       this.data.changeMessage(grant);
                       //this.setDateDuration();

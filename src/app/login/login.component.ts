@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   socialUser: SocialUser;
   headers: HttpHeaders;
   loggedIn: boolean;
+  logoURL:string;
   loginForm = new FormGroup({
     emailId: new FormControl('', Validators.email),
     password: new FormControl(''),
@@ -60,7 +61,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoURL = "/api/public/images/"+tenantCode+"/logo";
   }
 
   onSubmit() {
@@ -84,7 +86,7 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(user: AccessCredentials) {
-    console.log(localStorage.getItem('X-TENANT-CODE'));
+    //console.log(localStorage.getItem('X-TENANT-CODE'));
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

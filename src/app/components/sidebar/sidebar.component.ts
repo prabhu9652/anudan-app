@@ -71,6 +71,7 @@ export class SidebarComponent implements OnInit {
   platformMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
+  logoUrl: string;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
@@ -116,6 +117,8 @@ drop(event: CdkDragDrop<string[]>) {
       this.buildSectionsSideNav();
     });
 
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
 
     if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
