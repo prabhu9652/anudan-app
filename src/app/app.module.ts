@@ -36,7 +36,7 @@ import {MatBottomSheet, MatDatepickerModule, MatNativeDateModule,MatIconModule} 
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
-
+import { RecaptchaModule } from 'ng-recaptcha';
 
 const config = new AuthServiceConfig([
   {
@@ -73,6 +73,7 @@ export function provideConfig() {
     MatTooltipModule,
     AppRoutingModule,
     HttpClientModule,
+    RecaptchaModule,
     MDBBootstrapModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'

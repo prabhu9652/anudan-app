@@ -45,7 +45,7 @@ export class AppComponent implements AfterViewChecked{
   originalGrant: Grant;
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
-
+  failedAttempts = 0;
 
   public appConfig: AppConfig = {
     appName: '',
