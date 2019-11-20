@@ -5,14 +5,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-
-
-
 import {AppRoutingModule} from './app.routing';
 import {ComponentsModule} from './components/components.module';
-
 import {AppComponent} from './app.component';
-
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {TableListComponent} from './table-list/table-list.component';
 import {TypographyComponent} from './typography/typography.component';
@@ -43,6 +38,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
 import { ExportAsModule } from 'ngx-export-as';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 const config = new AuthServiceConfig([
   {
@@ -82,6 +78,7 @@ export function provideConfig() {
     MatBadgeModule,
     AppRoutingModule,
     HttpClientModule,
+    RecaptchaModule,
     MDBBootstrapModule.forRoot(),
     ExportAsModule,
     AgmCoreModule.forRoot({
@@ -108,7 +105,6 @@ export function provideConfig() {
       MatIconModule
   ],
   providers: [
-
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig,

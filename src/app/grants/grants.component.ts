@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders,HTTP_INTERCEPTORS} from '@angular/common/http';
 import {User} from '../model/user';
 import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
@@ -14,7 +14,6 @@ import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -54,8 +53,10 @@ export class GrantsComponent implements OnInit {
   grantsDraft = [];
   grantsActive = [];
   grantsClosed = [];
+  logoURL:string;
 
-  constructor(private http: HttpClient,
+  constructor(
+              private http: HttpClient,
               public appComponent: AppComponent,
               private router: Router,
               private route: ActivatedRoute,
@@ -80,6 +81,9 @@ export class GrantsComponent implements OnInit {
         //this.fetchDashboard(user.id);
         }
     });
+
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoURL = "/api/public/images/"+tenantCode+"/logo";
   }
 
   createGrant(){
@@ -115,6 +119,7 @@ export class GrantsComponent implements OnInit {
 
   fetchDashboard(userId: string, grant: Grant) {
 
+  grant = null;
   if(grant){
     this.saveGrant(grant);
   }else{
@@ -178,7 +183,7 @@ export class GrantsComponent implements OnInit {
                                 alert("Your session has timed out. Please sign in again.")
                                 this.appComponent.logout();
                                } else {
-                                this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                                }
 
 
@@ -246,9 +251,9 @@ export class GrantsComponent implements OnInit {
                   })
               };
 
-              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'+this.currentGrant.id;
+              const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'+grant.id;
 
-              this.http.put(url, grant, httpOptions).toPromise().then((grant: Grant) => {
+              this.http.put<Grant>(url, grant, httpOptions).subscribe((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));
                       this.data.changeMessage(grant);
                       //this.setDateDuration();
@@ -270,7 +275,7 @@ export class GrantsComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComponent.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                                 }
 
 

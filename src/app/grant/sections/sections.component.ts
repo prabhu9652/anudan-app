@@ -362,7 +362,7 @@ ngOnDestroy(){
                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                 } else {
-                 this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.", config);
+                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                 }
 
 
@@ -505,7 +505,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
+                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                          }
 
 
@@ -703,7 +703,7 @@ ngOnDestroy(){
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
-    this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+    this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
          this.grantData.changeMessage(info.grant);
 
         sectionName.val('');
@@ -715,15 +715,20 @@ ngOnDestroy(){
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-    },
-              error => {
-                const errorMsg = error as HttpErrorResponse;
-                console.log(error);
-                this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                  enableHtml: true
-                });
-                $(createSectionModal).modal('hide');
-              });
+    },error => {
+                         const errorMsg = error as HttpErrorResponse;
+                         console.log(error);
+                         const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                         const config: Partial<IndividualConfig> = x;
+                         if(errorMsg.error.message==='Token Expired'){
+                          this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                          setTimeout( () => { this.appComp.logout(); }, 4000 );
+                         } else {
+                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                         }
+
+
+                       });
   }
 
   saveSectionAndAddNew() {
@@ -929,7 +934,7 @@ ngOnDestroy(){
                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
                 setTimeout( () => { this.appComp.logout(); }, 4000 );
                } else {
-                this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
+                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                }
 
 
@@ -943,7 +948,7 @@ ngOnDestroy(){
          this.toastr.error("Your session has expired", 'Logging you out now...', config);
          setTimeout( () => { this.appComp.logout(); }, 4000 );
         } else {
-         this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
+         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
         }
 
 
@@ -1236,7 +1241,7 @@ ngOnDestroy(){
   selectionClosed(){
     console.log('Closed');
   }
-  handleTypeChange(ev: Event, attr: Attribute, section: Section){
+  handleTypeChange(ev: Event, attr: Attribute,sec:Section){
     attr.fieldValue = '';
     if(ev.toString()==='table'){
       if(attr.fieldValue.trim() === ''){
@@ -1265,7 +1270,7 @@ ngOnDestroy(){
         };
 
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-            + this.currentGrant.id + '/section/'+section.id+'/field/'+attr.id;
+            + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
         this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
             this.grantData.changeMessage(info.grant);
         this.appComp.sectionInModification = false;
@@ -1280,7 +1285,7 @@ ngOnDestroy(){
                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
                   setTimeout( () => { this.appComp.logout(); }, 4000 );
                  } else {
-                  this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
+                  this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                  }
 
 
@@ -1481,7 +1486,7 @@ ngOnDestroy(){
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
 
-      this.http.delete<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+      this.http.put<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
            this.grantData.changeMessage(grant);
            const path = this.sidebar.buildSectionsSideNav();
                this.router.navigate([path]);
@@ -1494,7 +1499,7 @@ ngOnDestroy(){
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error(errorMsg.error.message,"Oops! We encountered an error.",  config);
+                     this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                     }
 
 
@@ -1784,11 +1789,11 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
     processSelectedFiles(section,attribute,event){
         const files = event.target.files;
 
-
-        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/attribute/'+attribute.id+'/upload';
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/section/'+section.id+'/attribute/'+attribute.id+'/upload';
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
+
               const fileExistsCheck=this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')));
                 if(fileExistsCheck.status){
                                 alert("Document " + files.item(i).name + ' is already attached under ' + fileExistsCheck.message);
@@ -1796,7 +1801,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                                 return;
                             }
               }
-
+              formData.append('grantToSave',JSON.stringify(this.currentGrant));
 
               const httpOptions = {
                   headers: new HttpHeaders({
@@ -1809,7 +1814,20 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                   this.grantData.changeMessage(info.grant)
                   this.currentGrant = info.grant;
                    this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
-                  });
+                  },error => {
+                                       const errorMsg = error as HttpErrorResponse;
+                                       console.log(error);
+                                       const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                       const config: Partial<IndividualConfig> = x;
+                                       if(errorMsg.error.message==='Token Expired'){
+                                        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                        setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                       } else {
+                                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                       }
+
+
+                                     });
     }
 
     _checkAttachmentExists(filename):any{

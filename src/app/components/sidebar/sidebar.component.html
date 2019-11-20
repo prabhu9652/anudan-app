@@ -5,13 +5,13 @@
 
 
             <div style="display:flex;align-items:center;">
-                <img [src]="appComponent.appConfig.logoUrl" alt="logo" class="nav-link float-left" style="width:40%;">
+                <img [src]="logoUrl" alt="logo" class="nav-link float-left" style="width:40%;">
                 <strong>{{appComponent.loggedInUser.organization.name}}</strong>
             </div>
 
         </li>
 
-        <ng-container *ngIf="appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications'">
+        <ng-container *ngIf="appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile'">
             <ng-container *ngFor="let menuItem of menuItems">
             <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
                 class="{{menuItem.class}} nav-item text-left">
@@ -136,16 +136,16 @@
             <p class="text-white font-weight-bolder text-left m-0"><img src="./assets/img/avatar.svg" class="w-10 mr-2" style="width:10%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}</p>
         </mat-panel-title>
     </mat-expansion-panel-header>
-    <div style="background:#424652; height:100%;">
-        <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
-            <a class="" (click)="showProfile()">
+    <ul class="nav" style="background:#424652; height:100%;">
+        <li routerLinkActive="active" class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
+            <a class="nav-link" routerLinkActive="active" (click)="showProfile()">
                 <p class="pl-5 pt-2 text-left text-light">Profile</p>
             </a>
-        </div>
-        <div class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
-            <a class="" (click)="appComponent.logout()">
+        </li>
+        <li routerLinkActive="active" class="nav-item" *ngIf="appComponent.loggedInUser && isMobileMenu()" style="background:#424652;">
+            <a class="nav-link" (click)="appComponent.logout()">
                 <p class="pl-5 pt-2 text-left text-light">Logout</p>
             </a>
-        </div>
-    </div>
+        </li>
+    </ul>
 </mat-expansion-panel>

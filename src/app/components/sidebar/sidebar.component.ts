@@ -86,6 +86,7 @@ export class SidebarComponent implements OnInit {
   reportMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
+  logoUrl: string;
   hasUnreadMessages = false;
   unreadMessages = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
@@ -135,6 +136,8 @@ drop(event: CdkDragDrop<string[]>) {
       this.buildSectionsSideNav();
     });
 
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
 
     if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
@@ -226,7 +229,7 @@ drop(event: CdkDragDrop<string[]>) {
   };
 
   showProfile() {
-    this.appComponent.currentView = 'user-profile'
+    this.appComponent.currentView = 'user-profile';
     this.router.navigate(['user-profile']);
   }
 

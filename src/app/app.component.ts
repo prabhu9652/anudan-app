@@ -47,7 +47,7 @@ export class AppComponent implements AfterViewChecked{
   originalGrant: Grant;
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
-
+  failedAttempts = 0;
 
   public appConfig: AppConfig = {
     appName: '',
@@ -102,7 +102,8 @@ export class AppComponent implements AfterViewChecked{
 
 
     this.loggedInUser = localStorage.getItem('USER') === 'undefined' ? {} : JSON.parse(localStorage.getItem('USER'));
-    this.initAppUI();
+    //this.initAppUI();
+    //this.getLogo()
     const isLocal = this.isLocalhost();
     if ( this.loggedIn ) {
       this.router.navigate(['/grants']);
@@ -111,9 +112,9 @@ export class AppComponent implements AfterViewChecked{
     }
 
 
-    interval(5000).subscribe(t => {
-      this.initAppUI();      
-    });
+    /*interval(30000).subscribe(t => {
+      this.initAppUI();
+    });*/
 
 
 
@@ -152,13 +153,18 @@ interval(10000).subscribe(t => {
     return subDomain;
   }
 
-
   getAppUI(hostName) {
     //console.log('hostName = ' + hostName);
-    const url = '/api/public/config/'.concat(hostName);
-    this.confgSubscription = this.httpClient.get<HttpResponse<AppConfig>>(url, {observe: 'response'}).subscribe((response) => {
-      const newObj: any = response.body;
-      this.appConfig = newObj as AppConfig;
+    const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+        };
+    const url = '/api/app/config/'.concat(hostName);
+    this.confgSubscription = this.httpClient.get<AppConfig>(url,httpOptions).subscribe((response) => {
+      this.appConfig = response;
       localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
 
     },error => {
@@ -172,7 +178,7 @@ interval(10000).subscribe(t => {
                              alert("Your session has timed out. Please sign in again.")
                              this.logout();
                             } else {
-                             this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                             this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                             }
 
 

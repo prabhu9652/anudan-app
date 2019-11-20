@@ -67,15 +67,11 @@
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
                                           (click)="manageGrant(grant)">
                                    
-                                    <div class="col-2">
-                                        <img class="img-fluid" 
-                                             [src]="'api/public/images/'+grant.grantorOrganization.code+'/'+grant.grantorOrganization.imageName"
-                                             alt="org logo">
-                                    </div>
-                                    <div class="col-9 text-left">
+
+                                    <div class="col-8 text-left">
                                         
                                         <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
-                                        <p>INR {{grant.amount}}</p>
+                                        <p>₹ <span class="text-header">{{grant.amount}}</span></p>
                                         <div class="row">
                                             <div class="col-6">
                                                 <span *ngIf="grant.organization">{{grant.organization?grant.organization.name:null}}</span>
@@ -87,7 +83,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-4">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
                                     </div>
                                 </div>
@@ -101,15 +97,10 @@
                                 </mat-expansion-panel-header>
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
                                           (click)="manageGrant(grant)">
-                                    <div class="col-2">
-                                        <img class="img-fluid" 
-                                             [src]="'api/public/images/'+grant.grantorOrganization.code+'/'+grant.grantorOrganization.imageName"
-                                             alt="org logo">
-                                    </div>
-                                    <div class="col-9 text-left">
+                                    <div class="col-8 text-left">
                                         
                                         <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
-                                        <p>INR {{grant.amount}}</p>
+                                        <p>₹ <span class="text-header">{{grant.amount}}</span></p>
                                         <div class="row">
                                             <div class="col-6">
                                                 {{grant.organization?grant.organization.name:null}}
@@ -121,7 +112,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-4">
                                         <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
                                     </div>
                                 </div>

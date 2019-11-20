@@ -27,6 +27,9 @@ export class LoginComponent implements OnInit {
   socialUser: SocialUser;
   headers: HttpHeaders;
   loggedIn: boolean;
+  logoURL:string;
+  recaptchaToken:string;
+  //recaptchaVisible = false;
   loginForm = new FormGroup({
     emailId: new FormControl('', Validators.email),
     password: new FormControl(''),
@@ -49,7 +52,8 @@ export class LoginComponent implements OnInit {
         username: this.socialUser.email,
         password: '',
         provider: this.provider,
-        role: 'user'
+        role: 'user',
+        recaptchaToken:''
       };
       this.signIn(user);
     });
@@ -60,17 +64,23 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoURL = "/api/public/images/"+tenantCode+"/logo";
   }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
+    if(this.recaptchaToken===undefined){
+        alert("Please tick on reCaptcha to let us know that you're not a bot.");
+        return;
+    }
     console.warn(this.loginForm.value);
     const user: AccessCredentials = {
       username: this.emailId.value,
       password: this.password.value,
       provider: 'ANUDAN',
-      role: 'user'
+      role: 'user',
+      recaptchaToken: this.recaptchaToken
     };
     this.signIn(user);
   }
@@ -84,7 +94,7 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(user: AccessCredentials) {
-    console.log(localStorage.getItem('X-TENANT-CODE'));
+    //console.log(localStorage.getItem('X-TENANT-CODE'));
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -123,6 +133,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error => {
+
         const errorMsg = error as HttpErrorResponse;
         console.log(error);
         this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
@@ -137,6 +148,10 @@ export class LoginComponent implements OnInit {
 
   signup() {
     this.router.navigate(['registration'])
+  }
+
+  resolved(evt){
+    this.recaptchaToken = evt;
   }
 
 }

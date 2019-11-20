@@ -1,19 +1,28 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {User} from '../model/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ErrorMessage} from '../model/error-message';
 import {AppComponent} from '../app.component';
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
+
 declare var $: any;
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  styleUrls: ['./user-profile.component.css'],
+  styles:[`
+        ::ng-deep .mat-tooltip  {
+            white-space: pre-line    !important;
+            text-align: left;
+            font-size: 12px;
+        }
+  `]
 })
 export class UserProfileComponent implements OnInit {
 
   user: User;
-  constructor(private http: HttpClient, private elem: ElementRef, private appComp: AppComponent) {}
+  constructor(private http: HttpClient, private elem: ElementRef, private appComp: AppComponent,private toastr: ToastrService) {}
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('USER'));
@@ -55,7 +64,7 @@ export class UserProfileComponent implements OnInit {
         alert(result.message);
       } else {
         url = '/api/users/' + this.user.id + '/pwd';
-        this.http.post(url, newPwdElem.value, httpOptions).subscribe((user: User) => {
+        this.http.post(url, [oldPwdElem.value,newPwdElem.value,repeatPwdElem.value], httpOptions).subscribe((user: User) => {
           localStorage.removeItem('USER');
           localStorage.setItem('USER', JSON.stringify(user));
           this.appComp.loggedInUser = user;
@@ -64,9 +73,35 @@ export class UserProfileComponent implements OnInit {
           newPwdElem.value='';
           repeatPwdElem.value='';
           $(changePwdModalElem).modal('hide');
-        });
+        },error => {
+                                      const errorMsg = error as HttpErrorResponse;
+                                      console.log(error);
+                                      const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                      const config: Partial<IndividualConfig> = x;
+                                      if(errorMsg.error.message==='Token Expired'){
+                                       this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                       setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                      } else {
+                                       this.toastr.error(errorMsg.error.message,"Error", config);
+                                      }
+
+
+                                    });
       }
-    });
+    },error => {
+                                  const errorMsg = error as HttpErrorResponse;
+                                  console.log(error);
+                                  const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                  const config: Partial<IndividualConfig> = x;
+                                  if(errorMsg.error.message==='Token Expired'){
+                                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                   setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                  } else {
+                                   this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                  }
+
+
+                                });
   }
 
 
@@ -80,7 +115,7 @@ export class UserProfileComponent implements OnInit {
       })
     };
 
-    const url = '/api/users/';
+    const url = '/api/users/'+this.user.id;
     this.http.put(url, this.user, httpOptions).subscribe((user: User) => {
       localStorage.removeItem('USER');
 
@@ -94,6 +129,26 @@ export class UserProfileComponent implements OnInit {
               }
       this.appComp.loggedInUser = user;
       localStorage.setItem('USER', JSON.stringify(user));
-    });
+    },error => {
+                             const errorMsg = error as HttpErrorResponse;
+                             console.log(error);
+                             const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                             const config: Partial<IndividualConfig> = x;
+                             if(errorMsg.error.message==='Token Expired'){
+                              this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                              setTimeout( () => { this.appComp.logout(); }, 4000 );
+                             } else {
+                              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                             }
+
+
+                           });
+  }
+
+  getStringFromHtml(text){
+        const html = text;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        return div.textContent || div.innerText || '';
   }
 }

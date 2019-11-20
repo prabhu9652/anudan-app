@@ -6,7 +6,7 @@
 
         <div class="card-body px-lg-5 py-lg-5">
           <div class="card-img-top">
-            <img [src]="appComponent.appConfig.logoUrl" alt="logo" class="img-fluid">
+            <img [src]="logoURL" alt="logo" class="img-fluid">
             <p class="mt-4" style="font-size: 14px;">Grant management simplified.</p>
           </div>
           <form id="formLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -20,12 +20,11 @@
 
               <!-- <label for="password">Password</label> -->
               <div class="input-group input-group-alternative form-group-email">
-                <input type="password" class="form-control form-control-sm" id="password"
+                <input type="password" class="form-control form-control-sm mb-2" id="password"
                        placeholder="Password" formControlName="password" required="true">
 
               </div>
-
-
+            <re-captcha (resolved)="resolved($event)" type="image" siteKey="6Lf5a8MUAAAAAKqjna6CP8EZ0kFHs3F261hT29oq"></re-captcha>
             <button id="btn-signin" class="btn anu-btn w-100 mx-0 mt-3" style="background: #4DC252" type="submit" [disabled]="!loginForm.valid">
               Sign In
             </button>
@@ -46,9 +45,9 @@
           </div>
         </div>
       </div>
-      <div class="text-center f-12">
+      <!--<div class="text-center f-12">
         <div class="w-100">Seeking Grants?<a class="ml-2 text-green" (click)="signup()">Sign up!</a></div>
-      </div>
+      </div>-->
       <div class="text-center f-12">
         <div class="w-100">v1.0.0 build 176</div>
       </div>

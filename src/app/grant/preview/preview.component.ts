@@ -16,7 +16,7 @@ import {SubmissionDataService} from '../../submission.data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
+import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
 import {Colors} from '../../model/app-config';
@@ -69,6 +69,7 @@ export class PreviewComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   action: string;
+  logoUrl:string;
   exportAsConfig: ExportAsConfig = {
       type: 'pdf', // the type you want to download
       elementId: 'grantSummary', // the id of html/table element
@@ -125,6 +126,9 @@ export class PreviewComponent implements OnInit {
             this.appComp.createNewSection.next(false);
         }
     });
+
+  const tenantCode = localStorage.getItem('X-TENANT-CODE');
+  this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
     /*interval(3000).subscribe(t => {
 
@@ -584,7 +588,7 @@ export class PreviewComponent implements OnInit {
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
-      this.http.get<SectionInfo>(url, httpOptions).subscribe((info: SectionInfo) => {
+      this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
            this.grantData.changeMessage(info.grant);
 
           sectionName.val('');
@@ -597,7 +601,20 @@ export class PreviewComponent implements OnInit {
           this.appComp.selectedTemplate = info.grant.grantTemplate;
 
           this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-      });
+      },error => {
+                                const errorMsg = error as HttpErrorResponse;
+                                console.log(error);
+                                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                const config: Partial<IndividualConfig> = x;
+                                if(errorMsg.error.message==='Token Expired'){
+                                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                 setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                } else {
+                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                }
+
+
+                              });
     }
 
   saveSectionAndAddNew() {
@@ -803,7 +820,7 @@ export class PreviewComponent implements OnInit {
       let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
           + this.currentGrant.id + '/flow/'
           + this.currentGrant.grantStatus.id + '/' + toStateId;
-      this.http.post(url, message, httpOptions).subscribe((grant: Grant) => {
+      this.http.post(url, {grant: this.currentGrant,note:message}, httpOptions).subscribe((grant: Grant) => {
         /*this.loading = false;
 
         this.router.navigate(['grant']);*/
@@ -840,7 +857,20 @@ export class PreviewComponent implements OnInit {
             this.fetchCurrentGrant();
         }
 
-      });
+      },error => {
+                        const errorMsg = error as HttpErrorResponse;
+                        console.log(error);
+                        const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                        const config: Partial<IndividualConfig> = x;
+                        if(errorMsg.error.message==='Token Expired'){
+                         this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                         setTimeout( () => { this.appComp.logout(); }, 4000 );
+                        } else {
+                         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                        }
+
+
+                      });
   }
 
   fetchCurrentGrant(){
@@ -857,10 +887,12 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant);
         this.currentGrant = updatedGrant;
+
         if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
             this.router.navigate(['grants']);
         }
+
         //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
       });

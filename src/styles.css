@@ -588,8 +588,12 @@ background:#DAE3D9;
 }
 
 .mat-tooltip {
-    color: #3d3d3d !important;
-    background-color: azure !important;
+    color: #fff !important;
+    background-color: #4d4d4d !important;
+}
+.matTooltipClass{
+    white-space: pre-line;
+    font-size: 14px;
 }
 
 .pageWrapper {

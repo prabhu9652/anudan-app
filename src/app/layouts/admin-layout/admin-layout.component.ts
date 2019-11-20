@@ -107,13 +107,17 @@ export class AdminLayoutComponent implements OnInit {
           ps = new PerfectScrollbar(elemSidebar);
       }
 
+      this.appComponent.initAppUI();
+      interval(30000).subscribe(t => {
+            this.appComponent.initAppUI();
+          });
 
       this.intervalSubscription = interval(10000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
 
-            if(localStorage.getItem('USER')){
+            if(localStorage.getItem('USER')) {
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
                   const httpOptions = {
                     headers: new HttpHeaders({
@@ -150,13 +154,14 @@ export class AdminLayoutComponent implements OnInit {
                         alert("Your session has timed out. Please sign in again.")
                         this.appComponent.logout();
                        } else {
-                        this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                        }
 
 
                      });
                   }
-                  });
+                  }
+      );
   }
 
   ngAfterViewInit() {
@@ -262,7 +267,7 @@ export class AdminLayoutComponent implements OnInit {
                                                       alert("Your session has timed out. Please sign in again.")
                                                       this.appComponent.logout();
                                                      } else {
-                                                      this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                                      this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                                                      }
 
 
