@@ -132,7 +132,7 @@ export class AdminLayoutComponent implements OnInit {
                         alert("Your session has timed out. Please sign in again.")
                         this.appComponent.logout();
                        } else {
-                        this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                        }
 
 
@@ -243,7 +243,7 @@ export class AdminLayoutComponent implements OnInit {
                                                       alert("Your session has timed out. Please sign in again.")
                                                       this.appComponent.logout();
                                                      } else {
-                                                      this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                                      this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                                                      }
 
 

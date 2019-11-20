@@ -10,7 +10,14 @@ declare var $: any;
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  styleUrls: ['./user-profile.component.css'],
+  styles:[`
+        ::ng-deep .mat-tooltip  {
+            white-space: pre-line    !important;
+            text-align: left;
+            font-size: 12px;
+        }
+  `]
 })
 export class UserProfileComponent implements OnInit {
 
@@ -90,7 +97,7 @@ export class UserProfileComponent implements OnInit {
                                    this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                    setTimeout( () => { this.appComp.logout(); }, 4000 );
                                   } else {
-                                   this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                                   this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                                   }
 
 
@@ -131,10 +138,17 @@ export class UserProfileComponent implements OnInit {
                               this.toastr.error("Your session has expired", 'Logging you out now...', config);
                               setTimeout( () => { this.appComp.logout(); }, 4000 );
                              } else {
-                              this.toastr.error("Oops! We encountered an error.", errorMsg.error.message, config);
+                              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                              }
 
 
                            });
+  }
+
+  getStringFromHtml(text){
+        const html = text;
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        return div.textContent || div.innerText || '';
   }
 }
