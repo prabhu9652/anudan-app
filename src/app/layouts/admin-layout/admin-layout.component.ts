@@ -29,10 +29,6 @@ import {NotificationspopupComponent} from '../../components/notificationspopup/n
   styleUrls: ['./admin-layout.component.scss'],
   providers: [GrantComponent],
   styles: [`
-    ::ng-deep .mat-dialog-container{
-        padding: 0 !important;
-    }
-
     ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
         background:#EBEBEB !important;
         padding: 5px 20px !important;

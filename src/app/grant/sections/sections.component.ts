@@ -1789,11 +1789,11 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
     processSelectedFiles(section,attribute,event){
         const files = event.target.files;
 
-        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/section/'+section.id+'/attribute/'+attribute.id+'/upload';
+
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/attribute/'+attribute.id+'/upload';
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
-
               const fileExistsCheck=this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')));
                 if(fileExistsCheck.status){
                                 alert("Document " + files.item(i).name + ' is already attached under ' + fileExistsCheck.message);
@@ -1801,7 +1801,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                                 return;
                             }
               }
-              formData.append('grantToSave',JSON.stringify(this.currentGrant));
+
 
               const httpOptions = {
                   headers: new HttpHeaders({
@@ -1814,20 +1814,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                   this.grantData.changeMessage(info.grant)
                   this.currentGrant = info.grant;
                    this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
-                  },error => {
-                                       const errorMsg = error as HttpErrorResponse;
-                                       console.log(error);
-                                       const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                       const config: Partial<IndividualConfig> = x;
-                                       if(errorMsg.error.message==='Token Expired'){
-                                        this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                        setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                       } else {
-                                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
-                                       }
-
-
-                                     });
+                  });
     }
 
     _checkAttachmentExists(filename):any{
