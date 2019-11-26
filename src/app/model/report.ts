@@ -19,6 +19,7 @@ export class Report{
     duration: string;
     grant: Grant;
     canEdit: boolean;
+    canManage: boolean;
 }
 
 export class ReportDetails {
