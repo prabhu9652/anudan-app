@@ -25,6 +25,8 @@ import {TenantsComponent} from '../../admin/tenants/tenants.component';
 import {UpcomingReportsComponent} from '../../reports/upcoming-reports/upcoming-reports.component';
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
 import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
+import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
+import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -86,6 +88,8 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'reports/upcoming', component: UpcomingReportsComponent},
   {path: 'reports/submitted', component: SubmittedReportsComponent},
   {path: 'reports/approved', component: ApprovedReportsComponent},
+  {path: 'report/report-header', component: ReportHeaderComponent},
+  {path: 'report/section/:action', component: ReportSectionsComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

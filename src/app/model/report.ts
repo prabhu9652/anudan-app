@@ -1,4 +1,4 @@
-import {Grant, WorkflowStatus} from './dahsboard';
+import {Grant, WorkflowStatus,Section} from './dahsboard';
 import {User} from './user';
 
 export class Report{
@@ -13,8 +13,16 @@ export class Report{
     createdBy: User
     updatedAt: Date;
     updatedBy: User;
+    template: any;
+    reportDetails: ReportDetails;
     assignments:ReportAssignment[];
-    grant: Grant
+    duration: string;
+    grant: Grant;
+    canEdit: boolean;
+}
+
+export class ReportDetails {
+  sections: Section[];
 }
 
 export class ReportAssignment{
@@ -24,4 +32,21 @@ export class ReportAssignment{
     assignment: number;
     anchor: boolean;
     constructor(){}
+}
+
+export class ReportFieldInfo{
+    attributeId: number;
+    stringAttributeId: number;
+    report: Report;
+}
+
+export class ReportDocInfo{
+    attachmentId: number;
+    report: Report;
+}
+
+export class ReportSectionInfo{
+    sectionId: number;
+    sectionName: string;
+    report: Report;
 }

@@ -1,0 +1,405 @@
+<div class="row anu-container">
+  <div class="col-12 bg-white" style="position:sticky;top:112px;z-index:1040;">
+    <div class="row">
+      <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+        <ng-container *ngIf="action === getCleanText(section)">
+          <h4 class="col-8 text-left my-3 section-header">{{section.sectionName}}</h4>
+          <div class="col-3" style="display:flex; align-items: center;justify-content:flex-end;">
+            <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+               class="btn btn-sm btn-green">Add a Field<i class="fa fa-plus-square ml-2"></i></a>
+          </div>
+        </ng-container>
+      </ng-container>
+      <div class="col-1 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+        <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
+          <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
+        <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon>
+        <mat-menu #menu="matMenu">
+          <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+            <ng-container *ngIf="action === getCleanText(section)">
+              <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
+              <button mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
+            </ng-container>
+          </ng-container>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <div #container class="container text-left mt-2 px-3 py-2">
+
+      <div *ngIf="!currentReport.canManage">
+        <div class="row">
+          <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+            <div *ngIf="action === getCleanText(section)" [disabled]="true">
+              <h4 class="text-header-light">
+                {{section.sectionName}}
+              </h4>
+              <ng-container *ngFor="let attribute of section.attributes">
+                <ng-container *ngIf="attribute.fieldType==='text' || attribute.fieldType==='multiline'">
+                  <b>{{attribute.fieldName}}</b>
+                  <div>{{attribute.fieldValue}}</div>
+                </ng-container>
+                <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
+                  <div class="col-sm-12 col-lg-12 text-left mb-3">
+                    <div class="row mx-2">
+                      <mat-form-field>
+                        <input matInput class="col-3" [value]="attribute.fieldName" placeholder="KPI">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput class="col-3" [value]="attribute.target" placeholder="Target/Goal">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput class="col-3" [value]="attribute.frequency" placeholder="Frequency">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="attribute.fieldType=='table'">
+                  <div class="col-sm-12 col-lg-12 mb-3">
+                    {{attribute.fieldName}}
+                    <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldValue)"></div>
+                  </div>
+
+                </ng-container>
+                <mat-nav-list>
+                  <ng-container *ngIf="attribute.fieldType==='document'">
+                    <mat-list-item>
+                      <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+
+                            <span class="ml-3">
+                                <ng-container *ngIf="doc.type === 'pdf'">
+                                    <i class="fas fa-file-pdf text-danger"></i>
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                    <i class="fas fa-file-excel text-success"></i>
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                    <i class="fas fa-file-word text-primary"></i>
+                                </ng-container>
+                            {{doc.name}}</span>
+                      </ng-container>
+                    </mat-list-item>
+
+                  </ng-container>
+                </mat-nav-list>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+        <hr>
+      </div>
+      <!--MANAGEMENT SECTION-->
+      <div *ngIf="currentReport.canManage">
+
+        <div class="row">
+          <div class="col-12">
+
+            <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+              <div *ngIf="action === getCleanText(section)">
+                <div>
+                  <ng-container #sectionsContainer *ngFor="let attribute of section.attributes; let i=index">
+                    <div id="fieldBlock_{{attribute.id}}" class="row mb-4 mt-2" style="border:1px solid #ececec;border-radius:4px; padding: 20px; background: #FCFCFC;">
+                      <ng-container class="mb-2">
+                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
+                          <mat-form-field>
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   
+                                   matInput placeholder="Title">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
+                          <mat-form-field>
+
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   
+                                   matInput placeholder="Title">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
+                          <mat-form-field>
+
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   
+                                   matInput placeholder="Title">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
+                          <mat-form-field>
+
+                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                    [ngModelOptions]="{standAlone:true}"
+                                    
+                                    matInput placeholder="Title">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
+                          <mat-form-field>
+                            <input *ngIf="attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   
+                                   matInput placeholder="Title">
+                            <input *ngIf="!attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                                   [ngModelOptions]="{standAlone:true}"
+                                    readonly style="background:#F0F1F0 !important;"
+                                   matInput placeholder="Title">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 text-left">
+                          <mat-form-field>
+                            <mat-label>Type</mat-label>
+                            <mat-select *ngIf="attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
+                                        [ngModelOptions]="{standAlone:true}"
+                                        (ngModelChange)="handleTypeChange($event,attribute,section)">
+                              <mat-option value="none" aria-selected="true">--Select type
+                                of field--
+                              </mat-option>
+                              <mat-option value="multiline">Descriptive</mat-option>
+                              <mat-option value="kpi">Measurement/KPI</mat-option>
+                              <mat-option value="table">Tablular</mat-option>
+                              <mat-option value="document">Document</mat-option>
+                              <!--mat-op
+                              <!--mat-op
+                              <!--mat-option value="document">Document</mat-option-->
+                            </mat-select>
+                            <mat-select *ngIf="!attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
+                                        [ngModelOptions]="{standAlone:true}" (click)="changeFieldType()" (blur)="selectionClosed()"
+                                        (ngModelChange)="handleTypeChange($event,attribute,section)" readonly style="background:#F0F1F0 !important;">
+                              <mat-option value="none" aria-selected="true">--Select type
+                                of field--
+                              </mat-option>
+                              <mat-option value="multiline">Descriptive</mat-option>
+                              <mat-option value="kpi">Measurement/KPI</mat-option>
+                              <mat-option value="table">Tablular</mat-option>
+                              <mat-option value="document">Document</mat-option>
+                              <!--mat-op
+                              <!--mat-op
+                              <!--mat-option value="document">Document</mat-option-->
+                            </mat-select>
+
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Field Value"
+                                   >
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-lg-11 text-left" *ngIf="attribute.fieldType==='table'">
+                          <div class="row"><div class="col-12 text-right">
+                            <span (click)="addColumn(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a column</span>
+                          </div>
+                            <div style="margin-left:250px;"><i (click)="moveColsRight()" class="fas fa-arrow-alt-circle-left mr-3"></i><i (click)="moveColsLeft()" class="fas fa-arrow-alt-circle-right"></i></div>
+                          </div>
+                          <div id="tableArea" class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
+                            <table id="tablePlaceholder">
+                              <tr>
+                                <td width="20%" style="min-width:250px;position: sticky; left: 0; z-index: 1;background: rgb(244,244,244)">&nbsp;</td>
+                                <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
+
+                                  <td style="border: 1px solid #e4e4e4;">
+                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
+                                              aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
+                                              aria-label="Example home icon" inline="true" title="Delete this column">
+                                      delete_outline
+                                    </mat-icon>
+                                    <mat-form-field>
+                                      <input id="column_{{column.id}}" matInput [(ngModel)]="column.name" class="anu-input"
+                                             [ngModelOptions]="{standAlone:true}"
+                                             placeholder="Column description"
+                                             >
+                                    </mat-form-field>
+                                  </td>
+
+                                </ng-container>
+                              </tr>
+                              <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
+                                <tr>
+                                  <td width="20%" style="position: sticky; left: 0; z-index: 1;background: rgb(244,244,244)">
+                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
+                                              aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
+                                              aria-label="Example home icon" inline="true" title="Delete this row">
+                                      delete_outline
+                                    </mat-icon>
+                                    <mat-form-field>
+                                    <textarea matInput [(ngModel)]="row.name" class="anu-input"
+                                              [ngModelOptions]="{standAlone:true}"
+                                              placeholder="Row description"
+                                              ></textarea>
+                                    </mat-form-field>
+                                  </td>
+                                  <ng-container *ngFor="let column of row.columns">
+                                    <td style="border: 1px solid #e4e4e4;min-width:200px;padding-top:0;">
+                                      <mat-form-field>
+                                        <input matInput [(ngModel)]="column.value" class="anu-input"
+                                               [ngModelOptions]="{standAlone:true}"
+                                               placeholder="Value"
+                                               >
+                                      </mat-form-field>
+                                    </td>
+                                  </ng-container>
+                                </tr>
+                              </ng-container>
+                            </table>
+                          </div>
+                          <div class="row"><div class="col-12">
+                            <span (click)="addRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
+                          </div></div>
+
+                        </div>
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && !attribute.canEdit">
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="attribute.grantLevelTarget" class="anu-input"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Grant Level Target/Goal" readonly style="background:#F0F1F0 !important;"
+                                   >
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="attribute.target" class="anu-input"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Report Target/Goal"
+                                   >
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && attribute.canEdit">
+                          <mat-form-field>
+                            <mat-label>Reporting Frequency</mat-label>
+                            <mat-select [(ngModel)]="attribute.frequency"  class="anu-input"
+                                        [ngModelOptions]="{standAlone:true}">
+                              <mat-option value="none" aria-selected="true">--Select type
+                                of field--
+                              </mat-option>
+                              <mat-option value="monthly">Monthly</mat-option>
+                              <mat-option value="quarterly">Quarterly</mat-option>
+                              <mat-option value="half-yearly">Half Yearly</mat-option>
+                              <mat-option value="yearly">Yearly</mat-option>
+                            </mat-select>
+
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='multiline'">
+                          <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
+                                    [required]="attribute.deletable?'required':''"
+                                    [ngModelOptions]="{standAlone:true}"
+                                    ></textarea>
+                        </div>
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='document'">
+                          <div style="display:flex;align-items: baseline;" class="attachments-wrapper">
+                            <div class="col-8 pl-0 pr-1">
+                              <form class="example-form">
+                                <mat-form-field class="example-chip-list">
+                                  <mat-chip-list #chipList aria-label="Fruit selection">
+                                    <!--<mat-chip
+                                      *ngFor="let fruit of attribute.docs"
+                                      [selectable]="selectable"
+                                      [removable]="removable"
+                                      (removed)="remove(attribute, fruit)">
+                                      {{fruit.name}}
+                                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                    </mat-chip>-->
+                                    <button class="btn btn-sm btn-blue w-100" [matAutocomplete]="auto"><img src="./assets/img/library.svg" class="w-10 mr-2" style="width:24px;">Browse from library</button>
+                                    <input id="templateLib_{{attribute.id}}" class="anu-input" style="max-width: 0; height: 0; padding: 0 !important; margin: 0;"
+                                           #fruitInput
+                                           [formControl]="myControl"
+                                           [matAutocomplete]="auto"
+                                           [matChipInputFor]="chipList"
+                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                           [matChipInputAddOnBlur]="addOnBlur">
+                                  </mat-chip-list>
+                                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected(attribute, $event)">
+                                    <ng-container *ngFor="let doc of filteredOptions | async">
+                                      <mat-option [value]="doc" [disabled]="checkIfSelected(doc)">
+                                        {{doc.name}}
+                                      </mat-option>
+                                    </ng-container>
+
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                              </form>
+                            </div>
+                            <div class="col-4 pr-0">
+                              <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green w-100"><img src="./assets/img/computer.svg" class="w-10 mr-2" style="width:24px;">Browse from system</label>
+                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(section,attribute,$event)">
+                            </div>
+                          </div>
+                          <mat-nav-list>
+                            <ng-container *ngFor="let attachment of attribute.attachments">
+                              <mat-list-item>
+                                <a>
+                                  <img src="./assets/img/trash.svg" (click)="deleteAttachment(attribute.id, attachment.id)" style="width: 16px;opacity: 0.75;">
+                                </a>
+
+                                <p id="fileAttachment_{{attachment.id}}" mat-line style="border-bottom: 1px solid #d4d4d4;padding-left: 0;">{{attachment.name + '.' + attachment.type}}</p>
+                                <input id="attriute_{{attribute.id}}_attachment_{{attachment.id}}" mat-list-icon class="attachment-checkbox" type="checkbox" (change)="handleSelection(attribute.id,attachment.id)">
+                              </mat-list-item>
+                            </ng-container>
+                            <mat-list-item *ngIf="attribute.attachments && attribute.attachments.length >0">
+
+                              <button id="attachments_download_{{attribute.id}}" class="btn btn-sm btn-blue" disabled (click)="downloadSelection(attribute.id)">
+                                Download Selected Documents
+                              </button>
+                            </mat-list-item>
+                          </mat-nav-list>
+                        </div>
+                      </ng-container>
+                      <div class="col-12">
+                        <div class="row mt-3">
+                          <div class="col-12 text-right">
+                            <a [class]="i===0?'isDisabled':''" (click)="moveTo(section,attribute,i===0?null:section.attributes[i-1])"><img src="./assets/img/chevron-up.svg" class="w-10 mr-2" style="width:24px;"></a>
+                            <a [class]="i===section.attributes.length-1?'isDisabled':''" (click)="moveTo(section,attribute,i===section.attributes.length-1?null:section.attributes[i+1])"><img src="./assets/img/chevron-down.svg" class="w-10 mr-2" style="width:24px;"></a>
+                            <a><img src="./assets/img/Line.svg" class="w-10 mr-2" style="width:1px;"></a>
+                            <a>
+                              <img src="./assets/img/trash.svg" (click)="confirm(section.id,attribute.id,[],0,'field','Delete field ' + attribute.fieldName + '?')" class="w-10 mr-2" style="width:24px;">
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createSectionLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+          <input id="sectionTitleInput" class="form-control" value="">
+        </div>
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="saveSection()">Done
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>

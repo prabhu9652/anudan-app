@@ -15,7 +15,7 @@
                                 </mat-expansion-panel-header>
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
-                                     *ngFor="let report of reportsToSetup; let i = index">
+                                     *ngFor="let report of reportsToSetup; let i = index" (click)="manageReport(report)">
                                     <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
                                         {{report.grant.name}}</p>
                                     </div>
@@ -80,7 +80,7 @@
                         <mat-tab label="Reports Due in Future">
                             <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                  style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
-                                 *ngFor="let report of futureReportsToSetup; let i = index">
+                                 *ngFor="let report of futureReportsToSetup; let i = index" (click)="manageReport(report)">
                               <div class="col-12"><p class="text-subheader text-left mb-0">
                                 {{report.grant.name}}</p>
                               </div>

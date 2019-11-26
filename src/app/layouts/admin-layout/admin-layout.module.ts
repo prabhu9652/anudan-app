@@ -65,6 +65,10 @@ import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcomin
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
 import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
 import { SectionEditComponent } from '../../components/section-edit/section-edit.component';
+import { ReportComponent } from '../../reports/report/report.component';
+import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
+import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
+import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
 
 
 @NgModule({
@@ -133,7 +137,11 @@ import { SectionEditComponent } from '../../components/section-edit/section-edit
         UpcomingReportsComponent,
         SubmittedReportsComponent,
         ApprovedReportsComponent,
-        SectionEditComponent
+        SectionEditComponent,
+        ReportComponent,
+        ReportHeaderComponent,
+        ReportSectionsComponent,
+        ReportPreviewComponent
     ],
     entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent],
     schemas: [NO_ERRORS_SCHEMA]

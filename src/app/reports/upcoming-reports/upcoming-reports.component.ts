@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {ReportDataService} from '../../report.data.service'
+import {SingleReportDataService} from '../../single.report.data.service'
 import {Report} from '../../model/report'
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 
 @Component({
   selector: 'app-upcoming-reports',
@@ -15,11 +17,15 @@ export class UpcomingReportsComponent implements OnInit {
     reportEndDate: Date;
     reportsToSetup: Report[];
     futureReportsToSetup: Report[];
+    subscribers: any = {};
 
     constructor(
         private reportService: ReportDataService,
+        private singleReportService: SingleReportDataService,
         private http: HttpClient,
-        private appComp: AppComponent){}
+        private router: Router,
+        private appComp: AppComponent){
+        }
 
   ngOnInit() {
     this.reportService.currentMessage.subscribe(r => {
@@ -56,6 +62,12 @@ export class UpcomingReportsComponent implements OnInit {
 
         console.log(this.reportStartDate + "    " + this.reportEndDate);
     });
+  }
+
+  manageReport(report:Report){
+    this.appComp.currentView = 'report';
+    this.singleReportService.changeMessage(report);
+    this.router.navigate(['report/report-header']);
   }
 
 }

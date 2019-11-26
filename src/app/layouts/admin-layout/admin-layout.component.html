@@ -20,10 +20,9 @@
 
     <div class="main-panel">
         <!--<app-navbar></app-navbar>-->
-        <div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'user-profile'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #000;background-color:#E4E4E4"><a (click)="showAllGrants(currentGrant)" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container>
-
-        </div>
-        <div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
+        <div *ngIf="appComponent.currentView === 'grant'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #000;background-color:#E4E4E4"><a (click)="showAllGrants(currentGrant)" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentGrant">{{currentGrant.name}}</ng-container></div>
+        <div *ngIf="appComponent.currentView === 'report'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #000;background-color:#E4E4E4"><a (click)="showUpcomingReports()" class="text-green"><b>Home</b></a> > <ng-container *ngIf="currentReport">{{currentReport.name}}</ng-container></div>
+        <div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'upcoming' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
             <div class="col-12">
                 <div class="float-right ml-2">
                     <a (click)="showWorkflowAssigments()"><img src="./assets/img/wfassignmnet.svg" style="width:25px;"></a>
@@ -38,7 +37,7 @@
                 </div>
                 <br>
                 <div class="float-left" *ngIf="appComponent.action !== 'preview'">
-                    <b><small>Based on template '{{appComponent.selectedTemplate.name}}'</small></b>
+                    <b><small *ngIf="appComponent.selectedTemplate">Based on template '{{appComponent.selectedTemplate.name}}'</small></b>
                 </div>
             </div>
         </div>

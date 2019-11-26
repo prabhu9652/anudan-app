@@ -13,6 +13,7 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications,WorkflowAssignmentModel,WorkflowAssignment} from '../../model/dahsboard';
+import {Report} from '../../model/report';
 import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -20,6 +21,7 @@ import {interval} from 'rxjs';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
+import {SingleReportDataService} from '../../single.report.data.service'
 
 
 
@@ -39,6 +41,7 @@ export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
   private lastPoppedUrl: string;
   currentGrant: Grant;
+  currentReport: Report;
   grantToUpdate: Grant;
   private yScrollStack: number[] = [];
   action: any;
@@ -58,12 +61,16 @@ export class AdminLayoutComponent implements OnInit {
     , private http: HttpClient
     , private toastr:ToastrService
     , grantComponent: GrantComponent
-    , private dialog: MatDialog) {
+    , private dialog: MatDialog
+    , private singleReportDataService: SingleReportDataService) {
     
   }
 
   ngOnInit() {
   this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+  this.singleReportDataService.currentMessage.subscribe((report) => {
+      this.currentReport = report;
+  });
 
       this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
@@ -193,6 +200,7 @@ export class AdminLayoutComponent implements OnInit {
 
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
+     this.appComponent.reportSaved = true;
 
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
@@ -363,6 +371,11 @@ showMessages(){
                   }
                   });
 
+  }
+
+  showUpcomingReports(){
+  this.appComponent.currentView = 'upcoming';
+    this.router.navigate(['reports/upcoming']);
   }
 
 }

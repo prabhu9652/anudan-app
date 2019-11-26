@@ -43,10 +43,12 @@ export class AppComponent implements AfterViewChecked{
   sectionInModification = false;
   currentTenant: Tenant;
   grantSaved = false;
+  reportSaved = true;
   confgSubscription: any;
   originalGrant: Grant;
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
+  createNewReportSection = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
 
   public appConfig: AppConfig = {

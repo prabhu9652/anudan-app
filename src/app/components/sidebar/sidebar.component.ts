@@ -2,7 +2,9 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@ang
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
+import {SingleReportDataService} from '../../single.report.data.service';
 import {Grant, Notifications} from '../../model/dahsboard';
+import {Report} from '../../model/report';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatDialog} from '@angular/material';
@@ -41,6 +43,11 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
+export const SINGLE_REPORT_ROUTES: RouteInfo[] = [
+    { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '' },
+    { path: '/grant/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '' }
+];
+
 export const REPORT_ROUTES: RouteInfo[] = [
     { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '' },
     { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '' },
@@ -57,6 +64,7 @@ export const ORGANIZATION_ROUTES: RouteInfo[] = [
   { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
+export let REPORT_SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
     { path: '/workflow-management', title: 'Manage Workflows',  icon:'person', class: '' }
@@ -81,11 +89,14 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
   grantMenuItems: any[];
   sectionMenuItems: any[];
+  reportSectionMenuItems: any[];
   adminMenuItems: any[];
   platformMenuItems: any[];
   reportMenuItems: any[];
+  singleReportMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
+  currentReport: Report;
   logoUrl: string;
   hasUnreadMessages = false;
   unreadMessages = 0;
@@ -100,6 +111,7 @@ export class SidebarComponent implements OnInit {
   private router: Router,
   private activatedRoute: ActivatedRoute,
   private grantData: GrantDataService,
+  private singleReportDataService: SingleReportDataService,
   private ref:ChangeDetectorRef,
   private elRef: ElementRef,
   private dialog: MatDialog,
@@ -107,16 +119,32 @@ export class SidebarComponent implements OnInit {
   }
 
 drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
-    event.item.element.nativeElement.classList.remove('section-dragging');
-    for(let i=0; i<this.sectionMenuItems.length;i++){
-        for(let section of this.currentGrant.grantDetails.sections){
-            if(section.sectionName === this.sectionMenuItems[i].title){
-                section.order = i+1;
+
+    if(this.appComponent.currentView === 'grant' && this.currentGrant){
+        moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
+        event.item.element.nativeElement.classList.remove('section-dragging');
+        for(let i=0; i<this.sectionMenuItems.length;i++){
+            for(let section of this.currentGrant.grantDetails.sections){
+                if(section.sectionName === this.sectionMenuItems[i].title){
+                    section.order = i+1;
+                }
             }
         }
+        this.grantData.changeMessage(this.currentGrant);
     }
-    this.grantData.changeMessage(this.currentGrant);
+    if(this.appComponent.currentView === 'report' && this.currentReport){
+        moveItemInArray(this.reportSectionMenuItems, event.previousIndex, event.currentIndex);
+        event.item.element.nativeElement.classList.remove('section-dragging');
+        for(let i=0; i<this.reportSectionMenuItems.length;i++){
+            for(let section of this.currentReport.reportDetails.sections){
+                if(section.sectionName === this.reportSectionMenuItems[i].title){
+                    section.order = i+1;
+                }
+            }
+        }
+        this.singleReportDataService.changeMessage(this.currentReport);
+    }
+
 
   }
     dragStarted(event: CdkDragStart<String[]>){
@@ -130,11 +158,17 @@ drop(event: CdkDragDrop<string[]>) {
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
+    this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
       this.buildSectionsSideNav();
     });
+
+    this.singleReportDataService.currentMessage.subscribe((report) => {
+          this.currentReport = report;
+          this.buildSectionsSideNav();
+        });
 
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
@@ -200,9 +234,13 @@ drop(event: CdkDragDrop<string[]>) {
 }
 
   buildSectionsSideNav(): string {
+  console.log('>>>>>>>>> ' + this.appComponent.currentView);
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+  this.singleReportDataService.currentMessage.subscribe(report => this.currentReport = report);
+
   SECTION_ROUTES = [];
-  if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
+  REPORT_SECTION_ROUTES = [];
+    if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
@@ -218,6 +256,23 @@ drop(event: CdkDragDrop<string[]>) {
       this.appComponent.sectionAdded = false;
       return SECTION_ROUTES[0].path;
     }
+
+    if(this.appComponent.currentView === 'report' && this.currentReport && (REPORT_SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
+          this.reportSectionMenuItems = [];
+          REPORT_SECTION_ROUTES = [];
+          this.currentReport.reportDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
+          for (let section of this.currentReport.reportDetails.sections){
+            if(section.sectionName!=='' && section.sectionName!=='_'){
+                REPORT_SECTION_ROUTES.push({path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
+            }else{
+                REPORT_SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:''});
+            }
+          }
+
+          this.reportSectionMenuItems = REPORT_SECTION_ROUTES.filter(menuItem => menuItem);
+          this.appComponent.sectionAdded = false;
+          return REPORT_SECTION_ROUTES[0].path;
+        }
   }
 
 
@@ -235,6 +290,10 @@ drop(event: CdkDragDrop<string[]>) {
 
   createNewSection(){
     this.appComponent.createNewSection.next(true);
+  }
+
+  createNewReportSection(){
+    this.appComponent.createNewReportSection.next(true);
   }
 }
 
