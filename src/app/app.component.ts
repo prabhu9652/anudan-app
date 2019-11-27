@@ -2,6 +2,7 @@ import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode, Applicati
 import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { User} from './model/user';
+import { Report} from './model/report';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
@@ -46,6 +47,7 @@ export class AppComponent implements AfterViewChecked{
   reportSaved = true;
   confgSubscription: any;
   originalGrant: Grant;
+  originalReport: Report;
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
   createNewReportSection = new BehaviorSubject<boolean>(false);
@@ -62,10 +64,13 @@ export class AppComponent implements AfterViewChecked{
     submissionInitialStatus: new WorkflowStatus(),
     granteeOrgs: [],
     workflowStatuses: [],
+    reportWorkflowStatuses: [],
     transitions: [],
+    reportTransitions: [],
     tenantUsers: [],
     daysBeforePublishingReport: 30
   };
+
 
   org: string;
   public defaultClass = '';

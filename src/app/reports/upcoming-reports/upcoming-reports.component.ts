@@ -16,6 +16,7 @@ export class UpcomingReportsComponent implements OnInit {
     reportStartDate: Date;
     reportEndDate: Date;
     reportsToSetup: Report[];
+    reportsReadyToSubmit: Report[];
     futureReportsToSetup: Report[];
     subscribers: any = {};
 
@@ -58,6 +59,7 @@ export class UpcomingReportsComponent implements OnInit {
         reportEndDate.setSeconds(59);
         this.reportService.changeMessage(reports);
         this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED'));
+        this.reportsReadyToSubmit = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus==='ACTIVE'));
         this.futureReportsToSetup = this.reports.filter(a => new Date(a.endDate).getTime() > reportEndDate.getTime() && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED'));
 
         console.log(this.reportStartDate + "    " + this.reportEndDate);

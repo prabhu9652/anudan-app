@@ -75,6 +75,57 @@
                                         Submission
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
+                                <div class="row w-100 p-3 mb-2 mx-0 grants-section"
+                                     style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
+                                     *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
+                                    <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
+                                        {{report.grant.name}}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>
+                                    </div>
+
+                                    <div class="col-12 p-3" style="background:#f1f1f1">
+                                        <div class="row mb-0">
+                                            <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>
+                                            </div>
+                                            <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time
+                                                Frame:</p></div>
+                                            <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due
+                                                Date</p></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2"><p class=" text-left text-bold-highlight my-0">
+                                                {{report.type}}</p></div>
+                                            <div class="col-7">
+                                                <div class="row">
+                                                    <div>
+                                                        <p class="text-bold-highlight my-0">
+                                                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                            </mat-icon>
+                                                            {{report.startDate |
+                                                            date:'dd-MMM-yyyy'}}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                                                        </mat-icon>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-bold-highlight my-0">
+                                                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                            </mat-icon>
+                                                            {{report.endDate |
+                                                            date:'dd-MMM-yyyy'}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3"><p class="text-left text-bold-highlight my-0">
+                                                {{report.dueDate | date:'dd-MMM-yyyy'}}</p></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </mat-expansion-panel>
                         </mat-tab>
                         <mat-tab label="Reports Due in Future">

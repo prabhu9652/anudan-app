@@ -46,6 +46,7 @@ import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.com
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {GrantNotesComponent} from '../../components/grantNotes/grantNotes.component';
+import {ReportNotesComponent} from '../../components/reportNotes/reportNotes.component';
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 import {GrantsComponent} from '../../grants/grants.component';
 import {ApplicationsComponent} from '../../applications/applications.component';
@@ -120,6 +121,7 @@ import { ReportPreviewComponent } from '../../reports/report/report-preview/repo
         UpgradeComponent,
         FieldDialogComponent,
         GrantNotesComponent,
+        ReportNotesComponent,
         GrantTemplateDialogComponent,
         TemplateDialogComponent,
         BottomsheetComponent,
@@ -143,7 +145,7 @@ import { ReportPreviewComponent } from '../../reports/report/report-preview/repo
         ReportSectionsComponent,
         ReportPreviewComponent
     ],
-    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent],
+    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

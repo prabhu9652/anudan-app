@@ -13,7 +13,7 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications,WorkflowAssignmentModel,WorkflowAssignment} from '../../model/dahsboard';
-import {Report} from '../../model/report';
+import {Report,ReportWorkflowAssignmentModel, ReportWorkflowAssignment} from '../../model/report';
 import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
@@ -222,64 +222,124 @@ export class AdminLayoutComponent implements OnInit {
 
 
   showWorkflowAssigments(){
-  const wfModel = new WorkflowAssignmentModel();
-   wfModel.users = this.appComponent.appConfig.tenantUsers;
-   wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
-   wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
-   wfModel.grant = this.currentGrant;
-   wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
-    const dialogRef = this.dialog.open(WfassignmentComponent, {
-          data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
-          panelClass: 'wf-assignment-class'
-          }
-          );
+    if(this.appComponent.currentView==='grant'){
+        const wfModel = new WorkflowAssignmentModel();
+        wfModel.users = this.appComponent.appConfig.tenantUsers;
+        wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
+        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+        wfModel.type=this.appComponent.currentView;
+        wfModel.grant = this.currentGrant;
+        wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
+        const dialogRef = this.dialog.open(WfassignmentComponent, {
+            data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
+            panelClass: 'wf-assignment-class'
+        });
 
         dialogRef.afterClosed().subscribe(result => {
-          if (result.result) {
+        if (result.result) {
             const ass:WorkflowAssignment[] = [];
-            for(let data of result.data){
-                const wa = new WorkflowAssignment();
-                wa.id=data.id;
-                wa.stateId = data.stateId;
-                wa.assignments = data.userId;
-                wa.grantId = data.grantId;
-                ass.push(wa);
-            }
+        for(let data of result.data){
+            const wa = new WorkflowAssignment();
+            wa.id=data.id;
+            wa.stateId = data.stateId;
+            wa.assignments = data.userId;
+            wa.grantId = data.grantId;
+            ass.push(wa);
+        }
 
-            const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
+        const httpOptions = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
 
-                    let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
-                        + this.currentGrant.id + '/assignment';
-                    this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
-                        this.grantData.changeMessage(grant);
-                        this.setDateDuration();
-                        this.currentGrant = grant;
-                    },error => {
-                                                     const errorMsg = error as HttpErrorResponse;
-                                                     const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
-                                                     const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
-                                                     const errorconfig: Partial<IndividualConfig> = x;
-                                                     const config: Partial<IndividualConfig> = y;
-                                                     if(errorMsg.error.message==='Token Expired'){
-                                                      //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
-                                                      alert("Your session has timed out. Please sign in again.")
-                                                      this.appComponent.logout();
-                                                     } else {
-                                                      this.toastr.error(errorMsg.error.message,"We encountered an error", config);
-                                                     }
+        let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
+        + this.currentGrant.id + '/assignment';
+        this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
+            this.grantData.changeMessage(grant);
+            this.setDateDuration();
+            this.currentGrant = grant;
+        },error => {
+                         const errorMsg = error as HttpErrorResponse;
+                         const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                         const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                         const errorconfig: Partial<IndividualConfig> = x;
+                         const config: Partial<IndividualConfig> = y;
+                         if(errorMsg.error.message==='Token Expired'){
+                          //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                          alert("Your session has timed out. Please sign in again.")
+                          this.appComponent.logout();
+                         } else {
+                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                         }
 
 
-                                                });
-          } else {
+                    });
+        } else {
             dialogRef.close();
-          }
-          });
+        }
+        });
+    }else if(this.appComponent.currentView==='report'){
+                  const wfModel = new ReportWorkflowAssignmentModel();
+                  wfModel.users = this.appComponent.appConfig.tenantUsers;
+                  wfModel.granteeUsers = this.currentReport.granteeUsers;
+                  wfModel.workflowStatuses = this.appComponent.appConfig.reportWorkflowStatuses;
+                  wfModel.workflowAssignments = this.currentReport.workflowAssignments;
+                  wfModel.type=this.appComponent.currentView;
+                  wfModel.report = this.currentReport;
+                  wfModel.canManage = this.currentReport.flowAuthorities && this.currentReport.canManage;
+                  const dialogRef = this.dialog.open(WfassignmentComponent, {
+                      data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
+                      panelClass: 'wf-assignment-class'
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                      if (result.result) {
+                          const ass:ReportWorkflowAssignment[] = [];
+                          for(let data of result.data){
+                              const wa = new ReportWorkflowAssignment();
+                              wa.id=data.id;
+                              wa.stateId = data.stateId;
+                              wa.assignmentId = data.userId;
+                              wa.reportId = data.reportId;
+                              ass.push(wa);
+                          }
+
+                          const httpOptions = {
+                              headers: new HttpHeaders({
+                              'Content-Type': 'application/json',
+                              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                              'Authorization': localStorage.getItem('AUTH_TOKEN')
+                              })
+                          };
+
+                          let url = '/api/user/' + this.appComponent.loggedInUser.id + '/report/'
+                          + this.currentReport.id + '/assignment';
+                          this.http.post(url, {report:this.currentReport,assignments:ass}, httpOptions).subscribe((report: Report) => {
+                              this.singleReportDataService.changeMessage(report);
+                              this.currentReport = report;
+                              this.setReportDateDuration();
+                          },error => {
+                                           const errorMsg = error as HttpErrorResponse;
+                                           const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                                           const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                                           const errorconfig: Partial<IndividualConfig> = x;
+                                           const config: Partial<IndividualConfig> = y;
+                                           if(errorMsg.error.message==='Token Expired'){
+                                            //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                                            alert("Your session has timed out. Please sign in again.")
+                                            this.appComponent.logout();
+                                           } else {
+                                            this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                           }
+                                      });
+                      } else {
+                          dialogRef.close();
+                      }
+                  });
+    }
   }
 
   setDateDuration(){
@@ -290,6 +350,16 @@ export class AdminLayoutComponent implements OnInit {
       }else{
         this.currentGrant.duration = 'No end date';
       }
+    }
+
+    setReportDateDuration(){
+        if(this.currentReport.startDate && this.currentReport.endDate){
+            var time = new Date(this.currentReport.endDate).getTime() - new Date(this.currentReport.startDate).getTime();
+            time = time + 86400001;
+            this.currentReport.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+        }else{
+            this.currentReport.duration = 'No end date';
+        }
     }
 
 

@@ -13,8 +13,10 @@ export class AppConfig {
   grantInitialStatus: WorkflowStatus;
   granteeOrgs: Organization[];
   workflowStatuses: WorkflowStatus[];
+  reportWorkflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
   transitions: WorkflowTransition[];
+  reportTransitions: WorkflowTransition[];
   daysBeforePublishingReport: number;
 }
 

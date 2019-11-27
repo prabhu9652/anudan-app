@@ -27,6 +27,7 @@ import { SubmittedReportsComponent } from '../../reports/submitted-reports/submi
 import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
 import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
 import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
+import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -90,6 +91,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'reports/approved', component: ApprovedReportsComponent},
   {path: 'report/report-header', component: ReportHeaderComponent},
   {path: 'report/section/:action', component: ReportSectionsComponent},
+  {path: 'report/report-preview', component: ReportPreviewComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

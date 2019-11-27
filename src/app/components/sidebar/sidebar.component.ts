@@ -45,7 +45,8 @@ export const GRANT_ROUTES: RouteInfo[] = [
 
 export const SINGLE_REPORT_ROUTES: RouteInfo[] = [
     { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '' },
-    { path: '/grant/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '' }
+    { path: '/report/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '' },
+    { path: '/report/report-preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
 export const REPORT_ROUTES: RouteInfo[] = [
