@@ -17,45 +17,36 @@
   <mat-form-field>
     <textarea class="anu-input" matInput #inputMessage></textarea>
   </mat-form-field>
-  <mat-expansion-panel [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="grantDiff">
+  <mat-expansion-panel [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="reportDiff">
     <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
       <mat-panel-title style="display: flex; align-items: center">
         <small>View changes</small>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div *ngIf="grantDiff" style="background:#fff;padding:5px;max-height:200px;min-width:600px;overflow:scroll;">
-      <div *ngIf="grantDiff.oldGrantName || grantDiff.newGrantName" class="mb-2 change-box">
-        <span class="change-title">Grant name changed</span>
-        <div class="change-new" *ngIf="grantDiff.newGrantName">{{grantDiff.newGrantName}}</div><div *ngIf="grantDiff.newGrantName && !grantDiff.oldGrantName" class="text-danger"><i><small>Currently has no value</small></i></div>
-          <div class="change-old" *ngIf="grantDiff.oldGrantName">{{grantDiff.oldGrantName}}</div><div *ngIf="grantDiff.oldGrantName && !grantDiff.newGrantName" class="text-white"><i><small>Previously had no value</small></i></div>
+    <div *ngIf="reportDiff" style="background:#fff;padding:5px;max-height:200px;min-width:600px;overflow:scroll;">
+      <div *ngIf="reportDiff.oldReportName || reportDiff.newReportName" class="mb-2 change-box">
+        <span class="change-title">Report name changed</span>
+        <div class="change-new" *ngIf="reportDiff.newReportName">{{reportDiff.newReportName}}</div><div *ngIf="reportDiff.newReportName && !reportDiff.oldReportName" class="text-danger"><i><small>Currently has no value</small></i></div>
+          <div class="change-old" *ngIf="reportDiff.oldReportName">{{reportDiff.oldReportName}}</div><div *ngIf="reportDiff.oldReportName && !reportDiff.newReportName" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>
-      <div *ngIf="grantDiff.oldGrantStartDate || grantDiff.newGrantStartDate" class="mb-2 change-box">
-        <span class="change-title">Grant start date changed</span>
-        <div class="change-new" *ngIf="grantDiff.newGrantStartDate">{{grantDiff.newGrantStartDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!grantDiff.newGrantStartDate && grantDiff.oldGrantStartDate" class="text-danger"><i><small>Currently has no value</small></i></div>
-        <div class="change-old" *ngIf="grantDiff.oldGrantStartDate">{{grantDiff.oldGrantStartDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!grantDiff.oldGrantStartDate && grantDiff.newGrantStartDate" class="text-white"><i><small>Previously had no value</small></i></div>
+      <div *ngIf="reportDiff.oldReportStartDate || reportDiff.newReportStartDate" class="mb-2 change-box">
+        <span class="change-title">Report start date changed</span>
+        <div class="change-new" *ngIf="reportDiff.newReportStartDate">{{reportDiff.newReportStartDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.newReportStartDate && reportDiff.oldReportStartDate" class="text-danger"><i><small>Currently has no value</small></i></div>
+        <div class="change-old" *ngIf="reportDiff.oldReportStartDate">{{reportDiff.oldReportStartDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.oldReportStartDate && reportDiff.newReportStartDate" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>
-      <div *ngIf="grantDiff.oldGrantEndDate || grantDiff.newGrantEndDate" class="mb-2 change-box">
-        <span class="change-title">Grant end date changed</span>
-        <div class="change-new" *ngIf="grantDiff.newGrantEndDate">{{grantDiff.newGrantEndDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!grantDiff.newGrantEndDate && grantDiff.oldGrantEndDate" class="text-danger"><i><small>Currently has no value</small></i></div>
-        <div class="change-old" *ngIf="grantDiff.oldGrantEndDate">{{grantDiff.oldGrantEndDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!grantDiff.oldGrantEndDate && grantDiff.newGrantEndDate" class="text-white"><i><small>Previously had no value</small></i></div>
+      <div *ngIf="reportDiff.oldReportEndDate || reportDiff.newReportEndDate" class="mb-2 change-box">
+        <span class="change-title">Report end date changed</span>
+        <div class="change-new" *ngIf="reportDiff.newReportEndDate">{{reportDiff.newReportEndDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.newReportEndDate && reportDiff.oldReportEndDate" class="text-danger"><i><small>Currently has no value</small></i></div>
+        <div class="change-old" *ngIf="reportDiff.oldReportEndDate">{{reportDiff.oldReportEndDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.oldReportEndDate && reportDiff.newReportEndDate" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>
-      <div *ngIf="grantDiff.oldGrantAmount || grantDiff.newGrantAmount" class="mb-2 change-box">
-        <span class="change-title">Grant amount changed</span>
-        <div class="change-new" *ngIf="grantDiff.newGrantAmount">{{grantDiff.newGrantAmount}}</div><div *ngIf="!grantDiff.newGrantAmount && grantDiff.oldGrantAmount" class="text-danger"><i><small>Currently has no value</small></i></div>
-        <div class="change-old" *ngIf="grantDiff.oldGrantAmount">{{grantDiff.oldGrantAmount}}</div><div *ngIf="!grantDiff.oldGrantAmount && grantDiff.newGrantAmount" class="text-white"><i><small>Previously had no value</small></i></div>
+      <div *ngIf="reportDiff.oldReportDueDate || reportDiff.newReportDueDate" class="mb-2 change-box">
+        <span class="change-title">Report Due Date changed</span>
+        <div class="change-new" *ngIf="reportDiff.newReportDueDate">{{reportDiff.newReportDueDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.newReportDueDate && reportDiff.oldReportDueDate" class="text-danger"><i><small>Currently has no value</small></i></div>
+        <div class="change-old" *ngIf="reportDiff.oldReportDueDate">{{reportDiff.oldReportDueDate | date:'dd-MMM-yyyy'}}</div><div *ngIf="!reportDiff.oldReportDueDate && reportDiff.newReportDueDate" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>
-      <div *ngIf="grantDiff.oldGrantee || grantDiff.newGrantee" class="mb-2 change-box">
-        <span class="change-title">Grantee changed</span>
-        <div class="change-new" *ngIf="grantDiff.newGrantee">{{grantDiff.newGrantee}}</div><div *ngIf="!grantDiff.newGrantee && grantDiff.oldGrantee" class="text-danger"><i><small>Currently has no value</small></i></div>
-        <div class="change-old" *ngIf="grantDiff.oldGrantee">{{grantDiff.oldGrantee}}</div><div *ngIf="!grantDiff.oldGrantee && grantDiff.newGrantee" class="text-white"><i><small>Previously had no value</small></i></div>
-      </div>
-      <div *ngIf="grantDiff.oldRep || grantDiff.newRep" class="mb-2 change-box">
-        <span class="change-title">Grantee Representative changed</span>
-        <div class="change-new" *ngIf="grantDiff.newRep">{{grantDiff.newRep}}</div><div *ngIf="!grantDiff.newRep && grantDiff.oldRep" class="text-danger"><i><small>Currently has no value</small></i></div>
-        <div class="change-old" *ngIf="grantDiff.oldRep">{{grantDiff.oldRep}}</div><div *ngIf="!grantDiff.oldRep && grantDiff.newRep" class="text-white"><i><small>Previously had no value</small></i></div>
-      </div>
-      <ng-container *ngIf="grantDiff.sectionDiffs">
-        <ng-container *ngFor="let sectionDiff of grantDiff.sectionDiffs">
+
+      <ng-container *ngIf="reportDiff.sectionDiffs">
+        <ng-container *ngFor="let sectionDiff of reportDiff.sectionDiffs">
           <ng-container *ngIf="sectionDiff.hasSectionLevelChanges">
             <div *ngIf="sectionDiff.oldSection && sectionDiff.newSection" class="mb-2 change-box">
               <span class="change-title">Section name changed</span>

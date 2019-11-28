@@ -28,7 +28,8 @@
                     <a (click)="showWorkflowAssigments()"><img src="./assets/img/wfassignmnet.svg" style="width:25px;"></a>
                 </div>
                 <div class="float-right ml-4">
-                    <a (click)="showGrantHistory('notes')"><img src="./assets/img/note.svg" style="width:25px;"></a>
+                    <a *ngIf="appComponent.currentView==='grant'" (click)="showHistory('grant',currentGrant)"><img src="./assets/img/note.svg" style="width:25px;"></a>
+                    <a *ngIf="appComponent.currentView==='report'" (click)="showHistory('report',currentReport)"><img src="./assets/img/note.svg" style="width:25px;"></a>
                 </div>
 
 

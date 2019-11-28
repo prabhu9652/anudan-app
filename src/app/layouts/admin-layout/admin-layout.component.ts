@@ -212,9 +212,9 @@ export class AdminLayoutComponent implements OnInit {
     this.router.navigate(['grants']);
   }
 
-  showGrantHistory(what2Show){
+  showHistory(historyOf,what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
-      data: this.currentGrant,
+      data: {type:historyOf,data:what2Show},
       panelClass: 'grant-notes-class',
       disableClose: false
       });

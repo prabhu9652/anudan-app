@@ -59,9 +59,9 @@ export class ReportHeaderComponent implements OnInit {
     });
 
     this.subscribers = this.router.events.subscribe((val) => {
-        if(val instanceof NavigationStart && val.url ==='/report/preview'){
+        if(val instanceof NavigationStart && val.url ==='/report/report-preview'){
             this.appComp.action='report-preview';
-        } else if(val instanceof NavigationStart && val.url !=='/report/preview'){
+        } else if(val instanceof NavigationStart && val.url !=='/report/report-preview'){
             this.appComp.action='';
         }
 

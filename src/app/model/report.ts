@@ -24,6 +24,30 @@ export class Report{
     flowAuthorities: FlowAuthority;
 }
 
+export class ReportHistory{
+    seqid: number
+    id: number;
+    name: string;
+     startDate: Date;
+     endDate: Date;
+     dueDate: Date;
+     type: String;
+    status: WorkflowStatus;
+    createdAt: Date;
+    createdBy: User
+    updatedAt: Date;
+    updatedBy: User;
+    template: any;
+    granteeUsers: User[];
+    reportDetails: ReportDetails;
+    workflowAssignments:ReportAssignment[];
+    duration: string;
+    grant: Grant;
+    canEdit: boolean;
+    canManage: boolean;
+    flowAuthorities: FlowAuthority;
+}
+
 export class ReportDetails {
   sections: Section[];
 }

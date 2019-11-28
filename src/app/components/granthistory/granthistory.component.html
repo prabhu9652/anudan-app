@@ -1,15 +1,29 @@
 <h4>Notes</h4>
-<div #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
-  <p class="mb-0 bg-light p-1" *ngIf="grant.noteAddedByUser"><b>{{grant.noteAddedByUser.firstName}} {{grant.noteAddedByUser.lastName}}</b> <small> ({{grant.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
-  <p *ngIf="grant.noteAddedByUser" style="border-bottom:1px solid #d4d4d4;">{{grant.note}}</p>
-  <ng-container *ngFor="let item of history">
+<div *ngIf="data.type==='grant'" #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
+  <p class="mb-0 bg-light p-1" *ngIf="data.data.noteAddedByUser"><b>{{data.data.noteAddedByUser.firstName}} {{data.data.noteAddedByUser.lastName}}</b> <small> ({{data.data.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+  <p *ngIf="data.data.noteAddedByUser" style="border-bottom:1px solid #d4d4d4;">{{data.data.note}}</p>
+  <ng-container *ngFor="let item of grantHistory">
     <ng-container *ngIf="item.note!=='' && item.noteAddedByUser">
       <p class="mb-0 bg-light p-1"><b>{{item.noteAddedByUser.firstName}} {{item.noteAddedByUser.lastName}}</b> <small> ({{item.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
       <p style="border-bottom:1px solid #d4d4d4;">{{item.note}}</p>
     </ng-container>
   </ng-container>
+  <ng-container *ngIf="!data.data.noteAddedByUser && grantHistory.length===0">
+    <p>No notes have been added until now.</p>
+  </ng-container>
 </div>
-<ng-container *ngIf="!grant.noteAddedByUser && history.length===0">
-  <p>No notes have been added until now.</p>
-</ng-container>
+<div *ngIf="data.type==='report'" #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
+  <p class="mb-0 bg-light p-1" *ngIf="data.data.noteAddedByUser"><b>{{data.data.noteAddedByUser.firstName}} {{data.data.noteAddedByUser.lastName}}</b> <small> ({{data.data.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+  <p *ngIf="data.data.noteAddedByUser" style="border-bottom:1px solid #d4d4d4;">{{data.data.note}}</p>
+  <ng-container *ngFor="let item of reportHistory">
+    <ng-container *ngIf="item.note!=='' && item.noteAddedByUser">
+      <p class="mb-0 bg-light p-1"><b>{{item.noteAddedByUser.firstName}} {{item.noteAddedByUser.lastName}}</b> <small> ({{item.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+      <p style="border-bottom:1px solid #d4d4d4;">{{item.note}}</p>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="!data.data.noteAddedByUser && reportHistory.length===0">
+    <p>No notes have been added until now.</p>
+  </ng-container>
+</div>
+
 
