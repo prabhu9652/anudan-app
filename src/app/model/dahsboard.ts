@@ -184,6 +184,7 @@ export class Attribute {
   docs: TemplateLibrary[];
   attachments: Attachment[];
   target: string;
+  actualTarget: string;
   frequency: string;
   deletable: boolean;
   required: boolean;

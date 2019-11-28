@@ -167,7 +167,7 @@
                             </mat-select>
                             <mat-select *ngIf="!attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}" (click)="changeFieldType()" (blur)="selectionClosed()"
-                                        (ngModelChange)="handleTypeChange($event,attribute,section)" readonly style="background:#F0F1F0 !important;">
+                                        (ngModelChange)="handleTypeChange($event,attribute,section)" disabled readonly style="background:#F0F1F0 !important;">
                               <mat-option value="none" aria-selected="true">--Select type
                                 of field--
                               </mat-option>
@@ -269,6 +269,14 @@
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Report Target/Goal"
                                    >
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && currentReport.status.name!=='ACTIVE'">
+                          <mat-form-field>
+                            <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
+                                   [required]="attribute.deletable?'required':''"
+                                   [ngModelOptions]="{standAlone:true}"
+                                   placeholder="Achieved Target/Goal" readonly style="background:#F0F1F0 !important;">
                           </mat-form-field>
                         </div>
 
