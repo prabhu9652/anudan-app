@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {Report,ReportSectionInfo,ReportWorkflowAssignmentModel,ReportWorkflowAssignment} from '../../../model/report'
 import {ReportNotesComponent} from '../../../components/reportNotes/reportNotes.component';
 import {MatDialog} from '@angular/material';
+import {Section} from '../../../model/dahsboard'
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AppComponent} from '../../../app.component';
 import {TemplateDialogComponent} from '../../../components/template-dialog/template-dialog.component';
@@ -11,11 +12,15 @@ import {WfassignmentComponent} from '../../../components/wfassignment/wfassignme
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {ActivatedRoute, Router, NavigationStart,NavigationEnd, ActivationEnd,RouterEvent} from '@angular/router';
+import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
+import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
+import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-report-preview',
   templateUrl: './report-preview.component.html',
-  styleUrls: ['./report-preview.component.scss']
+  styleUrls: ['./report-preview.component.scss'],
+  providers: [PDFExportComponent, SidebarComponent]
 })
 export class ReportPreviewComponent implements OnInit {
 
@@ -25,12 +30,16 @@ export class ReportPreviewComponent implements OnInit {
     humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
     logoUrl: string;
 
+    @ViewChild('pdf') pdf;
+    @ViewChild('createSectionModal') createSectionModal: ElementRef;
+
     constructor(private singleReportDataService: SingleReportDataService,
         private dialog: MatDialog,
         private appComp: AppComponent,
         private http: HttpClient,
         private toastr: ToastrService,
-        private router: Router
+        private router: Router,
+        private sidebar: SidebarComponent
         ) { }
 
     ngOnInit() {
@@ -43,7 +52,16 @@ export class ReportPreviewComponent implements OnInit {
         this.originalReport = JSON.parse(JSON.stringify(this.currentReport));
 
         const tenantCode = localStorage.getItem('X-TENANT-CODE');
-          this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+        this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+
+        this.appComp.createNewReportSection.subscribe((val) =>{
+            if(val){
+                $('.modal-backdrop').remove();
+
+                this.addNewSection();
+                this.appComp.createNewReportSection.next(false);
+            }
+        });
     }
 
     setDateDuration(){
@@ -242,5 +260,69 @@ export class ReportPreviewComponent implements OnInit {
                 this.router.navigate(['reports/upcoming']);
             }
         });
+    }
+
+    saveAs(filename){
+        this.pdf.saveAs(filename);
+    }
+
+    saveSection() {
+        const sectionName = $('#sectionTitleInput');
+        if (sectionName.val().trim() === '') {
+            this.toastr.warning('Section name cannot be left blank', 'Warning');
+            sectionName.focus();
+            return;
+        }
+
+        const createSectionModal = this.createSectionModal.nativeElement;
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/report/' + this.currentReport.id + '/template/'+this.currentReport.template.id+'/section/'+sectionName.val();
+
+        this.http.post<ReportSectionInfo>(url,this.currentReport, httpOptions).subscribe((info: ReportSectionInfo) => {
+            this.singleReportDataService.changeMessage(info.report);
+
+            sectionName.val('');
+            //$('#section_' + newSection.id).css('display', 'block');
+            $(createSectionModal).modal('hide');
+            this.appComp.sectionAdded = true;
+            this.sidebar.buildSectionsSideNav();
+            this.appComp.sectionInModification = false;
+            //  this.appComp.selectedTemplate = info.report.template;
+            this.router.navigate(['report/section/' + this.getCleanText(info.report.reportDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
+        },error => {
+            const errorMsg = error as HttpErrorResponse;
+            console.log(error);
+            const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+            const config: Partial<IndividualConfig> = x;
+            if(errorMsg.error.message==='Token Expired'){
+                this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                setTimeout( () => { this.appComp.logout(); }, 4000 );
+            } else {
+                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+            }
+        });
+    }
+
+    addNewSection() {
+        this.appComp.sectionInModification = true;
+        const createSectionModal = this.createSectionModal.nativeElement;
+        const titleElem = $(createSectionModal).find('#createSectionLabel');
+        $(titleElem).html('Add new section');
+        $(createSectionModal).modal('show');
+    }
+
+    getCleanText(section:Section): string{
+        if(section.sectionName === ''){
+            return String(section.id);
+        }
+        return section.sectionName.replace(/[^_0-9a-z]/gi, '');
     }
 }

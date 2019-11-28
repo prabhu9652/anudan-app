@@ -5,8 +5,11 @@ export class Report{
     id: number;
     name: string;
      startDate: Date;
+     stDate: string;
      endDate: Date;
+     enDate: string;
      dueDate: Date;
+     dDate: string;
      type: String;
     status: WorkflowStatus;
     createdAt: Date;
