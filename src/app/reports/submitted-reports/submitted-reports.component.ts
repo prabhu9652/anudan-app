@@ -13,7 +13,6 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 })
 export class SubmittedReportsComponent implements OnInit {
     reports: Report[];
-    reports: Report[];
     submittedReports: Report[];
     subscribers: any = {};
 
