@@ -13,6 +13,13 @@
                                         <img src="./assets/img/due.svg" class="mr-2">Reports Due in Next 30 days
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
+                                <div *ngIf="!reportsToSetup">
+                                    <img src="./assets/img/loader.gif" style="width:10%;">
+                                    <p style="color: black" > Loading upcoming reports... </p>
+                                </div>
+                                <div *ngIf="reportsToSetup && reportsToSetup.length===0">
+                                    <p style="color: black" > No reports found </p>
+                                </div>
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
                                      *ngFor="let report of reportsToSetup; let i = index" (click)="manageReport(report)">
@@ -75,6 +82,13 @@
                                         Submission
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
+                                <div *ngIf="!reportsReadyToSubmit">
+                                    <img src="./assets/img/loader.gif" style="width:10%;">
+                                    <p style="color: black" > Loading ready to submit reports... </p>
+                                </div>
+                                <div *ngIf="reportsReadyToSubmit && reportsReadyToSubmit.length===0">
+                                    <p style="color: black" > No reports found </p>
+                                </div>
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
                                      *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
@@ -129,6 +143,13 @@
                             </mat-expansion-panel>
                         </mat-tab>
                         <mat-tab label="Reports Due in Future">
+                            <div *ngIf="!futureReportsToSetup">
+                                <img src="./assets/img/loader.gif" style="width:10%;">
+                                <p style="color: black" > Loading future reports... </p>
+                            </div>
+                            <div *ngIf="futureReportsToSetup && futureReportsToSetup.length===0">
+                                <p style="color: black" > No reports found </p>
+                            </div>
                             <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                  style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
                                  *ngFor="let report of futureReportsToSetup; let i = index" (click)="manageReport(report)">

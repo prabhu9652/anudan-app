@@ -256,7 +256,7 @@
                           </div></div>
 
                         </div>
-                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && !attribute.canEdit">
+                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.grantLevelTarget" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
@@ -283,13 +283,13 @@
                           </mat-form-field>
                         </div>
 
-                        <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && attribute.canEdit">
+                        <!--<div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && attribute.canEdit">
                           <mat-form-field>
                             <mat-label>Reporting Frequency</mat-label>
                             <mat-select [(ngModel)]="attribute.frequency"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}">
-                              <mat-option value="none" aria-selected="true">--Select type
-                                of field--
+                              <mat-option value="none" aria-selected="true">&#45;&#45;Select type
+                                of field&#45;&#45;
                               </mat-option>
                               <mat-option value="monthly">Monthly</mat-option>
                               <mat-option value="quarterly">Quarterly</mat-option>
@@ -298,7 +298,7 @@
                             </mat-select>
 
                           </mat-form-field>
-                        </div>
+                        </div>-->
                         <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='multiline'">
                           <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
                                     [required]="attribute.deletable?'required':''"

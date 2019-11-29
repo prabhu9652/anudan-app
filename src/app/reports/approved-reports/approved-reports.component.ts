@@ -5,6 +5,7 @@ import {Report} from '../../model/report'
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-approved-reports',
@@ -21,13 +22,16 @@ export class ApprovedReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent){
+        private appComp: AppComponent,
+        private spinner: NgxSpinnerService){
         }
 
   ngOnInit() {
     this.reportService.currentMessage.subscribe(r => {
         this.reports = r;
      });
+
+     this.spinner.show();
 
      this.getReports();
   }

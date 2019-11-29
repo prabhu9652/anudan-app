@@ -36,7 +36,7 @@
                 </p>
             </div>
         </div>
-        <div class="p-4 text-left" style="width:100%;position: absolute;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">&nbsp;</div>
+        <div class="p-4 text-left" style="width:100%;position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">&nbsp;</div>
 
         <!--<app-navbar></app-navbar>-->
         <div *ngIf="appComponent.currentView === 'grant'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;"><a (click)="showAllGrants(currentGrant)"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentGrant"><span style="color:#fff;">{{currentGrant.name}}</span></ng-container></div>

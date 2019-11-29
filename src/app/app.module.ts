@@ -39,6 +39,7 @@ import {DatePipe} from '@angular/common';
 import {Colors} from './model/app-config';
 import { ExportAsModule } from 'ngx-export-as';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 const config = new AuthServiceConfig([
   {
@@ -103,7 +104,8 @@ export function provideConfig() {
       MatDatepickerModule,
       MatNativeDateModule,
       MatSnackBarModule,
-      MatIconModule
+      MatIconModule,
+      NgxSpinnerModule
   ],
   providers: [
     {
