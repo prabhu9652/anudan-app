@@ -1,5 +1,5 @@
 <div class="row anu-container">
-  <div class="col-12 bg-white" style="position:sticky;top:112px;z-index:1040;">
+  <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
     <div class="row">
       <ng-container *ngFor="let section of currentReport.reportDetails.sections">
         <ng-container *ngIf="action === getCleanText(section)">
@@ -19,6 +19,9 @@
             <ng-container *ngIf="action === getCleanText(section)">
               <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
               <button mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
+                <hr>
+                <button mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
+                <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
             </ng-container>
           </ng-container>
         </mat-menu>

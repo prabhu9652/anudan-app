@@ -15,6 +15,7 @@ import {ActivatedRoute, Router, NavigationStart,NavigationEnd, ActivationEnd,Rou
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
+import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 
 @Component({
   selector: 'app-report-preview',
@@ -39,6 +40,7 @@ export class ReportPreviewComponent implements OnInit {
         private http: HttpClient,
         private toastr: ToastrService,
         private router: Router,
+        private adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent
         ) { }
 
@@ -324,5 +326,13 @@ export class ReportPreviewComponent implements OnInit {
             return String(section.id);
         }
         return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWFAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

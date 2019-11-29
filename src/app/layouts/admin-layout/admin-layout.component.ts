@@ -448,4 +448,13 @@ showMessages(){
     this.router.navigate(['reports/upcoming']);
   }
 
+  showProfile(){
+    this.appComponent.currentView = 'user-profile';
+    this.router.navigate(['user-profile']);
+  }
+
+  logout(){
+    this.appComponent.logout();
+  }
+
 }

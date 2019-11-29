@@ -32,6 +32,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import {FormControl} from '@angular/forms';
 import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -108,6 +109,7 @@ export class BasicComponent implements OnInit {
       , private submissionData: SubmissionDataService
       , private route: ActivatedRoute
       , private router: Router
+      , private adminComp: AdminLayoutComponent
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
       , private http: HttpClient
@@ -1385,5 +1387,13 @@ setTimeout() {
           return String(section.id);
       }
       return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWorkflowAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

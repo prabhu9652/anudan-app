@@ -36,6 +36,7 @@ import html2pdf from 'html2pdf.js';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 
 @Component({
   selector: 'app-preview',
@@ -102,6 +103,7 @@ export class PreviewComponent implements OnInit {
       , private router: Router
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
+      , private adminComp: AdminLayoutComponent
       , private http: HttpClient
       , private toastr: ToastrService
       , private dialog: MatDialog
@@ -1453,5 +1455,13 @@ getCleanText(section:Section): string{
           return String(section.id);
       }
       return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWFAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

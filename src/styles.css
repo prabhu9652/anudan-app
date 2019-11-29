@@ -27,6 +27,9 @@ pre {
   padding-right: 0;
 }
 
+.sidebar{
+    box-shadow: none;
+}
 .sidebar .nav {
   margin-top: 0;
 }

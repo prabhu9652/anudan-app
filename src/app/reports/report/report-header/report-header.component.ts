@@ -9,6 +9,7 @@ import {AppComponent} from '../../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
+import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 
 
 export const APP_DATE_FORMATS = {
@@ -50,6 +51,7 @@ export class ReportHeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private appComp: AppComponent,
     private router: Router,
+    private adminComp: AdminLayoutComponent,
     private http: HttpClient,
     private toastr: ToastrService,
     private sidebar: SidebarComponent) {
@@ -219,5 +221,13 @@ export class ReportHeaderComponent implements OnInit {
             return String(section.id);
         }
         return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWorkflowAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

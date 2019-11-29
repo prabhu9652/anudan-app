@@ -17,6 +17,7 @@ import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {SectionEditComponent} from '../../../components/section-edit/section-edit.component';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
+import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 
 
 @Component({
@@ -49,6 +50,7 @@ export class ReportSectionsComponent implements OnInit {
         private singleReportDataService: SingleReportDataService,
         private http: HttpClient,
         private toastr: ToastrService,
+        private adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent,
         private dialog: MatDialog) {
 
@@ -452,5 +454,13 @@ export class ReportSectionsComponent implements OnInit {
                 });
             }
         });
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWorkflowAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

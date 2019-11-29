@@ -151,7 +151,7 @@ interval(10000).subscribe(t => {
   }
 
   getTenantCode(){
-    const hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
+    let hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
     if(!hostName){
         hostName = 'anudan';
     }

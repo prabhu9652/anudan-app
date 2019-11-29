@@ -35,7 +35,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { saveAs } from 'file-saver';
-
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 
 
 @Component({
@@ -113,6 +113,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
       , private http: HttpClient
+      , private adminComp: AdminLayoutComponent
       , private toastr: ToastrService
       , private dialog: MatDialog
       , private _bottomSheet: MatBottomSheet
@@ -1887,5 +1888,13 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         this.router.navigate(['grant/section/' + this.getCleanText(section)]);
         this.sidebar.buildSectionsSideNav();
     });
+  }
+
+  showHistory(type,obj){
+      this.adminComp.showHistory(type,obj);
+  }
+
+  showWorkflowAssigments(){
+      this.adminComp.showWorkflowAssigments();
   }
 }
