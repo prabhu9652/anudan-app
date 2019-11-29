@@ -1397,10 +1397,11 @@ export class PreviewComponent implements OnInit {
     }
 
     showWorkflowAssigments(toStateId){
-      const wfModel = new WorkflowAssignmentModel();
+       const wfModel = new WorkflowAssignmentModel();
        wfModel.users = this.appComp.appConfig.tenantUsers;
        wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+       wfModel.type=this.appComp.currentView;
        wfModel.grant = this.currentGrant;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: {model:wfModel,userId:this.appComp.loggedInUser.id},
