@@ -14,7 +14,8 @@
                 <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;" class="float-right mr-3 mt-3 text-white">
                     <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="this.appComponent.hasUnreadMessages && this.appComponent.unreadMessages>0" class="float-left mr-5 text-white" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
                     <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="!this.appComponent.hasUnreadMessages || this.appComponent.unreadMessages===0" class="float-left mr-5 text-white">notifications</mat-icon>
-                    <img src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
+                    <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">
+                    <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
                     <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
                     <mat-menu #profilemenu>
                         <span mat-menu-item (click)="showProfile()">Profile</span>
@@ -28,7 +29,8 @@
             <div style="position:absolute; right:20px;z-index:3;">
                 <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;" class="float-right mr-3 mt-3 text-white">
                     <mat-icon class="float-left mr-5 text-light">notifications_none</mat-icon>
-                    <img src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
+                    <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">
+                    <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
                     <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
                     <mat-menu #profilemenu="matMenu">
                         <span mat-menu-item (click)="showProfile()">Profile</span>
