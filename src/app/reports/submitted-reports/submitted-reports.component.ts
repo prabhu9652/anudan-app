@@ -53,6 +53,12 @@ export class SubmittedReportsComponent implements OnInit {
   manageReport(report:Report){
     this.appComp.currentView = 'report';
     this.singleReportService.changeMessage(report);
-    this.router.navigate(['report/report-header']);
+
+    if(report.canManage && report.status.internalStatus!='CLOSED'){
+        this.router.navigate(['report/report-header']);
+    } else{
+        this.appComp.action = 'report';
+        this.router.navigate(['report/report-preview']);
+    }
   }
 }
