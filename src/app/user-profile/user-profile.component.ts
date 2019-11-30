@@ -151,4 +151,8 @@ export class UserProfileComponent implements OnInit {
         div.innerHTML = html;
         return div.textContent || div.innerText || '';
   }
+
+  loadImage(){
+    console.log("image selection");
+  }
 }

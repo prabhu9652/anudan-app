@@ -27,4 +27,5 @@ export class User {
   userRoles?: UserRole[];
   permissions: string[];
   recaptchaToken: string;
+  userProfile: string;
 }

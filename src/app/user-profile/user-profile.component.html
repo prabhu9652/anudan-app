@@ -15,12 +15,15 @@
           <div class="card-body">
 
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-4">
+                  <img (click)="loadImage()" class="img-fluid" src="{{user.userProfile}}">
+                </div>
+                <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <input class="anu-input" [ngModelOptions]="{standAlone: true}" [(ngModel)]="user.firstName" id="userFName" matInput placeholder="Fist Name" type="text" value="{{user.firstName}}">
                   </mat-form-field>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <input class="anu-input" [ngModelOptions]="{standAlone: true}" [(ngModel)]="user.lastName" id="userLName" matInput placeholder="Last Name" type="text" value="{{user.lastName}}">
                   </mat-form-field>
