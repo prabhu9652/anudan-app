@@ -97,6 +97,7 @@ export class AppComponent implements AfterViewChecked{
         console.log('Registered as service worker');
     }
 
+    this.getTenantCode();
 
     this.loggedInUser = localStorage.getItem('USER') === 'undefined' ? {} : JSON.parse(localStorage.getItem('USER'));
     //this.initAppUI();
@@ -136,6 +137,14 @@ interval(10000).subscribe(t => {
   initAppUI() {
     const hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
     this.getAppUI(hostName);
+  }
+  
+  getTenantCode(){
+    let hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
+    if(!hostName){
+        hostName = 'anudan';
+    }
+    localStorage.setItem('X-TENANT-CODE', hostName.toUpperCase());
   }
 
   subdomain(): string {
