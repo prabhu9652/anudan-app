@@ -25,6 +25,7 @@ export class Report{
     canEdit: boolean;
     canManage: boolean;
     flowAuthorities: FlowAuthority;
+    cumulativeActuals:number;
 }
 
 export class ReportHistory{

@@ -335,4 +335,12 @@ export class ReportPreviewComponent implements OnInit {
     showWFAssigments(){
         this.adminComp.showWorkflowAssigments();
     }
+
+    getDocumentName(val: string): any[] {
+        let obj;
+        if(val!==undefined && val!==""){
+            obj = JSON.parse(val);
+        }
+        return obj;
+    }
 }

@@ -249,7 +249,7 @@ const httpOptions = {
               }
 getDocumentName(val: string): any[] {
     let obj;
-    if(val!==""){
+    if(val!==undefined && val!==""){
         obj = JSON.parse(val);
     }
     return obj;

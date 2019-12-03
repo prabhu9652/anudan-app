@@ -185,6 +185,7 @@ export class Attribute {
   attachments: Attachment[];
   target: string;
   actualTarget: string;
+  cumulativeActuals:number;
   frequency: string;
   deletable: boolean;
   required: boolean;
