@@ -371,7 +371,7 @@
                             <a [class]="i===section.attributes.length-1?'isDisabled':''" (click)="moveTo(section,attribute,i===section.attributes.length-1?null:section.attributes[i+1])"><img src="./assets/img/chevron-down.svg" class="w-10 mr-2" style="width:24px;"></a>
                             <a><img src="./assets/img/Line.svg" class="w-10 mr-2" style="width:1px;"></a>
                             <a>
-                              <img src="./assets/img/trash.svg" (click)="confirm(section.id,attribute.id,[],0,'field','Delete field ' + attribute.fieldName + '?')" class="w-10 mr-2" style="width:24px;">
+                              <img src="./assets/img/trash.svg" (click)="deleteFieldEntry(section.id,attribute.id,attribute.fieldName)" class="w-10 mr-2" style="width:24px;">
                             </a>
                           </div>
                         </div>

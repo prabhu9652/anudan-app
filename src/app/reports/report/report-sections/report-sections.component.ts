@@ -463,4 +463,55 @@ export class ReportSectionsComponent implements OnInit {
     showWorkflowAssigments(){
         this.adminComp.showWorkflowAssigments();
     }
+
+    moveTo(section,fromAttr,toAttr){
+        if(toAttr === null){
+            return;
+        }
+        const from = fromAttr.attributeOrder;
+        fromAttr.attributeOrder = toAttr.attributeOrder;
+        toAttr.attributeOrder = from;
+        section.attributes.sort((a, b) => (a.attributeOrder > b.attributeOrder) ? 1 : -1)
+        this.newField = 'fieldBlock_'+ fromAttr.id;
+    }
+
+
+    deleteFieldEntry(sectionId: number, attributeId: number, attributeName: string) {
+        const dialogRef = this.dialog.open(FieldDialogComponent, {
+              data: 'Are you sure you want to delete ' + attributeName
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if(result){
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+
+                    const url = '/api/user/' + this.appComp.loggedInUser.id + '/report/' + this.currentReport.id + '/section/'+sectionId+'/field/'+attributeId;
+
+                    this.http.post<Report>(url,this.currentReport, httpOptions).subscribe((report: Report) => {
+                        this.singleReportDataService.changeMessage(report);
+                    },error => {
+                        const errorMsg = error as HttpErrorResponse;
+                        console.log(error);
+                        const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                        const config: Partial<IndividualConfig> = x;
+                        if(errorMsg.error.message==='Token Expired'){
+                            this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                            setTimeout( () => { this.appComp.logout(); }, 4000 );
+                        } else {
+                            this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                        }
+                    });
+                }else{
+                    dialogRef.close();
+                }
+            });
+
+
+    }
 }
