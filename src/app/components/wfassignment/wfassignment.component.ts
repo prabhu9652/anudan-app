@@ -64,6 +64,7 @@ ngOnInit() {
                     }
                     this.renderer.addClass(nodeOwner,'ml-3');
                     this.renderer.addClass(nodeOwner,'px-2');
+                    this.renderer.addClass(nodeOwner,'anu-input');
                     const assignment = this.data.model.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);
                     if(assignment.length>0){
                         this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
@@ -176,6 +177,7 @@ ngOnInit() {
                                }
                                this.renderer.addClass(nodeOwner,'ml-3');
                                this.renderer.addClass(nodeOwner,'px-2');
+                               this.renderer.addClass(nodeOwner,'anu-input');
                                const assignment = this.data.model.workflowAssignments.filter((assignment) => assignment.stateId===transition.fromStateId);
                                if(assignment.length>0){
                                    this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
@@ -286,7 +288,7 @@ ngOnInit() {
 
 showFlow(transitions){
 const curves = [30, 40, 50, 60, 70, 80, 90, 100];
-const labelPositions = [0.5, 0.25,0.5, 0.25,0.5, 0.25];
+const labelPositions = [0.5, 0.5,0.5, 0.5,0.5, 0.5];
 let curvesCnt = 0;
 let posCnt = 0;
 
@@ -385,4 +387,29 @@ redrawOnScroll(){
         }
         return 'state-closed';
       }
+
+    zoomOut(){
+
+        const container = this.flowContainer.nativeElement;
+        $(container).animate({ 'zoom': 0.8 }, 400,() => {
+            console.log('zommed out');
+            this.jsPlumbInstance.deleteEveryEndpoint();
+            this.jsPlumbInstance.deleteEveryConnection();
+            this.jsPlumbInstance.setZoom(1,true);
+            this.showFlow(this.transitions);
+        });
+
+    }
+
+    zoomIn(){
+
+            const container = this.flowContainer.nativeElement;
+            $(container).animate({ 'zoom': 1 }, 400,() => {
+                jsPlumb.Defaults.Endpoint = "Blank";
+                jsPlumb.Defaults.Zoom = "1";
+                this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
+                this.jsPlumbInstance.repaintEverything();
+            });
+
+        }
 }

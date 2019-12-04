@@ -6,7 +6,7 @@ import {FooterComponent} from './footer/footer.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
-import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule} from "@angular/material";
+import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule,MatSelectModule} from "@angular/material";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
@@ -18,7 +18,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         MatExpansionModule,
         MatBadgeModule,
         MatIconModule,
-        DragDropModule
+        DragDropModule,
+        MatSelectModule
     ],
   declarations: [
     FooterComponent,

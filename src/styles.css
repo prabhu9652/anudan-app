@@ -390,8 +390,13 @@ input:-internal-autofill-selected{
     margin: 0 auto 60px auto !important;
     width: 480px !important;
     font-size: 12px;
-        font-weight: 800;
-        text-transform: uppercase;
+    font-weight: 800;
+    text-transform: uppercase;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .state-highlight{
@@ -399,8 +404,8 @@ input:-internal-autofill-selected{
 }
 
 .status-indicator{
-    position: relative;
-    float: left;
+    align-self: flex-start;
+    position: absolute;
     font-size: 18px;
     color: #338136;
 }

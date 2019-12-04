@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import {ReportDataService} from '../../report.data.service'
 import {SingleReportDataService} from '../../single.report.data.service'
-import {Report} from '../../model/report'
+import {Report, ReportTemplate} from '../../model/report'
+import {Grant} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-
+import {MatDialog} from '@angular/material';
+import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
+import {GrantSelectionDialogComponent} from '../../components/grant-selection-dialog/grant-selection-dialog.component';
+import {ReportComponent} from '../report/report.component'
 @Component({
   selector: 'app-upcoming-reports',
   templateUrl: './upcoming-reports.component.html',
-  styleUrls: ['./upcoming-reports.component.scss']
+  styleUrls: ['./upcoming-reports.component.scss'],
+  providers: [ReportComponent]
 })
 export class UpcomingReportsComponent implements OnInit {
     reports: Report[];
@@ -25,7 +30,9 @@ export class UpcomingReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent){
+        private appComp: AppComponent,
+        private dialog: MatDialog,
+        public reportComponent: ReportComponent){
         }
 
   ngOnInit() {
@@ -76,5 +83,54 @@ export class UpcomingReportsComponent implements OnInit {
         this.router.navigate(['report/report-preview']);
     }
   }
+
+    selectReportTemplate(){
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const user = JSON.parse(localStorage.getItem('USER'));
+        let url = '/api/user/' + user.id + '/report/templates';
+        this.http.get<ReportTemplate[]>(url, httpOptions).subscribe((templates: ReportTemplate[]) => {
+                let dialogRef = this.dialog.open(ReportTemplateDialogComponent, {
+                data: templates,
+                panelClass: 'grant-template-class'
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result.result) {
+                    const template = result.selectedTemplate;
+
+                    url = '/api/user/' + user.id + '/grant/active';
+                    this.http.get<Grant[]>(url,httpOptions).subscribe((activeGrants:Grant[]) => {
+                        let dialogRef1 = this.dialog.open(GrantSelectionDialogComponent, {
+                            data: activeGrants,
+                            panelClass: 'grant-template-class'
+                        });
+
+                        dialogRef1.afterClosed().subscribe(result => {
+                            if(result.result){
+                                this.reportComponent.createReport(template,result.selectedGrant);
+                                this.appComp.selectedReportTemplate = result.selectedTemplate;
+                            }
+                        });
+                    });
+
+
+
+
+                } else {
+                    dialogRef.close();
+                }
+            });
+        });
+    }
+
+
 
 }

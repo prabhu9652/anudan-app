@@ -6,6 +6,7 @@ import { Report} from './model/report';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
+import {ReportTemplate} from "./model/report";
 import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
 import {concat, interval,BehaviorSubject} from 'rxjs';
@@ -41,6 +42,7 @@ export class AppComponent implements AfterViewChecked{
   hasUnreadMessages = false;
   unreadMessages = 0;
   selectedTemplate: GrantTemplate;
+  selectedReportTemplate: ReportTemplate;
   sectionInModification = false;
   currentTenant: Tenant;
   grantSaved = false;

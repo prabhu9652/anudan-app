@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Select a Grant</h1>
+
+<div mat-dialog-content>
+	<div>
+	<mat-card *ngFor="let grant of grants" value="{{grant.id}}" style="background:#E5E5E5;max-width:none;" class="mb-3">
+		<mat-card-title style="font-size:14px;">{{grant.name}}
+			<mat-checkbox class="template-checkbox float-right" [checked]="grant.id===selected" (change)="setSelectedGrant(grant.id,$event)"></mat-checkbox>
+		</mat-card-title>
+		<mat-card-content style="background:#fff;padding:10px;">Hello</mat-card-content>
+	</mat-card>
+	</div>
+</div>
+<!--<mat-select [(value)]="selected">
+	<mat-option  matTooltip="{{template.description}}" matTooltipPosition="right" *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</mat-option>
+</mat-select>-->
+<hr>
+<div mat-dialog-actions>
+  <button mat-button mat-flat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
+</div>

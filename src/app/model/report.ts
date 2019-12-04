@@ -135,3 +135,13 @@ export class ReportSnapshot {
   statusId: number;
   reportDetails: ReportDetails;
 }
+
+export class ReportTemplate{
+  id: number;
+  name: string;
+  description: string;
+  published: boolean;
+  _private: boolean;
+  defaultTemplate: boolean;
+  sections: Section[];
+}
