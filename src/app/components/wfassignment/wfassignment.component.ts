@@ -203,6 +203,7 @@ ngOnInit() {
 
                                    }
                                }else{
+                                 if(this.data.model.granteeUsers){
                                     for(let option of this.data.model.granteeUsers){
                                         const nodeOwnerOptions = this.renderer.createElement('option');
                                         this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
@@ -214,6 +215,7 @@ ngOnInit() {
                                         this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
                                         this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
                                     }
+                                 }
                                }
 
                                //this.renderer.addClass(nodeOwner,'anu-input');
