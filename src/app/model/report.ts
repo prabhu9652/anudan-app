@@ -86,6 +86,7 @@ export class ReportWorkflowAssignmentModel{
  users: User[];
  workflowStatuses: WorkflowStatus[];
  workflowAssignments: ReportAssignment[];
+ customAssignments: string;
  type:string;
  granteeUsers: User[];
  report: Report;
@@ -99,6 +100,7 @@ export class ReportWorkflowAssignment{
     stateName: WorkflowStatus;
     stateId: number;
     assignmentId: number;
+    customAssignments: string;
     assignmentUser: User;
     anchor: boolean;
     constructor(){}

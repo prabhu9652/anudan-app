@@ -21,7 +21,12 @@ import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.c
   selector: 'app-report-preview',
   templateUrl: './report-preview.component.html',
   styleUrls: ['./report-preview.component.scss'],
-  providers: [PDFExportComponent, SidebarComponent]
+  providers: [PDFExportComponent, SidebarComponent],
+  styles:[`
+    ::ng-deep .wf-assignment-class .mat-dialog-container{
+        overflow: hidden !important;
+    }
+  `]
 })
 export class ReportPreviewComponent implements OnInit {
 
@@ -138,6 +143,7 @@ export class ReportPreviewComponent implements OnInit {
                       wa.id=data.id;
                       wa.stateId = data.stateId;
                       wa.assignmentId = data.userId;
+                      wa.customAssignments = data.custom;
                       wa.reportId = data.reportId;
                       ass.push(wa);
                   }

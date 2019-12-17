@@ -1,5 +1,6 @@
-<h1 mat-dialog-title>Select a Grant</h1>
-
+<h1 mat-dialog-title style="margin-bottom:0px;">Select a Grant</h1>
+<h4 mat-dialog-title *ngIf="this.selectedGrant" style="margin-top: 0; font-size: 16px; font-weight: normal;">{{selectedGrant.name}}</h4>
+<h4 mat-dialog-title *ngIf="!this.selectedGrant" style="margin-top: 0; font-size: 16px; font-weight: normal;">No grant selected</h4>
 <div mat-dialog-content>
 	<div>
 	<mat-card *ngFor="let grant of grants" value="{{grant.id}}" style="background:#E5E5E5;max-width:none;" class="mb-3">
@@ -16,5 +17,5 @@
 <hr>
 <div mat-dialog-actions>
   <button mat-button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
+  <button [disabled]="selected===0" mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
 </div>

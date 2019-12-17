@@ -584,6 +584,7 @@ background:#DAE3D9;
     height: 100% !important;
     position: relative !important;
     left: 150px !important;
+    overflow: hidden !important;
 }
 
 .grant-template-class{

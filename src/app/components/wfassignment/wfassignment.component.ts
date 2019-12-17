@@ -203,16 +203,24 @@ ngOnInit() {
 
                                    }
                                }else{
-                                    for(let option of this.data.model.granteeUsers){
-                                        const nodeOwnerOptions = this.renderer.createElement('option');
-                                        this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
-                                        if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
-                                            this.renderer.setAttribute(nodeOwnerOptions,'selected','selected');
-                                        }
-                                        let username = option.firstName + ' '  + option.lastName + this.getRoles(option);
+                                    /*const nodeInvite = this.renderer.createElement('input');
+                                    this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user (comma separated)');
+                                    this.renderer.addClass(nodeInvite,'anu-input');
+                                    this.renderer.setAttribute(nodeInvite,'style','width: 80%; text-align: center;');
+                                    this.renderer.setAttribute(nodeInvite,'id','custom_assignment');
+                                    this.renderer.appendChild(node,nodeInvite);*/
+                                    if(this.data.model.granteeUsers){
+                                        for(let option of this.data.model.granteeUsers){
+                                            const nodeOwnerOptions = this.renderer.createElement('option');
+                                            this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
+                                            if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
+                                                this.renderer.setAttribute(nodeOwnerOptions,'selected','selected');
+                                            }
+                                            let username = option.firstName + ' '  + option.lastName + this.getRoles(option);
 
-                                        this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
-                                        this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
+                                            this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
+                                            this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
+                                        }
                                     }
                                }
 
@@ -358,13 +366,14 @@ redrawOnScroll(){
         this.dialogRef.close({'result':true,data:assignMentResult});
     } else if(this.data.model.type==='report'){
         const assignmentElems = $('[id^="assignment_"]');
+        //const customAssignmentElem = $('#custom_assignment');
         const assignMentResult=[];
         for(let i=0; i< assignmentElems.length;i++){
             var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
             if(assignmentTokens.length===4){
-                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3]});
+                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3],'custom':''});
             }else{
-                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2]});
+                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2],'custom':''});
             }
         }
             this.dialogRef.close({'result':true,data:assignMentResult});
@@ -403,13 +412,17 @@ redrawOnScroll(){
 
     zoomIn(){
 
-            const container = this.flowContainer.nativeElement;
-            $(container).animate({ 'zoom': 1 }, 400,() => {
-                jsPlumb.Defaults.Endpoint = "Blank";
-                jsPlumb.Defaults.Zoom = "1";
-                this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
-                this.jsPlumbInstance.repaintEverything();
-            });
+    const container = this.flowContainer.nativeElement;
+    $(container).animate({ 'zoom': 1 }, 400,() => {
+        jsPlumb.Defaults.Endpoint = "Blank";
+        jsPlumb.Defaults.Zoom = "1";
+        this.jsPlumbInstance = jsPlumb.getInstance(jsPlumb.Defaults);
+        this.jsPlumbInstance.repaintEverything();
+    });
 
-        }
+    }
+
+    showPopup(){
+        console.log('popup');
+    }
 }

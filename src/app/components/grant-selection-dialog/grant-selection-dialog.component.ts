@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Grant} from '../../model/dahsboard';
-
+import {MatCheckboxChange} from '@angular/material/checkbox';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 
 @Component({
@@ -13,6 +13,7 @@ export class GrantSelectionDialogComponent implements OnInit {
 
   @ViewChild('templateHolder') templateHolder: ElementRef;
   selected: number;
+  selectedGrant: Grant;
 
   constructor(public dialogRef: MatDialogRef<GrantSelectionDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public grants: Grant[]) {
@@ -21,6 +22,7 @@ export class GrantSelectionDialogComponent implements OnInit {
 
   ngOnInit() {
     this.selected = this.grants[0].id;
+    this.selectedGrant = this.grants[0];
   }
 
   onNoClick(): void {
@@ -42,7 +44,14 @@ export class GrantSelectionDialogComponent implements OnInit {
     console.log('here');
   }
 
-  setSelectedGrant(id,ev: Event){
-    this.selected = id;
+  setSelectedGrant(id,ev: MatCheckboxChange){
+    if(ev.checked){
+        this.selected = id;
+        this.selectedGrant = this.grants.filter(g => g.id===id)[0];
+    }else{
+        this.selected = 0;
+        this.selectedGrant = null;
+    }
+
   }
 }

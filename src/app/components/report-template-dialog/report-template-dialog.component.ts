@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {ReportTemplate} from '../../model/report';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 
@@ -13,6 +14,7 @@ export class ReportTemplateDialogComponent implements OnInit {
 
   @ViewChild('templateHolder') templateHolder: ElementRef;
   selected:any;
+  selectedTemplate: any;
 
   constructor(public dialogRef: MatDialogRef<ReportTemplateDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public templates: ReportTemplate[]) {
@@ -22,6 +24,7 @@ export class ReportTemplateDialogComponent implements OnInit {
 
   ngOnInit() {
     this.selected = this.templates[0].id;
+    this.selectedTemplate = this.templates.filter(t => t.id===this.selected)[0];
   }
 
   onNoClick(): void {
@@ -32,18 +35,25 @@ export class ReportTemplateDialogComponent implements OnInit {
   let selectedTemplate;
     for(let template of this.templates){
         if(template.id === Number(this.selected)){
-            selectedTemplate = template;
+            this.selectedTemplate = template;
             break;
         }
     }
-    this.dialogRef.close({result:true,selectedTemplate:selectedTemplate});
+    this.dialogRef.close({result:true,selectedTemplate:this.selectedTemplate});
   }
 
   showDesc(){
     console.log('here');
   }
 
-  setSelectedTemplate(id,ev: Event){
-    this.selected = id;
+  setSelectedTemplate(id,ev: MatCheckboxChange){
+    if(ev.checked){
+        this.selected = id;
+        this.selectedTemplate = this.templates.filter(t => t.id===id)[0];
+    }else{
+        this.selected = 0;
+        this.selectedTemplate = null;
+    }
   }
+
 }
