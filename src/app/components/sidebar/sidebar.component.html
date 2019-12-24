@@ -12,7 +12,7 @@
         </li>
 
 
-        <ng-container *ngIf="appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
+        <ng-container *ngIf="appComponent.currentView === 'dashboard' || appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
             <ng-container *ngFor="let menuItem of menuItems">
             <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
                 class="{{menuItem.class}} nav-item text-left">

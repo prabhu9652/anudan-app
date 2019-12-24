@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
   headers: HttpHeaders;
   loggedIn: boolean;
   logoURL:string;
+  host: string;
+  orgName: string;
   recaptchaToken:string;
   //recaptchaVisible = false;
   loginForm = new FormGroup({
@@ -40,6 +42,9 @@ export class LoginComponent implements OnInit {
               public appComponent: AppComponent,
               private authService: AuthService,
               private toastr: ToastrService) {
+
+              this.host = localStorage.getItem('X-TENANT-CODE');
+
   }
 
   signInWithGoogle(): void {
@@ -66,6 +71,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     this.logoURL = "/api/public/images/"+tenantCode+"/logo";
+
+    const url = '/api/public/tenant/' + tenantCode;
+    this.http.get(url,{responseType: 'text'}).subscribe((orgName) => {
+       localStorage.setItem('ORG-NAME',orgName);
+       this.orgName = localStorage.getItem('ORG-NAME');
+    },error =>{
+    });
+
   }
 
   onSubmit() {

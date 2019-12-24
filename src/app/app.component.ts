@@ -158,7 +158,8 @@ interval(10000).subscribe(t => {
         hostName = 'anudan';
     }
     localStorage.setItem('X-TENANT-CODE', hostName.toUpperCase());
-  }
+
+  };
 
   subdomain(): string {
     const hostName = location.hostname;
