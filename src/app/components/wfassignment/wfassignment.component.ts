@@ -203,12 +203,12 @@ ngOnInit() {
 
                                    }
                                }else{
-                                    /*const nodeInvite = this.renderer.createElement('input');
+                                    const nodeInvite = this.renderer.createElement('input');
                                     this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user (comma separated)');
                                     this.renderer.addClass(nodeInvite,'anu-input');
                                     this.renderer.setAttribute(nodeInvite,'style','width: 80%; text-align: center;');
                                     this.renderer.setAttribute(nodeInvite,'id','custom_assignment');
-                                    this.renderer.appendChild(node,nodeInvite);*/
+                                    this.renderer.appendChild(node,nodeInvite);
                                     if(this.data.model.granteeUsers){
                                         for(let option of this.data.model.granteeUsers){
                                             const nodeOwnerOptions = this.renderer.createElement('option');
@@ -366,14 +366,14 @@ redrawOnScroll(){
         this.dialogRef.close({'result':true,data:assignMentResult});
     } else if(this.data.model.type==='report'){
         const assignmentElems = $('[id^="assignment_"]');
-        //const customAssignmentElem = $('#custom_assignment');
+        const customAssignmentElem = $('#custom_assignment');
         const assignMentResult=[];
         for(let i=0; i< assignmentElems.length;i++){
             var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
             if(assignmentTokens.length===4){
-                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3],'custom':''});
+                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3],'custom':$(customAssignmentElem).val()});
             }else{
-                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2],'custom':''});
+                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2],'custom':$(customAssignmentElem).val()});
             }
         }
             this.dialogRef.close({'result':true,data:assignMentResult});
