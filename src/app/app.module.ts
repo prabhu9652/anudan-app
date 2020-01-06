@@ -8,6 +8,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppRoutingModule} from './app.routing';
 import {ComponentsModule} from './components/components.module';
 import {AppComponent} from './app.component';
+import {WelcomeComponent} from './welcome/welcome.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {TableListComponent} from './table-list/table-list.component';
 import {TypographyComponent} from './typography/typography.component';
@@ -16,6 +17,7 @@ import {MapsComponent} from './maps/maps.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
+import {HomeComponent} from './home/home.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
 import {GranthistoryComponent} from './components/granthistory/granthistory.component';
@@ -56,11 +58,14 @@ export function provideConfig() {
   return config;
 }
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
+    HomeComponent,
+    WelcomeComponent,
     KpisubmissionComponent,
     RegistrationComponent,
     WfassignmentComponent,

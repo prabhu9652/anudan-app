@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Add grantees to be invited to this grant</h1>
+
+<mat-form-field class="example-chip-list">
+  <mat-chip-list #chipList aria-label="Fruit selection">
+    <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+              [removable]="removable" (removed)="remove(fruit)">
+      {{fruit.name}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input placeholder="Add grantee email"
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           [matChipInputAddOnBlur]="addOnBlur"
+           (matChipInputTokenEnd)="add($event)" class="anu-input">
+  </mat-chip-list>
+</mat-form-field>
+<div mat-dialog-actions>
+  <button mat-button mat-flat-button (click)="onNoClick()">No</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">Yes</button>
+</div>

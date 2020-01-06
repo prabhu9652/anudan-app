@@ -23,6 +23,7 @@ import {Colors} from '../../model/app-config';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import {interval} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
@@ -1463,5 +1464,29 @@ getCleanText(section:Section): string{
 
     showWFAssigments(){
         this.adminComp.showWorkflowAssigments();
+    }
+
+    inviteGrantee(){
+        const dialogRef = this.dialog.open(InviteDialogComponent, {
+            data: "hello"
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result.result) {
+                const httpOptions = {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+
+                let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                    + this.currentGrant.id + '/invite';
+                this.http.post(url, {grant:this.currentGrant,invites:result.value}, httpOptions).subscribe((grant: Grant) => {
+
+                });
+            }
+        });
     }
 }

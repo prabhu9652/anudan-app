@@ -1,6 +1,6 @@
 import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode, ApplicationRef} from '@angular/core';
 import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
 import { User} from './model/user';
 import { Report} from './model/report';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
@@ -54,6 +54,7 @@ export class AppComponent implements AfterViewChecked{
   createNewSection = new BehaviorSubject<boolean>(false);
   createNewReportSection = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
+  parameters: any;
 
   public appConfig: AppConfig = {
     appName: '',
@@ -88,7 +89,9 @@ export class AppComponent implements AfterViewChecked{
     private updates: SwUpdate,
     private snackbar: MatSnackBar) {
 
-
+    this.route.queryParamMap.subscribe(params => {
+                console.log(params.get('q'));
+            });
 
     this.updates.available.subscribe(event => {
           const snack = this.snackbar.open('A newer version of the Anudan app is now available. Please save your work and refresh the page.', 'Dismiss',{'verticalPosition':'top'});
@@ -116,11 +119,11 @@ export class AppComponent implements AfterViewChecked{
     //this.initAppUI();
     //this.getLogo()
     const isLocal = this.isLocalhost();
-    if ( this.loggedIn ) {
+    /*if ( this.loggedIn ) {
       this.router.navigate(['/grants']);
     } else {
-      this.router.navigate(['/']);
-    }
+      this.router.navigate(['/home']);
+    }*/
 
 
     /*interval(30000).subscribe(t => {
@@ -210,7 +213,7 @@ interval(10000).subscribe(t => {
   }
 
   queryParam() {
-    const name = this.getQueryStringValue('org');
+    const name = this.getQueryStringValue('org1');
 
     return name;
 
@@ -238,7 +241,9 @@ interval(10000).subscribe(t => {
     this.notifications = [];
 
     this.grantService.changeMessage(null);
-    this.confgSubscription.unsubscribe();
+    if(this.confgSubscription){
+        this.confgSubscription.unsubscribe();
+    }
     this.loggedInUser = null;
     this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');

@@ -5,26 +5,19 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 import { KpisubmissionComponent } from './kpisubmission/kpisubmission.component';
 import {RegistrationComponent} from './registration/registration.component';
+import {AuthGuardService} from './auth-guard.service';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'home', component: HomeComponent,canActivate: [AuthGuardService]},
   {path: 'registration', component: RegistrationComponent},
-  {path: 'kpisubmission',
-    component: AdminLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: KpisubmissionComponent
-      }]
-  },
-  {path: '', redirectTo : '/login', pathMatch: 'full'},
+  {path: 'welcome', component: WelcomeComponent},
+  {path: '', redirectTo:'home',pathMatch:'full'},
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  }, {
     path: '',
     component: AdminLayoutComponent,
     children: [
@@ -32,6 +25,7 @@ const routes: Routes = [
       path: '',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
   }]}
+
     // { path: 'dashboard',      component: DashboardComponent },
     // { path: 'grant',      component: GrantComponent },
     // { path: 'user-profile',   component: UserProfileComponent },
@@ -52,5 +46,8 @@ const routes: Routes = [
   ],
   exports: [
   ],
+    providers: [
+        AuthGuardService
+    ]
 })
 export class AppRoutingModule { }
