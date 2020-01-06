@@ -169,7 +169,11 @@ interval(10000).subscribe(t => {
     let subDomain = '';
     if (hostName !== '127.0.0.1') {
       const arr = hostName.split('.');
-      if (arr.length > 1) {
+      if (arr.length === 4) {
+        subDomain = arr[0];
+      } else if(arr.length === 3 && (arr[0]==='dev' || arr[0]==='qa' || arr[0]==='uat'){
+        subDomain = arr[1];
+      }else if(arr.length === 3 && (arr[0]!=='dev' || arr[0]!=='qa' || arr[0]!=='uat'){
         subDomain = arr[0];
       }
     }
