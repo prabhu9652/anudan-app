@@ -38,7 +38,7 @@ export class WelcomeComponent implements OnInit {
   navigate(){
     console.log( this.parameters.type);
 
-    const httpOptions = {
+    /*const httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
@@ -46,10 +46,10 @@ export class WelcomeComponent implements OnInit {
         })
     };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
+    const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
 
     this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
-    });
+    });*/
   }
 
 }
