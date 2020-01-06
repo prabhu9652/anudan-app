@@ -14,7 +14,7 @@ export class WelcomeComponent implements OnInit {
     orgName: string;
     parameters: any;
 
-  constructor(private appComponent: AppComponent,
+  constructor(public appComponent: AppComponent,
   private http: HttpClient, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.queryParams.subscribe(params => {
         this.parameters = params;
@@ -52,4 +52,6 @@ export class WelcomeComponent implements OnInit {
     });*/
   }
 
+  showProfile(){
+  }
 }

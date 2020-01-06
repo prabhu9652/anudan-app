@@ -127,4 +127,7 @@ export class RegistrationComponent implements OnInit {
       t
     });*/
   }
+
+  signup(){
+  }
 }
