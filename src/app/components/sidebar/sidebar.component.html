@@ -1,17 +1,6 @@
 <div class="sidebar-wrapper h-100">
-    <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTEE'">
-        <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="min-height:100px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
 
-
-
-            <div style="display:flex;align-items:center;">
-                <img [src]="logoUrl" alt="logo" class="nav-link float-left" style="width:40%;">
-                <strong>{{appComponent.loggedInUser.organization.name}}</strong>
-            </div>
-
-        </li>
-    </ul>
-    <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTER'">
+    <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTER' || appComponent.loggedInUser.organization.type==='GRANTEE'">
         <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="min-height:100px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
 
 
@@ -26,42 +15,45 @@
 
         <ng-container *ngIf="appComponent.currentView === 'dashboard' || appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
             <ng-container *ngFor="let menuItem of menuItems">
-            <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
-                class="{{menuItem.class}} nav-item text-left">
-                <a class="nav-link" [routerLink]="[menuItem.path]">
-                    <!--<i class="material-icons">{{menuItem.icon}}</i>-->
-                    <p><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>{{menuItem.title}}</b></p>
-                </a>
-            </li>
-                <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
-                    <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
-                        <mat-panel-title style="display: flex; align-items: center">
-                            <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
-                        class="{{orgMenuItem.class}} nav-item text-left">
-                        <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
-                            <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
-                            <p>{{orgMenuItem.title}}</p>
+                <mat-accordion multi="false" >
+                    <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
+                        class="{{menuItem.class}} nav-item text-left">
+                        <a class="nav-link" [routerLink]="[menuItem.path]">
+                            <!--<i class="material-icons">{{menuItem.icon}}</i>-->
+                            <p><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>{{menuItem.title}}</b></p>
                         </a>
                     </li>
-                </mat-expansion-panel>
 
-                <mat-expansion-panel *ngIf="menuItem.title === 'Reports'">
-                    <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
-                        <mat-panel-title style="display: flex; align-items: center">
-                            <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <li routerLinkActive="active" *ngFor="let reportMenuItem of reportMenuItems"
-                        class="{{reportMenuItem.class}} nav-item text-left">
-                        <a class="nav-link py-0" [routerLink]="[reportMenuItem.path]">
-                            <i class="material-icons" style="font-size:18px;">remove</i>
-                            <p>{{reportMenuItem.title}}</p>
-                        </a>
-                    </li>
-                </mat-expansion-panel>
+                    <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                            <mat-panel-title style="display: flex; align-items: center">
+                                <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
+                            class="{{orgMenuItem.class}} nav-item text-left">
+                            <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
+                                <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
+                                <p>{{orgMenuItem.title}}</p>
+                            </a>
+                        </li>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel *ngIf="menuItem.title === 'Reports'">
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                            <mat-panel-title style="display: flex; align-items: center">
+                                <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <li routerLinkActive="active" *ngFor="let reportMenuItem of reportMenuItems"
+                            class="{{reportMenuItem.class}} nav-item text-left">
+                            <a class="nav-link py-0" [routerLink]="[reportMenuItem.path]">
+                                <i class="material-icons" style="font-size:18px;">remove</i>
+                                <p>{{reportMenuItem.title}}</p>
+                            </a>
+                        </li>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </ng-container>
 
 

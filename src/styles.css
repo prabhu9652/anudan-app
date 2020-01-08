@@ -240,8 +240,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .sidebar[data-color="danger"] li.active > a{
-  background-color: #4DC252;
-  color: #0E100E;
+  background-color: transparent; color: #4DC252; box-shadow: none; font-weight: bold;
+}
+
+.sidebar[data-color="danger"] li.active img{
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
 }
 
 .anu-btn{
@@ -250,12 +253,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .sidebar .nav li.active > a i{
-  color: #0E100E;
+  color: #4DC252;
 }
 
-.sidebar .nav li:hover > a{
-  color: inherit;
-}
+
 
 .mat-expansion-panel-body{
   padding: 0 !important;
@@ -662,4 +663,19 @@ kendo-pdf-export {
 
 .main-panel .main-content{
     margin-top: 0 !important;
+}
+
+.sidebar .nav li:hover > a{
+    background: none;
+    color:#fff;
+    text-decoration: underline;
+}
+
+.sidebar .nav li.active:hover > a{
+    color:#4DC252 !important;
+}
+
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]):hover{
+    background: none;
+    text-decoration:underline;
 }

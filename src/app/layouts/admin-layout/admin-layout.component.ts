@@ -304,6 +304,7 @@ export class AdminLayoutComponent implements OnInit {
                               wa.stateId = data.stateId;
                               wa.assignmentId = data.userId;
                               wa.reportId = data.reportId;
+                              wa.customAssignments = data.customAssignments;
                               ass.push(wa);
                           }
 

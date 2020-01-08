@@ -147,7 +147,7 @@ interval(10000).subscribe(t => {
   }
 
   isLocalhost() {
-    return (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    return (location.hostname.endsWith('.localhost') || location.hostname === '127.0.0.1')
   }
 
   initAppUI() {
@@ -217,9 +217,9 @@ interval(10000).subscribe(t => {
   }
 
   queryParam() {
-    const name = this.getQueryStringValue('org1');
 
-    return name;
+
+    return location.hostname.split('.')[0];
 
     // this.route.queryParamMap.subscribe(
     //   (queryParams: ParamMap) => {

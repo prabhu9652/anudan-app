@@ -371,9 +371,9 @@ redrawOnScroll(){
         for(let i=0; i< assignmentElems.length;i++){
             var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
             if(assignmentTokens.length===4){
-                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3],'custom':$(customAssignmentElem).val()});
+                assignMentResult.push({'id':assignmentTokens[1],'stateId':assignmentTokens[2],'userId':$(assignmentElems[i]).val(), 'reportId':assignmentTokens[3],'customAssignments':$(customAssignmentElem).val()});
             }else{
-                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2],'custom':$(customAssignmentElem).val()});
+                assignMentResult.push({'id':'','stateId':assignmentTokens[1],'userId':$(assignmentElems[i]).val(),'reportId':assignmentTokens[2],'customAssignments':$(customAssignmentElem).val()});
             }
         }
             this.dialogRef.close({'result':true,data:assignMentResult});
