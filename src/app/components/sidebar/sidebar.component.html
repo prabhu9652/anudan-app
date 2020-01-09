@@ -23,7 +23,7 @@
                         </a>
                     </li>
 
-                    <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
+                    <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
@@ -38,8 +38,8 @@
                         </li>
                     </mat-expansion-panel>
 
-                    <mat-expansion-panel *ngIf="menuItem.title === 'Reports'">
-                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
+                    <mat-expansion-panel #reports id="reports" *ngIf="menuItem.title === 'Reports'">
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports
                             </mat-panel-title>

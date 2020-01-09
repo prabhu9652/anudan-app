@@ -7,9 +7,8 @@ import {Grant, Notifications} from '../../model/dahsboard';
 import {Report} from '../../model/report';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatDialog} from '@angular/material';
+import {MatDialog,MatExpansionPanel} from '@angular/material';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-
 
 
 declare const $: any;
@@ -107,6 +106,9 @@ export class SidebarComponent implements OnInit {
 
   action: number;
   sub: any;
+
+  @ViewChild('organization') organizationElem: MatExpansionPanel;
+  @ViewChild('reports') reportsElem: MatExpansionPanel;
 
 
   constructor(public appComponent: AppComponent,
@@ -300,7 +302,15 @@ drop(event: CdkDragDrop<string[]>) {
   }
 
   manageMenutItemsDisplay(evt: Event){
-    console.log($(evt.srcElement).children('.nav-item'));
+    const submenu = $(evt.srcElement).closest('.mat-expansion-panel');
+    if(submenu.length > 0){
+        const thisMenu = $(submenu[0]).attr('id');
+        if(thisMenu==='organization'){
+            this.reportsElem.close();
+        } else if(thisMenu==='reports'){
+           this.organizationElem.close();
+       }
+    }
   }
 
 }
