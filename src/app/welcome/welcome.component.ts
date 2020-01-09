@@ -15,7 +15,9 @@ export class WelcomeComponent implements OnInit {
     parameters: any;
 
   constructor(public appComponent: AppComponent,
-  private http: HttpClient, private activatedRoute: ActivatedRoute) {
+  private http: HttpClient,
+  private activatedRoute: ActivatedRoute,
+  private router: Router) {
     this.activatedRoute.queryParams.subscribe(params => {
         this.parameters = params;
     });
@@ -53,5 +55,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   showProfile(){
+  }
+
+  navigateToOrg(){
+    this.router.navigate(['organization/details']);
   }
 }

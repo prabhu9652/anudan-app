@@ -382,7 +382,7 @@ export class ReportSectionsComponent implements OnInit {
             //$('#section_' + newSection.id).css('display', 'block');
             $(createSectionModal).modal('hide');
             this.appComp.sectionAdded = true;
-            this.sidebar.buildSectionsSideNav();
+            this.sidebar.buildSectionsSideNav(null);
             this.appComp.sectionInModification = false;
             //  this.appComp.selectedTemplate = info.report.template;
             this.router.navigate(['report/section/' + this.getCleanText(info.report.reportDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
@@ -414,7 +414,7 @@ export class ReportSectionsComponent implements OnInit {
             section.sectionName = result;
             this.singleReportDataService.changeMessage(this.currentReport);
             this.router.navigate(['report/section/' + this.getCleanText(section)]);
-            this.sidebar.buildSectionsSideNav();
+            this.sidebar.buildSectionsSideNav(null);
         });
     }
 
@@ -437,7 +437,7 @@ export class ReportSectionsComponent implements OnInit {
 
                 this.http.put<Report>(url,this.currentReport, httpOptions).subscribe((report: Report) => {
                     this.singleReportDataService.changeMessage(report);
-                    const path = this.sidebar.buildSectionsSideNav();
+                    const path = this.sidebar.buildSectionsSideNav(null);
                     this.router.navigate([path]);
                 },error => {
                     const errorMsg = error as HttpErrorResponse;

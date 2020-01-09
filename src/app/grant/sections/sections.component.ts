@@ -352,7 +352,7 @@ ngOnDestroy(){
 
     this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
        this.grantData.changeMessage(grant);
-       const path = this.sidebar.buildSectionsSideNav();
+       const path = this.sidebar.buildSectionsSideNav(null);
            //this.router.navigate([path]);
        },error => {
                 const errorMsg = error as HttpErrorResponse;
@@ -712,7 +712,7 @@ ngOnDestroy(){
         this._setEditMode(true);
         $(createSectionModal).modal('hide');
         this.appComp.sectionAdded = true;
-        this.sidebar.buildSectionsSideNav();
+        this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
@@ -1192,7 +1192,7 @@ ngOnDestroy(){
     /* if(ev!==null && ev!==undefined){
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
-      this.sidebar.buildSectionsSideNav();
+      this.sidebar.buildSectionsSideNav(null);
       this.appComp.sectionInModification = false;
       if(ev.toString()!==''){
         this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
@@ -1221,7 +1221,7 @@ ngOnDestroy(){
 
         this.grantData.changeMessage(this.currentGrant);
         this.appComp.sectionUpdated = true;
-        this.sidebar.buildSectionsSideNav();
+        this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
         if(ev.toString()!==''){
           this.router.navigate(['grant/section/' + this.getCleanText(section)]);
@@ -1489,7 +1489,7 @@ ngOnDestroy(){
 
       this.http.put<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
            this.grantData.changeMessage(grant);
-           const path = this.sidebar.buildSectionsSideNav();
+           const path = this.sidebar.buildSectionsSideNav(null);
                this.router.navigate([path]);
            },error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -1886,7 +1886,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         section.sectionName = result;
         this.grantData.changeMessage(this.currentGrant);
         this.router.navigate(['grant/section/' + this.getCleanText(section)]);
-        this.sidebar.buildSectionsSideNav();
+        this.sidebar.buildSectionsSideNav(null);
     });
   }
 

@@ -164,12 +164,12 @@ drop(event: CdkDragDrop<string[]>) {
     this.ref.detectChanges();
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
-      this.buildSectionsSideNav();
+      this.buildSectionsSideNav(null);
     });
 
     this.singleReportDataService.currentMessage.subscribe((report) => {
           this.currentReport = report;
-          this.buildSectionsSideNav();
+          this.buildSectionsSideNav(null);
         });
 
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
@@ -235,7 +235,8 @@ drop(event: CdkDragDrop<string[]>) {
       });
 }
 
-  buildSectionsSideNav(): string {
+  buildSectionsSideNav(ev: Event): string {
+  this.manageMenutItemsDisplay(ev);
   console.log('>>>>>>>>> ' + this.appComponent.currentView);
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
   this.singleReportDataService.currentMessage.subscribe(report => this.currentReport = report);
@@ -297,6 +298,11 @@ drop(event: CdkDragDrop<string[]>) {
   createNewReportSection(){
     this.appComponent.createNewReportSection.next(true);
   }
+
+  manageMenutItemsDisplay(evt: Event){
+    console.log($(evt.srcElement).children('.nav-item'));
+  }
+
 }
 
 

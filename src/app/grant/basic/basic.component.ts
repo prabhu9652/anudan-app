@@ -605,7 +605,7 @@ export class BasicComponent implements OnInit {
           this._setEditMode(true);
           $(createSectionModal).modal('hide');
           this.appComp.sectionAdded = true;
-          this.sidebar.buildSectionsSideNav();
+          this.sidebar.buildSectionsSideNav(null);
           this.appComp.sectionInModification = false;
           this.appComp.selectedTemplate = info.grant.grantTemplate;
 

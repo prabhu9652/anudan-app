@@ -198,7 +198,7 @@ export class ReportHeaderComponent implements OnInit {
             //$('#section_' + newSection.id).css('display', 'block');
             $(createSectionModal).modal('hide');
             this.appComp.sectionAdded = true;
-            this.sidebar.buildSectionsSideNav();
+            this.sidebar.buildSectionsSideNav(null);
             this.appComp.sectionInModification = false;
             //  this.appComp.selectedTemplate = info.report.template;
             this.router.navigate(['report/section/' + this.getCleanText(info.report.reportDetails.sections.filter((a) => a.id===info.sectionId)[0])]);

@@ -15,23 +15,22 @@
 
         <ng-container *ngIf="appComponent.currentView === 'dashboard' || appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
             <ng-container *ngFor="let menuItem of menuItems">
-                <mat-accordion multi="false" >
-                    <li routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
+                    <li (click)="manageMenutItemsDisplay($event)" routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
                         class="{{menuItem.class}} nav-item text-left">
                         <a class="nav-link" [routerLink]="[menuItem.path]">
                             <!--<i class="material-icons">{{menuItem.icon}}</i>-->
-                            <p><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>{{menuItem.title}}</b></p>
+                            <p><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                         </a>
                     </li>
 
                     <mat-expansion-panel *ngIf="menuItem.title === 'Organization'">
-                        <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
-                            <mat-panel-title style="display: flex; align-items: center">
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
+                            <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
-                            class="{{orgMenuItem.class}} nav-item text-left">
+                            class="{{orgMenuItem.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
                             <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
                                 <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
                                 <p>{{orgMenuItem.title}}</p>
@@ -41,19 +40,18 @@
 
                     <mat-expansion-panel *ngIf="menuItem.title === 'Reports'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
-                            <mat-panel-title style="display: flex; align-items: center">
+                            <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <li routerLinkActive="active" *ngFor="let reportMenuItem of reportMenuItems"
-                            class="{{reportMenuItem.class}} nav-item text-left">
+                            class="{{reportMenuItem.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
                             <a class="nav-link py-0" [routerLink]="[reportMenuItem.path]">
                                 <i class="material-icons" style="font-size:18px;">remove</i>
                                 <p>{{reportMenuItem.title}}</p>
                             </a>
                         </li>
                     </mat-expansion-panel>
-                </mat-accordion>
             </ng-container>
 
 
@@ -83,10 +81,10 @@
                 <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
                     <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
 
-                        <p style="font-size: 15px;"><b><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</b></p>
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
                     <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
-                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>Preview</b></p>
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
             
@@ -131,10 +129,10 @@
                 <ng-container *ngIf="menuItem.title !== 'Report Details'">
                     <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentReport.status.internalStatus!='ACTIVE' && currentReport.status.internalStatus!='CLOSED')">
 
-                        <p style="font-size: 15px;"><b><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</b></p>
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
                     <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentReport.status.internalStatus=='ACTIVE' || currentReport.status.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
-                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2"><b>Preview</b></p>
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
 
@@ -171,7 +169,7 @@
             <li routerLinkActive="active" class="{{platformMenuItem.class}} nav-item text-left">
                 <a class="nav-link" [routerLink]="[platformMenuItem.path]">
                     <!--<i class="material-icons">{{menuItem.icon}}</i>-->
-                    <p><img src="./assets/img/{{platformMenuItem.icon}}" class="mr-2"><b>{{platformMenuItem.title}}</b></p>
+                    <p><img src="./assets/img/{{platformMenuItem.icon}}" class="mr-2">{{platformMenuItem.title}}</p>
                 </a>
             </li>
         </ng-container>
