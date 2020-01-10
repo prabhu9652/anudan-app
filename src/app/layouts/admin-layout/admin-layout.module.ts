@@ -40,6 +40,7 @@ import {
 } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/addnlreports-dialog.component';
 import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
 import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
@@ -124,6 +125,7 @@ import { TemplatesComponent } from '../../admin/templates/templates.component';
         NotificationsComponent,
         UpgradeComponent,
         FieldDialogComponent,
+        AddnlreportsDialogComponent,
         InviteDialogComponent,
         GrantNotesComponent,
         ReportNotesComponent,
@@ -153,7 +155,7 @@ import { TemplatesComponent } from '../../admin/templates/templates.component';
         ReportPreviewComponent,
         TemplatesComponent
     ],
-    entryComponents: [FieldDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
+    entryComponents: [FieldDialogComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

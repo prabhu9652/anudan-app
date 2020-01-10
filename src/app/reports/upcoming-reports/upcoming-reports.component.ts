@@ -9,6 +9,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
 import {GrantSelectionDialogComponent} from '../../components/grant-selection-dialog/grant-selection-dialog.component';
+import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/addnlreports-dialog.component';
 import {ReportComponent} from '../report/report.component'
 @Component({
   selector: 'app-upcoming-reports',
@@ -22,8 +23,10 @@ export class UpcomingReportsComponent implements OnInit {
     reportEndDate: Date;
     reportsToSetup: Report[];
     reportsReadyToSubmit: Report[];
+    addnlReports: Report[];
     futureReportsToSetup: Report[];
     subscribers: any = {};
+    grants: Grant[] = [];
 
     constructor(
         private reportService: ReportDataService,
@@ -66,9 +69,23 @@ export class UpcomingReportsComponent implements OnInit {
         reportEndDate.setSeconds(59);
         this.reportService.changeMessage(reports);
         this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
+
+        for(let i=0; i< this.reports.length;i++){
+            if(this.grants.filter(g => g.id===this.reports[i].grant.id).length===0 ){
+                this.grants.push(this.reports[i].grant);
+            }
+        }
         this.reportsReadyToSubmit = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus==='ACTIVE'));
         this.futureReportsToSetup = this.reports.filter(a => new Date(a.endDate).getTime() > reportEndDate.getTime() && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
 
+        if(this.reportsToSetup && this.reportsToSetup.length>0){
+            for(let i=0; i<this.reportsToSetup.length; i++){
+                const linkedReports = this.futureReportsToSetup.filter(r => r.grant.id===this.reportsToSetup[i].grant.id);
+                if(linkedReports && linkedReports.length>0){
+                    this.reportsToSetup[i].linkedReports = linkedReports.length;
+                }
+            }
+        }
         console.log(this.reportStartDate + "    " + this.reportEndDate);
     });
   }
@@ -131,6 +148,17 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
+    viewAddnlReports(grantId: number){
+        let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
+            data: {grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
+            panelClass: 'wf-assignment-class'
+        });
 
+        dialogRef1.afterClosed().subscribe(result => {
+            if(result.result){
+                console.log('done');
+            }
+        });
+    }
 
 }

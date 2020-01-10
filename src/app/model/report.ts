@@ -26,6 +26,7 @@ export class Report{
     canManage: boolean;
     flowAuthorities: FlowAuthority;
     cumulativeActuals:number;
+    linkedReports: number;
 }
 
 export class ReportHistory{
@@ -146,4 +147,10 @@ export class ReportTemplate{
   _private: boolean;
   defaultTemplate: boolean;
   sections: Section[];
+}
+
+export class AdditionReportsModel{
+    grant: number;
+    grants: Grant[];
+    futureReports: Report[];
 }
