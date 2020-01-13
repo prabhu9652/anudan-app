@@ -45,6 +45,8 @@ export class UpcomingReportsComponent implements OnInit {
 
      if(!this.reports){
         this.getReports();
+     }else{
+        this.processReports(this.reports);
      }
   }
 
@@ -59,39 +61,42 @@ export class UpcomingReportsComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('USER'));
     const url = '/api/user/' + user.id + '/report/';
     this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
-        reports.sort((a,b) => a.endDate>b.endDate?1:-1);
-        let reportStartDate = new Date();
-        let reportEndDate = new Date();
-        reportEndDate.setDate(reportEndDate.getDate()+this.appComp.appConfig.daysBeforePublishingReport);
-        reportStartDate.setHours(0);
-        reportStartDate.setMinutes(0);
-        reportStartDate.setSeconds(0);
-        reportEndDate.setHours(23);
-        reportEndDate.setMinutes(59);
-        reportEndDate.setSeconds(59);
-        this.reportService.changeMessage(reports);
-        this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
-
-        for(let i=0; i< this.reports.length;i++){
-            if(this.grants.filter(g => g.id===this.reports[i].grant.id).length===0 ){
-                this.grants.push(this.reports[i].grant);
-            }
-        }
-        this.reportsReadyToSubmit = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus==='ACTIVE'));
-        this.futureReportsToSetup = this.reports.filter(a => new Date(a.endDate).getTime() > reportEndDate.getTime() && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
-
-        if(this.reportsToSetup && this.reportsToSetup.length>0){
-            for(let i=0; i<this.reportsToSetup.length; i++){
-                const linkedReports = this.futureReportsToSetup.filter(r => r.grant.id===this.reportsToSetup[i].grant.id);
-                if(linkedReports && linkedReports.length>0){
-                    this.reportsToSetup[i].linkedReports = linkedReports.length;
-                }
-            }
-        }
-        console.log(this.reportStartDate + "    " + this.reportEndDate);
+        this.processReports(reports);
     });
   }
 
+  processReports(reports: Report[]){
+      reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+      let reportStartDate = new Date();
+      let reportEndDate = new Date();
+      reportEndDate.setDate(reportEndDate.getDate()+this.appComp.appConfig.daysBeforePublishingReport);
+      reportStartDate.setHours(0);
+      reportStartDate.setMinutes(0);
+      reportStartDate.setSeconds(0);
+      reportEndDate.setHours(23);
+      reportEndDate.setMinutes(59);
+      reportEndDate.setSeconds(59);
+      this.reportService.changeMessage(reports);
+      this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
+
+      for(let i=0; i< this.reports.length;i++){
+          if(this.grants.filter(g => g.id===this.reports[i].grant.id).length===0 ){
+              this.grants.push(this.reports[i].grant);
+          }
+      }
+      this.reportsReadyToSubmit = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus==='ACTIVE'));
+      this.futureReportsToSetup = this.reports.filter(a => new Date(a.endDate).getTime() > reportEndDate.getTime() && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
+
+      if(this.reportsToSetup && this.reportsToSetup.length>0){
+          for(let i=0; i<this.reportsToSetup.length; i++){
+              const linkedReports = this.futureReportsToSetup.filter(r => r.grant.id===this.reportsToSetup[i].grant.id);
+              if(linkedReports && linkedReports.length>0){
+                  this.reportsToSetup[i].linkedReports = linkedReports.length;
+              }
+          }
+      }
+      console.log(this.reportStartDate + "    " + this.reportEndDate);
+  }
   manageReport(report:Report){
     this.appComp.currentView = 'report';
     this.singleReportService.changeMessage(report);
