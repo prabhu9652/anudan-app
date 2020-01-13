@@ -320,7 +320,7 @@ export class ReportSectionsComponent implements OnInit {
         const files = event.target.files;
 
 
-        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/report/'+this.currentReport.id+'/attribute/'+attribute.id+'/upload';
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/report/'+this.currentReport.id+'/section/'+section.id+'/attribute/'+attribute.id+'/upload';
         let formData = new FormData();
         for( let i=0; i< files.length; i++){
             formData.append('file', files.item(i));
@@ -332,6 +332,7 @@ export class ReportSectionsComponent implements OnInit {
             }
         }
 
+        formData.append('reportToSave',JSON.stringify(this.currentReport));
         const httpOptions = {
             headers: new HttpHeaders({
             'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),

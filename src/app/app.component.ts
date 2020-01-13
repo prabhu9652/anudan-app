@@ -200,7 +200,7 @@ interval(10000).subscribe(t => {
                             const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
                             const errorconfig: Partial<IndividualConfig> = x;
                             const config: Partial<IndividualConfig> = y;
-                            if(errorMsg.error.message==='Token Expired'){
+                            if(errorMsg.error && errorMsg.error.message==='Token Expired'){
                              //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
                              alert("Your session has timed out. Please sign in again.")
                              this.logout();

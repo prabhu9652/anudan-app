@@ -1791,7 +1791,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         const files = event.target.files;
 
 
-        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/attribute/'+attribute.id+'/upload';
+        const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/section/'+section.id+'/attribute/'+attribute.id+'/upload';
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
@@ -1802,6 +1802,8 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                                 return;
                             }
               }
+
+              formData.append('grantToSave',JSON.stringify(this.currentGrant));
 
 
               const httpOptions = {

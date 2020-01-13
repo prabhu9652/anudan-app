@@ -302,6 +302,9 @@ drop(event: CdkDragDrop<string[]>) {
   }
 
   manageMenutItemsDisplay(evt: Event){
+    if(evt===undefined || evt===null){
+        return;
+    }
     const submenu = $(evt.srcElement).closest('.mat-expansion-panel');
     if(submenu.length > 0){
         const thisMenu = $(submenu[0]).attr('id');
