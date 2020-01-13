@@ -43,7 +43,9 @@ export class UpcomingReportsComponent implements OnInit {
         this.reports = r;
      });
 
-     this.getReports();
+     if(!this.reports){
+        this.getReports();
+     }
   }
 
   getReports(){

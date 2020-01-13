@@ -204,7 +204,7 @@ interval(10000).subscribe(t => {
                              //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
                              alert("Your session has timed out. Please sign in again.")
                              this.logout();
-                            } else {
+                            } else if(errorMsg.error) {
                              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
                             }
 

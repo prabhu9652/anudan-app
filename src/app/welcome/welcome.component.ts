@@ -38,7 +38,10 @@ export class WelcomeComponent implements OnInit {
   }
 
   navigate(){
-    console.log( this.parameters.type);
+    const type = this.parameters.type;
+    if(type==='grant'){
+    }else if(type==='report'){
+    }
 
     /*const httpOptions = {
         headers: new HttpHeaders({
