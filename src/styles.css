@@ -697,3 +697,18 @@ kendo-pdf-export {
 .mat-expanded .mat-expansion-panel-header-title{
     font-weight:800 !important;
 }
+
+.mat-tab-label{
+    color: #000 !important;
+}
+.mat-tab-label-active{
+    background: #4DC252;
+}
+
+.mat-ink-bar{
+    visibility: hidden !important;
+}
+
+.mat-list-item{
+    border: 1px 1px #d4d4d4;
+}

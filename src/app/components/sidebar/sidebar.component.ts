@@ -103,6 +103,7 @@ export class SidebarComponent implements OnInit {
   unreadMessages = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+  canManageOrg: boolean = false;
 
   action: number;
   sub: any;
@@ -120,6 +121,7 @@ export class SidebarComponent implements OnInit {
   private elRef: ElementRef,
   private dialog: MatDialog,
   private http: HttpClient) {
+  this.canManageOrg = this.appComponent.loggedInUser.userRoles.filter((ur) => ur.role.name==='Admin').length > 0;
   }
 
 drop(event: CdkDragDrop<string[]>) {

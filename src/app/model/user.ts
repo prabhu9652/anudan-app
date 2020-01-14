@@ -1,9 +1,12 @@
 import {Organization} from './organization';
 
-export interface Role {
+export class Role {
   id: number;
   name: string;
+  description: string;
   permissions: Permission[];
+  editMode: boolean = false;
+  hasUsers: boolean = false;
 }
 
 export class UserRole {
