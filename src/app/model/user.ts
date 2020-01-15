@@ -7,6 +7,7 @@ export class Role {
   permissions: Permission[];
   editMode: boolean = false;
   hasUsers: boolean = false;
+  linkedUsers: number;
 }
 
 export class UserRole {

@@ -6,17 +6,18 @@
     <div class="col-12"><hr/></div>
     <div class="col-12">
         <mat-list style="background:#fff;">
-            <mat-list-item *ngFor="let role of roles" style="min-height:48px;height:auto;padding:8px;">
-                <h6 *ngIf="!role.editMode" matLine style="text-transform:none !important;"><b>{{role.name}}</b></h6>
+            <mat-list-item id="role_{{role.id}}" *ngFor="let role of roles" style="min-height:48px;height:auto;padding:8px;">
+                <h6 *ngIf="!role.editMode" class="mb-2" matLine style="text-transform:none !important;"><b>{{role.name}} </b><small>({{role.linkedUsers}} users)</small></h6>
                 <mat-form-field *ngIf="role.editMode" matLine>
                     <input matInput [(ngModel)]="role.name" class="anu-input" placeholder="Edit role name">
                 </mat-form-field>
+
+
+                <p matLine><small *ngIf="!role.editMode" style="font-size:14px;white-space: normal;">{{role.description}}</small></p>
                 <img *ngIf="!role.editMode" src="./assets/img/edit.svg" (click)="editRole(role,$event)">
                 <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers">
                     <mat-icon (click)="deleteRole(role)">delete_outline</mat-icon>
                 </button>
-
-                <small matLine *ngIf="!role.editMode">{{role.description}}</small>
                 <mat-form-field *ngIf="role.editMode" matLine>
                 <textarea matInput placeholder="Edit role description" class="anu-input" [(ngModel)]="role.description"></textarea>
                 </mat-form-field>

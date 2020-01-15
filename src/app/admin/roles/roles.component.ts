@@ -52,10 +52,12 @@ export class RolesComponent implements OnInit {
 
     editRole(role: Role, evt:Event){
         role.editMode=true;
+        $('#role_'+role.id).css('background','#f6f6f6')
     }
 
     cancelEdit(role: Role){
         role.editMode=false;
+        $('#role_'+role.id).css('background','#fff')
     }
 
     deleteRole(role){
