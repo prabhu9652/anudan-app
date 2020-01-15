@@ -9,7 +9,9 @@
             </div>
             <div class="col-4 pt-3">
                 <mat-form-field>
-                    <input #role class="anu-input" matInput type="email" placeholder="Enter an email address...">
+                    <mat-select #role class="anu-input" matInput placeholder="Select a role">
+                        <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div class="col-12 text-right">

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {User} from '../../model/user'
+import {User, Role} from '../../model/user'
 import {AppComponent} from '../../app.component'
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {MatDialog} from '@angular/material';
@@ -14,6 +14,7 @@ export class UsersComponent implements OnInit {
 
     users: User[];
     focusField:any;
+    roles: Role[];
 
     @ViewChild('createRoleBtn') createRoleBtn: ElementRef;
     @ViewChild('email') emailInput: ElementRef;
@@ -23,6 +24,7 @@ export class UsersComponent implements OnInit {
 
     ngOnInit() {
         this.fetchOrgUsers();
+        this.fetchRolesForUserOrg();
     }
 
     fetchOrgUsers(){
@@ -103,5 +105,23 @@ export class UsersComponent implements OnInit {
         }else if(!createRoleButton.disabled){
           createRoleButton.disabled=true;
       }
+    }
+
+    fetchRolesForUserOrg(){
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/'+user.id+'/role';
+
+        this.http.get(url,httpOptions).subscribe((roles:Role[]) => {
+            this.roles = roles;
+
+        });
     }
 }
