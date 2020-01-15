@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Role} from '../../model/user'
 import {AppComponent} from '../../app.component'
@@ -13,6 +13,9 @@ import {MatDialog} from '@angular/material';
 export class RolesComponent implements OnInit {
 
     roles: Role[];
+    focusField:any;
+
+    @ViewChild('createRoleBtn') createRoleBtn: ElementRef;
 
     constructor(private appComponent: AppComponent, private http: HttpClient, private dialog: MatDialog) { }
 
@@ -43,11 +46,14 @@ export class RolesComponent implements OnInit {
             this.roles = [];
         }
         const role = new Role();
+        role.id = 0;
         role.name='';
         role.description='';
         role.editMode=true;
         role.hasUsers = false;
-        this.roles.push(role);
+        this.roles.unshift(role);
+        this.toggleCreateRole();
+        this.focusField = '#role_'+role.id;
     }
 
     editRole(role: Role, evt:Event){
@@ -57,7 +63,12 @@ export class RolesComponent implements OnInit {
 
     cancelEdit(role: Role){
         role.editMode=false;
-        $('#role_'+role.id).css('background','#fff')
+        if(role.id===0){
+            const index = this.roles.findIndex(r => r.id === role.id);
+            this.roles.splice(index, 1);
+        }
+        $('#role_'+role.id).css('background','#fff');
+        this.toggleCreateRole();
     }
 
     deleteRole(role){
@@ -67,13 +78,45 @@ export class RolesComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-
-
+                const httpOptions = {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+                const user = this.appComponent.loggedInUser;
+                const url = 'api/admin/user/'+user.id+'/role/'+role.id;
+                this.http.delete(url,httpOptions).subscribe((updatedList:Role[]) =>{
+                    this.roles = updatedList;
+                });
             }
         });
     }
 
     saveRole(role: Role){
         role.editMode=false;
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/'+user.id+'/role';
+        this.http.put(url,role,httpOptions).subscribe((roleReturned:Role) =>{
+            role = roleReturned;
+        });
+    }
+
+    toggleCreateRole(){
+        const createRoleButton = this.createRoleBtn.nativeElement;
+        if(createRoleButton.disabled){
+            createRoleButton.disabled=false;
+        }else if(!createRoleButton.disabled){
+          createRoleButton.disabled=true;
+      }
     }
 }
