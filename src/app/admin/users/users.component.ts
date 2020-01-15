@@ -4,6 +4,12 @@ import {User, Role} from '../../model/user'
 import {AppComponent} from '../../app.component'
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {MatDialog} from '@angular/material';
+import {Observable} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'app-users',
@@ -13,18 +19,28 @@ import {MatDialog} from '@angular/material';
 export class UsersComponent implements OnInit {
 
     users: User[];
+    newUseEntry: User;
     focusField:any;
     roles: Role[];
+    selectedRoles: Role[] = [];
+    filteredOptions: Observable<Role[]>;
+    myControl: FormControl;
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+
 
     @ViewChild('createRoleBtn') createRoleBtn: ElementRef;
     @ViewChild('email') emailInput: ElementRef;
-    @ViewChild('role') roleInput: ElementRef;
+    @ViewChild('roleInput') roleInput: ElementRef<HTMLInputElement>;
+    @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
     constructor(private appComponent: AppComponent, private http: HttpClient, private dialog: MatDialog) { }
 
     ngOnInit() {
+        this.myControl = new FormControl();
         this.fetchOrgUsers();
         this.fetchRolesForUserOrg();
+
+
     }
 
     fetchOrgUsers(){
@@ -122,6 +138,76 @@ export class UsersComponent implements OnInit {
         this.http.get(url,httpOptions).subscribe((roles:Role[]) => {
             this.roles = roles;
 
+
+            const roles1 = this.roles.slice();
+            this.filteredOptions = this.myControl.valueChanges
+            .pipe(
+                startWith(''),
+                map(value => typeof value === 'string' ? value : value),
+                map(name => name ? this._filter(name) : roles1)
+            );
+
         });
     }
+
+    private _filter(value: any): Role[] {
+        let filterValue;
+        if(typeof value==='string'){
+            filterValue = value.toLowerCase();
+        }else {
+            filterValue = value.name;
+        }
+
+        const selectedRole = this.roles.filter(option => option.name.toLowerCase().includes(filterValue));
+
+
+        return selectedRole;
+    }
+
+    checkIfSelected(role):boolean{
+
+        for(let singleRole of this.selectedRoles){
+            if(singleRole.id === role.id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    selected(event: MatAutocompleteSelectedEvent): void {
+        this.selectedRoles.push(event.option.value);
+        this.roleInput.nativeElement.value = '';
+        this.myControl.setValue(null);
+    }
+
+
+    add(event: MatChipInputEvent): void {
+        // Add fruit only when MatAutocomplete is not open
+        // To make sure this does not conflict with OptionSelected Event
+        if (!this.matAutocomplete.isOpen) {
+          const input = event.input;
+          const value = event.value;
+
+          // Add our fruit
+          /*if ((value || '').trim()) {
+            this.selectedRoles.push(value);
+          }*/
+
+          // Reset the input value
+          if (input) {
+            input.value = '';
+          }
+
+          this.myControl.setValue(null);
+        }
+  }
+
+    remove(role: Role): void {
+        const index = this.selectedRoles.findIndex(r => r.id===role.id);
+
+        if (index >= 0) {
+            this.selectedRoles.splice(index, 1);
+        }
+    }
+
 }

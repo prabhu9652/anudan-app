@@ -151,7 +151,8 @@ ngOnDestroy(){
             this.appComp.createNewSection.next(false);
         }
     });
-  this.myControl = new FormControl();
+
+    this.myControl = new FormControl();
 
     this.options = this.appComp.currentTenant.templateLibrary;
 
