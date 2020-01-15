@@ -76,6 +76,7 @@ import { ReportSectionsComponent } from '../../reports/report/report-sections/re
 import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
 import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
+import { UsersComponent } from '../../admin/users/users.component';
 
 
 @NgModule({
@@ -155,7 +156,8 @@ import { RolesComponent } from '../../admin/roles/roles.component';
         ReportSectionsComponent,
         ReportPreviewComponent,
         TemplatesComponent,
-        RolesComponent
+        RolesComponent,
+        UsersComponent
     ],
     entryComponents: [FieldDialogComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]

@@ -1,0 +1,34 @@
+<div class="row mt-0 mx-0 py-4">
+    <div class="col-12"><h5 style="font-weight:bold;">Add a user</h5></div>
+    <div class="col-12">
+        <div class="row" style="background:#f6f6f6;">
+            <div class="col-8 pt-3">
+                <mat-form-field>
+                    <input #email class="anu-input" matInput type="email" placeholder="Enter an email address...">
+                </mat-form-field>
+            </div>
+            <div class="col-4 pt-3">
+                <mat-form-field>
+                    <input #role class="anu-input" matInput type="email" placeholder="Enter an email address...">
+                </mat-form-field>
+            </div>
+            <div class="col-12 text-right">
+                <button #createRoleBtn class="btn btn-sm btn-green float-right" (click)="createNewUser()">Send Invitation</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-12"><hr/></div>
+    <div class="col-12">
+        <mat-list style="background:#fff;">
+            <mat-list-item id="user_{{user.id}}" *ngFor="let user of users" style="min-height:48px;height:auto;padding:8px;">
+                <p class="mb-2" matLine style="text-transform:none !important;"><b>{{user.emailId}} </b></p>
+                <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers">
+                    <mat-icon (click)="deleteRole(role)">delete_outline</mat-icon>
+                </button>
+
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>
