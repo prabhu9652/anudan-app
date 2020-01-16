@@ -77,6 +77,7 @@ export class RegistrationComponent implements OnInit {
     this.registerUser(user);
   }
 
+
   registerUser(user: RegistrationCredentials) {
 
     const httpOptions = {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {User, Role} from '../../model/user'
+import {User, Role, UserRole} from '../../model/user'
 import {AppComponent} from '../../app.component'
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {MatDialog} from '@angular/material';
@@ -19,12 +19,14 @@ import {MatChipInputEvent} from '@angular/material/chips';
 export class UsersComponent implements OnInit {
 
     users: User[];
-    newUseEntry: User;
+    newEmail: string;
+    newRole: Role;
     focusField:any;
     roles: Role[];
-    selectedRoles: Role[] = [];
     filteredOptions: Observable<Role[]>;
+    userFilteredOptions: Observable<Role[]>;
     myControl: FormControl;
+    myNewControl: FormControl;
     separatorKeysCodes: number[] = [ENTER, COMMA];
 
 
@@ -37,6 +39,7 @@ export class UsersComponent implements OnInit {
 
     ngOnInit() {
         this.myControl = new FormControl();
+        this.myNewControl = new FormControl();
         this.fetchOrgUsers();
         this.fetchRolesForUserOrg();
 
@@ -62,7 +65,35 @@ export class UsersComponent implements OnInit {
     }
 
     createNewUser(){
-        if(!this.users){
+
+        const newUser = new User();
+        newUser.emailId = this.newEmail;
+
+        const userRoles: UserRole[] = [];
+
+        const userRole = new UserRole();
+        userRole.role = this.newRole;
+        userRoles.push(userRole);
+
+        newUser.userRoles=userRoles;
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/'+this.appComponent.loggedInUser.id+'/user';
+        this.http.post(url,newUser,httpOptions).subscribe((user:User) =>{
+            this.users.unshift(user);
+            this.toggleCreateUser();
+            this.newEmail=undefined;
+            this.newRole=undefined;
+        });
+
+        /*if(!this.users){
             this.users = [];
         }
         const user = new User();
@@ -70,8 +101,8 @@ export class UsersComponent implements OnInit {
         user.emailId=this.emailInput.nativeElement.value;
 
         this.users.unshift(user);
-        this.toggleCreateUser();
-        this.focusField = '#user_'+user.id;
+
+        this.focusField = '#user_'+user.id;*/
     }
 
 
@@ -164,50 +195,51 @@ export class UsersComponent implements OnInit {
         return selectedRole;
     }
 
-    checkIfSelected(role):boolean{
 
-        for(let singleRole of this.selectedRoles){
-            if(singleRole.id === role.id){
-                return true;
-            }
+    canSendInvite(){
+        if((this.newEmail!==undefined && this.newEmail.trim()!=='') && (this.newRole!==undefined)){
+            return false;
+        }else{
+            return true;
         }
-        return false;
     }
 
-    selected(event: MatAutocompleteSelectedEvent): void {
-        this.selectedRoles.push(event.option.value);
-        this.roleInput.nativeElement.value = '';
-        this.myControl.setValue(null);
+    getRoles(user:User){
+        const roles=[];
+        for(let userRole of user.userRoles){
+            roles.push(userRole.role);
+        }
+        if (roles.length===0){
+            return null;
+        }
+        return roles[0].id;
     }
 
-
-    add(event: MatChipInputEvent): void {
-        // Add fruit only when MatAutocomplete is not open
-        // To make sure this does not conflict with OptionSelected Event
-        if (!this.matAutocomplete.isOpen) {
-          const input = event.input;
-          const value = event.value;
-
-          // Add our fruit
-          /*if ((value || '').trim()) {
-            this.selectedRoles.push(value);
-          }*/
-
-          // Reset the input value
-          if (input) {
-            input.value = '';
-          }
-
-          this.myControl.setValue(null);
+    getRolesArray(user:User){
+        const roles=[];
+        for(let userRole of user.userRoles){
+            roles.push(userRole.role.name);
         }
-  }
+        return roles[0];
+    }
 
-    remove(role: Role): void {
-        const index = this.selectedRoles.findIndex(r => r.id===role.id);
+    editUserRoles(user:User, evt:Event){
+        user.editMode = true;
 
-        if (index >= 0) {
-            this.selectedRoles.splice(index, 1);
+        const roles1 = [];
+        for(let role of user.userRoles){
+            roles1.push(role);
         }
+        this.userFilteredOptions = this.myNewControl.valueChanges
+        .pipe(
+            startWith(''),
+            map(value => typeof value === 'string' ? value : value),
+            map(name => name ? this._filter(name) : roles1)
+        );
+    }
+
+    cancelUserUpdate(user:User){
+        user.editMode = false;
     }
 
 }

@@ -32,4 +32,6 @@ export class User {
   permissions: string[];
   recaptchaToken: string;
   userProfile: string;
+  editMode: boolean = false;
+  admin:boolean;
 }

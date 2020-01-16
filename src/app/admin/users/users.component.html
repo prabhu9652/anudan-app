@@ -2,60 +2,54 @@
     <div class="col-12"><h5 style="font-weight:bold;">Add a user</h5></div>
     <div class="col-12">
         <div class="row" style="background:#f6f6f6;">
-            <div class="col-6 pt-3">
+            <div class="col-5 pt-3">
                 <mat-form-field>
-                    <input #email class="anu-input" matInput type="email" placeholder="Enter an email address...">
+                    <input #email [(ngModel)]="newEmail" class="anu-input" matInput type="email" placeholder="Enter an email address...">
                 </mat-form-field>
             </div>
             <div class="col-6 pt-3">
-                <form class="example-form">
-                <mat-form-field>
-                    <input class="anu-input w-100 mt-0"
-                                       #roleInput
-                                       [formControl]="myControl"
-                                       [matAutocomplete]="auto"
-                                       [matChipInputFor]="chipList"
-                                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                       [matChipInputAddOnBlur]="true"
-                                       (matChipInputTokenEnd)="add($event)" placeholder="Select one or more roles">
-                    <mat-chip-list #chipList aria-label="Fruit selection">
-
-                        <mat-chip
-                            *ngFor="let role of selectedRoles"
-                            [selectable]="selectable"
-                            [removable]="true"
-                            (removed)="remove(role)">
-                            {{role.name}}
-                            <mat-icon matChipRemove>cancel</mat-icon>
-                          </mat-chip>
-
-                    </mat-chip-list>
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                        <ng-container *ngFor="let role of filteredOptions | async">
-                            <mat-option [value]="role" [disabled]="checkIfSelected(role)">
-                                {{role.name}}
-                            </mat-option>
-                        </ng-container>
-                    </mat-autocomplete>
-                </mat-form-field>
-                </form>
+                <mat-label>Select a role</mat-label>
+                <mat-select class="anu-input" [(ngModel)]="newRole">
+                    <mat-option *ngFor="let role of roles" [value]="role">{{role.name}}</mat-option>
+                </mat-select>
             </div>
             <div class="col-12 text-right">
-                <button #createRoleBtn class="btn btn-sm btn-green float-right" (click)="createNewUser()">Send Invitation</button>
+                <button #createRoleBtn class="btn btn-sm btn-green float-right" (click)="createNewUser()" [disabled]="canSendInvite()">Send Invitation</button>
             </div>
         </div>
 
     </div>
 
-    <div class="col-12"><hr/></div>
     <div class="col-12">
         <mat-list style="background:#fff;">
+            <mat-list-item>
+                <div class="row mb-1 w-100">
+                    <div class="col-5"><b>Email Id</b></div>
+                    <div class="col-3"><b>Organization Roles</b></div>
+                    <div class="col-2"><b>Is Admin?</b></div>
+                    <div class="col-2 text-right"><b>Actions</b></div>
+                    <div class="col-12"><mat-divider></mat-divider></div>
+                </div>
+            </mat-list-item>
             <mat-list-item id="user_{{user.id}}" *ngFor="let user of users" style="min-height:48px;height:auto;padding:8px;">
-                <p class="mb-2" matLine style="text-transform:none !important;"><b>{{user.emailId}} </b></p>
-                <button mat-icon-button>
-                    <mat-icon (click)="deleteUser(user)">delete_outline</mat-icon>
-                </button>
+                <div class="row mb-2 w-100" style="text-transform:none !important;">
+                    <div class="col-5">{{user.emailId}}</div>
+                    <div *ngIf="!user.editMode" class="col-3">
+                        <mat-select [value]="getRoles(user)">
+                            <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-2">
+                        <input type="checkbox" [checked]="user.admin">
+                    </div>
 
+                    <div class="col-2 p-0 text-right">
+                        <button *ngIf="user.active && !user.editMode" mat-icon-button>
+                            <mat-icon (click)="deleteUser(user)">delete_outline</mat-icon>
+                        </button>
+                        <small style="min-width:125px;"><b *ngIf="!user.active && !user.editMode" class="text-danger">Not Registered</b></small>
+                    </div>
+                </div>
             </mat-list-item>
         </mat-list>
     </div>
