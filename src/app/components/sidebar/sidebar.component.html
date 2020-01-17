@@ -24,7 +24,7 @@
                     </li>
 
 
-                    <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization' && canManageOrg">
+                    <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
