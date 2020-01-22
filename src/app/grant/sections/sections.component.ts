@@ -364,7 +364,7 @@ ngOnDestroy(){
                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                 } else {
-                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                 this.toastr.error(errorMsg.error.message,"8 We encountered an error", config);
                 }
 
 
@@ -507,7 +507,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                          this.toastr.error(errorMsg.error.message,"9 We encountered an error", config);
                          }
 
 
@@ -726,7 +726,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                          this.toastr.error(errorMsg.error.message,"10 We encountered an error", config);
                          }
 
 
@@ -936,7 +936,7 @@ ngOnDestroy(){
                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
                 setTimeout( () => { this.appComp.logout(); }, 4000 );
                } else {
-                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                this.toastr.error(errorMsg.error.message,"11 We encountered an error", config);
                }
 
 
@@ -950,7 +950,7 @@ ngOnDestroy(){
          this.toastr.error("Your session has expired", 'Logging you out now...', config);
          setTimeout( () => { this.appComp.logout(); }, 4000 );
         } else {
-         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+         this.toastr.error(errorMsg.error.message,"12 We encountered an error", config);
         }
 
 
@@ -1287,7 +1287,7 @@ ngOnDestroy(){
                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
                   setTimeout( () => { this.appComp.logout(); }, 4000 );
                  } else {
-                  this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                  this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
                  }
 
 
@@ -1501,7 +1501,7 @@ ngOnDestroy(){
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                     this.toastr.error(errorMsg.error.message,"14 We encountered an error", config);
                     }
 
 

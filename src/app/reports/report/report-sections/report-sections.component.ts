@@ -195,7 +195,7 @@ export class ReportSectionsComponent implements OnInit {
                     this.toastr.error("Your session has expired", 'Logging you out now...', config);
                     setTimeout( () => { this.appComp.logout(); }, 4000 );
                 } else {
-                    this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                    this.toastr.error(errorMsg.error.message,"22 We encountered an error", config);
                 }
         });
     }
@@ -396,7 +396,7 @@ export class ReportSectionsComponent implements OnInit {
                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
                 setTimeout( () => { this.appComp.logout(); }, 4000 );
             } else {
-                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                this.toastr.error(errorMsg.error.message,"23 We encountered an error", config);
             }
         });
     }
@@ -449,7 +449,7 @@ export class ReportSectionsComponent implements OnInit {
                         this.toastr.error("Your session has expired", 'Logging you out now...', config);
                         setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                        this.toastr.error(errorMsg.error.message,"24 We encountered an error", config);
                     }
 
                 });
@@ -505,7 +505,7 @@ export class ReportSectionsComponent implements OnInit {
                             this.toastr.error("Your session has expired", 'Logging you out now...', config);
                             setTimeout( () => { this.appComp.logout(); }, 4000 );
                         } else {
-                            this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                            this.toastr.error(errorMsg.error.message,"25 We encountered an error", config);
                         }
                     });
                 }else{

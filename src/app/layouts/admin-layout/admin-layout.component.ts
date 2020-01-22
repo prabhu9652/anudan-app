@@ -151,13 +151,13 @@ export class AdminLayoutComponent implements OnInit {
                        const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
                        const errorconfig: Partial<IndividualConfig> = x;
                        const config: Partial<IndividualConfig> = y;
-                       if(errorMsg.error.message==='Token Expired'){
+                       if(errorMsg.error && errorMsg.error.message==='Token Expired'){
                        this.intervalSubscription.unsubscribe();
                         //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
                         alert("Your session has timed out. Please sign in again.")
                         this.appComponent.logout();
                        } else {
-                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                        this.toastr.error(errorMsg.error && errorMsg.error.message,"17 We encountered an error", config);
                        }
 
 
@@ -272,7 +272,7 @@ export class AdminLayoutComponent implements OnInit {
                           alert("Your session has timed out. Please sign in again.")
                           this.appComponent.logout();
                          } else {
-                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                          this.toastr.error(errorMsg.error.message,"18 We encountered an error", config);
                          }
 
 
@@ -333,7 +333,7 @@ export class AdminLayoutComponent implements OnInit {
                                             alert("Your session has timed out. Please sign in again.")
                                             this.appComponent.logout();
                                            } else {
-                                            this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                            this.toastr.error(errorMsg.error.message,"19 We encountered an error", config);
                                            }
                                       });
                       } else {

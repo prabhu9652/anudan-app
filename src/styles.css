@@ -686,6 +686,12 @@ kendo-pdf-export {
     color:#4DC252 !important;
 }
 
+.welcome-popup-class{
+    background: #fff;
+    width: 85% !important;
+    height: 90% !important;
+}
+
 .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]):hover > .mat-expansion-panel-header-title{
     background: none;
     font-weight: 800 !important;

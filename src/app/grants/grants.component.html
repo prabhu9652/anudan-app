@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <button *ngIf="appComponent.loggedInUser.permissions.includes('Create Grant')"
+                <button *ngIf="appComponent.loggedInUser.permissions && appComponent.loggedInUser.permissions.includes('Create Grant')"
                         class="btn btn-sm btn-green float-right"
                         (click)="createGrant()">New Grant
                 </button>

@@ -613,7 +613,7 @@ export class PreviewComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                 this.toastr.error(errorMsg.error.message,"6 We encountered an error", config);
                                 }
 
 
@@ -869,7 +869,7 @@ export class PreviewComponent implements OnInit {
                          this.toastr.error("Your session has expired", 'Logging you out now...', config);
                          setTimeout( () => { this.appComp.logout(); }, 4000 );
                         } else {
-                         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                         this.toastr.error(errorMsg.error.message,"7 We encountered an error", config);
                         }
 
 

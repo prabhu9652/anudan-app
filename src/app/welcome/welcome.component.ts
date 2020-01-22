@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AppComponent} from '../app.component'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders,HttpParams } from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-
+import {GrantDataService} from '../grant.data.service';
+import {Grant} from '../model/dahsboard'
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -15,6 +16,7 @@ export class WelcomeComponent implements OnInit {
     parameters: any;
 
   constructor(public appComponent: AppComponent,
+  private grantDataService: GrantDataService,
   private http: HttpClient,
   private activatedRoute: ActivatedRoute,
   private router: Router) {
@@ -40,6 +42,32 @@ export class WelcomeComponent implements OnInit {
   navigate(){
     const type = this.parameters.type;
     if(type==='grant'){
+        const grantCode = this.parameters.g;
+        const queryParams = new HttpParams().set('g', grantCode)
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+            }),
+            params: queryParams
+        };
+        const url = '/api/user/'+this.appComponent.loggedInUser.id+'/grant/resolve';
+
+        this.http.get(url,httpOptions).subscribe((grant:Grant) => {
+            this.grantDataService.changeMessage(grant);
+            this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
+            this.appComponent.currentView = 'grant';
+
+            this.appComponent.selectedTemplate = grant.grantTemplate;
+
+            if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                this.router.navigate(['grant/basic-details']);
+            } else{
+                this.appComponent.action = 'preview';
+                this.router.navigate(['grant/preview']);
+            }
+           // this.router.navigate(['grants']);
+        });
     }else if(type==='report'){
     }
 

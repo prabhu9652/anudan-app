@@ -441,7 +441,7 @@ export class BasicComponent implements OnInit {
                                this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                setTimeout( () => { this.appComp.logout(); }, 4000 );
                               } else {
-                               this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                               this.toastr.error(errorMsg.error.message,"2 We encountered an error", config);
                               }
 
 
@@ -619,7 +619,7 @@ export class BasicComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                 this.toastr.error(errorMsg.error.message,"3 We encountered an error", config);
                                 }
 
 
@@ -831,7 +831,7 @@ export class BasicComponent implements OnInit {
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                     this.toastr.error(errorMsg.error.message,"4 We encountered an error", config);
                     }
 
 
@@ -845,7 +845,7 @@ export class BasicComponent implements OnInit {
               this.toastr.error("Your session has expired", 'Logging you out now...', config);
               setTimeout( () => { this.appComp.logout(); }, 4000 );
              } else {
-              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+              this.toastr.error(errorMsg.error.message,"5 We encountered an error", config);
              }
 
 
