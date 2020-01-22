@@ -43,11 +43,12 @@ export class UpcomingReportsComponent implements OnInit {
         this.reports = r;
      });
 
-     if(!this.reports){
+     /*if(!this.reports){
         this.getReports();
      }else{
         this.processReports(this.reports);
-     }
+     }*/
+     this.getReports();
   }
 
   getReports(){

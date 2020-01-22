@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-12">
                     <mat-tab-group>
-                        <mat-tab label="Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})">
+                        <mat-tab *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'" label="Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})">
 
                             <div *ngIf="!reportsToSetup">
                                 <img src="./assets/img/loader.gif" style="width:10%;">

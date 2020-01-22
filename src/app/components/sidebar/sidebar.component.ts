@@ -164,6 +164,8 @@ drop(event: CdkDragDrop<string[]>) {
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
+    this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
+    this.ref.detectChanges();
 
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;

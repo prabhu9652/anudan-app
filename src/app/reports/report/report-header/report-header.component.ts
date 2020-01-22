@@ -93,6 +93,8 @@ export class ReportHeaderComponent implements OnInit {
                 this.appComp.createNewReportSection.next(false);
             }
         });
+
+        this.sidebar.buildSectionsSideNav(null);
     }
 
     openStartDate(){

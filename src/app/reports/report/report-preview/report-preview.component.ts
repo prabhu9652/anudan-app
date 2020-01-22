@@ -143,7 +143,7 @@ export class ReportPreviewComponent implements OnInit {
                       wa.id=data.id;
                       wa.stateId = data.stateId;
                       wa.assignmentId = data.userId;
-                      wa.customAssignments = data.custom;
+                      wa.customAssignments = data.customAssignments;
                       wa.reportId = data.reportId;
                       ass.push(wa);
                   }
