@@ -1,4 +1,4 @@
-import {Organization} from './organization';
+import {Organization} from './dahsboard';
 
 export class Role {
   id: number;

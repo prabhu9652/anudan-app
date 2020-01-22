@@ -33,7 +33,7 @@ export class UpcomingReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent,
+        public appComp: AppComponent,
         private dialog: MatDialog,
         public reportComponent: ReportComponent){
         }
