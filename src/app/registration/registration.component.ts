@@ -9,6 +9,8 @@ import {AuthService, GoogleLoginProvider, SocialUser} from 'ng-social-login-modu
 import {AccessCredentials} from '../model/access-credentials';
 import {register} from 'ts-node';
 import {ToastrService} from 'ngx-toastr';
+import {MessagingComponent} from '../components/messaging/messaging.component';
+import {MatDialog} from '@angular/material';
 
 
 @Component({
@@ -33,7 +35,7 @@ export class RegistrationComponent implements OnInit {
   @ViewChild("password") passwordElem: ElementRef;
   @ViewChild("confirmPassword") confirmPasswordElem: ElementRef;
 
-  constructor(private activatedRoute: ActivatedRoute,private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService,private toastr: ToastrService) {
+  constructor(private activatedRoute: ActivatedRoute,private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService,private toastr: ToastrService,private dialog: MatDialog) {
     this.activatedRoute.queryParams.subscribe(params => {
         this.parameters = params;
     });
@@ -52,11 +54,19 @@ export class RegistrationComponent implements OnInit {
 
     if(this.parameters.email){
       this.currentEmail=this.parameters.email;
+      this.currentEmail = this.currentEmail.replace(/ /g,"+");
     }
     if(this.parameters.org){
       this.userOrg=this.parameters.org;
     }
 
+    if(this.currentEmail){
+        if(this.parameters.type==='grant'){
+            this.checkIfUserIsRegistered(this.currentEmail,this.parameters.g,this.parameters.type);
+        } else if(this.parameters.type==='report'){
+            this.checkIfUserIsRegistered(this.currentEmail,this.parameters.r,this.parameters.type);
+        }
+    }
 
   }
 
@@ -192,5 +202,30 @@ export class RegistrationComponent implements OnInit {
 
   resolved(evt){
     this.recaptchaToken = evt;
+  }
+
+  checkIfUserIsRegistered(emailId:string,objectToCheck:string,type:string){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+      })
+    };
+
+        //const form = this.granteeRegisteationForm.value;
+
+        const url = '/api/users/check';
+        this.http.post<boolean>(url, {email:emailId, object:objectToCheck,type}, httpOptions).subscribe( (response: boolean) => {
+            if(response){
+                const dialogRef = this.dialog.open(MessagingComponent, {
+                          data: "Looks like you've registered earlier on Anudan. Please sign in."
+                        });
+
+                        dialogRef.afterClosed().subscribe(result => {
+                            this.router.navigate(['login']);
+                        });
+
+            }
+        });
   }
 }

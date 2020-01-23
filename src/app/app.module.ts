@@ -17,6 +17,7 @@ import {MapsComponent} from './maps/maps.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
+import {MessagingComponent} from './components/messaging/messaging.component';
 import {HomeComponent} from './home/home.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {WfassignmentComponent} from './components/wfassignment/wfassignment.component';
@@ -70,6 +71,7 @@ export function provideConfig() {
     RegistrationComponent,
     WfassignmentComponent,
     GranthistoryComponent,
+    MessagingComponent,
     NotificationspopupComponent
   ],
   imports: [
@@ -128,7 +130,7 @@ export function provideConfig() {
       Colors,
       MatMenuModule
   ],
-  entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent],
+  entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent,MessagingComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
