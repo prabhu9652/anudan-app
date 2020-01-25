@@ -278,7 +278,7 @@
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
-                                   [ngModelOptions]="{standAlone:true}"
+                                   [ngModelOptions]="{standAlone:true}" [readonly]="currentReport.forGranteeUse" [style]="current.forGranteeUse?'background:#fff !important;':'background:#F0F1F0 !important;'"
                                    placeholder="Report Target/Goal">
                           </mat-form-field>
                         </div>
@@ -287,7 +287,7 @@
                             <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
                                    [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Report Level Accomplishment" readonly style="background:#F0F1F0 !important;">
+                                   placeholder="Report Level Accomplishment" [readonly]="!currentReport.forGranteeUse" [style]="currentReport.forGranteeUse?'#fff':'background:#F0F1F0 !important;'">
                           </mat-form-field>
                         </div>
 

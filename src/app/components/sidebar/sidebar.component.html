@@ -118,7 +118,7 @@
                     </a>
                 </ng-container>
 
-                <ng-container *ngIf="menuItem.title === 'Report Details' && (currentReport.status.internalStatus!='ACTIVE' && currentReport.status.internalStatus!='CLOSED')">
+                <ng-container *ngIf="menuItem.title === 'Report Details' && (currentReport.canManage || (currentReport.status.internalStatus!='ACTIVE' && currentReport.status.internalStatus!='CLOSED'))">
                     <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center">

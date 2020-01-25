@@ -102,6 +102,7 @@ export class UpcomingReportsComponent implements OnInit {
     this.appComp.currentView = 'report';
     this.singleReportService.changeMessage(report);
     if(report.canManage && report.status.internalStatus!='CLOSED'){
+        this.appComp.action = 'report';
         this.router.navigate(['report/report-header']);
     } else{
         this.appComp.action = 'report';

@@ -221,9 +221,9 @@ export class RegistrationComponent implements OnInit {
                           data: "Looks like you've registered earlier on Anudan. Please sign in."
                         });
 
-                        dialogRef.afterClosed().subscribe(result => {
-                            this.router.navigate(['login']);
-                        });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.router.navigate(['login']);
+                });
 
             }
         });

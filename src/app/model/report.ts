@@ -27,6 +27,7 @@ export class Report{
     flowAuthorities: FlowAuthority;
     cumulativeActuals:number;
     linkedReports: number;
+    forGranteeUse: boolean;
 }
 
 export class ReportHistory{
