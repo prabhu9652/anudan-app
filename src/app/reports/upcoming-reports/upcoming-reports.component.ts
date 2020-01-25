@@ -70,7 +70,7 @@ export class UpcomingReportsComponent implements OnInit {
       reports.sort((a,b) => a.endDate>b.endDate?1:-1);
       let reportStartDate = new Date();
       let reportEndDate = new Date();
-      reportEndDate.setDate(reportEndDate.getDate()+this.appComp.appConfig.daysBeforePublishingReport);
+      reportEndDate.setDate(reportEndDate.getDate()+30);
       reportStartDate.setHours(0);
       reportStartDate.setMinutes(0);
       reportStartDate.setSeconds(0);
