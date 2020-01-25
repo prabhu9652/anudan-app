@@ -331,6 +331,7 @@ export class GrantTemplate{
   published: boolean;
   _private: boolean;
   sections: Section[];
+  defaultTemplate: boolean;
 }
 
 export class Tenant {

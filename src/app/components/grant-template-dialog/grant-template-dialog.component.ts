@@ -16,7 +16,7 @@ export class GrantTemplateDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<GrantTemplateDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public templates: GrantTemplate[]) {
     this.dialogRef.disableClose = true;
-    this.selected=String(this.templates[0].id);
+    this.selected=String(this.templates.filter(x => x.defaultTemplate===true)[0]);
   }
 
   ngOnInit() {
