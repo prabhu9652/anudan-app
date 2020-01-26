@@ -12,6 +12,7 @@ export class GrantTemplateDialogComponent implements OnInit {
 
   @ViewChild('templateHolder') templateHolder: ElementRef;
   selected:any;
+  selectedTemplate: GrantTemplate;
 
   constructor(public dialogRef: MatDialogRef<GrantTemplateDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public templates: GrantTemplate[]) {
@@ -21,6 +22,8 @@ export class GrantTemplateDialogComponent implements OnInit {
 
   ngOnInit() {
     this.selected = this.templates.filter(x => x.defaultTemplate===true)[0].id;
+    this.templates.sort((a, b) => Number(a)-Number(b));
+    this.selectedTemplate = this.templates.filter(x => x.defaultTemplate===true)[0];
   }
 
   onNoClick(): void {
@@ -44,5 +47,6 @@ export class GrantTemplateDialogComponent implements OnInit {
 
   setSelectedTemplate(id,ev: Event){
     this.selected = id;
+    this.selectedTemplate = this.templates.filter(a => a.id===id)[0];
   }
 }

@@ -59,7 +59,7 @@ ngOnInit() {
 
                     const nodeOwner = this.renderer.createElement('select');
                     const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
-                    if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
+                    if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor || !this.data.model.canManage){
                         this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                     }
                     this.renderer.addClass(nodeOwner,'ml-3');
@@ -172,7 +172,7 @@ ngOnInit() {
 
                                const nodeOwner = this.renderer.createElement('select');
                                const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
-                               if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
+                               if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor || !this.data.model.canManage){
                                    this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                                }
                                this.renderer.addClass(nodeOwner,'ml-3');
@@ -203,6 +203,7 @@ ngOnInit() {
 
                                    }
                                }else{
+                               if(this.data.model.canManage){
                                     const nodeInvite = this.renderer.createElement('input');
                                     this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user (comma separated)');
                                     this.renderer.addClass(nodeInvite,'anu-input');
@@ -222,6 +223,7 @@ ngOnInit() {
                                             this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
                                         }
                                     }
+                               }
                                }
 
                                //this.renderer.addClass(nodeOwner,'anu-input');

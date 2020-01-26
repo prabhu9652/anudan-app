@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData, TemplateLibrary, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
+  SubmissionStatus, Template,TableData, TemplateLibrary,WorkflowStatus, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -19,7 +19,8 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
+import {User} from '../../model/user';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import {interval} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
@@ -72,6 +73,8 @@ export class PreviewComponent implements OnInit {
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   action: string;
   logoUrl:string;
+  tenantUsers: User[];
+  grantWorkflowStatuses:WorkflowStatus[];
   exportAsConfig: ExportAsConfig = {
       type: 'pdf', // the type you want to download
       elementId: 'grantSummary', // the id of html/table element
@@ -115,6 +118,23 @@ export class PreviewComponent implements OnInit {
       , private sidebar: SidebarComponent
       , private exportAsService: ExportAsService) {
     this.colors = new Colors();
+
+    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
   }
 
   ngOnInit() {
@@ -145,7 +165,7 @@ export class PreviewComponent implements OnInit {
       }
     });*/
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
 
     if(this.currentGrant.startDate && this.currentGrant.endDate){
       var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();

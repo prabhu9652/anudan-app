@@ -4,7 +4,9 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import {Report,ReportSectionInfo,ReportWorkflowAssignmentModel,ReportWorkflowAssignment} from '../../../model/report'
 import {ReportNotesComponent} from '../../../components/reportNotes/reportNotes.component';
 import {MatDialog} from '@angular/material';
-import {Section} from '../../../model/dahsboard'
+import {Section,WorkflowStatus} from '../../../model/dahsboard';
+import {Configuration} from '../../../model/app-config';
+import {User} from '../../../model/user';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AppComponent} from '../../../app.component';
 import {TemplateDialogComponent} from '../../../components/template-dialog/template-dialog.component';
@@ -35,27 +37,49 @@ export class ReportPreviewComponent implements OnInit {
     langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
     humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
     logoUrl: string;
+    reportWorkflowStatuses:WorkflowStatus[];
+    tenantUsers: User[]
 
     @ViewChild('pdf') pdf;
     @ViewChild('createSectionModal') createSectionModal: ElementRef;
 
     constructor(private singleReportDataService: SingleReportDataService,
         private dialog: MatDialog,
-        private appComp: AppComponent,
+        public appComp: AppComponent,
         private http: HttpClient,
         private toastr: ToastrService,
         private router: Router,
-        private adminComp: AdminLayoutComponent,
+        public adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent
-        ) { }
-
-    ngOnInit() {
+        ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
             this.currentReport = report;
             this.setDateDuration();
             console.log(this.currentReport);
         });
+         const httpOptions = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        let url = '/api/app/config/report/'+this.currentReport.id;
+
+        this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+            this.reportWorkflowStatuses = config.reportWorkflowStatuses;
+            this.appComp.reportWorkflowStatuses = config.reportWorkflowStatuses;
+            this.tenantUsers = config.tenantUsers;
+            this.appComp.tenantUsers = config.tenantUsers;
+            this.appComp.reportTransitions=config.reportTransitions;
+        });
+}
+
+
+
+    ngOnInit() {
+
         this.originalReport = JSON.parse(JSON.stringify(this.currentReport));
 
         const tenantCode = localStorage.getItem('X-TENANT-CODE');
@@ -84,7 +108,7 @@ export class ReportPreviewComponent implements OnInit {
     submitReport(toStateId: number) {
 
         for(let assignment of this.currentReport.workflowAssignments){
-            const status1 = this.appComp.appConfig.reportWorkflowStatuses.filter((status) => status.id===assignment.stateId);
+            const status1 = this.reportWorkflowStatuses.filter((status) => status.id===assignment.stateId);
             if(assignment.assignmentId === null || assignment.assignmentId === undefined || assignment.assignmentId === 0 && !status1[0].terminal){
                 const dialogRef = this.dialog.open(FieldDialogComponent, {
                     data: "Would you like to carry out workflow assignments?"
@@ -98,7 +122,7 @@ export class ReportPreviewComponent implements OnInit {
             }
         }
 
-        const statusTransition = this.appComp.appConfig.reportTransitions.filter((transition) => transition.fromStateId===this.currentReport.status.id && transition.toStateId===toStateId);
+        const statusTransition = this.appComp.reportTransitions.filter((transition) => transition.fromStateId===this.currentReport.status.id && transition.toStateId===toStateId);
 
         if(statusTransition && statusTransition[0].noteRequired){
             this.openBottomSheetForReportNotes(toStateId);
@@ -123,9 +147,9 @@ export class ReportPreviewComponent implements OnInit {
 
     showWorkflowAssigments(toStateId){
         const wfModel = new ReportWorkflowAssignmentModel();
-         wfModel.users = this.appComp.appConfig.tenantUsers;
+         wfModel.users = this.tenantUsers;
          wfModel.granteeUsers = this.currentReport.granteeUsers;
-          wfModel.workflowStatuses = this.appComp.appConfig.reportWorkflowStatuses;
+          wfModel.workflowStatuses = this.reportWorkflowStatuses;
           wfModel.workflowAssignments = this.currentReport.workflowAssignments;
           wfModel.type=this.appComp.currentView;
           wfModel.report = this.currentReport;

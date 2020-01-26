@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Select a Grant Template</h1>
-
+<h1 mat-dialog-title class="mb-0">Select a Grant Template</h1>
+<p class="mt-0 mb-2">Selected Template: <b>{{this.selectedTemplate.name}}</b></p>
 <div class="grant-template-dialog-class">
 	<mat-card *ngFor="let template of templates" value="{{template.id}}" style="background:#E5E5E5;max-width:none;" class="mb-3">
 		<mat-card-title style="font-size:14px;">{{template.name}}

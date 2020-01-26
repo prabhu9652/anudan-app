@@ -224,12 +224,12 @@ export class AdminLayoutComponent implements OnInit {
   showWorkflowAssigments(){
     if(this.appComponent.currentView==='grant'){
         const wfModel = new WorkflowAssignmentModel();
-        wfModel.users = this.appComponent.appConfig.tenantUsers;
-        wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
+        wfModel.users = this.appComponent.tenantUsers;
+        wfModel.workflowStatuses = this.appComponent.grantWorkflowStatuses;
         wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
         wfModel.type=this.appComponent.currentView;
         wfModel.grant = this.currentGrant;
-        wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
+        wfModel.canManage = this.appComponent.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
         const dialogRef = this.dialog.open(WfassignmentComponent, {
             data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
             panelClass: 'wf-assignment-class'
@@ -283,13 +283,13 @@ export class AdminLayoutComponent implements OnInit {
         });
     }else if(this.appComponent.currentView==='report'){
                   const wfModel = new ReportWorkflowAssignmentModel();
-                  wfModel.users = this.appComponent.appConfig.tenantUsers;
+                  wfModel.users = this.appComponent.tenantUsers;
                   wfModel.granteeUsers = this.currentReport.granteeUsers;
-                  wfModel.workflowStatuses = this.appComponent.appConfig.reportWorkflowStatuses;
+                  wfModel.workflowStatuses = this.appComponent.reportWorkflowStatuses;
                   wfModel.workflowAssignments = this.currentReport.workflowAssignments;
                   wfModel.type=this.appComponent.currentView;
                   wfModel.report = this.currentReport;
-                  wfModel.canManage = this.currentReport.flowAuthorities && this.currentReport.canManage;
+                  wfModel.canManage = this.appComponent.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentReport.flowAuthorities && this.currentReport.canManage;
                   const dialogRef = this.dialog.open(WfassignmentComponent, {
                       data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
                       panelClass: 'wf-assignment-class'

@@ -55,7 +55,10 @@ export class AppComponent implements AfterViewChecked{
   createNewReportSection = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
   parameters: any;
-
+  tenantUsers:User[];
+  reportWorkflowStatuses: WorkflowStatus[];
+  grantWorkflowStatuses: WorkflowStatus[];
+  reportTransitions: WorkflowTransition[]
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -68,6 +71,7 @@ export class AppComponent implements AfterViewChecked{
     granteeOrgs: [],
     workflowStatuses: [],
     reportWorkflowStatuses: [],
+    grantWorkflowStatuses: [],
     transitions: [],
     reportTransitions: [],
     tenantUsers: [],
@@ -192,6 +196,12 @@ interval(10000).subscribe(t => {
     const url = '/api/app/config/'.concat(hostName);
     this.confgSubscription = this.httpClient.get<AppConfig>(url,httpOptions).subscribe((response) => {
       this.appConfig = response;
+      if(this.appConfig.tenantUsers){
+        this.tenantUsers = this.appConfig.tenantUsers;
+      }
+      if(this.appConfig.reportWorkflowStatuses){
+        this.reportWorkflowStatuses = this.appConfig.reportWorkflowStatuses;
+      }
       localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
 
     },error => {

@@ -61,16 +61,16 @@
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
                 <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant && currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
 
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant && (currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
             
-                <ng-container *ngIf="menuItem.title === 'Grant Details' && (currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
+                <ng-container *ngIf="menuItem.title === 'Grant Details' && (currentGrant && currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
                     <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                           <mat-panel-title style="display: flex; align-items: center">
