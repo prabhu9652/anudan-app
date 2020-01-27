@@ -68,7 +68,7 @@ export class ReportSectionsComponent implements OnInit {
         });
 
         this.myControl = new FormControl();
-        this.options = this.appComp.currentTenant.templateLibrary;
+        this.options = this.appComp.currentTenant?this.appComp.currentTenant.templateLibrary:[];
         const docs = this.options.slice();
 
         this.filteredOptions = this.myControl.valueChanges

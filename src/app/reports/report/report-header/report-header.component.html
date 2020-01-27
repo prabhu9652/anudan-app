@@ -67,10 +67,12 @@
                         </div>
                         <div class="row mt-3 mx-3">
                             <div class="col-12">
-                                <mat-form-field [floatLabel]="'always'">
+                                <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                     <mat-label>Report Name:</mat-label>
-                                    <input id="reportName" matInput [(ngModel)]="currentReport.name" class="anu-input">
+                                    <input id="reportName"  matInput [(ngModel)]="currentReport.name" class="anu-input">
                                 </mat-form-field>
+                                <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Report Name:</label>
+                                <p id="reportName" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.name}}</p>
                             </div>
                             <div class="col-8 mb-1" style="border-bottom:1px solid #EAEAEA;">
                                 <b>Reporting Time Frame</b>
@@ -84,7 +86,7 @@
                             <div class="col-8 mb-4">
                                 <div class="row">
                                     <div class="col-4">
-                                        <mat-form-field [floatLabel]="'always'">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                             <mat-label>Start Date</mat-label>
                                             <input id="reportStartDate" matInput [(ngModel)]="currentReport.stDate"
                                                    class="anu-input" (dateInput)="datePickerSelected($event)"
@@ -98,9 +100,11 @@
                                                 calendar_today
                                             </mat-icon>
                                         </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Start Date:</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.stDate | date:'d-MMM-yyyy'}}</p>
                                     </div>
                                     <div class="col-4">
-                                        <mat-form-field [floatLabel]="'always'">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                             <mat-label>End Date</mat-label>
                                             <input id="reportEndDate" matInput [(ngModel)]="currentReport.enDate"
                                                    class="anu-input" (dateInput)="datePickerSelected($event)"
@@ -113,19 +117,23 @@
                                                 calendar_today
                                             </mat-icon>
                                         </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">End Date:</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.enDate | date:'d-MMM-yyyy'}}</p>
                                     </div>
                                     <div class="col-4">
-                                        <mat-form-field [floatLabel]="'always'">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                             <mat-label>Duration</mat-label>
                                             <input matInput class="anu-input" style="background:#F0F1F0;" readonly
                                                    [(ngModel)]="currentReport.duration">
                                         </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Duration</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.duration}}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-1"></div>
                             <div class="col-3 mb-4">
-                                <mat-form-field [floatLabel]="'always'">
+                                <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                     <mat-label>Due Date</mat-label>
                                     <input id="reportEndDate" matInput [(ngModel)]="currentReport.dDate"
                                            class="anu-input" (dateInput)="datePickerSelected($event)"
@@ -138,6 +146,8 @@
                                         calendar_today
                                     </mat-icon>
                                 </mat-form-field>
+                                <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Due Date:</label>
+                                <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.dDate | date:'d-MMM-yyyy'}}</p>
                             </div>
                         </div>
                     </div>
