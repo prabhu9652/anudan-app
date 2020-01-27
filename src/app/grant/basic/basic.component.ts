@@ -226,9 +226,9 @@ export class BasicComponent implements OnInit {
 
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
-      this.canManage = true;
+      this.canManage = this.currentGrant.canManage;
     } else {
-      this.canManage = false;
+      this.canManage = this.currentGrant.canManage;
     }
   }
 
@@ -441,6 +441,11 @@ export class BasicComponent implements OnInit {
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
+                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0){
+                        grant.canManage=true;
+                    }else{
+                        grant.canManage=false;
+                    }
                     this.grantData.changeMessage(grant);
                     this.setDateDuration();
                     //this.dataService.changeMessage(grant.id);

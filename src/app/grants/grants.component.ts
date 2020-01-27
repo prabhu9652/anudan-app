@@ -192,6 +192,11 @@ export class GrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
+        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0){
+            grant.canManage=true;
+        }else{
+            grant.canManage=false;
+        }
         this.dataService.changeMessage(grant.id);
         this.data.changeMessage(grant);
         this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;

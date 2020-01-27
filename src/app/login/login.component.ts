@@ -93,10 +93,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    if(this.recaptchaToken===undefined){
+    /*if(this.recaptchaToken===undefined){
         alert("Please tick on reCaptcha to let us know that you're not a bot.");
         return;
-    }
+    }*/
     console.warn(this.loginForm.value);
     const user: AccessCredentials = {
       username: this.emailId.value,

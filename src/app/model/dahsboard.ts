@@ -262,6 +262,7 @@ export class Grant {
   noteAddedBy: string;
   noteAddedByUser: User;
   securityCode: string;
+  canManage: boolean;
 }
 
 export class GrantSnapshot {

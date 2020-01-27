@@ -446,6 +446,11 @@ export class PreviewComponent implements OnInit {
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
+          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0){
+              grant.canManage=true;
+          }else{
+              grant.canManage=false;
+          }
           this.grantData.changeMessage(grant);
           this.currentGrant = grant;
           this._setEditMode(false);
