@@ -5,12 +5,11 @@ import {
   Grant, GrantDetails,
   GrantKpi,
   Kpi, Note, NoteTemplates,
-  QualitativeKpiSubmission,
-  QuantitiaveKpisubmission,
+  QuantitiaveKpisubmission,QualitativeKpiSubmission,
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest,WorkflowStatus
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -21,7 +20,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {SectionEditComponent} from '../../components/section-edit/section-edit.component';
@@ -36,6 +35,7 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import {MatChipInputEvent} from '@angular/material/chips';
 import { saveAs } from 'file-saver';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import {User} from '../../model/user';
 
 
 @Component({
@@ -71,6 +71,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   newField: any;
   allowScroll = true;
   filesToUpload = FileList;
+  grantWorkflowStatuses: WorkflowStatus[];
+  tenantUsers: User[];
 
   myControl: FormControl;
   options: TemplateLibrary[];
@@ -130,6 +132,24 @@ this.route.params.subscribe( (p) => {
     this.appComp.action = this.action;
     } );
 
+            this.grantData.currentMessage.subscribe(grant => {
+                this.currentGrant = grant
+            });
+            const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
 
   }
 
@@ -164,13 +184,6 @@ ngOnDestroy(){
         map(name => name ? this._filter(name) : docs)
       );*/
 
-      
-      
-
-
-    this.grantData.currentMessage.subscribe(grant => {
-        this.currentGrant = grant
-    });
 
     this.subscribers.name = this.router.events.subscribe((val) => {
                     if(val instanceof NavigationStart && val.url ==='/grant/preview'){

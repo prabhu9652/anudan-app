@@ -1426,6 +1426,7 @@ export class PreviewComponent implements OnInit {
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
        wfModel.type=this.appComp.currentView;
        wfModel.grant = this.currentGrant;
+       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: {model:wfModel,userId:this.appComp.loggedInUser.id},
               panelClass: 'wf-assignment-class'

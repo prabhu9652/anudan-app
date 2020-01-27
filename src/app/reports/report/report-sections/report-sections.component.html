@@ -299,7 +299,7 @@
                             <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
                                    [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Report Level Accomplishment" [readonly]="!currentReport.forGranteeUse" [style]="currentReport.forGranteeUse?'#fff':'background:#F0F1F0 !important;'">
+                                   placeholder="Report Level Accomplishment" [readonly]="!currentReport.forGranteeUse" [style.background]="currentReport.forGranteeUse?'#fff':'#F0F1F0'">
                           </mat-form-field>
                         </div>
 

@@ -11,7 +11,7 @@ import {
   Submission,
   SubmissionStatus, Template,
   CustomDateAdapter,
-  Organization,SectionInfo
+  Organization,SectionInfo, WorkflowStatus
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -21,7 +21,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService, IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
@@ -33,6 +33,7 @@ import {FormControl} from '@angular/forms';
 import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import {User} from '../../model/user';
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -83,6 +84,8 @@ export class BasicComponent implements OnInit {
   myControl: FormControl;
   options: Organization[];
   filteredOptions: Observable<Organization[]>;
+  grantWorkflowStatuses: WorkflowStatus[];
+  tenantUsers: User[];
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -139,6 +142,25 @@ export class BasicComponent implements OnInit {
                 this.appComp.grantSaved = false;
             }
             });
+
+
+            this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+            const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
   }
 
   ngOnDestroy(){
@@ -158,7 +180,6 @@ export class BasicComponent implements OnInit {
     this.appComp.sectionUpdated = false;
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
 
     

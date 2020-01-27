@@ -109,16 +109,16 @@
             <li routerLinkActive="active" *ngFor="let menuItem of singleReportMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
                 <ng-container *ngIf="menuItem.title !== 'Report Details'">
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentReport.canManage && (currentReport.status.internalStatus!=='ACTIVE' && currentReport.status.internalStatus!=='CLOSED') && menuItem.title!=='Preview & Submit'" >
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentReport.canManage || (currentReport.status.internalStatus!=='ACTIVE' && currentReport.status.internalStatus!=='CLOSED') && menuItem.title!=='Preview & Submit'" >
 
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentReport.status.internalStatus=='ACTIVE' || currentReport.status.internalStatus=='CLOSED' || !currentReport.canManage)  && menuItem.title==='Preview & Submit'">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(!currentReport.canManage)  && menuItem.title==='Preview & Submit'">
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
 
-                <ng-container *ngIf="menuItem.title === 'Report Details' && (currentReport.canManage && (currentReport.status.internalStatus!='ACTIVE' && currentReport.status.internalStatus!='CLOSED'))">
+                <ng-container *ngIf="menuItem.title === 'Report Details' && (currentReport.canManage || (currentReport.status.internalStatus!='ACTIVE' && currentReport.status.internalStatus!='CLOSED'))">
                     <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center">
