@@ -310,7 +310,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                     if (attrib.id === Number(attributeId)) {
                         console.log(attrib);
                         attrib.fieldValue = inputField.val();
-                        this.grantData.changeMessage(grant);
+                        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                     }
                 }
             }
@@ -364,7 +364,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             this.http.put(url, grantToSave, httpOptions).subscribe((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    this.grantData.changeMessage(grant);
+                    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                     this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
                     this._setEditMode(false);
@@ -497,7 +497,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 break;
             }
         }
-        this.grantData.changeMessage(grant);
+        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
         fieldName.val('');
         this._setEditMode(true);
         $(createFieldModal).modal('hide');
@@ -529,7 +529,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         currentSections.push(newSection);
 
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
         sectionName.val('');
         $('#section_' + newSection.id).css('display', 'block');
@@ -555,7 +555,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
         currentSections.push(newSection);
 
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
         sectionName.val('');
         this.addNewSection();
@@ -635,7 +635,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 sub.documentKpiSubmissions.push(docKpi);
             }
         }
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
         this._setEditMode(true);
         kpiDesc.val('');
@@ -685,7 +685,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 break;
         }
 
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
         console.log();
     }
 
@@ -727,7 +727,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
             url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
             this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-                this.grantData.changeMessage(updatedGrant);
+                this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
                 this.currentGrant = updatedGrant;
                 this.checkGrantPermissions();
                 // this.router.navigate(['grant']);
@@ -838,7 +838,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                 break;
         }
         this._setEditMode(true);
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
         console.log(this.currentGrant);
     }
 
@@ -863,11 +863,17 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/create/' + template.id;
 
     this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+            grant.canManage=true;
+        }else{
+            grant.canManage=false;
+        }
+
         grant.templateId = template.id;
         const savedgrant = grant;
         this.appComp.originalGrant = JSON.parse(JSON.stringify(grant));
         this.currentGrant = grant;
-        this.grantData.changeMessage(grant);
+        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
         this.appComp.currentView = 'grant';
 
         this.router.navigate(['grant/basic-details']);

@@ -225,7 +225,7 @@ export class BasicComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE') || this.currentGrant.grantStatus.internalStatus==='DRAFT') {
       this.canManage = this.currentGrant.canManage;
     } else {
       this.canManage = this.currentGrant.canManage;
@@ -382,7 +382,7 @@ export class BasicComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             //console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
             this.setDateDuration();
           }
         }
@@ -441,12 +441,12 @@ export class BasicComponent implements OnInit {
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0){
+                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
                         grant.canManage=true;
                     }else{
                         grant.canManage=false;
                     }
-                    this.grantData.changeMessage(grant);
+                    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                     this.setDateDuration();
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
@@ -586,7 +586,7 @@ export class BasicComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     fieldName.val('');
     this._setEditMode(true);
@@ -624,7 +624,7 @@ export class BasicComponent implements OnInit {
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-           this.grantData.changeMessage(info.grant);
+           this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
           sectionName.val('');
           //$('#section_' + newSection.id).css('display', 'block');
@@ -670,7 +670,7 @@ export class BasicComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
 
     sectionName.val('');
@@ -750,7 +750,7 @@ export class BasicComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -800,7 +800,7 @@ export class BasicComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     //console.log();
   }
@@ -843,7 +843,7 @@ export class BasicComponent implements OnInit {
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.setDateDuration();
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
@@ -982,7 +982,7 @@ export class BasicComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     //console.log(this.currentGrant);
   }
@@ -1040,7 +1040,7 @@ export class BasicComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
     this.setDateDuration();
   }
@@ -1136,7 +1136,7 @@ export class BasicComponent implements OnInit {
       this._setEditMode(false);
     } else {
       this._setEditMode(true);
-      this.grantData.changeMessage(this.currentGrant);
+      this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
       this.setDateDuration();
     }
     this.setDateDuration();

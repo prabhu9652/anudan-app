@@ -196,7 +196,7 @@ export class PreviewComponent implements OnInit {
       }
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -393,7 +393,7 @@ export class PreviewComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           }
         }
       }
@@ -446,12 +446,12 @@ export class PreviewComponent implements OnInit {
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
-          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0){
+          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
               grant.canManage=true;
           }else{
               grant.canManage=false;
           }
-          this.grantData.changeMessage(grant);
+          this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           this.currentGrant = grant;
           this._setEditMode(false);
           this.currentSubmission = null;
@@ -580,7 +580,7 @@ export class PreviewComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -617,7 +617,7 @@ export class PreviewComponent implements OnInit {
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-           this.grantData.changeMessage(info.grant);
+           this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
           sectionName.val('');
           //$('#section_' + newSection.id).css('display', 'block');
@@ -663,7 +663,7 @@ export class PreviewComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -743,7 +743,7 @@ export class PreviewComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -793,7 +793,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -853,7 +853,7 @@ export class PreviewComponent implements OnInit {
 
         this.router.navigate(['grant']);*/
         //this.grantDataService.changeMessage(grant);
-        this.grantData.changeMessage(grant);
+        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
 
         if(!grant.grantTemplate.published){
             const dialogRef = this.dialog.open(TemplateDialogComponent, {
@@ -865,7 +865,7 @@ export class PreviewComponent implements OnInit {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
                      this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).subscribe((grant: Grant) => {
-                      this.grantData.changeMessage(grant);
+                      this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();
                      });
@@ -873,7 +873,7 @@ export class PreviewComponent implements OnInit {
                } else {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
                   this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).subscribe((grant: Grant) => {
-                   this.grantData.changeMessage(grant);
+                   this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                    this.appComp.selectedTemplate = grant.grantTemplate;
                    dialogRef.close();
                    this.fetchCurrentGrant();
@@ -913,7 +913,7 @@ export class PreviewComponent implements OnInit {
     
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
 
         if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
@@ -1028,7 +1028,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -1085,7 +1085,7 @@ export class PreviewComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 
@@ -1459,7 +1459,7 @@ export class PreviewComponent implements OnInit {
                         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                             + this.currentGrant.id + '/assignment';
                         this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
-                            this.grantData.changeMessage(grant);
+                            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                             this.currentGrant = grant;
                             this.submitGrant(toStateId);
                         },

@@ -54,7 +54,7 @@ export class WelcomeComponent implements OnInit {
         const url = '/api/user/'+this.appComponent.loggedInUser.id+'/grant/resolve';
 
         this.http.get(url,httpOptions).subscribe((grant:Grant) => {
-            this.grantDataService.changeMessage(grant);
+            this.grantDataService.changeMessage(grant,this.appComponent.loggedInUser.id);
             this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
             this.appComponent.currentView = 'grant';
 

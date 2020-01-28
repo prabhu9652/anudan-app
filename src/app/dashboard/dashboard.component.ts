@@ -132,7 +132,7 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.changeMessage(grant.id);
-        this.data.changeMessage(grant);
+        this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
         this.router.navigate(['grant']);
       } else {
         dialogRef.close();
@@ -157,7 +157,7 @@ export class DashboardComponent implements OnInit {
 
 
       this.http.get(url,httpOptions).subscribe((grant:Grant) => {
-          this.data.changeMessage(grant);
+          this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
           this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
           this.appComponent.currentView = 'grant';
 

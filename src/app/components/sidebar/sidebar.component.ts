@@ -136,7 +136,7 @@ drop(event: CdkDragDrop<string[]>) {
                 }
             }
         }
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComponent.loggedInUser.id);
     }
     if(this.appComponent.currentView === 'report' && this.currentReport){
         moveItemInArray(this.reportSectionMenuItems, event.previousIndex, event.currentIndex);
@@ -223,7 +223,7 @@ drop(event: CdkDragDrop<string[]>) {
           }else{
               this.appComponent.currentTenant.grants.push(grant);
           }
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
             this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
             this.appComponent.currentView = 'grant';
 

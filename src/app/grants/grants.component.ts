@@ -192,13 +192,13 @@ export class GrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0){
+        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
             grant.canManage=true;
         }else{
             grant.canManage=false;
         }
         this.dataService.changeMessage(grant.id);
-        this.data.changeMessage(grant);
+        this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
         this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
         this.appComponent.currentView = 'grant';
 
@@ -260,7 +260,7 @@ export class GrantsComponent implements OnInit {
 
               this.http.put<Grant>(url, grant, httpOptions).subscribe((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));
-                      this.data.changeMessage(grant);
+                      this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
                       //this.setDateDuration();
                       //this.dataService.changeMessage(grant.id);
                       //this.currentGrant = grant;

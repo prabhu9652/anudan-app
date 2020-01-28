@@ -276,7 +276,7 @@ export class ReportingComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           }
         }
       }
@@ -329,7 +329,7 @@ export class ReportingComponent implements OnInit {
 
     this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
+          this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           this.currentGrant = grant;
           this._setEditMode(false);
           this.currentSubmission = null;
@@ -458,7 +458,7 @@ export class ReportingComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -490,7 +490,7 @@ export class ReportingComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     $('#section_' + newSection.id).css('display', 'block');
@@ -516,7 +516,7 @@ export class ReportingComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -596,7 +596,7 @@ export class ReportingComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -646,7 +646,7 @@ export class ReportingComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -688,7 +688,7 @@ export class ReportingComponent implements OnInit {
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
@@ -799,7 +799,7 @@ export class ReportingComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -856,7 +856,7 @@ export class ReportingComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 

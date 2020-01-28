@@ -254,7 +254,7 @@ interval(10000).subscribe(t => {
     localStorage.removeItem('MESSAGE_COUNT');
     this.notifications = [];
 
-    this.grantService.changeMessage(null);
+    this.grantService.changeMessage(null,0);
     if(this.confgSubscription){
         this.confgSubscription.unsubscribe();
     }

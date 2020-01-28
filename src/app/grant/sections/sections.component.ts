@@ -365,7 +365,7 @@ ngOnDestroy(){
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/'+sectionId+'/field/'+attributeId;
 
     this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-       this.grantData.changeMessage(grant);
+       this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
        const path = this.sidebar.buildSectionsSideNav(null);
            //this.router.navigate([path]);
        },error => {
@@ -441,7 +441,7 @@ ngOnDestroy(){
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           }
         }
       }
@@ -502,7 +502,7 @@ ngOnDestroy(){
                     //this.grantData.changeMessage(grant);
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
-                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0){
+                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
                         grant.canManage=true;
                     }else{
                         grant.canManage=false;
@@ -617,7 +617,7 @@ ngOnDestroy(){
 
                 this.http.post<FieldInfo>(url,this.currentGrant, httpOptions).subscribe((info: FieldInfo) => {
                     //this.checkGrant(null);
-                    this.grantData.changeMessage(info.grant);
+                    this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
                     this.currentGrant = info.grant;
                     this.appComp.sectionInModification = false;
                     this.appComp.selectedTemplate = info.grant.grantTemplate;
@@ -687,7 +687,7 @@ ngOnDestroy(){
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -724,7 +724,7 @@ ngOnDestroy(){
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
     this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-         this.grantData.changeMessage(info.grant);
+         this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
         sectionName.val('');
         //$('#section_' + newSection.id).css('display', 'block');
@@ -769,7 +769,7 @@ ngOnDestroy(){
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -849,7 +849,7 @@ ngOnDestroy(){
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -899,7 +899,7 @@ ngOnDestroy(){
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -941,7 +941,7 @@ ngOnDestroy(){
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
@@ -1054,7 +1054,7 @@ ngOnDestroy(){
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -1111,7 +1111,7 @@ ngOnDestroy(){
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 
@@ -1238,7 +1238,7 @@ ngOnDestroy(){
       //this.grantData.changeMessage(this.currentGrant);
       if(ev!==null || ev!==undefined){
 
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
         this.appComp.sectionUpdated = true;
         this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
@@ -1292,7 +1292,7 @@ ngOnDestroy(){
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
             + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
         this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
-            this.grantData.changeMessage(info.grant);
+            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.newField = 'field_' + info.stringAttributeId;
@@ -1507,7 +1507,7 @@ ngOnDestroy(){
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
 
       this.http.put<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-           this.grantData.changeMessage(grant);
+           this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
            const path = this.sidebar.buildSectionsSideNav(null);
                this.router.navigate([path]);
            },error => {
@@ -1699,7 +1699,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
 
         this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
-            this.grantData.changeMessage(info.grant);
+            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
             this.currentGrant = info.grant;
             this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
@@ -1773,7 +1773,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
         this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
             this.currentGrant = grant;
             for(let section of this.currentGrant.grantDetails.sections){
                 if(section && section.attributes){
@@ -1833,7 +1833,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
               };
 
                   this.http.post<DocInfo>(endpoint,formData, httpOptions).subscribe((info: DocInfo) => {
-                  this.grantData.changeMessage(info.grant)
+                  this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id)
                   this.currentGrant = info.grant;
                    this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
                   });
@@ -1905,7 +1905,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
             return;
         }
         section.sectionName = result;
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
         this.router.navigate(['grant/section/' + this.getCleanText(section)]);
         this.sidebar.buildSectionsSideNav(null);
     });
