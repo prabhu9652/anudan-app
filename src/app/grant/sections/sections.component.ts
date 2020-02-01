@@ -5,12 +5,11 @@ import {
   Grant, GrantDetails,
   GrantKpi,
   Kpi, Note, NoteTemplates,
-  QualitativeKpiSubmission,
-  QuantitiaveKpisubmission,
+  QuantitiaveKpisubmission,QualitativeKpiSubmission,
   Section,
   Submission,
   SubmissionStatus, Template,
-  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest
+  TableData, ColumnData, TemplateLibrary,FieldInfo, SectionInfo, DocInfo, AttachmentDownloadRequest,WorkflowStatus
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
@@ -21,9 +20,10 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {SectionEditComponent} from '../../components/section-edit/section-edit.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
@@ -34,7 +34,8 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { saveAs } from 'file-saver';
-
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import {User} from '../../model/user';
 
 
 @Component({
@@ -70,6 +71,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   newField: any;
   allowScroll = true;
   filesToUpload = FileList;
+  grantWorkflowStatuses: WorkflowStatus[];
+  tenantUsers: User[];
 
   myControl: FormControl;
   options: TemplateLibrary[];
@@ -112,6 +115,7 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
       , private http: HttpClient
+      , private adminComp: AdminLayoutComponent
       , private toastr: ToastrService
       , private dialog: MatDialog
       , private _bottomSheet: MatBottomSheet
@@ -128,6 +132,24 @@ this.route.params.subscribe( (p) => {
     this.appComp.action = this.action;
     } );
 
+            this.grantData.currentMessage.subscribe(grant => {
+                this.currentGrant = grant
+            });
+            const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
 
   }
 
@@ -149,7 +171,8 @@ ngOnDestroy(){
             this.appComp.createNewSection.next(false);
         }
     });
-  this.myControl = new FormControl();
+
+    this.myControl = new FormControl();
 
     this.options = this.appComp.currentTenant.templateLibrary;
 
@@ -161,13 +184,6 @@ ngOnDestroy(){
         map(name => name ? this._filter(name) : docs)
       );*/
 
-      
-      
-
-
-    this.grantData.currentMessage.subscribe(grant => {
-        this.currentGrant = grant
-    });
 
     this.subscribers.name = this.router.events.subscribe((val) => {
                     if(val instanceof NavigationStart && val.url ==='/grant/preview'){
@@ -243,9 +259,9 @@ ngOnDestroy(){
 
   private checkGrantPermissions() {
     if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
-      this.canManage = true;
+      this.canManage = this.currentGrant.canManage;
     } else {
-      this.canManage = false;
+      this.canManage = this.currentGrant.canManage;
     }
   }
 
@@ -349,8 +365,8 @@ ngOnDestroy(){
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/section/'+sectionId+'/field/'+attributeId;
 
     this.http.post<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-       this.grantData.changeMessage(grant);
-       const path = this.sidebar.buildSectionsSideNav();
+       this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+       const path = this.sidebar.buildSectionsSideNav(null);
            //this.router.navigate([path]);
        },error => {
                 const errorMsg = error as HttpErrorResponse;
@@ -361,7 +377,7 @@ ngOnDestroy(){
                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                 } else {
-                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                 this.toastr.error(errorMsg.error.message,"8 We encountered an error", config);
                 }
 
 
@@ -425,7 +441,7 @@ ngOnDestroy(){
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           }
         }
       }
@@ -486,6 +502,11 @@ ngOnDestroy(){
                     //this.grantData.changeMessage(grant);
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
+                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+                        grant.canManage=true;
+                    }else{
+                        grant.canManage=false;
+                    }
                     this._setEditMode(false);
                     this.currentSubmission = null;
                     this.checkGrantPermissions();
@@ -504,7 +525,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                          this.toastr.error(errorMsg.error.message,"9 We encountered an error", config);
                          }
 
 
@@ -596,13 +617,20 @@ ngOnDestroy(){
 
                 this.http.post<FieldInfo>(url,this.currentGrant, httpOptions).subscribe((info: FieldInfo) => {
                     //this.checkGrant(null);
-                    this.grantData.changeMessage(info.grant);
+                    this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
                     this.currentGrant = info.grant;
                     this.appComp.sectionInModification = false;
                     this.appComp.selectedTemplate = info.grant.grantTemplate;
                     this.newField = 'field_' + info.stringAttributeId;
                     //this.scrollTo(this.newField);
-                });
+                } ,
+                          error => {
+                            const errorMsg = error as HttpErrorResponse;
+                            console.log(error);
+                            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                              enableHtml: true
+                            });
+                          });
     const id = 0 - Math.round(Math.random() * 1000000000);
     /* for (const section of this.currentGrant.grantDetails.sections) {
       if (section.id === Number(sectionId)) {
@@ -659,7 +687,7 @@ ngOnDestroy(){
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -696,14 +724,14 @@ ngOnDestroy(){
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
     this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-         this.grantData.changeMessage(info.grant);
+         this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
         sectionName.val('');
         //$('#section_' + newSection.id).css('display', 'block');
         this._setEditMode(true);
         $(createSectionModal).modal('hide');
         this.appComp.sectionAdded = true;
-        this.sidebar.buildSectionsSideNav();
+        this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
@@ -716,7 +744,7 @@ ngOnDestroy(){
                           this.toastr.error("Your session has expired", 'Logging you out now...', config);
                           setTimeout( () => { this.appComp.logout(); }, 4000 );
                          } else {
-                          this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                          this.toastr.error(errorMsg.error.message,"10 We encountered an error", config);
                          }
 
 
@@ -741,7 +769,7 @@ ngOnDestroy(){
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -821,7 +849,7 @@ ngOnDestroy(){
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -871,7 +899,7 @@ ngOnDestroy(){
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -913,7 +941,7 @@ ngOnDestroy(){
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
@@ -926,7 +954,7 @@ ngOnDestroy(){
                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
                 setTimeout( () => { this.appComp.logout(); }, 4000 );
                } else {
-                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                this.toastr.error(errorMsg.error.message,"11 We encountered an error", config);
                }
 
 
@@ -940,7 +968,7 @@ ngOnDestroy(){
          this.toastr.error("Your session has expired", 'Logging you out now...', config);
          setTimeout( () => { this.appComp.logout(); }, 4000 );
         } else {
-         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+         this.toastr.error(errorMsg.error.message,"12 We encountered an error", config);
         }
 
 
@@ -1026,7 +1054,7 @@ ngOnDestroy(){
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -1083,7 +1111,7 @@ ngOnDestroy(){
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 
@@ -1183,7 +1211,7 @@ ngOnDestroy(){
     /* if(ev!==null && ev!==undefined){
       this.grantData.changeMessage(this.currentGrant);
       this.appComp.sectionUpdated = true;
-      this.sidebar.buildSectionsSideNav();
+      this.sidebar.buildSectionsSideNav(null);
       this.appComp.sectionInModification = false;
       if(ev.toString()!==''){
         this.router.navigate(['grant/section/' + this.getCleanText(ev.toString())]);
@@ -1210,9 +1238,9 @@ ngOnDestroy(){
       //this.grantData.changeMessage(this.currentGrant);
       if(ev!==null || ev!==undefined){
 
-        this.grantData.changeMessage(this.currentGrant);
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
         this.appComp.sectionUpdated = true;
-        this.sidebar.buildSectionsSideNav();
+        this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
         if(ev.toString()!==''){
           this.router.navigate(['grant/section/' + this.getCleanText(section)]);
@@ -1264,7 +1292,7 @@ ngOnDestroy(){
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
             + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
         this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
-            this.grantData.changeMessage(info.grant);
+            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.newField = 'field_' + info.stringAttributeId;
@@ -1277,7 +1305,7 @@ ngOnDestroy(){
                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
                   setTimeout( () => { this.appComp.logout(); }, 4000 );
                  } else {
-                  this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                  this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
                  }
 
 
@@ -1479,8 +1507,8 @@ ngOnDestroy(){
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+secId;
 
       this.http.put<Grant>(url,this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-           this.grantData.changeMessage(grant);
-           const path = this.sidebar.buildSectionsSideNav();
+           this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+           const path = this.sidebar.buildSectionsSideNav(null);
                this.router.navigate([path]);
            },error => {
                     const errorMsg = error as HttpErrorResponse;
@@ -1491,7 +1519,7 @@ ngOnDestroy(){
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                     this.toastr.error(errorMsg.error.message,"14 We encountered an error", config);
                     }
 
 
@@ -1671,7 +1699,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
         const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/field/'+attribute.id+'/template/'+event.option.value.id;
 
         this.http.post<DocInfo>(url,this.currentGrant, httpOptions).subscribe((info: DocInfo) => {
-            this.grantData.changeMessage(info.grant);
+            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
             this.currentGrant = info.grant;
             this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
@@ -1745,7 +1773,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
         this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
             this.currentGrant = grant;
             for(let section of this.currentGrant.grantDetails.sections){
                 if(section && section.attributes){
@@ -1781,11 +1809,11 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
     processSelectedFiles(section,attribute,event){
         const files = event.target.files;
 
+
         const endpoint = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/section/'+section.id+'/attribute/'+attribute.id+'/upload';
               let formData = new FormData();
               for( let i=0; i< files.length; i++){
               formData.append('file', files.item(i));
-
               const fileExistsCheck=this._checkAttachmentExists(files.item(i).name.substring(0,files.item(i).name.lastIndexOf('.')));
                 if(fileExistsCheck.status){
                                 alert("Document " + files.item(i).name + ' is already attached under ' + fileExistsCheck.message);
@@ -1793,7 +1821,9 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                                 return;
                             }
               }
+
               formData.append('grantToSave',JSON.stringify(this.currentGrant));
+
 
               const httpOptions = {
                   headers: new HttpHeaders({
@@ -1803,23 +1833,10 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
               };
 
                   this.http.post<DocInfo>(endpoint,formData, httpOptions).subscribe((info: DocInfo) => {
-                  this.grantData.changeMessage(info.grant)
+                  this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id)
                   this.currentGrant = info.grant;
                    this.newField = 'attriute_'+attribute.id+'_attachment_' + info.attachmentId;
-                  },error => {
-                                       const errorMsg = error as HttpErrorResponse;
-                                       console.log(error);
-                                       const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                       const config: Partial<IndividualConfig> = x;
-                                       if(errorMsg.error.message==='Token Expired'){
-                                        this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                        setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                       } else {
-                                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
-                                       }
-
-
-                                     });
+                  });
     }
 
     _checkAttachmentExists(filename):any{
@@ -1874,5 +1891,31 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
     toAttr.attributeOrder = from;
     section.attributes.sort((a, b) => (a.attributeOrder > b.attributeOrder) ? 1 : -1)
     this.newField = 'fieldBlock_'+ fromAttr.id;
+  }
+
+  editSection(section){
+    const dialogRef = this.dialog.open(SectionEditComponent, {
+        data: section,
+        panelClass: 'field-class'
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+        if(result===undefined || result.trim()===''){
+            return;
+        }
+        section.sectionName = result;
+        this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+        this.router.navigate(['grant/section/' + this.getCleanText(section)]);
+        this.sidebar.buildSectionsSideNav(null);
+    });
+  }
+
+  showHistory(type,obj){
+      this.adminComp.showHistory(type,obj);
+  }
+
+  showWorkflowAssigments(){
+      this.adminComp.showWorkflowAssigments();
   }
 }

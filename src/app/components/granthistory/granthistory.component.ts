@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit, ViewChild, ElementRef, Renderer2, HostListener} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 import {Grant, GrantHistory} from '../../model/dahsboard';
+import {ReportHistory} from '../../model/report';
 import {WorkflowTransition} from '../../model/workflow-transition';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
@@ -15,16 +16,17 @@ declare var jsPlumb: any;
 })
 export class GranthistoryComponent implements OnInit {
 
-    history: GrantHistory[]=[];
+    grantHistory: GrantHistory[]=[];
+    reportHistory: ReportHistory[]=[];
 
   constructor(
     public dialogRef: MatDialogRef<GranthistoryComponent>
-     , @Inject(MAT_DIALOG_DATA) public grant: Grant
+     , @Inject(MAT_DIALOG_DATA) public data: any
      , private http: HttpClient
      , private renderer: Renderer2
      , @Inject(ElementRef)er: ElementRef
      ) {
-    this.dialogRef.disableClose = true;
+    this.dialogRef.disableClose = false;
   }
 
   ngOnInit() {
@@ -35,11 +37,20 @@ export class GranthistoryComponent implements OnInit {
                   'Authorization': localStorage.getItem('AUTH_TOKEN')
               })
           };
-          const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/grant/'+this.grant.id+'/history/';
 
-          this.http.get<GrantHistory[]>(url, httpOptions).subscribe((history: GrantHistory[]) => {
-            this.history = history;
-          });
+        if(this.data.type==='grant'){
+            const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/grant/'+this.data.data.id+'/history/';
+
+            this.http.get<GrantHistory[]>(url, httpOptions).subscribe((history: GrantHistory[]) => {
+                this.grantHistory = history;
+            });
+        }else if(this.data.type==='report'){
+            const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/report/'+this.data.data.id+'/history/';
+
+            this.http.get<ReportHistory[]>(url, httpOptions).subscribe((history: ReportHistory[]) => {
+                this.reportHistory = history;
+            });
+        }
 
 
   }

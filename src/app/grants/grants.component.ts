@@ -29,6 +29,14 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
         color: #fff;
         opacity:1;
       }
+
+      ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: #39743C !important;
+      }
+
+      ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+        background-color: #39743C !important;
+      }
     `]
 })
 export class GrantsComponent implements OnInit {
@@ -87,11 +95,12 @@ export class GrantsComponent implements OnInit {
           'Authorization': localStorage.getItem('AUTH_TOKEN')
         })
       };
-        const user = JSON.parse(localStorage.getItem('USER'));
+      const user = JSON.parse(localStorage.getItem('USER'));
       const url = '/api/user/' + user.id + '/grant/templates';
       this.http.get<GrantTemplate[]>(url, httpOptions).subscribe((templates: GrantTemplate[]) => {
           const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
-                data: templates
+                data: templates,
+                panelClass: 'grant-template-class'
               });
 
               dialogRef.afterClosed().subscribe(result => {
@@ -141,7 +150,7 @@ export class GrantsComponent implements OnInit {
          this.grantsActive = [];
          this.grantsClosed = [];
         for (const grant of this.currentTenant.grants) {
-          if(grant.grantStatus.internalStatus === 'DRAFT'){
+          if(grant.grantStatus.internalStatus === 'DRAFT' || grant.grantStatus.internalStatus === 'REVIEW'){
             this.grantsDraft.push(grant); 
           }else if(grant.grantStatus.internalStatus === 'ACTIVE'){
             this.grantsActive.push(grant);
@@ -174,7 +183,7 @@ export class GrantsComponent implements OnInit {
                                 alert("Your session has timed out. Please sign in again.")
                                 this.appComponent.logout();
                                } else {
-                                this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                this.toastr.error(errorMsg.error.message,"15 We encountered an error", config);
                                }
 
 
@@ -183,8 +192,13 @@ export class GrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
+        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+            grant.canManage=true;
+        }else{
+            grant.canManage=false;
+        }
         this.dataService.changeMessage(grant.id);
-        this.data.changeMessage(grant);
+        this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
         this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
         this.appComponent.currentView = 'grant';
 
@@ -246,7 +260,7 @@ export class GrantsComponent implements OnInit {
 
               this.http.put<Grant>(url, grant, httpOptions).subscribe((grant: Grant) => {
                       //this.originalGrant = JSON.parse(JSON.stringify(grant));
-                      this.data.changeMessage(grant);
+                      this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
                       //this.setDateDuration();
                       //this.dataService.changeMessage(grant.id);
                       //this.currentGrant = grant;
@@ -266,7 +280,7 @@ export class GrantsComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComponent.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                 this.toastr.error(errorMsg.error.message,"16 We encountered an error", config);
                                 }
 
 

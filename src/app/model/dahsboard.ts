@@ -184,6 +184,8 @@ export class Attribute {
   docs: TemplateLibrary[];
   attachments: Attachment[];
   target: string;
+  actualTarget: string;
+  cumulativeActuals:number;
   frequency: string;
   deletable: boolean;
   required: boolean;
@@ -260,6 +262,7 @@ export class Grant {
   noteAddedBy: string;
   noteAddedByUser: User;
   securityCode: string;
+  canManage: boolean;
 }
 
 export class GrantSnapshot {
@@ -329,6 +332,7 @@ export class GrantTemplate{
   published: boolean;
   _private: boolean;
   sections: Section[];
+  defaultTemplate: boolean;
 }
 
 export class Tenant {
@@ -398,8 +402,10 @@ export class SerializationHelper {
 export class Notifications{
   id: number;
   message: string;
+  title: string;
   read: boolean;
   postedOn: Date;
+  grantId: number;
 }
 
 export class ColumnData{
@@ -428,6 +434,7 @@ export class FieldInfo{
     grant: Grant;
 }
 
+
 export class DocInfo{
     attachmentId: number;
     grant: Grant;
@@ -444,6 +451,7 @@ export class WorkflowAssignmentModel{
  workflowStatuses: WorkflowStatus[];
  workflowAssignment: WorkflowAssignment[];
  grant: Grant;
+ type:string;
  canManage: boolean;
  constructor(){}
 }

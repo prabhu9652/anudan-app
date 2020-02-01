@@ -1,0 +1,185 @@
+<div class="row anu-container">
+    <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
+        <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
+        <div class="row">
+            <h4 class="col-11 text-left my-3 section-header">Report Header</h4>
+            <div class="col-1 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+                <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
+                  <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
+                <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert
+                </mat-icon>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
+                    <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div #container class="container text-left mt-2 px-5 py-2">
+
+            <div *ngIf="!currentReport.canManage">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        Grant Name:<span><b>{{currentReport.grant.name}}</b></span>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <b>Grant Start Date:</b>
+                        <div>{{currentReport.grant.startDate | date:'dd-MMM-yyyy'}}</div>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <b>Grant End Date:</b>
+                        <div>{{currentReport.grant.endDate | date:'dd-MMM-yyyy'}}</div>
+                    </div>
+                    <div class="col-4 mb-4">
+                        <b>Grant Amount (₹):</b>
+                        <div>{{currentReport.grant.amount}}</div>
+                    </div>
+                </div>
+            </div>
+            <!--MANAGEMENT SECTION-->
+            <div *ngIf="currentReport.canManage">
+
+                <div class="row w-100 p-0 mt-3 mb-2 mx-0 grants-section">
+                    <div class="col-12">
+                        <div class="row p-2" style="background:#fafafa;">
+                            <div class="col-12 mb-1">
+                                <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grant Name:</span>
+                                <div class="ml-0 mb-1"><b>{{currentReport.grant.name}}</b></div>
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span style="color: #929292;font-size: 15px;font-family:Roboto;">Duration:</span>
+                                <div class="row ml-0 mb-3">
+                                    <div>
+                                        <mat-icon [inline]="true" class="mr-1">calendar_today
+                                        </mat-icon>
+                                        <b>{{currentReport.grant.startDate | date:'dd-MMM-yyyy'}}</b></div>
+                                    <div>
+                                        <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                                        </mat-icon>
+                                    </div>
+                                    <div>
+                                        <mat-icon [inline]="true" class="mr-1">calendar_today
+                                        </mat-icon>
+                                        <b>{{currentReport.grant.endDate | date:'dd-MMM-yyyy'}}</b></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 mx-3">
+                            <div class="col-12">
+                                <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                                    <mat-label>Report Name:</mat-label>
+                                    <input id="reportName"  matInput [(ngModel)]="currentReport.name" class="anu-input">
+                                </mat-form-field>
+                                <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Report Name:</label>
+                                <p id="reportName" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.name}}</p>
+                            </div>
+                            <div class="col-8 mb-1" style="border-bottom:1px solid #EAEAEA;">
+                                <b>Reporting Time Frame</b>
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-3 mb-1" style="border-bottom:1px solid #EAEAEA;">
+                                <b>Submission Due Date</b>
+                            </div>
+                        </div>
+                        <div class="row mx-3">
+                            <div class="col-8 mb-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                                            <mat-label>Start Date</mat-label>
+                                            <input id="reportStartDate" matInput [(ngModel)]="currentReport.stDate"
+                                                   class="anu-input" (dateInput)="datePickerSelected($event)"
+                                                   [ngModelOptions]="{standAlone:true}"
+                                                   (ngModelChange)="manageDate('start', $event, currentReport.stDate)"
+                                                   [matDatepicker]="pickerStart" placeholder="Report Start date"
+                                                   readonly>
+                                            <mat-datepicker #pickerStart></mat-datepicker>
+                                            <mat-icon (click)="openStartDate()"
+                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                                calendar_today
+                                            </mat-icon>
+                                        </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Start Date:</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.stDate | date:'d-MMM-yyyy'}}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                                            <mat-label>End Date</mat-label>
+                                            <input id="reportEndDate" matInput [(ngModel)]="currentReport.enDate"
+                                                   class="anu-input" (dateInput)="datePickerSelected($event)"
+                                                   [ngModelOptions]="{standAlone:true}"
+                                                   (ngModelChange)="manageDate('end', $event, currentReport.enDate)"
+                                                   [matDatepicker]="pickerEnd" placeholder="Report End date" readonly>
+                                            <mat-datepicker #pickerEnd></mat-datepicker>
+                                            <mat-icon (click)="openEndDate()"
+                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                                calendar_today
+                                            </mat-icon>
+                                        </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">End Date:</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.enDate | date:'d-MMM-yyyy'}}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                                            <mat-label>Duration</mat-label>
+                                            <input matInput class="anu-input" style="background:#F0F1F0;" readonly
+                                                   [(ngModel)]="currentReport.duration">
+                                        </mat-form-field>
+                                        <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Duration</label>
+                                        <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.duration}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-3 mb-4">
+                                <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                                    <mat-label>Due Date</mat-label>
+                                    <input id="reportEndDate" matInput [(ngModel)]="currentReport.dDate"
+                                           class="anu-input" (dateInput)="datePickerSelected($event)"
+                                           [ngModelOptions]="{standAlone:true}"
+                                           (ngModelChange)="manageDate('due', $event, currentReport.dDate)"
+                                           [matDatepicker]="pickerDue" placeholder="Report Due date" readonly>
+                                    <mat-datepicker #pickerDue></mat-datepicker>
+                                    <mat-icon (click)="openDueDate()"
+                                              style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                        calendar_today
+                                    </mat-icon>
+                                </mat-form-field>
+                                <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Due Date:</label>
+                                <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.dDate | date:'d-MMM-yyyy'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSectionLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+                    <input id="sectionTitleInput" class="form-control" value="">
+                </div>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-primary pull-right"
+                        (click)="saveSection()">Done
+                </button>
+                <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>

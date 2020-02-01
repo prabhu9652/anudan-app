@@ -1,0 +1,32 @@
+<div class="row mt-0 mx-0 py-4">
+
+    <div class="col-9"><h5 style="font-weight:bold;">ROLES</h5></div>
+    <div class="col-3 text-right">
+        <button #createRoleBtn class="btn btn-sm btn-green float-right" (click)="createNewRole()">Create a Role +</button>
+    </div>
+    <div class="col-12"><hr/></div>
+    <div class="col-12">
+        <mat-list style="background:#fff;">
+            <mat-list-item id="role_{{role.id}}" *ngFor="let role of roles" style="min-height:48px;height:auto;padding:8px;">
+                <h6 *ngIf="!role.editMode" class="mb-2" matLine style="text-transform:none !important;"><b>{{role.name}} </b><small>({{role.linkedUsers}} users)</small></h6>
+                <mat-form-field *ngIf="role.editMode" matLine>
+                    <input matInput [(ngModel)]="role.name" class="anu-input" placeholder="Edit role name">
+                </mat-form-field>
+
+
+                <p matLine><small *ngIf="!role.editMode" style="font-size:14px;white-space: normal;">{{role.description}}</small></p>
+                <img *ngIf="!role.editMode" class="ml-5" src="./assets/img/edit.svg" (click)="editRole(role,$event)">
+                <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers">
+                    <mat-icon (click)="deleteRole(role)">delete_outline</mat-icon>
+                </button>
+                <mat-form-field *ngIf="role.editMode" matLine>
+                <textarea matInput placeholder="Edit role description" class="anu-input" [(ngModel)]="role.description"></textarea>
+                </mat-form-field>
+                <div matLine *ngIf="role.editMode" style="display: flex;align-items: center;justify-content: flex-end;">
+                    <button class="btn btn-sm btn-link" (click)="cancelEdit(role)">Cancel</button>
+                    <button class="btn btn-sm bg-green" (click)="saveRole(role)">Save</button>
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>

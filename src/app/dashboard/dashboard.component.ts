@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from '@angular/common/http';
 import {User} from '../model/user';
 import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
@@ -12,6 +12,7 @@ import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
+import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
   kpiSubmissionDate: Date;
   kpiSubmissionTitle: string;
   currentGrantId: number;
+  parameters: any;
 
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
@@ -40,14 +42,35 @@ export class DashboardComponent implements OnInit {
               public grantComponent: GrantComponent,
               private dataService: DataService,
               private dialog: MatDialog) {
+
+              this.route.queryParams.subscribe(params => {
+                      this.parameters = params;
+                  });
   }
 
   ngOnInit() {
   console.log('dashboard');
-    const user = JSON.parse(localStorage.getItem('USER'));
-    this.appComponent.loggedInUser = user;
-    this.fetchDashboard(user.id);
-    this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+    if(this.parameters.status && this.parameters.status==='n'){
+
+    const dialogRef = this.dialog.open(WelcomePopupComponent, {
+          data: this.appComponent.loggedInUser.firstName,
+          panelClass:'welcome-popup-class'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                      this.fetchReportOrGrant();
+              }
+         });
+
+    }else if(this.parameters.status && this.parameters.status==='e'){
+        this.fetchReportOrGrant();
+    }else{
+        const user = JSON.parse(localStorage.getItem('USER'));
+        this.appComponent.loggedInUser = user;
+        this.fetchDashboard(user.id);
+        this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+    }
 
   }
 
@@ -109,12 +132,46 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.changeMessage(grant.id);
-        this.data.changeMessage(grant);
+        this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
         this.router.navigate(['grant']);
       } else {
         dialogRef.close();
       }
     });
   
+  }
+
+  fetchReportOrGrant(){
+    const type = this.parameters.type;
+    if(type==='grant'){
+      const grantCode = this.parameters.g;
+      const queryParams = new HttpParams().set('g', grantCode)
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+          }),
+          params: queryParams
+      };
+      const url = '/api/user/'+this.appComponent.loggedInUser.id+'/grant/resolve';
+
+
+      this.http.get(url,httpOptions).subscribe((grant:Grant) => {
+          this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
+          this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
+          this.appComponent.currentView = 'grant';
+
+          this.appComponent.selectedTemplate = grant.grantTemplate;
+
+          if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+              this.router.navigate(['grant/basic-details']);
+          } else{
+              this.appComponent.action = 'preview';
+              this.router.navigate(['grant/preview']);
+          }
+         // this.router.navigate(['grants']);
+      });
+    }else if(type==='report'){
+    }
   }
 }

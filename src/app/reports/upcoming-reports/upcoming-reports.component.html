@@ -1,0 +1,147 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="anu-container" style="padding:40px;">
+            <button class="btn btn-sm btn-green" style="position: absolute;right: 94px;z-index:2;" (click)="selectReportTemplate()">Create Ad Hoc Report</button>
+
+            <div class="row">
+                <div class="col-12">
+                    <mat-tab-group>
+                        <mat-tab *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'" label="Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})">
+
+                            <div *ngIf="!reportsToSetup">
+                                <img src="./assets/img/loader.gif" style="width:10%;">
+                                <p style="color: black" > Loading upcoming reports... </p>
+                            </div>
+                            <div *ngIf="reportsToSetup && reportsToSetup.length===0">
+                                <p style="color: black" > No reports found </p>
+                            </div>
+                                <div class="row w-100 p-3 mb-2 mx-0 grants-section"
+                                     style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
+                                     *ngFor="let report of reportsToSetup; let i = index">
+                                    <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
+                                        {{report.grant.name}}</p>
+                                    </div>
+                                    <div class="col-12" style="display:flex;align-items:flex-start;">
+                                        <p class="text-header text-left mr-3" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
+                                        <ng-container *ngIf="report.linkedReports" class="col-2">
+                                           <small><a (click)="viewAddnlReports(report.grant.id)" class="text-blue"> See other due reports ({{report.linkedReports}})</a></small>
+                                        </ng-container>
+                                        <ng-container *ngIf="!report.linkedReports" class="col-2">
+                                            <small class="ml-3"><a> Additional reports not available</a></small>
+                                        </ng-container>
+                                    </div>
+
+
+                                    <div class="col-12 p-3" style="background:#f1f1f1">
+                                        <div class="row mb-0">
+                                            <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>
+                                            </div>
+                                            <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time
+                                                Frame:</p></div>
+                                            <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due
+                                                Date</p></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-2"><p class=" text-left text-bold-highlight my-0">
+                                                {{report.type}}</p></div>
+                                            <div class="col-7">
+                                                <div class="row">
+                                                    <div>
+                                                        <p class="text-bold-highlight my-0">
+                                                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                            </mat-icon>
+                                                            {{report.startDate |
+                                                            date:'dd-MMM-yyyy'}}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                                                        </mat-icon>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-bold-highlight my-0">
+                                                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                            </mat-icon>
+                                                            {{report.endDate |
+                                                            date:'dd-MMM-yyyy'}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3"><p class="text-left text-bold-highlight my-0">
+                                                {{report.dueDate | date:'dd-MMM-yyyy'}}</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <a (click)="manageReport(report)">Review to publish</a>
+                                    </div>
+                                </div>
+
+                        </mat-tab>
+                        <mat-tab label="Submissions Due ({{reportsReadyToSubmit?reportsReadyToSubmit.length:0}})">
+                            <div *ngIf="!reportsReadyToSubmit">
+                                <img src="./assets/img/loader.gif" style="width:10%;">
+                                <p style="color: black" > Loading ready to submit reports... </p>
+                            </div>
+                            <div *ngIf="reportsReadyToSubmit && reportsReadyToSubmit.length===0">
+                                <p style="color: black" > No reports found </p>
+                            </div>
+                            <div class="row w-100 p-3 mb-2 mx-0 grants-section"
+                                 style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
+                                 *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
+                                <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
+                                    {{report.grant.name}}</p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>
+                                </div>
+
+                                <div class="col-12 p-3" style="background:#f1f1f1">
+                                    <div class="row mb-0">
+                                        <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>
+                                        </div>
+                                        <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time
+                                            Frame:</p></div>
+                                        <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due
+                                            Date</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2"><p class=" text-left text-bold-highlight my-0">
+                                            {{report.type}}</p></div>
+                                        <div class="col-7">
+                                            <div class="row">
+                                                <div>
+                                                    <p class="text-bold-highlight my-0">
+                                                        <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                        </mat-icon>
+                                                        {{report.startDate |
+                                                        date:'dd-MMM-yyyy'}}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                                                    </mat-icon>
+                                                </div>
+                                                <div>
+                                                    <p class="text-bold-highlight my-0">
+                                                        <mat-icon [inline]="true" class="mr-1">calendar_today
+                                                        </mat-icon>
+                                                        {{report.endDate |
+                                                        date:'dd-MMM-yyyy'}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3"><p class="text-left text-bold-highlight my-0">
+                                            {{report.dueDate | date:'dd-MMM-yyyy'}}</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

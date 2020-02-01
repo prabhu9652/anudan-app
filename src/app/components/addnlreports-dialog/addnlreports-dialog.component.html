@@ -1,0 +1,68 @@
+
+<div class="row mb-3">
+  <div class="col-2">
+    <button mat-button mat-flat-button class="text-green btn-link" (click)="onNoClick()">< Go Back</button>
+  </div>
+  <div class="col-10">
+    <label for="grantselection">Showing report for:</label>
+    <select id="grantselection" [value]="grantId" class="anu-input" (change)="updateSelectedReports($event)">
+      <option *ngFor="let grant of grants" [value]="grant.id" >{{grant.name}}</option>
+    </select>
+  </div>
+</div>
+<div class="row w-100 p-3 mb-2 mx-0 grants-section"
+     style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
+     *ngFor="let report of selectedReports; let i = index">
+  <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
+    {{report.grant.name}}</p>
+  </div>
+  <div class="col-12" style="display:flex;align-items:flex-start;">
+    <p class="text-header text-left" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
+  </div>
+
+
+  <div class="col-12 p-3" style="background:#f1f1f1">
+    <div class="row mb-0">
+      <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>
+      </div>
+      <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time
+        Frame:</p></div>
+      <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due
+        Date</p></div>
+    </div>
+    <div class="row">
+      <div class="col-2"><p class=" text-left text-bold-highlight my-0">
+        {{report.type}}</p></div>
+      <div class="col-7">
+        <div class="row">
+          <div>
+            <p class="text-bold-highlight my-0">
+              <mat-icon [inline]="true" class="mr-1">calendar_today
+              </mat-icon>
+              {{report.startDate |
+              date:'dd-MMM-yyyy'}}
+            </p>
+          </div>
+          <div>
+            <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+            </mat-icon>
+          </div>
+          <div>
+            <p class="text-bold-highlight my-0">
+              <mat-icon [inline]="true" class="mr-1">calendar_today
+              </mat-icon>
+              {{report.endDate |
+              date:'dd-MMM-yyyy'}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3"><p class="text-left text-bold-highlight my-0">
+        {{report.dueDate | date:'dd-MMM-yyyy'}}</p></div>
+    </div>
+  </div>
+  <div class="col-12 text-right">
+    <a (click)="manageReport(report)">Review to publish</a>
+  </div>
+</div>
+

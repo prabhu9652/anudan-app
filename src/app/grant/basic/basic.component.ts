@@ -11,7 +11,7 @@ import {
   Submission,
   SubmissionStatus, Template,
   CustomDateAdapter,
-  Organization,SectionInfo
+  Organization,SectionInfo, WorkflowStatus
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -21,7 +21,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService, IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
@@ -32,6 +32,8 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import {FormControl} from '@angular/forms';
 import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import {User} from '../../model/user';
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -82,6 +84,8 @@ export class BasicComponent implements OnInit {
   myControl: FormControl;
   options: Organization[];
   filteredOptions: Observable<Organization[]>;
+  grantWorkflowStatuses: WorkflowStatus[];
+  tenantUsers: User[];
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -108,6 +112,7 @@ export class BasicComponent implements OnInit {
       , private submissionData: SubmissionDataService
       , private route: ActivatedRoute
       , private router: Router
+      , private adminComp: AdminLayoutComponent
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
       , private http: HttpClient
@@ -137,6 +142,25 @@ export class BasicComponent implements OnInit {
                 this.appComp.grantSaved = false;
             }
             });
+
+
+            this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+            const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
   }
 
   ngOnDestroy(){
@@ -156,7 +180,6 @@ export class BasicComponent implements OnInit {
     this.appComp.sectionUpdated = false;
     this.userInactive.subscribe(() => console.log('user has been inactive for 3s'));
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
 
     
@@ -202,10 +225,10 @@ export class BasicComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
-      this.canManage = true;
+    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE') || this.currentGrant.grantStatus.internalStatus==='DRAFT') {
+      this.canManage = this.currentGrant.canManage;
     } else {
-      this.canManage = false;
+      this.canManage = this.currentGrant.canManage;
     }
   }
 
@@ -359,7 +382,7 @@ export class BasicComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             //console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
             this.setDateDuration();
           }
         }
@@ -418,7 +441,12 @@ export class BasicComponent implements OnInit {
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    this.grantData.changeMessage(grant);
+                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+                        grant.canManage=true;
+                    }else{
+                        grant.canManage=false;
+                    }
+                    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                     this.setDateDuration();
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
@@ -439,7 +467,7 @@ export class BasicComponent implements OnInit {
                                this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                setTimeout( () => { this.appComp.logout(); }, 4000 );
                               } else {
-                               this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                               this.toastr.error(errorMsg.error.message,"2 We encountered an error", config);
                               }
 
 
@@ -558,7 +586,7 @@ export class BasicComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     fieldName.val('');
     this._setEditMode(true);
@@ -596,14 +624,14 @@ export class BasicComponent implements OnInit {
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-           this.grantData.changeMessage(info.grant);
+           this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
           sectionName.val('');
           //$('#section_' + newSection.id).css('display', 'block');
           this._setEditMode(true);
           $(createSectionModal).modal('hide');
           this.appComp.sectionAdded = true;
-          this.sidebar.buildSectionsSideNav();
+          this.sidebar.buildSectionsSideNav(null);
           this.appComp.sectionInModification = false;
           this.appComp.selectedTemplate = info.grant.grantTemplate;
 
@@ -617,7 +645,7 @@ export class BasicComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                 this.toastr.error(errorMsg.error.message,"3 We encountered an error", config);
                                 }
 
 
@@ -642,7 +670,7 @@ export class BasicComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
 
     sectionName.val('');
@@ -722,7 +750,7 @@ export class BasicComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -772,7 +800,7 @@ export class BasicComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     //console.log();
   }
@@ -815,7 +843,7 @@ export class BasicComponent implements OnInit {
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.setDateDuration();
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
@@ -829,7 +857,7 @@ export class BasicComponent implements OnInit {
                      this.toastr.error("Your session has expired", 'Logging you out now...', config);
                      setTimeout( () => { this.appComp.logout(); }, 4000 );
                     } else {
-                     this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                     this.toastr.error(errorMsg.error.message,"4 We encountered an error", config);
                     }
 
 
@@ -843,7 +871,7 @@ export class BasicComponent implements OnInit {
               this.toastr.error("Your session has expired", 'Logging you out now...', config);
               setTimeout( () => { this.appComp.logout(); }, 4000 );
              } else {
-              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+              this.toastr.error(errorMsg.error.message,"5 We encountered an error", config);
              }
 
 
@@ -954,7 +982,7 @@ export class BasicComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     this.setDateDuration();
     //console.log(this.currentGrant);
   }
@@ -1012,7 +1040,7 @@ export class BasicComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
     this.setDateDuration();
   }
@@ -1108,7 +1136,7 @@ export class BasicComponent implements OnInit {
       this._setEditMode(false);
     } else {
       this._setEditMode(true);
-      this.grantData.changeMessage(this.currentGrant);
+      this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
       this.setDateDuration();
     }
     this.setDateDuration();
@@ -1385,5 +1413,13 @@ setTimeout() {
           return String(section.id);
       }
       return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWorkflowAssigments(){
+        this.adminComp.showWorkflowAssigments();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, HostListener,ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -13,12 +13,15 @@ import {GrantDataService} from '../../grant.data.service';
 import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications,WorkflowAssignmentModel,WorkflowAssignment} from '../../model/dahsboard';
+import {Report,ReportWorkflowAssignmentModel, ReportWorkflowAssignment} from '../../model/report';
 import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
+import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
+import {SingleReportDataService} from '../../single.report.data.service'
 
 
 
@@ -26,12 +29,19 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss'],
-  providers: [GrantComponent]
+  providers: [GrantComponent],
+  styles: [`
+    ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
+        background:#EBEBEB !important;
+        padding: 5px 20px !important;
+    }
+  `]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;
   private lastPoppedUrl: string;
   currentGrant: Grant;
+  currentReport: Report;
   grantToUpdate: Grant;
   private yScrollStack: number[] = [];
   action: any;
@@ -40,7 +50,6 @@ export class AdminLayoutComponent implements OnInit {
   intervalSubscription: any;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
-  
 
   constructor(private grantData: GrantDataService
     , public appComponent: AppComponent
@@ -52,12 +61,16 @@ export class AdminLayoutComponent implements OnInit {
     , private http: HttpClient
     , private toastr:ToastrService
     , grantComponent: GrantComponent
-    , private dialog: MatDialog) {
+    , private dialog: MatDialog
+    , private singleReportDataService: SingleReportDataService) {
     
   }
 
   ngOnInit() {
   this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+  this.singleReportDataService.currentMessage.subscribe((report) => {
+      this.currentReport = report;
+  });
 
       this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
 
@@ -102,7 +115,10 @@ export class AdminLayoutComponent implements OnInit {
             this.appComponent.initAppUI();
           });
 
-      this.intervalSubscription = interval(5000).subscribe(t => {
+      this.intervalSubscription = interval(10000).subscribe(t => {
+           if($("#messagepopover").css('display')==='block'){
+            return;
+           }
 
             if(localStorage.getItem('USER')) {
                 const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
@@ -115,9 +131,18 @@ export class AdminLayoutComponent implements OnInit {
                   };
 
 
-
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
                     this.appComponent.notifications = notifications;
+                    this.appComponent.unreadMessages = 0;
+                    for(let notice of this.appComponent.notifications){
+                        if(!notice.read){
+                            this.appComponent.unreadMessages += 1;
+                        }
+                    }
+                    if(!JSON.parse(localStorage.getItem("MESSAGE_COUNT")) || JSON.parse(localStorage.getItem("MESSAGE_COUNT"))!==this.appComponent.unreadMessages){
+                        localStorage.setItem("MESSAGE_COUNT",String(this.appComponent.unreadMessages));
+                        this.appComponent.hasUnreadMessages = true;
+                    }
                     this.grantUpdateService.changeMessage(true);
                   },
                      error => {
@@ -126,13 +151,13 @@ export class AdminLayoutComponent implements OnInit {
                        const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
                        const errorconfig: Partial<IndividualConfig> = x;
                        const config: Partial<IndividualConfig> = y;
-                       if(errorMsg.error.message==='Token Expired'){
+                       if(errorMsg.error && errorMsg.error.message==='Token Expired'){
                        this.intervalSubscription.unsubscribe();
                         //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
                         alert("Your session has timed out. Please sign in again.")
                         this.appComponent.logout();
                        } else {
-                        this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                        this.toastr.error(errorMsg.error && errorMsg.error.message,"17 We encountered an error", config);
                        }
 
 
@@ -145,6 +170,7 @@ export class AdminLayoutComponent implements OnInit {
   ngAfterViewInit() {
       this.runOnRouteChange();
   }
+
   isMaps(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
       titlee = titlee.slice( 1 );
@@ -174,6 +200,7 @@ export class AdminLayoutComponent implements OnInit {
 
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
+     this.appComponent.reportSaved = true;
 
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
@@ -185,73 +212,135 @@ export class AdminLayoutComponent implements OnInit {
     this.router.navigate(['grants']);
   }
 
-  showGrantHistory(what2Show){
+  showHistory(historyOf,what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
-      data: this.currentGrant,
-      panelClass: 'grant-notes-class'
+      data: {type:historyOf,data:what2Show},
+      panelClass: 'grant-notes-class',
+      disableClose: false
       });
   }
 
 
   showWorkflowAssigments(){
-  const wfModel = new WorkflowAssignmentModel();
-   wfModel.users = this.appComponent.appConfig.tenantUsers;
-   wfModel.workflowStatuses = this.appComponent.appConfig.workflowStatuses;
-   wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
-   wfModel.grant = this.currentGrant;
-   wfModel.canManage = this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
-    const dialogRef = this.dialog.open(WfassignmentComponent, {
-          data: wfModel,
-          panelClass: 'wf-assignment-class'
-          }
-          );
+    if(this.appComponent.currentView==='grant'){
+        const wfModel = new WorkflowAssignmentModel();
+        wfModel.users = this.appComponent.tenantUsers;
+        wfModel.workflowStatuses = this.appComponent.grantWorkflowStatuses;
+        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+        wfModel.type=this.appComponent.currentView;
+        wfModel.grant = this.currentGrant;
+        wfModel.canManage = this.appComponent.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
+        const dialogRef = this.dialog.open(WfassignmentComponent, {
+            data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
+            panelClass: 'wf-assignment-class'
+        });
 
         dialogRef.afterClosed().subscribe(result => {
-          if (result.result) {
+        if (result.result) {
             const ass:WorkflowAssignment[] = [];
-            for(let data of result.data){
-                const wa = new WorkflowAssignment();
-                wa.id=data.id;
-                wa.stateId = data.stateId;
-                wa.assignments = data.userId;
-                wa.grantId = data.grantId;
-                ass.push(wa);
-            }
+        for(let data of result.data){
+            const wa = new WorkflowAssignment();
+            wa.id=data.id;
+            wa.stateId = data.stateId;
+            wa.assignments = data.userId;
+            wa.grantId = data.grantId;
+            ass.push(wa);
+        }
 
-            const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
+        const httpOptions = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
 
-                    let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
-                        + this.currentGrant.id + '/assignment';
-                    this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
-                        this.grantData.changeMessage(grant);
-                        this.setDateDuration();
-                        this.currentGrant = grant;
-                    },error => {
-                                                     const errorMsg = error as HttpErrorResponse;
-                                                     const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
-                                                     const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
-                                                     const errorconfig: Partial<IndividualConfig> = x;
-                                                     const config: Partial<IndividualConfig> = y;
-                                                     if(errorMsg.error.message==='Token Expired'){
-                                                      //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
-                                                      alert("Your session has timed out. Please sign in again.")
-                                                      this.appComponent.logout();
-                                                     } else {
-                                                      this.toastr.error(errorMsg.error.message,"We encountered an error", config);
-                                                     }
+        let url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/'
+        + this.currentGrant.id + '/assignment';
+        this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
+            this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
+            this.setDateDuration();
+            this.currentGrant = grant;
+        },error => {
+                         const errorMsg = error as HttpErrorResponse;
+                         const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                         const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                         const errorconfig: Partial<IndividualConfig> = x;
+                         const config: Partial<IndividualConfig> = y;
+                         if(errorMsg.error.message==='Token Expired'){
+                          //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                          alert("Your session has timed out. Please sign in again.")
+                          this.appComponent.logout();
+                         } else {
+                          this.toastr.error(errorMsg.error.message,"18 We encountered an error", config);
+                         }
 
 
-                                                });
-          } else {
+                    });
+        } else {
             dialogRef.close();
-          }
-          });
+        }
+        });
+    }else if(this.appComponent.currentView==='report'){
+                  const wfModel = new ReportWorkflowAssignmentModel();
+                  wfModel.users = this.appComponent.tenantUsers;
+                  wfModel.granteeUsers = this.currentReport.granteeUsers;
+                  wfModel.workflowStatuses = this.appComponent.reportWorkflowStatuses;
+                  wfModel.workflowAssignments = this.currentReport.workflowAssignments;
+                  wfModel.type=this.appComponent.currentView;
+                  wfModel.report = this.currentReport;
+                  wfModel.canManage = this.appComponent.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentReport.flowAuthorities && this.currentReport.canManage;
+                  const dialogRef = this.dialog.open(WfassignmentComponent, {
+                      data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
+                      panelClass: 'wf-assignment-class'
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                      if (result.result) {
+                          const ass:ReportWorkflowAssignment[] = [];
+                          for(let data of result.data){
+                              const wa = new ReportWorkflowAssignment();
+                              wa.id=data.id;
+                              wa.stateId = data.stateId;
+                              wa.assignmentId = data.userId;
+                              wa.reportId = data.reportId;
+                              wa.customAssignments = data.customAssignments;
+                              ass.push(wa);
+                          }
+
+                          const httpOptions = {
+                              headers: new HttpHeaders({
+                              'Content-Type': 'application/json',
+                              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                              'Authorization': localStorage.getItem('AUTH_TOKEN')
+                              })
+                          };
+
+                          let url = '/api/user/' + this.appComponent.loggedInUser.id + '/report/'
+                          + this.currentReport.id + '/assignment';
+                          this.http.post(url, {report:this.currentReport,assignments:ass}, httpOptions).subscribe((report: Report) => {
+                              this.singleReportDataService.changeMessage(report);
+                              this.currentReport = report;
+                              this.setReportDateDuration();
+                          },error => {
+                                           const errorMsg = error as HttpErrorResponse;
+                                           const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                                           const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                                           const errorconfig: Partial<IndividualConfig> = x;
+                                           const config: Partial<IndividualConfig> = y;
+                                           if(errorMsg.error.message==='Token Expired'){
+                                            //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                                            alert("Your session has timed out. Please sign in again.")
+                                            this.appComponent.logout();
+                                           } else {
+                                            this.toastr.error(errorMsg.error.message,"19 We encountered an error", config);
+                                           }
+                                      });
+                      } else {
+                          dialogRef.close();
+                      }
+                  });
+    }
   }
 
   setDateDuration(){
@@ -263,5 +352,110 @@ export class AdminLayoutComponent implements OnInit {
         this.currentGrant.duration = 'No end date';
       }
     }
+
+    setReportDateDuration(){
+        if(this.currentReport.startDate && this.currentReport.endDate){
+            var time = new Date(this.currentReport.endDate).getTime() - new Date(this.currentReport.startDate).getTime();
+            time = time + 86400001;
+            this.currentReport.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+        }else{
+            this.currentReport.duration = 'No end date';
+        }
+    }
+
+
+manageGrant(notification: Notifications, grantId: number) {
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+               let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
+                                      + notification.id;
+
+                this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
+                    notification = notif;
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+
+                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+                    this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+                    let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+                    if(localgrant){
+                    localgrant = grant;
+                    }else{
+                        this.appComponent.currentTenant.grants.push(grant);
+                    }
+                      this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
+                      this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+                      this.appComponent.currentView = 'grant';
+
+                              this.appComponent.selectedTemplate = grant.grantTemplate;
+
+                      if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                          this.router.navigate(['grant/basic-details']);
+                      } else{
+                          this.appComponent.action = 'preview';
+                          this.router.navigate(['grant/preview']);
+                      }
+                      $("#messagepopover").css('display','none');
+                    });
+                });
+        }
+
+getHumanTime(notification): string{
+    var time = new Date().getTime() - new Date(notification.postedOn).getTime();
+    return this.humanizer.humanize(time, { largest: 1, round: true})
+    }
+
+closeMessagePopup(){
+    $("#messagepopover").css('display','none');
+}
+
+
+showMessages(){
+   let notifs: Notifications[] = [];
+   for(let i=0; i<this.appComponent.notifications.length;i++){
+    if(i<10){
+        notifs.push(this.appComponent.notifications[i]);
+    }
+   }
+  this.appComponent.notifications = notifs;
+  const dialogRef = this.dialog.open(NotificationspopupComponent, {
+           data: this.appComponent.notifications,
+           panelClass: 'notifications-class'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+                  if(!result){
+                    return;
+                  }
+                  if (result.result) {
+                    this.manageGrant(result.data,result.data.grantId);
+                  }
+                  });
+
+  }
+
+  showUpcomingReports(){
+  this.appComponent.currentView = 'upcoming';
+    this.router.navigate(['reports/upcoming']);
+  }
+
+  showProfile(){
+    this.appComponent.currentView = 'user-profile';
+    this.router.navigate(['user-profile']);
+  }
+
+  logout(){
+    this.appComponent.logout();
+  }
 
 }

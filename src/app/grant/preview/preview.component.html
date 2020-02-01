@@ -1,28 +1,37 @@
 <div class="row anu-container">
-    <div class="w-100 p-2" style="position:sticky; top:65px;display:flex;flex-direction: row;background: #fff; z-index: 1040;">
-        <ng-container *ngIf="currentGrant.flowAuthorities">
-            <div *ngFor="let flow of currentGrant.flowAuthorities">
-                <a mat-stroked-button (click)="submitGrant(flow.toStateId)" id="{{flow.action}}" class="mr-1">{{flow.action}}</a>
+    <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
+        <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
+        <div class="row">
+            <h4 class="col-11 text-left my-3 section-header" style="display:flex;align-items:center">
+                <div *ngIf="currentGrant.canManage" style="display:flex;">
+                    <div *ngFor="let flow of currentGrant.flowAuthorities">
+                        <a mat-stroked-button (click)="submitGrant(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">{{flow.action}}</a>
+                    </div>
+                </div>
+            </h4>
+            <div class="col-1 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+                <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
+                  <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
+                <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="saveAs(currentGrant.name+'.pdf')"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF</button>
+                    <button *ngIf="currentGrant.grantStatus.internalStatus==='ACTIVE'" mat-menu-item (click)="inviteGrantee()"><mat-icon class="ml-1">mail</mat-icon>Invite Grantee</button>
+                    <hr>
+                    <button mat-menu-item (click)="showHistory('grant',currentGrant)">View notes</button>
+                    <button mat-menu-item (click)="showWFAssigments()">View assignments</button>
+                </mat-menu>
             </div>
-        </ng-container>
-        <ng-container *ngIf="currentSubmission">
-            <div *ngFor="let flow of currentSubmission.flowAuthorities" style="background:#fff;z-index:1040;">
-                <a name="flowActionBtn" mat-stroked-button
-                   (click)="saveSubmissionAndMove(flow.toStateId)"
-                   id="{{flow.action}}">{{flow.action}}</a>
-            </div>
-        </ng-container>
-        <a mat-flat-button class="btn-blue" (click)="saveAsPdf()"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export as PDF</a>
+        </div>
     </div>
     <div #grantSummary class="col-lg-12">
         <div #container class="container text-left mt-5 px-5 py-5" (scroll)="rememberScrollPosition($event)">
 
 
-            
+
 
             <!--MANAGEMENT SECTION-->
 
-
+            <kendo-pdf-export #pdf paperSize="A4" forcePageBreak=".page-break" [margin]="{top: '2cm', bottom: '3cm', right: '2cm', left: '2cm'}" [imageResolution]="200" [scale]="0.7" [repeatHeaders]="true">
             <div class="row w-100" id="grantSummary">
                 <div class="col-12 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
                     <div class="row">
@@ -42,43 +51,43 @@
                         </div>
                     </div>
                 </div>
-                
+
 
                 <hr>
                 <div class="col-4 mb-2">
-                    Start Date:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.stDate | date:'dd-MMM-yyyy'}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">Start Date:</span>
+                    <div class="ml-0 mb-3"><b>{{currentGrant.stDate | date:'dd-MMM-yyyy'}}</b></div>
 
                 </div>
                 <div class="col-4 mb-2">
-                    End Date:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.enDate | date:'dd-MMM-yyyy'}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">End Date:</span>
+                    <div class="ml-0 mb-3"><b>{{currentGrant.enDate | date:'dd-MMM-yyyy'}}</b></div>
 
                 </div>
                 <div class="col-4 mb-2">
-                    Grant Duration:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.duration}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grant Duration:</span>
+                    <div class="ml-0 mb-3"><b>{{currentGrant.duration}}</b></div>
 
                 </div>
                 <div class="col-12 mb-2">
-                    Grant Amount:
-                    <div class="ml-1 mb-3">₹ <b>{{currentGrant.amount}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grant Amount:</span>
+                    <div class="ml-0 mb-3" style="display: flex; align-items: center;"><img src="./assets/img/rupee.png" style="width:12px;"><b>{{currentGrant.amount}}</b></div>
 
                 </div>
                 <div class="col-6 mb-2">
-                    Grantee Organization:
-                    <div *ngIf="currentGrant.organization" class="ml-1 mb-3"><b>{{currentGrant.organization.name}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grantee Organization:</span>
+                    <div *ngIf="currentGrant.organization" class="ml-0 mb-3"><b>{{currentGrant.organization.name}}</b></div>
                 </div>
                 <div class="col-6 mb-2">
-                    Grantee Organization Representative:
-                    <div class="ml-1 mb-3"><b>{{currentGrant.representative}}</b></div>
+                    <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grantee Organization Representative:</span>
+                    <div class="ml-0 mb-3"><b>{{currentGrant.representative}}</b></div>
                 </div>
                 <div class="col-12">
 
                     <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
                         <hr/>
                         <h5>
-                            {{section.sectionName.toLocaleUpperCase()}}
+                            <span style="color: #929292;font-size: 15px;font-family:Roboto;">{{section.sectionName.toLocaleUpperCase()}}</span>
                         </h5>
 
                         <div>
@@ -88,8 +97,8 @@
                                     <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"  class="mb-2">
 
                                         <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
-                                            {{attribute.fieldName}}
-                                            <pre class="mt-1 text-justify"><b [innerHtml]="attribute.fieldValue"></b></pre>
+                                            <span style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                                            <pre class="mt-1 text-justify"><b><p style="font-size:16px;" [innerHtml]="attribute.fieldValue"></p></b></pre>
                                         </div>
 
                                     </ng-container>
@@ -97,41 +106,47 @@
                                     <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
 
                                         <div class="col-sm-12 col-lg-12 text-left mb-3">
-                                            <div class="row mx-2">
+                                            <table width="100%" border="1">
+                                                <tr>
+                                                    <td colspan="3" style="padding: 5px">KPI</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%" style="padding:5px;font-size: 16px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
+                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding: 5px"><b>{{attribute.target}}</b></td>
+                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding:5px;"><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</b></td>
+                                                </tr>
+                                            </table>
+                                            <!--<div class="row mx-2">
                                                 <div class="col-8">
-                                                    <div>{{attribute.fieldName}}</div>
+                                                    <div></div>
                                                 </div>
                                                 <div class="col-2">
-                                                    <mat-form-field>
-                                                        <input readonly matInput [value]="attribute.target" placeholder="Target/Goal">
-                                                    </mat-form-field>
+                                                    <div placeholder="Target/Goal"></div>
                                                 </div>
                                                 <div class="col-2">
-                                                    <mat-form-field>
-                                                        <input readonly matInput [value]="attribute.frequency | titlecase" placeholder="Frequency">
-                                                    </mat-form-field>
+                                                    <div placeholder="Frequency"></div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         </div>
 
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            {{attribute.fieldName}}
+                                            <span  style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
                                             <ul>
-                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)" style="list-style-type:none;">
 
-                                                <p class="m-0">
+                                                <p class="m-0"  style="font-family:Roboto;font-size:16px;"><b>
                                                     <ng-container *ngIf="doc.type === 'pdf'">
-                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                        <img src="./assets/img/pdf.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                                        <i class="fas fa-file-excel text-success"></i>
+                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                                        <i class="fas fa-file-word text-primary"></i>
+                                                        <img src="./assets/img/msword.png" style="width:20px;">
                                                     </ng-container>
-                                                    {{doc.name}}</p>
+                                                    {{doc.name}}</b></p>
                                             </li>
                                             </ul>
                                         </div>
@@ -139,8 +154,19 @@
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldType=='table'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            {{attribute.fieldName}}
-                                            <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldTableValue)"></div>
+                                            <span  style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                                            <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
+                                                <tr>
+                                                    <td>&nbsp;</td>
+                                                    <td  style="font-size: 16px;font-family:Roboto;padding:5px;text-align:center;" *ngFor="let col of attribute.fieldTableValue[0].columns"><b>{{col.name}}</b></td>
+                                                </tr>
+                                                <tr *ngFor="let row of attribute.fieldTableValue">
+                                                    <td  style="padding:5px;font-size: 16px;font-family:Roboto;"><b>{{row.name}}</b></td>
+                                                    <td style="padding:5px;font-size: 16px;font-family:Roboto;" *ngFor="let rowVal of row.columns">
+                                                        <b>{{rowVal.value}}</b>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
 
                                     </ng-container>
@@ -169,15 +195,15 @@
                                                 <a href="/api/public/grants/{{currentGrant.id}}/file/{{doc.id}}" target="_blank">
                                                 <span class="ml-3">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
-                                                        <i class="fas fa-file-pdf text-danger"></i>
+                                                        <img src="./assets/img/pdf.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                                        <i class="fas fa-file-excel text-success"></i>
+                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
                                                     </ng-container>
                                                     <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                                        <i class="fas fa-file-word text-primary"></i>
+                                                        <img src="./assets/img/msword.png" style="width:20px;">
                                                     </ng-container>
-                                                    {{doc.name}}</span></a>
+                                                    {{doc.name}}</span></a><br>
                                             </ng-container>
                                         </div>
 
@@ -187,10 +213,17 @@
                         </div>
                     </ng-container>
                 </div>
+
             </div>
-            
-            
-            
+                <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                    <div class="pageNum">
+                        Page {{ pageNum }} of {{ totalPages }}
+                    </div>
+                </ng-template>
+
+            </kendo-pdf-export>
+
+
 
             <!--<div class="accordion" id="accordionExample">
               <ng-container *ngFor="let submission of currentGrant.submissions">

@@ -1,68 +1,57 @@
-<div class="container mt--8 pb-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-5 col-md-7">
+<!-- <div class="row align-items-center"> -->
 
 
-      <div class="card shadow border-0 d-xl-flex justify-content-center">
+<div class="row m-0 h-100" style="background:#F1F1F4;">
+  <div class="col-12" style="height: 90px; background: #424652; display: flex; align-items: center;">
+    <img [src]="logoURL" alt="logo" class="img-fluid" style="width: 50px; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;">
+    <span style="line-height: 0.9em;height:52px; color:#fff; margin-left:10px;margin-left: 10px;font-weight: 400;font-size: 25px;text-align: left;">{{orgName}}
+        <p style="color:#F1F1F4;font-size: 18px;"><small >Powered by Social Alpha <img src="./assets/img/avatar.png" alt="logo" class="img-fluid" style="width: 32px; padding: 5px; margin: 5px 0px; border-radius: 2px;"></small></p>
+      </span>
+  </div>
+  <div class="col-lg-7 col-md-12">
+    <img src="./assets/img/landing.svg">
+  </div>
+  <div class="col-lg-5 col-md-12">
+    <div style="display:flex;align-items:center;justify-content:center;">
 
-        <div class="card-body px-lg-5 py-lg-5">
-          <div class="card-img-top">
-            <img [src]="appComponent.appConfig.logoUrl" alt="logo">
+      <div class="card-body mx-lg-5 my-lg-5 bg-white">
+
+          <!-- <label for="emailId">Email Id</label> -->
+          <div class="my-2">
+            <input #emailId required type="text" class="anu-input mb-3 w-100" id="emailId"
+                   placeholder="Email Id" [value]="currentEmail">
           </div>
-          <div class="card-title">Grantee Registration</div>
-          <form [formGroup]="granteeRegisteationForm" (ngSubmit)="submit()">
-
-
-            <div class="form-group">
-              <div class="input-group input-group-alternative form-group-email">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-envelope"></i>
-                  </div>
-                </div>
-                <input required type="text" class="form-control form-control-sm" id="emailId"
-                       placeholder="Email Id" formControlName="emailId">
-              </div>
+          <div class="row">
+            <div class="col-6 my-2">
+              <input #firstName required type="text" class="anu-input mb-3" id="firstName"
+                     placeholder="First Name">
             </div>
-
-
-            <div class="form-group">
-              <div class="input-group input-group-alternative form-group-email">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-key"></i>
-                  </div>
-                </div>
-                <input type="password" class="form-control form-control-sm" id="password"
-                       placeholder="Password" formControlName="password">
-              </div>
+            <div class="col-6 my-2">
+              <input #lastName required type="text" class="anu-input mb-3" id="lastName"
+                     placeholder="Last Name">
             </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative form-group-email">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-key"></i>
-                  </div>
-                </div>
-                <input type="password" class="form-control form-control-sm" id="confirmPassword"
-                       placeholder="Confirm Password" formControlName="confirmPassword">
-              </div>
-            </div>
-
-
-            <button class="btn btn-primary" type="submit"
-                    [disabled]="!granteeRegisteationForm.valid">Register
-            </button>
-
-          </form>
-          <div class="btn btn-sm btn-social btn-google" (click)="signUpWithGoogle()">
-            <span class="fa fa-google"></span>
           </div>
-        </div>
-        <div>
-        </div>
+          <!-- <label for="password">Password</label> -->
+          <div class="input-group input-group-alternative form-group-email">
+            <input #password type="password" class="anu-input mb-3 w-100" id="password"
+                   placeholder="Password">
+
+          </div>
+          <div class="input-group input-group-alternative form-group-email">
+            <input #confirmPassword type="password" class="anu-input mb-4 w-100" id="confirmPassword"
+                   placeholder="Confirm Password">
+
+          </div>
+          <re-captcha (resolved)="resolved($event)" type="image" siteKey="6Lf5a8MUAAAAAKqjna6CP8EZ0kFHs3F261hT29oq"></re-captcha>
+          <button class="btn btn-sm btn-green" type="submit" (click)="submit()">Register
+          </button>
       </div>
+    </div>
+    <div class="text-center f-12">
+      <div class="w-100">Seeking Grants?<a class="ml-2 text-green" (click)="signup()">Sign up!</a></div>
+    </div>
+    <div class="text-center f-12">
+      <div class="w-100">v1.0.0 build 176</div>
     </div>
   </div>
 </div>
-

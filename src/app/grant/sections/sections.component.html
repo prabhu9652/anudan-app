@@ -20,8 +20,11 @@
         <mat-menu #menu="matMenu">
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
             <ng-container *ngIf="action === getCleanText(section)">
-              <button mat-menu-item>Edit Section</button>
+              <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
               <button mat-menu-item (click)="confirm(section.id,0,[],0,'section','Delete section ' + section.sectionName + '?')">Delete Section</button>
+              <hr>
+              <button mat-menu-item (click)="showHistory('grant',currentGrant)">View notes</button>
+              <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
             </ng-container>
           </ng-container>
         </mat-menu>
@@ -326,7 +329,7 @@
                             </div>
                             <div class="col-4 pr-0">
                               <label for="attribute_fileupload_{{attribute.id}}" class="btn btn-sm btn-green w-100"><img src="./assets/img/computer.svg" class="w-10 mr-2" style="width:24px;">Browse from system</label>
-                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(section,attribute,$event)">
+                              <input id="attribute_fileupload_{{attribute.id}}" type="file" style="height:0;visibility:hidden;" multiple (change)="processSelectedFiles(section,attribute,$event)" accept=".pdf,.xls,.xlsx,.doc,.docx">
                             </div>
                           </div>
                           <mat-nav-list>

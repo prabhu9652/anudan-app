@@ -1,10 +1,12 @@
 import {AfterViewChecked, ChangeDetectorRef, Component,enableProdMode, ApplicationRef} from '@angular/core';
 import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
 import { User} from './model/user';
+import { Report} from './model/report';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
+import {ReportTemplate} from "./model/report";
 import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
 import {concat, interval,BehaviorSubject} from 'rxjs';
@@ -37,16 +39,26 @@ export class AppComponent implements AfterViewChecked{
   sectionAdded = false;
   sectionUpdated = false;
   notifications = [];
+  hasUnreadMessages = false;
+  unreadMessages = 0;
   selectedTemplate: GrantTemplate;
+  selectedReportTemplate: ReportTemplate;
   sectionInModification = false;
   currentTenant: Tenant;
   grantSaved = false;
+  reportSaved = true;
   confgSubscription: any;
   originalGrant: Grant;
+  originalReport: Report;
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
+  createNewReportSection = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
-
+  parameters: any;
+  tenantUsers:User[];
+  reportWorkflowStatuses: WorkflowStatus[];
+  grantWorkflowStatuses: WorkflowStatus[];
+  reportTransitions: WorkflowTransition[]
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -58,9 +70,14 @@ export class AppComponent implements AfterViewChecked{
     submissionInitialStatus: new WorkflowStatus(),
     granteeOrgs: [],
     workflowStatuses: [],
+    reportWorkflowStatuses: [],
+    grantWorkflowStatuses: [],
     transitions: [],
-    tenantUsers: []
+    reportTransitions: [],
+    tenantUsers: [],
+    daysBeforePublishingReport: 30
   };
+
 
   org: string;
   public defaultClass = '';
@@ -76,7 +93,9 @@ export class AppComponent implements AfterViewChecked{
     private updates: SwUpdate,
     private snackbar: MatSnackBar) {
 
-
+    this.route.queryParamMap.subscribe(params => {
+                console.log(params.get('q'));
+            });
 
     this.updates.available.subscribe(event => {
           const snack = this.snackbar.open('A newer version of the Anudan app is now available. Please save your work and refresh the page.', 'Dismiss',{'verticalPosition':'top'});
@@ -99,15 +118,16 @@ export class AppComponent implements AfterViewChecked{
 
     this.getTenantCode();
 
+
     this.loggedInUser = localStorage.getItem('USER') === 'undefined' ? {} : JSON.parse(localStorage.getItem('USER'));
     //this.initAppUI();
     //this.getLogo()
     const isLocal = this.isLocalhost();
-    if ( this.loggedIn ) {
+    /*if ( this.loggedIn ) {
       this.router.navigate(['/grants']);
     } else {
-      this.router.navigate(['/']);
-    }
+      this.router.navigate(['/home']);
+    }*/
 
 
     /*interval(30000).subscribe(t => {
@@ -131,28 +151,33 @@ interval(10000).subscribe(t => {
   }
 
   isLocalhost() {
-    return (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    return (location.hostname.endsWith('.localhost') || location.hostname === '127.0.0.1')
   }
 
   initAppUI() {
     const hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
     this.getAppUI(hostName);
   }
-  
+
   getTenantCode(){
     let hostName = this.isLocalhost() ? this.queryParam() : this.subdomain();
     if(!hostName){
         hostName = 'anudan';
     }
     localStorage.setItem('X-TENANT-CODE', hostName.toUpperCase());
-  }
+
+  };
 
   subdomain(): string {
     const hostName = location.hostname;
     let subDomain = '';
     if (hostName !== '127.0.0.1') {
       const arr = hostName.split('.');
-      if (arr.length > 1) {
+      if (arr.length === 4) {
+        subDomain = arr[0];
+      } else if(arr.length === 3 && (arr[0]==='dev' || arr[0]==='qa' || arr[0]==='uat')){
+        subDomain = arr[1];
+      }else if(arr.length === 3 && (arr[0]!=='dev' && arr[0]!=='qa' && arr[0]!=='uat')){
         subDomain = arr[0];
       }
     }
@@ -171,6 +196,12 @@ interval(10000).subscribe(t => {
     const url = '/api/app/config/'.concat(hostName);
     this.confgSubscription = this.httpClient.get<AppConfig>(url,httpOptions).subscribe((response) => {
       this.appConfig = response;
+      if(this.appConfig.tenantUsers){
+        this.tenantUsers = this.appConfig.tenantUsers;
+      }
+      if(this.appConfig.reportWorkflowStatuses){
+        this.reportWorkflowStatuses = this.appConfig.reportWorkflowStatuses;
+      }
       localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
 
     },error => {
@@ -179,12 +210,12 @@ interval(10000).subscribe(t => {
                             const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
                             const errorconfig: Partial<IndividualConfig> = x;
                             const config: Partial<IndividualConfig> = y;
-                            if(errorMsg.error.message==='Token Expired'){
+                            if(errorMsg.error && errorMsg.error.message==='Token Expired'){
                              //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
                              alert("Your session has timed out. Please sign in again.")
                              this.logout();
-                            } else {
-                             this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                            } else if(errorMsg.error) {
+                             this.toastr.error(errorMsg.error.message,"1 We encountered an error", config);
                             }
 
 
@@ -196,9 +227,9 @@ interval(10000).subscribe(t => {
   }
 
   queryParam() {
-    const name = this.getQueryStringValue('org');
 
-    return name;
+
+    return location.hostname.split('.')[0];
 
     // this.route.queryParamMap.subscribe(
     //   (queryParams: ParamMap) => {
@@ -220,9 +251,13 @@ interval(10000).subscribe(t => {
   logout() {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
+    localStorage.removeItem('MESSAGE_COUNT');
     this.notifications = [];
-    this.grantService.changeMessage(null);
-    this.confgSubscription.unsubscribe();
+
+    this.grantService.changeMessage(null,0);
+    if(this.confgSubscription){
+        this.confgSubscription.unsubscribe();
+    }
     this.loggedInUser = null;
     this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');

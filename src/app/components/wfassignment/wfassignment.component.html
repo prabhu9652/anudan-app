@@ -8,5 +8,7 @@
 <!--
   <button class="btn text-dark" (click)="onNoClick()">Do it later</button>
 -->
-  <button class="btn btn-primary" (click)="onYesClick()">Save Assignments</button>
+  <button *ngIf="this.data.model.canManage" class="btn btn-primary" (click)="onYesClick()">Save Assignments</button>
+  <!--<button class="btn btn-primary" (click)="zoomOut()">Zoom Out</button>
+  <button class="btn btn-primary" (click)="zoomIn()">Zoom In</button>-->
 </div>

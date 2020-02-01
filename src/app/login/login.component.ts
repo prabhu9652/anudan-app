@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 
 import {Role, User} from '../model/user';
 import {AppComponent} from '../app.component';
@@ -27,7 +27,12 @@ export class LoginComponent implements OnInit {
   socialUser: SocialUser;
   headers: HttpHeaders;
   loggedIn: boolean;
+  parameters: any;
   logoURL:string;
+  host: string;
+  currentEmail:string='';
+  orgName: string;
+  showPassword: boolean = false;
   recaptchaToken:string;
   //recaptchaVisible = false;
   loginForm = new FormGroup({
@@ -39,7 +44,14 @@ export class LoginComponent implements OnInit {
               private router: Router,
               public appComponent: AppComponent,
               private authService: AuthService,
+              private activatedRoute: ActivatedRoute,
               private toastr: ToastrService) {
+
+              this.host = localStorage.getItem('X-TENANT-CODE');
+              this.activatedRoute.queryParams.subscribe(params => {
+                  this.parameters = params;
+              });
+
   }
 
   signInWithGoogle(): void {
@@ -65,15 +77,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    if(this.parameters.email){
+        this.currentEmail=this.parameters.email;
+    }
     this.logoURL = "/api/public/images/"+tenantCode+"/logo";
+
+    const url = '/api/public/tenant/' + tenantCode;
+    this.http.get(url,{responseType: 'text'}).subscribe((orgName) => {
+       localStorage.setItem('ORG-NAME',orgName);
+       this.orgName = localStorage.getItem('ORG-NAME');
+    },error =>{
+    });
+
   }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    if(this.recaptchaToken===undefined){
+    /*if(this.recaptchaToken===undefined){
         alert("Please tick on reCaptcha to let us know that you're not a bot.");
         return;
-    }
+    }*/
     console.warn(this.loginForm.value);
     const user: AccessCredentials = {
       username: this.emailId.value,
@@ -127,9 +150,9 @@ export class LoginComponent implements OnInit {
         console.log(this.user);
 
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
-          this.router.navigate(['/grants']);
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         } else {
-          this.router.navigate(['/grants']);
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         }
       },
       error => {
@@ -154,4 +177,11 @@ export class LoginComponent implements OnInit {
     this.recaptchaToken = evt;
   }
 
+    togglePassword(action:string){
+        if(action==='show'){
+            this.showPassword = true;
+        }else if(action==='hide'){
+            this.showPassword = false;
+        }
+    }
 }

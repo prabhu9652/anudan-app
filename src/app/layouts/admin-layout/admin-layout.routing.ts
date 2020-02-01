@@ -22,6 +22,13 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import {UpcomingReportsComponent} from '../../reports/upcoming-reports/upcoming-reports.component';
+import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
+import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
+import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
+import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
+import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
+
 
 export const AdminLayoutRoutes: Routes = [
   // {
@@ -79,6 +86,12 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'grant/section/:action', component: SectionsComponent},
   {path: 'grant/reporting', component: ReportingComponent},
   {path: 'grant/preview', component: PreviewComponent},
+  {path: 'reports/upcoming', component: UpcomingReportsComponent},
+  {path: 'reports/submitted', component: SubmittedReportsComponent},
+  {path: 'reports/approved', component: ApprovedReportsComponent},
+  {path: 'report/report-header', component: ReportHeaderComponent},
+  {path: 'report/section/:action', component: ReportSectionsComponent},
+  {path: 'report/report-preview', component: ReportPreviewComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

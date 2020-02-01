@@ -1,0 +1,379 @@
+<div class="row anu-container">
+  <div class="col-12 bg-white" style="position:sticky;top:63px;z-index:1040;">
+    <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
+    <div class="row">
+      <h4 class="col-11 text-left my-3 section-header">
+        <div *ngIf="currentReport.canManage" style="display:flex;">
+          <div *ngFor="let flow of currentReport.flowAuthorities">
+            <a mat-stroked-button (click)="submitReport(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">{{flow.action}}</a>
+          </div>
+        </div>
+      </h4>
+      <div class="col-1 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+        <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
+          <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
+        <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="saveAs(currentReport.name+'.pdf')"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF</button>
+          <hr>
+          <button mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
+          <button mat-menu-item (click)="showWFAssigments()">View assignments</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <div #reportSummary class="col-lg-12">
+    <div #container class="container text-left mt-5 px-5 py-5">
+
+
+
+
+      <!--MANAGEMENT SECTION-->
+
+      <kendo-pdf-export #pdf paperSize="A4" forcePageBreak=".page-break" [margin]="{top: '2cm', bottom: '3cm', right: '2cm', left: '2cm'}" [imageResolution]="200" [scale]="0.7" [repeatHeaders]="true">
+        <div class="row w-100" id="reportSummary">
+          <div class="col-11 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
+            <div class="row">
+              <div class="col-3">
+                <img [src]="logoUrl" alt="logo" class="img-fluid"/>
+              </div>
+              <div class="col-9 text-left pl-3" style="display: flex;align-items: center;">
+                <div class="row">
+                  <div class="col-12">
+                    <h4 class="m-0" type="text" autocomplete="off"><b>{{currentReport.name}}</b></h4>
+                  </div>
+                  <div class="col-12 text-left">
+                    <span data-html2canvas-ignore class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentReport.status.displayName}}</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="col-12 mb-2 m-2" style="background:#f9f9f9;">
+            <div class="row">
+              <div class="col-12 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Name:</span>
+                <div class="ml-0 mb-3"><b>{{currentReport.grant.name}}</b></div>
+              </div>
+              <div class="col-4 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Start Date:</span>
+                <div class="ml-0 mb-3"><b>{{currentReport.stDate | date:'dd-MMM-yyyy'}}</b></div>
+              </div>
+              <div class="col-4 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant End Date:</span>
+                <div class="ml-0 mb-3"><b>{{currentReport.enDate | date:'dd-MMM-yyyy'}}</b></div>
+              </div>
+              <div class="col-4 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Amount:</span>
+                <div class="ml-0 mb-3" style="display: flex; align-items: center;"><img src="./assets/img/rupee.png" style="width:12px;"><b>{{currentReport.grant.amount}}</b></div>
+
+              </div>
+              <div class="col-4 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization:</span>
+                <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3"><b>{{currentReport.grant.organization.name}}</b></div>
+              </div>
+              <div class="col-4 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization Representative:</span>
+                <div class="ml-0 mb-3"><b>{{currentReport.grant.representative}}</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 mb-2">
+            <span style="color: #929292;font-size: 13px;font-family:Roboto;">Report Start Date:</span>
+            <div class="ml-0 mb-3"><b>{{currentReport.stDate | date:'dd-MMM-yyyy'}}</b></div>
+
+          </div>
+          <div class="col-4 mb-2">
+            <span style="color: #929292;font-size: 13px;font-family:Roboto;">Report End Date:</span>
+            <div class="ml-0 mb-3"><b>{{currentReport.enDate | date:'dd-MMM-yyyy'}}</b></div>
+
+          </div>
+          <div class="col-4 mb-2">
+            <span style="color: #929292;font-size: 13px;font-family:Roboto;">Reporting Period Duration:</span>
+            <div class="ml-0 mb-3"><b>{{currentReport.duration}}</b></div>
+          </div>
+          <div class="col-12 mb-2">
+            <span style="color: #929292;font-size: 13px;font-family:Roboto;">Reporting Due Date:</span>
+            <div class="ml-0 mb-3"><b>{{currentReport.dDate | date:'dd-MMM-yyyy'}}</b></div>
+          </div>
+          <div class="col-12">
+
+            <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+              <hr/>
+              <h5>
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{section.sectionName.toLocaleUpperCase()}}</span>
+              </h5>
+
+              <div>
+                <div class="row mb-2 mt-2">
+                  <ng-container *ngFor="let attribute of section.attributes">
+
+                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"  class="mb-2">
+
+                      <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
+                        <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                        <pre class="mt-1 text-justify"><b><p style="font-size:14px;" [innerHtml]="attribute.fieldValue"></p></b></pre>
+                      </div>
+
+                    </ng-container>
+
+                    <ng-container *ngIf="attribute.fieldType==='kpi'" class="mb-2">
+
+                      <div class="col-sm-12 col-lg-12 text-left mb-3">
+                        <table width="100%" border="1">
+                          <tr>
+                            <td colspan="5" style="padding: 5px">KPI</td>
+                          </tr>
+                          <tr>
+                            <td width="50%" style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                              <table>
+                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level Goal:</span></td></tr>
+                                <tr><td><b>{{attribute.grantLevelTarget}}</b></td></tr>
+                              </table>
+                              </td>
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                              <table>
+                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Report Level Goal:</span></td></tr>
+                                <tr><td><b>{{attribute.target}}</b></td></tr>
+                              </table>
+                            </td>
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                              <table>
+                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Actual Goal Achieved:</span></td></tr>
+                                <tr><td><b>{{attribute.actualTarget}}</b></td></tr>
+                              </table>
+                            </td>
+                            <td width="10%" style="font-size: 14px;font-family:Roboto;padding:5px;"><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</b></td>
+                          </tr>
+                        </table>
+                        <!--<div class="row mx-2">
+                            <div class="col-8">
+                                <div></div>
+                            </div>
+                            <div class="col-2">
+                                <div placeholder="Target/Goal"></div>
+                            </div>
+                            <div class="col-2">
+                                <div placeholder="Frequency"></div>
+                            </div>
+                        </div>-->
+                      </div>
+
+                    </ng-container>
+                    <ng-container *ngIf="attribute.fieldType==='document'">
+                      <div class="col-sm-12 col-lg-12 mb-3">
+                        <span  style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                        <ul>
+                          <li *ngFor="let doc of getDocumentName(attribute.fieldValue)" style="list-style-type:none;">
+
+                            <p class="m-0"  style="font-family:Roboto;font-size:14px;"><b>
+                              <ng-container *ngIf="doc.type === 'pdf'">
+                                <img src="./assets/img/pdf.png" style="width:20px;">
+                              </ng-container>
+                              <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                <img src="./assets/img/msexcel.png" style="width:20px;">
+                              </ng-container>
+                              <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                <img src="./assets/img/msword.png" style="width:20px;">
+                              </ng-container>
+                              {{doc.name}}</b></p>
+                          </li>
+                        </ul>
+                      </div>
+
+                    </ng-container>
+                    <ng-container *ngIf="attribute.fieldType=='table'">
+                      <div class="col-sm-12 col-lg-12 mb-3">
+                        <span  style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                        <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td  style="font-size: 14px;font-family:Roboto;padding:5px;text-align:center;" *ngFor="let col of attribute.fieldTableValue[0].columns"><b>{{col.name}}</b></td>
+                          </tr>
+                          <tr *ngFor="let row of attribute.fieldTableValue">
+                            <td  style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{row.name}}</b></td>
+                            <td style="padding:5px;font-size: 14px;font-family:Roboto;" *ngFor="let rowVal of row.columns">
+                              <b>{{rowVal.value}}</b>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+
+                    </ng-container>
+
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div data-html2canvas-ignore class="col-12">
+            <hr/>
+            <h5>
+              ATTACHMENTS
+            </h5>
+            <ng-container *ngFor="let section of currentReport.reportDetails.sections">
+
+
+              <div>
+                <div class="row mb-2 mt-2">
+                  <ng-container *ngFor="let attribute of section.attributes">
+
+
+                    <ng-container *ngIf="attribute.fieldType==='document'">
+                      <div class="col-sm-12 col-lg-12 mb-3">
+                        <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                          <a href="/api/public/reports/{{currentReport.id}}/file/{{doc.id}}" target="_blank">
+                                                <span class="ml-3">
+                                                    <ng-container *ngIf="doc.type === 'pdf'">
+                                                        <img src="./assets/img/pdf.png" style="width:20px;">
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
+                                                    </ng-container>
+                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                                        <img src="./assets/img/msword.png" style="width:20px;">
+                                                    </ng-container>
+                                                    {{doc.name}}</span></a><br>
+                        </ng-container>
+                      </div>
+
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+        </div>
+        <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+          <div class="pageNum">
+            Page {{ pageNum }} of {{ totalPages }}
+          </div>
+        </ng-template>
+
+      </kendo-pdf-export>
+
+
+
+      <!--<div class="accordion" id="accordionExample">
+        <ng-container *ngFor="let submission of currentReport.submissions">
+          <div class="card mb-0">
+            <div class="card-header" id="heading_{{submission.id}}">
+              <div class="row">
+                <div class="col-sm-9">
+                  <b class="mb-0 submission-header">
+
+                    <div data-toggle="collapse" [attr.data-target]="'#collapse_'+submission.id">
+                      Submission
+                      for {{submission.title}} | Submit By: {{submission.submitBy | date}} |
+                      Status: {{submission.submissionStatus.displayName}}</div>
+                  </b>
+                </div>
+                <div class="col-sm-3 text-right">
+                  <button *ngIf="submission.flowAuthorities" class="btn btn-sm btn-primary"
+                          (click)="viewKpisToSubmit(submission.id)">View Submissions
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="collapse_{{submission.id}}" class="collapse"
+               [attr.aria-labelledby]="'heading_'+submission.id"
+               data-parent="#accordionExample">
+            <div class="card-body">
+              <div *ngFor="let quantKpi of submission.quantitiaveKpisubmissions">
+
+                <div class="row border-bottom">
+                  <div class="col-sm-8 submission-title"><b>{{quantKpi.grantKpi.title}}</b></div>
+                  <div class="col-sm-2 text-center">
+                    <circle-progress
+                        [backgroundStrokeWidth]="5"
+                        [percent]="quantKpi.actuals * 100 / quantKpi.goal"
+                        [backgroundPadding]="0"
+                        [radius]="40"
+                        [space]="-1"
+                        [outerStrokeWidth]="10"
+                        [outerStrokeColor]="'#3de033'"
+                        [outerStrokeLinecap]="'square'"
+                        [innerStrokeColor]="'#828282'"
+                        [titleFontSize]="15"
+                        [animateTitle]=false
+                        [title]="[quantKpi.actuals]"
+                        [animationDuration]="100"
+                        [subtitle]="['-&#45;&#45;',quantKpi.goal]"
+                        [showUnits]=false
+                    ></circle-progress>
+                  </div>
+                </div>
+              </div>
+              <div *ngFor="let qualKpi of submission.qualitativeKpiSubmissions">
+                <div class="row">
+                  <div class="col-sm-12"><b>{{qualKpi.grantKpi.title}}</b></div>
+                  <div class="col-sm-12 mb-5 border-left">{{qualKpi.actuals}}</div>
+                </div>
+              </div>
+              <div *ngFor="let docKpi of submission.documentKpiSubmissions">
+                <div class="row">
+                  <div class="col-sm-12"><b>{{docKpi.grantKpi.title}}</b></div>
+                  <div class="col-sm-12 mb-5">
+                    <ng-container *ngFor="let doc of docKpi.submissionDocs">
+                      <a target="_blank"
+                         href="/api/submission/{{submission.id}}/kpi/{{docKpi.grantKpi.id}}/file/{{doc.id}}">
+                        <p>
+                          <i *ngIf="doc.fileType==='pdf'"
+                             class="fa fa-2x fa-file-pdf-o text-rose"></i>
+                          <i *ngIf="doc.fileType==='jpg'" class="fa fa-2x fa-file-image-o"></i>
+                          <i *ngIf="doc.fileType==='jpeg'" class="fa fa-2x fa-file-image-o"></i>
+                          <i *ngIf="doc.fileType==='png'" class="fa fa-2x fa-file-image-o"></i>
+                          <i *ngIf="doc.fileType==='doc'" class="fa fa-2x fa-file"></i>
+                          {{doc.fileName}}
+                        </p>
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>-->
+
+    </div>
+
+
+  </div>
+</div>
+
+
+
+<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createSectionLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
+          <input id="sectionTitleInput" class="form-control" value="">
+        </div>
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-primary pull-right"
+                (click)="saveSection()">Done
+        </button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>

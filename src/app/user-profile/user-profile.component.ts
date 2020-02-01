@@ -97,7 +97,7 @@ export class UserProfileComponent implements OnInit {
                                    this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                    setTimeout( () => { this.appComp.logout(); }, 4000 );
                                   } else {
-                                   this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                   this.toastr.error(errorMsg.error.message,"20 We encountered an error", config);
                                   }
 
 
@@ -138,7 +138,7 @@ export class UserProfileComponent implements OnInit {
                               this.toastr.error("Your session has expired", 'Logging you out now...', config);
                               setTimeout( () => { this.appComp.logout(); }, 4000 );
                              } else {
-                              this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                              this.toastr.error(errorMsg.error.message,"21 We encountered an error", config);
                              }
 
 
@@ -150,5 +150,9 @@ export class UserProfileComponent implements OnInit {
         const div = document.createElement('div');
         div.innerHTML = html;
         return div.textContent || div.innerText || '';
+  }
+
+  loadImage(){
+    console.log("image selection");
   }
 }

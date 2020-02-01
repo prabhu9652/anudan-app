@@ -8,6 +8,8 @@ export class RegistrationCredentials {
   emailId?: string;
   username?: string;
   password?: string;
+  confirmPassword?: string;
+  organizationName: string;
   organization?: Organization;
   role?: string;
 }

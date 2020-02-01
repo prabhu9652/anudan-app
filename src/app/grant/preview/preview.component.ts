@@ -9,7 +9,7 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData, TemplateLibrary, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
+  SubmissionStatus, Template,TableData, TemplateLibrary,WorkflowStatus, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
 } from '../../model/dahsboard';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
@@ -19,10 +19,12 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
+import {Colors,Configuration} from '../../model/app-config';
+import {User} from '../../model/user';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
 import {interval} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
@@ -33,14 +35,16 @@ import {TemplateDialogComponent} from '../../components/template-dialog/template
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import html2canvas from 'html2canvas';
 import html2pdf from 'html2pdf.js';
-
-
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
+import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
+import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
-  providers:[SidebarComponent],
+  providers:[SidebarComponent, PDFExportComponent],
   styles: [`
     ::ng-deep .cdk-global-overlay-wrapper {
     justify-content:center !important;
@@ -69,6 +73,16 @@ export class PreviewComponent implements OnInit {
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   action: string;
   logoUrl:string;
+  tenantUsers: User[];
+  grantWorkflowStatuses:WorkflowStatus[];
+  exportAsConfig: ExportAsConfig = {
+      type: 'pdf', // the type you want to download
+      elementId: 'grantSummary', // the id of html/table element
+      options:{
+        margin: [3,1,3,1]
+      }
+  }
+  public pdfExport: PDFExportComponent;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
   @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -85,6 +99,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild('container') container: ElementRef;
   @ViewChild('grantSummary') grantSummary: ElementRef;
   @ViewChild('previewarea') previewArea: ElementRef;
+  @ViewChild('pdf') pdf;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -92,6 +107,7 @@ export class PreviewComponent implements OnInit {
       , private router: Router
       , private submissionDataService: SubmissionDataService
       , public appComp: AppComponent
+      , private adminComp: AdminLayoutComponent
       , private http: HttpClient
       , private toastr: ToastrService
       , private dialog: MatDialog
@@ -99,8 +115,26 @@ export class PreviewComponent implements OnInit {
       , private elem: ElementRef
       , private datepipe: DatePipe
       , public colors: Colors
-      , private sidebar: SidebarComponent) {
+      , private sidebar: SidebarComponent
+      , private exportAsService: ExportAsService) {
     this.colors = new Colors();
+
+    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+            });
   }
 
   ngOnInit() {
@@ -131,7 +165,7 @@ export class PreviewComponent implements OnInit {
       }
     });*/
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+
 
     if(this.currentGrant.startDate && this.currentGrant.endDate){
       var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
@@ -162,7 +196,7 @@ export class PreviewComponent implements OnInit {
       }
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -359,7 +393,7 @@ export class PreviewComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant);
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           }
         }
       }
@@ -412,7 +446,12 @@ export class PreviewComponent implements OnInit {
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant);
+          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+              grant.canManage=true;
+          }else{
+              grant.canManage=false;
+          }
+          this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
           this.currentGrant = grant;
           this._setEditMode(false);
           this.currentSubmission = null;
@@ -541,7 +580,7 @@ export class PreviewComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -578,14 +617,14 @@ export class PreviewComponent implements OnInit {
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
-           this.grantData.changeMessage(info.grant);
+           this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
           sectionName.val('');
           //$('#section_' + newSection.id).css('display', 'block');
           this._setEditMode(true);
           $(createSectionModal).modal('hide');
           this.appComp.sectionAdded = true;
-          this.sidebar.buildSectionsSideNav();
+          this.sidebar.buildSectionsSideNav(null);
           this.appComp.sectionInModification = false;
           this.appComp.selectedTemplate = info.grant.grantTemplate;
 
@@ -599,7 +638,7 @@ export class PreviewComponent implements OnInit {
                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
                                  setTimeout( () => { this.appComp.logout(); }, 4000 );
                                 } else {
-                                 this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                                 this.toastr.error(errorMsg.error.message,"6 We encountered an error", config);
                                 }
 
 
@@ -624,7 +663,7 @@ export class PreviewComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -704,7 +743,7 @@ export class PreviewComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -754,7 +793,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -814,7 +853,7 @@ export class PreviewComponent implements OnInit {
 
         this.router.navigate(['grant']);*/
         //this.grantDataService.changeMessage(grant);
-        this.grantData.changeMessage(grant);
+        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
 
         if(!grant.grantTemplate.published){
             const dialogRef = this.dialog.open(TemplateDialogComponent, {
@@ -826,7 +865,7 @@ export class PreviewComponent implements OnInit {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
                      this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).subscribe((grant: Grant) => {
-                      this.grantData.changeMessage(grant);
+                      this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();
                      });
@@ -834,7 +873,7 @@ export class PreviewComponent implements OnInit {
                } else {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
                   this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).subscribe((grant: Grant) => {
-                   this.grantData.changeMessage(grant);
+                   this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                    this.appComp.selectedTemplate = grant.grantTemplate;
                    dialogRef.close();
                    this.fetchCurrentGrant();
@@ -855,7 +894,7 @@ export class PreviewComponent implements OnInit {
                          this.toastr.error("Your session has expired", 'Logging you out now...', config);
                          setTimeout( () => { this.appComp.logout(); }, 4000 );
                         } else {
-                         this.toastr.error(errorMsg.error.message,"We encountered an error", config);
+                         this.toastr.error(errorMsg.error.message,"7 We encountered an error", config);
                         }
 
 
@@ -874,7 +913,7 @@ export class PreviewComponent implements OnInit {
     
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant);
+        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
 
         if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
@@ -989,7 +1028,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant);
+    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -1046,7 +1085,7 @@ export class PreviewComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant);
+    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 
@@ -1294,8 +1333,15 @@ export class PreviewComponent implements OnInit {
   }
 
 
+    saveAs(filename){
+        this.pdf.saveAs(filename);
+    }
+
     saveAsPdf() {
-    const preview = this.grantSummary.nativeElement;
+    this.exportAsService.save(this.exportAsConfig, 'grantsummar').subscribe(() => {
+          // save started
+        });
+    /* const preview = this.grantSummary.nativeElement;
     var opt = {
       margin:       [0.7,0,1,0],
       filename:     this.currentGrant.name+'.pdf',
@@ -1303,7 +1349,7 @@ export class PreviewComponent implements OnInit {
       html2canvas:  { scale: 2 },
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
-    var worker = html2pdf().set(opt).from(preview).save();
+    var worker = html2pdf().set(opt).from(preview).save(); */
     /* console.log(preview.innerHTML);
     html2canvas(preview).then(function(canvas) {
         var img = canvas.toDataURL("image/png");
@@ -1353,16 +1399,16 @@ export class PreviewComponent implements OnInit {
        
           
           //if(tabData[0].columns[i].name.trim() !== ''){
-            html+='<td>' + tabData[0].columns[i].name + '</td>';
+            html+='<td style="padding:5px;font-weight:600px;">' + tabData[0].columns[i].name + '</td>';
           //}
       }
       html += '</tr>';
       for(let i=0; i< tabData.length;i++){
        
-          html += '<tr><td>' + tabData[i].name + '</td>';
+          html += '<tr><td style="padding:5px;">' + tabData[i].name + '</td>';
           for(let j=0; j < tabData[i].columns.length; j++){
             //if(tabData[i].columns[j].name.trim() !== ''){
-              html+='<td>' + tabData[i].columns[j].value + '</td>';
+              html+='<td style="padding:5px;">' + tabData[i].columns[j].value + '</td>';
             //}
           }
           html += '</tr>';
@@ -1379,13 +1425,15 @@ export class PreviewComponent implements OnInit {
     }
 
     showWorkflowAssigments(toStateId){
-      const wfModel = new WorkflowAssignmentModel();
+       const wfModel = new WorkflowAssignmentModel();
        wfModel.users = this.appComp.appConfig.tenantUsers;
        wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+       wfModel.type=this.appComp.currentView;
        wfModel.grant = this.currentGrant;
+       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
         const dialogRef = this.dialog.open(WfassignmentComponent, {
-              data: wfModel,
+              data: {model:wfModel,userId:this.appComp.loggedInUser.id},
               panelClass: 'wf-assignment-class'
             });
 
@@ -1396,6 +1444,7 @@ export class PreviewComponent implements OnInit {
                     const wa = new WorkflowAssignment();
                     wa.id=data.id;
                     wa.assignments = data.userId;
+                    wa.stateId = data.stateId;
                     ass.push(wa);
                 }
 
@@ -1410,10 +1459,18 @@ export class PreviewComponent implements OnInit {
                         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                             + this.currentGrant.id + '/assignment';
                         this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
-                            this.grantData.changeMessage(grant);
+                            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                             this.currentGrant = grant;
                             this.submitGrant(toStateId);
-                        });
+                        },
+                                  error => {
+                                    const errorMsg = error as HttpErrorResponse;
+                                    console.log(error);
+                                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                                      enableHtml: true
+                                    });
+                                    dialogRef.close(false);
+                                  });
               } else {
                 dialogRef.close();
               }
@@ -1425,5 +1482,37 @@ getCleanText(section:Section): string{
           return String(section.id);
       }
       return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+    }
+
+    showHistory(type,obj){
+        this.adminComp.showHistory(type,obj);
+    }
+
+    showWFAssigments(){
+        this.adminComp.showWorkflowAssigments();
+    }
+
+    inviteGrantee(){
+        const dialogRef = this.dialog.open(InviteDialogComponent, {
+            data: "hello"
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result.result) {
+                const httpOptions = {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+
+                let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                    + this.currentGrant.id + '/invite';
+                this.http.post(url, {grant:this.currentGrant,invites:result.value}, httpOptions).subscribe((grant: Grant) => {
+
+                });
+            }
+        });
     }
 }

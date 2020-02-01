@@ -2,9 +2,14 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@ang
 import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GrantDataService} from '../../grant.data.service';
-import {Grant} from '../../model/dahsboard';
+import {SingleReportDataService} from '../../single.report.data.service';
+import {Grant, Notifications} from '../../model/dahsboard';
+import {Report} from '../../model/report';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatDialog,MatExpansionPanel} from '@angular/material';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+
 
 declare const $: any;
 declare interface RouteInfo {
@@ -15,6 +20,7 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
+  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard.svg', class: '' },
   { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '' },
   { path: '/rfps', title: 'RFPs',  icon: 'rfp.svg', class: '' },
   { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '' },
@@ -37,6 +43,18 @@ export const GRANT_ROUTES: RouteInfo[] = [
     { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
 ];
 
+export const SINGLE_REPORT_ROUTES: RouteInfo[] = [
+    { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '' },
+    { path: '/report/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '' },
+    { path: '/report/report-preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
+];
+
+export const REPORT_ROUTES: RouteInfo[] = [
+    { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '' },
+    { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '' },
+    { path: '/reports/approved', title: 'Approved',  icon: 'preview.svg', class: '' }
+];
+
 export const PLATFORM_ROUTES: RouteInfo[] = [
     { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '' }
 ];
@@ -47,6 +65,7 @@ export const ORGANIZATION_ROUTES: RouteInfo[] = [
   { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
+export let REPORT_SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
     { path: '/workflow-management', title: 'Manage Workflows',  icon:'person', class: '' }
@@ -61,44 +80,77 @@ export const ADMIN_ROUTES: RouteInfo[] = [
           transform: rotate(225deg) !important;
           border-width: 0 1px 1px 0 !important;
         }
+
+        ::ng-deep .grant-expansion-panel-notifications > .mat-expansion-indicator::after {
+            color: #424652 !important;
+        }
       `]
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
   grantMenuItems: any[];
   sectionMenuItems: any[];
+  reportSectionMenuItems: any[];
   adminMenuItems: any[];
   platformMenuItems: any[];
+  reportMenuItems: any[];
+  singleReportMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
+  currentReport: Report;
   logoUrl: string;
+  hasUnreadMessages = false;
+  unreadMessages = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+  canManageOrg: boolean = false;
 
   action: number;
   sub: any;
+
+  @ViewChild('organization') organizationElem: MatExpansionPanel;
+  @ViewChild('reports') reportsElem: MatExpansionPanel;
 
 
   constructor(public appComponent: AppComponent,
   private router: Router,
   private activatedRoute: ActivatedRoute,
   private grantData: GrantDataService,
+  private singleReportDataService: SingleReportDataService,
   private ref:ChangeDetectorRef,
-  private elRef: ElementRef
-  ) {
+  private elRef: ElementRef,
+  private dialog: MatDialog,
+  private http: HttpClient) {
+  this.canManageOrg = this.appComponent.loggedInUser.userRoles.filter((ur) => ur.role.name==='Admin').length > 0;
   }
 
 drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
-    event.item.element.nativeElement.classList.remove('section-dragging');
-    for(let i=0; i<this.sectionMenuItems.length;i++){
-        for(let section of this.currentGrant.grantDetails.sections){
-            if(section.sectionName === this.sectionMenuItems[i].title){
-                section.order = i+1;
+
+    if(this.appComponent.currentView === 'grant' && this.currentGrant){
+        moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
+        event.item.element.nativeElement.classList.remove('section-dragging');
+        for(let i=0; i<this.sectionMenuItems.length;i++){
+            for(let section of this.currentGrant.grantDetails.sections){
+                if(section.sectionName === this.sectionMenuItems[i].title){
+                    section.order = i+1;
+                }
             }
         }
+        this.grantData.changeMessage(this.currentGrant,this.appComponent.loggedInUser.id);
     }
-    this.grantData.changeMessage(this.currentGrant);
+    if(this.appComponent.currentView === 'report' && this.currentReport){
+        moveItemInArray(this.reportSectionMenuItems, event.previousIndex, event.currentIndex);
+        event.item.element.nativeElement.classList.remove('section-dragging');
+        for(let i=0; i<this.reportSectionMenuItems.length;i++){
+            for(let section of this.currentReport.reportDetails.sections){
+                if(section.sectionName === this.reportSectionMenuItems[i].title){
+                    section.order = i+1;
+                }
+            }
+        }
+        this.singleReportDataService.changeMessage(this.currentReport);
+    }
+
 
   }
     dragStarted(event: CdkDragStart<String[]>){
@@ -111,11 +163,19 @@ drop(event: CdkDragDrop<string[]>) {
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
+    this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
+    this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
+
     this.grantData.currentMessage.subscribe((grant) => {
       this.currentGrant = grant;
-      this.buildSectionsSideNav();
+      this.buildSectionsSideNav(null);
     });
+
+    this.singleReportDataService.currentMessage.subscribe((report) => {
+          this.currentReport = report;
+          this.buildSectionsSideNav(null);
+        });
 
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
@@ -128,44 +188,67 @@ drop(event: CdkDragDrop<string[]>) {
   }
 
 
-  showMessages(){
-  $("#messagepopover").html('');
-  if(this.appComponent.notifications.length === 0){
-    $("#messagepopover").append('<p>No messages</p>');
-  }else{
-    for(let i=0; i< this.appComponent.notifications.length;i++){
-      
-        const posted = this.appComponent.notifications[i].postedOn;
-       
-        var time = new Date().getTime() - new Date(posted).getTime();
-        
-        
-        $("#messagepopover").append('<div class="row"><div class="col-8"><p>'+this.appComponent.notifications[i].message+'</p><small>'+this.humanizer.humanize(time, { largest: 1, round: true}) + ' ago</small></div><div class="col-4"><button id="notificationBtn_' + this.appComponent.notifications[i].id + '" class="btn btn-sm">Mark as read</button></div></div>');
-    }
 
-    $('[id^="notificationBtn_"]').on('click',function(ev){
-      console.log($(this).attr('id'));
-    });
-
-  }
-  
-  
-  if($("#messagepopover").css('display')==='none'){
-    $("#messagepopover").css('display','block');
-  }else{
-    $("#messagepopover").css('display','none');
-  }
-  
-  }
 
   messageRead() {
     console.log("Read");
   }
 
-  buildSectionsSideNav(): string {
+  manageGrant(notification: Notifications, grantId: number) {
+          const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+     let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
+                            + notification.id;
+
+      this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
+          notification = notif;
+          const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              })
+          };
+
+          url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+          this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+          let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+          if(localgrant){
+          localgrant = grant;
+          }else{
+              this.appComponent.currentTenant.grants.push(grant);
+          }
+            this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
+            this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+            this.appComponent.currentView = 'grant';
+
+                    this.appComponent.selectedTemplate = grant.grantTemplate;
+
+            if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+                this.router.navigate(['grant/basic-details']);
+            } else{
+                this.appComponent.action = 'preview';
+                this.router.navigate(['grant/preview']);
+            }
+            $("#messagepopover").css('display','none');
+          });
+      });
+}
+
+  buildSectionsSideNav(ev: Event): string {
+  this.manageMenutItemsDisplay(ev);
+  console.log('>>>>>>>>> ' + this.appComponent.currentView);
   this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+  this.singleReportDataService.currentMessage.subscribe(report => this.currentReport = report);
+
   SECTION_ROUTES = [];
-  if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
+  REPORT_SECTION_ROUTES = [];
+    if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
@@ -181,6 +264,23 @@ drop(event: CdkDragDrop<string[]>) {
       this.appComponent.sectionAdded = false;
       return SECTION_ROUTES[0].path;
     }
+
+    if(this.appComponent.currentView === 'report' && this.currentReport && (REPORT_SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
+          this.reportSectionMenuItems = [];
+          REPORT_SECTION_ROUTES = [];
+          this.currentReport.reportDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
+          for (let section of this.currentReport.reportDetails.sections){
+            if(section.sectionName!=='' && section.sectionName!=='_'){
+                REPORT_SECTION_ROUTES.push({path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
+            }else{
+                REPORT_SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:''});
+            }
+          }
+
+          this.reportSectionMenuItems = REPORT_SECTION_ROUTES.filter(menuItem => menuItem);
+          this.appComponent.sectionAdded = false;
+          return REPORT_SECTION_ROUTES[0].path;
+        }
   }
 
 
@@ -199,6 +299,26 @@ drop(event: CdkDragDrop<string[]>) {
   createNewSection(){
     this.appComponent.createNewSection.next(true);
   }
+
+  createNewReportSection(){
+    this.appComponent.createNewReportSection.next(true);
+  }
+
+  manageMenutItemsDisplay(evt: Event){
+    if(evt===undefined || evt===null){
+        return;
+    }
+    const submenu = $(evt.srcElement).closest('.mat-expansion-panel');
+    if(submenu.length > 0){
+        const thisMenu = $(submenu[0]).attr('id');
+        if(thisMenu==='organization'){
+            this.reportsElem.close();
+        } else if(thisMenu==='reports'){
+           this.organizationElem.close();
+       }
+    }
+  }
+
 }
 
 

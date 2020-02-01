@@ -1,0 +1,50 @@
+    <div class="row" style="background:#000;">
+        <div class="col-1 text-left">
+            <img [src]="logoURL" alt="logo" class="ml-4 img-fluid" style="width: 50px; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;">
+        </div>
+        <div class="col-5 text-left" style="display: flex; align-items: center;">
+            <span style="line-height: 0.9em;height:52px; color:#fff; margin-left:10px;margin-left: 10px;font-weight: 400;font-size: 25px;text-align: left;">{{orgName}}
+                <p class="m-0" style="color:#F1F1F4;font-size: 18px;"><small >Powered by Social Alpha <img src="./assets/img/avatar.png" alt="logo" class="img-fluid" style="width: 32px; padding: 5px; margin: 5px 0px; border-radius: 2px;"></small></p>
+            </span>
+        </div>
+    <div class="col-6">
+        <div style="position:absolute; right:20px;z-index:3;">
+
+            <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;" class="float-right mr-3 mt-3 text-white">
+                <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">
+                <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
+                <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
+                <mat-menu #profilemenu>
+                    <span mat-menu-item (click)="showProfile()">Profile</span>
+                    <span mat-menu-item (click)="appComponent.logout()">Logout</span>
+                </mat-menu>
+            </p>
+        </div>
+    </div>
+    </div>
+    <div class="row h-100">
+        <div class="col-12">
+            <div class="main-content h-100" style="display:flex;align-items:center;justify-content:center;background:#F0F0F4;">
+                <div class="row">
+                    <div class="col-12">
+                        <img src="./assets/img/2.svg">
+                    </div>
+                    <div class="col-12"><h4>Registration Complete!</h4></div>
+                    <div class="col-12"><p>Hi {{appComponent.loggedInUser.firstName}}!</p></div>
+                    <div class="col-12"><p> You are now a registered user of Anudan - A Grant Management Tool.  You can see all the open RFPs, Apply for a Grant and Manage the Grant at same place.</p></div>
+                    <div class="col-12 w-100" style="display:flex;align-items:center;justify-content:center;">
+                        <div style="width: 25%; display: flex; align-items: center; justify-content: center; flex-direction: column;padding: 20px; background: #fff;border-radius:2px;margin:20px;">
+                            <b>Setup Organization Details</b>
+                            <button class="btn btn-sm btn-green" style="align-self:center;" (click)="navigateToOrg()">Go</button>
+                        </div>
+                        <div style="width: 25%; display: flex; align-items: center; justify-content: center; flex-direction: column;padding: 20px; background: #fff;border-radius:2px;margin:20px;">
+                            <b>Take me to the link</b>
+                            <button class="btn btn-sm btn-green" style="align-self:center;" (click)="navigate()">Go</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+

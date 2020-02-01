@@ -1,9 +1,13 @@
-import {Organization} from './organization';
+import {Organization} from './dahsboard';
 
-export interface Role {
+export class Role {
   id: number;
   name: string;
+  description: string;
   permissions: Permission[];
+  editMode: boolean = false;
+  hasUsers: boolean = false;
+  linkedUsers: number;
 }
 
 export class UserRole {
@@ -27,4 +31,7 @@ export class User {
   userRoles?: UserRole[];
   permissions: string[];
   recaptchaToken: string;
+  userProfile: string;
+  editMode: boolean = false;
+  admin:boolean;
 }

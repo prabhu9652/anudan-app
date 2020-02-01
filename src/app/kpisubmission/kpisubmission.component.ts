@@ -279,7 +279,7 @@ export class KpisubmissionComponent implements OnInit {
       url = '/api/user/' + user.id + '/grant/' + this.currentSubmission.grant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.loading = false;
-        this.grantDataService.changeMessage(updatedGrant);
+        this.grantDataService.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.router.navigate(['grant']);
       });
     });

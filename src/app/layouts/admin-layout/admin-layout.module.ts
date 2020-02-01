@@ -40,12 +40,18 @@ import {
 } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {WelcomePopupComponent} from '../../components/welcome-popup/welcome-popup.component';
+import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/addnlreports-dialog.component';
+import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
+import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
+import {GrantSelectionDialogComponent} from '../../components/grant-selection-dialog/grant-selection-dialog.component';
 import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
 import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 import {GrantNotesComponent} from '../../components/grantNotes/grantNotes.component';
+import {ReportNotesComponent} from '../../components/reportNotes/reportNotes.component';
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 import {GrantsComponent} from '../../grants/grants.component';
 import {ApplicationsComponent} from '../../applications/applications.component';
@@ -60,6 +66,18 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcoming-reports.component';
+import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
+import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
+import { SectionEditComponent } from '../../components/section-edit/section-edit.component';
+import { ReportComponent } from '../../reports/report/report.component';
+import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
+import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
+import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
+import { TemplatesComponent } from '../../admin/templates/templates.component';
+import { RolesComponent } from '../../admin/roles/roles.component';
+import { UsersComponent } from '../../admin/users/users.component';
 
 
 @NgModule({
@@ -91,7 +109,8 @@ import {TenantsComponent} from '../../admin/tenants/tenants.component';
         MatProgressSpinnerModule,
         NgxGraphModule,
         MatAutocompleteModule,
-        MatTabsModule
+        MatTabsModule,
+        PDFExportModule
     ],
     declarations: [
         GrantComponent,
@@ -109,8 +128,14 @@ import {TenantsComponent} from '../../admin/tenants/tenants.component';
         NotificationsComponent,
         UpgradeComponent,
         FieldDialogComponent,
+        WelcomePopupComponent,
+        AddnlreportsDialogComponent,
+        InviteDialogComponent,
         GrantNotesComponent,
+        ReportNotesComponent,
         GrantTemplateDialogComponent,
+        ReportTemplateDialogComponent,
+        GrantSelectionDialogComponent,
         TemplateDialogComponent,
         BottomsheetComponent,
         BottomsheetAttachmentsComponent,
@@ -123,9 +148,20 @@ import {TenantsComponent} from '../../admin/tenants/tenants.component';
         OrganizationComponent,
         ReportsComponent,
         DisbursementsComponent,
-        TenantsComponent
+        TenantsComponent,
+        UpcomingReportsComponent,
+        SubmittedReportsComponent,
+        ApprovedReportsComponent,
+        SectionEditComponent,
+        ReportComponent,
+        ReportHeaderComponent,
+        ReportSectionsComponent,
+        ReportPreviewComponent,
+        TemplatesComponent,
+        RolesComponent,
+        UsersComponent
     ],
-    entryComponents: [FieldDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, TemplateDialogComponent, GrantNotesComponent],
+    entryComponents: [FieldDialogComponent,WelcomePopupComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

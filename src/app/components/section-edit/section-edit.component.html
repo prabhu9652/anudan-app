@@ -1,0 +1,9 @@
+<h4>Edit Section name</h4>
+<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="onNoClick()"><mat-icon>close</mat-icon></span>
+
+<input #sectionNameField matInput value="{{currentSection.sectionName}}" class="anu-input">
+<div mat-dialog-actions>
+  <button mat-button mat-flat-button (click)="onNoClick()">No</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">Yes</button>
+</div>
+
