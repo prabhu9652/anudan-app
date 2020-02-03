@@ -23,8 +23,8 @@ export class ReportTemplateDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selected = this.templates[0].id;
-    this.selectedTemplate = this.templates.filter(t => t.id===this.selected)[0];
+    this.selected = this.templates.filter(r => r.defaultTemplate===true)[0].id;
+    this.selectedTemplate = this.templates.filter(r => r.defaultTemplate===true)[0];
   }
 
   onNoClick(): void {
