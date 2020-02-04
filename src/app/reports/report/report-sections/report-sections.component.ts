@@ -512,7 +512,20 @@ export class ReportSectionsComponent implements OnInit {
                     dialogRef.close();
                 }
             });
-
-
     }
+
+    moveColsLeft(){
+    $('#tableArea').animate({
+        scrollLeft: "+=200px"
+      }, "100","linear",function(){
+     });
+     }
+
+   moveColsRight(){
+    $('#tableArea').animate({
+        scrollLeft: "-=200px"
+      }, "100","linear",function(){
+      });
+
+   }
 }
