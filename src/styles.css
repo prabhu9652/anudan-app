@@ -187,6 +187,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 14px !important;
   padding: 8px 12px !important;
   background: #fff !important;
+  min-height: 41px;
+}
+
+.anu-input-plain{
+  line-height: 165% !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+  background: transparent !important;
+  min-height: 41px;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {

@@ -5,7 +5,7 @@
         <ng-container *ngIf="action === getCleanText(section)">
           <h4 class="col-8 text-left my-3 section-header">{{section.sectionName}}</h4>
           <div class="col-3" style="display:flex; align-items: center;justify-content:flex-end;">
-            <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+            <a *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="addNewFieldToSection(section.id,section.sectionName)"
                class="btn btn-sm btn-green">Add a Field<i class="fa fa-plus-square ml-2"></i></a>
           </div>
         </ng-container>
@@ -17,10 +17,10 @@
         <mat-menu #menu="matMenu">
           <ng-container *ngFor="let section of currentReport.reportDetails.sections">
             <ng-container *ngIf="action === getCleanText(section)">
-              <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
-              <button mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
+              <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="editSection(section)">Edit Section name</button>
+              <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
                 <hr>
-                <button mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
+                <button  mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
                 <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
             </ng-container>
           </ng-container>
@@ -115,13 +115,15 @@
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
-                          <mat-form-field>
+                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
                           </mat-form-field>
+                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
@@ -133,13 +135,15 @@
                           </mat-form-field>
                         </div>
                         <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
-                          <mat-form-field>
+                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
                             <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                     [ngModelOptions]="{standAlone:true}"
                                     
                                     matInput placeholder="Title">
                           </mat-form-field>
+                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
@@ -202,7 +206,7 @@
                         </div>
                         <div class="col-sm-12 col-lg-11 text-left" *ngIf="attribute.fieldType==='table'">
                           <div class="row"><div class="col-12 text-right">
-                            <span (click)="addColumn(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a column</span>
+                            <span *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="addColumn(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a column</span>
                           </div>
                             <div style="margin-left:250px;"><i (click)="moveColsRight()" class="fas fa-arrow-alt-circle-left mr-3"></i><i (click)="moveColsLeft()" class="fas fa-arrow-alt-circle-right"></i></div>
                           </div>
@@ -213,17 +217,18 @@
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
 
                                   <td style="border: 1px solid #e4e4e4;">
-                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
+                                    <mat-icon  *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
                                               aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
                                               aria-label="Example home icon" inline="true" title="Delete this column">
                                       delete_outline
                                     </mat-icon>
-                                    <mat-form-field>
+                                    <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                       <input id="column_{{column.id}}" matInput [(ngModel)]="column.name" class="anu-input"
                                              [ngModelOptions]="{standAlone:true}"
                                              placeholder="Column description"
                                              >
                                     </mat-form-field>
+                                    <p class="anu-input-plain" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{column.name}}</p>
                                   </td>
 
                                 </ng-container>
@@ -231,17 +236,18 @@
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
                                   <td width="20%" style="position: sticky; left: 0; z-index: 1;background: rgb(244,244,244)">
-                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
+                                    <mat-icon *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
                                               aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
                                               aria-label="Example home icon" inline="true" title="Delete this row">
                                       delete_outline
                                     </mat-icon>
-                                    <mat-form-field>
+                                    <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                     <textarea matInput [(ngModel)]="row.name" class="anu-input"
                                               [ngModelOptions]="{standAlone:true}"
                                               placeholder="Row description"
                                               ></textarea>
                                     </mat-form-field>
+                                    <p class="anu-input-plain" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{row.name}}</p>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns">
                                     <td style="border: 1px solid #e4e4e4;min-width:200px;padding-top:0;">
@@ -258,7 +264,7 @@
                             </table>
                           </div>
                           <div class="row"><div class="col-12">
-                            <span (click)="addRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
+                            <span *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="addRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                           </div></div>
 
                         </div>
@@ -295,12 +301,14 @@
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.target}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi' && currentReport.status.name!=='ACTIVE'">
-                          <mat-form-field>
+                          <mat-form-field *ngIf="(currentReport.canManage && currentReport.forGranteeUse)">
                             <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
                                    [required]="attribute.deletable?'required':''"
                                    [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Report Level Accomplishment" [readonly]="!currentReport.forGranteeUse" [style.background]="currentReport.forGranteeUse?'#fff':'#F0F1F0'">
+                                   placeholder="Report Level Accomplishment">
                           </mat-form-field>
+                          <label *ngIf="(currentReport.canManage && !currentReport.forGranteeUse) || !currentReport.canManage">Report Level Accomplishment:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.actualTarget}}</p>
                         </div>
 
                         <!--<div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && attribute.canEdit">
@@ -384,7 +392,7 @@
                           </mat-nav-list>
                         </div>
                       </ng-container>
-                      <div class="col-12">
+                      <div class="col-12" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                         <div class="row mt-3">
                           <div class="col-12 text-right">
                             <a [class]="i===0?'isDisabled':''" (click)="moveTo(section,attribute,i===0?null:section.attributes[i-1])"><img src="./assets/img/chevron-up.svg" class="w-10 mr-2" style="width:24px;"></a>
