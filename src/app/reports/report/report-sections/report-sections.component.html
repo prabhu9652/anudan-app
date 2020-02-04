@@ -5,7 +5,7 @@
         <ng-container *ngIf="action === getCleanText(section)">
           <h4 class="col-8 text-left my-3 section-header">{{section.sectionName}}</h4>
           <div class="col-3" style="display:flex; align-items: center;justify-content:flex-end;">
-            <a (click)="addNewFieldToSection(section.id,section.sectionName)"
+            <a *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="addNewFieldToSection(section.id,section.sectionName)"
                class="btn btn-sm btn-green">Add a Field<i class="fa fa-plus-square ml-2"></i></a>
           </div>
         </ng-container>
@@ -17,10 +17,10 @@
         <mat-menu #menu="matMenu">
           <ng-container *ngFor="let section of currentReport.reportDetails.sections">
             <ng-container *ngIf="action === getCleanText(section)">
-              <button mat-menu-item (click)="editSection(section)">Edit Section name</button>
-              <button mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
+              <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="editSection(section)">Edit Section name</button>
+              <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
                 <hr>
-                <button mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
+                <button  mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
                 <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
             </ng-container>
           </ng-container>
@@ -115,13 +115,15 @@
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
-                          <mat-form-field>
+                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
                           </mat-form-field>
+                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
