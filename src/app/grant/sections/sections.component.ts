@@ -176,7 +176,7 @@ ngOnDestroy(){
 
     this.options = this.appComp.currentTenant.templateLibrary;
 
-    const docs = this.options.slice();
+    const docs = this.options?this.options.slice():[];
     /*this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),

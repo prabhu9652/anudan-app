@@ -187,7 +187,7 @@ export class BasicComponent implements OnInit {
 
     this.options = this.appComp.appConfig.granteeOrgs;
 
-    const orgs = this.options.slice();
+    const orgs = this.options?this.options.slice():[];
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
