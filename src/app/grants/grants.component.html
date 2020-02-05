@@ -15,10 +15,9 @@
                         <img src="./assets/img/loader.gif" style="width:10%;">
                         <p style="color: black" > Loading grants... </p>
                     </div>
-                    <div *ngIf="hasTenant && grantsDraft.length===0">
-                        <p style="color: black" > No grants found </p>
-                    </div>
+
                     <div *ngIf="hasTenant">
+                        
 
                             <mat-expansion-panel class="mb-3 grants-expansion-panel" *ngIf="grantsDraft.length > 0">
                                 <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">

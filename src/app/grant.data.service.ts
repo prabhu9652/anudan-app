@@ -14,7 +14,8 @@ export class GrantDataService {
   changeMessage(message: Grant, userId:number) {
 
   if(message!==null){
-    if((message.workflowAssignment.filter(wf => wf.stateId===message.grantStatus.id && wf.assignments===userId).length>0 || message.grantStatus.internalStatus==='DRAFT')){
+    const user = JSON.parse(localStorage.getItem('USER'));
+    if((message.workflowAssignment.filter(wf => wf.stateId===message.grantStatus.id && wf.assignments===userId).length>0 || message.grantStatus.internalStatus==='DRAFT') && user.organization.organizationType!=='GRANTEE' ){
         message.canManage = true
     }else{
         message.canManage = false;
