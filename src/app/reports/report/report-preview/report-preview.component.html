@@ -223,7 +223,12 @@
                   <ng-container *ngFor="let attribute of section.attributes">
 
 
-                    <ng-container *ngIf="attribute.fieldType==='document'">
+                    <ng-container *ngIf="attribute.field
+
+
+
+
+                    ==='document'">
                       <div class="col-sm-12 col-lg-12 mb-3">
                         <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
                           <a href="/api/public/reports/{{currentReport.id}}/file/{{doc.id}}" target="_blank">

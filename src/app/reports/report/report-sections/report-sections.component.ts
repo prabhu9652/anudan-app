@@ -528,4 +528,17 @@ export class ReportSectionsComponent implements OnInit {
       });
 
    }
+
+   getFieldTypeDisplayValue(type:string):string{
+    if(type==="multiline"){
+        return "Descriptive";
+    } else if(type==="kpi"){
+        return "Measurement/KPI";
+    } else if(type==="table"){
+        return "Tablular";
+    } else if(type==="document"){
+        return "Document";
+    }
+    return "";
+   }
 }
