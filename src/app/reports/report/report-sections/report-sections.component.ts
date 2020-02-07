@@ -18,6 +18,7 @@ import {SectionEditComponent} from '../../../components/section-edit/section-edi
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -582,4 +583,6 @@ export class ReportSectionsComponent implements OnInit {
                });
         }
       }
+
+
 }
