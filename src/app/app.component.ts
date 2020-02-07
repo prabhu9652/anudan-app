@@ -5,7 +5,7 @@ import { User} from './model/user';
 import { Report} from './model/report';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
-import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant} from "./model/dahsboard";
+import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant,TemplateLibrary} from "./model/dahsboard";
 import {ReportTemplate} from "./model/report";
 import {WorkflowTransition} from "./model/workflow-transition";
 import {Time} from "@angular/common";
@@ -75,7 +75,8 @@ export class AppComponent implements AfterViewChecked{
     transitions: [],
     reportTransitions: [],
     tenantUsers: [],
-    daysBeforePublishingReport: 30
+    daysBeforePublishingReport: 30,
+    templateLibrary: []
   };
 
 
@@ -193,7 +194,7 @@ interval(10000).subscribe(t => {
             'Authorization': localStorage.getItem('AUTH_TOKEN')
           })
         };
-    const url = '/api/app/config/'.concat(hostName);
+    const url = '/api/app/config/user/'+ JSON.parse(localStorage.getItem("USER")).id+"/"+(hostName===''?'anudan':hostName);
     this.confgSubscription = this.httpClient.get<AppConfig>(url,httpOptions).subscribe((response) => {
       this.appConfig = response;
       if(this.appConfig.tenantUsers){
@@ -202,7 +203,7 @@ interval(10000).subscribe(t => {
       if(this.appConfig.reportWorkflowStatuses){
         this.reportWorkflowStatuses = this.appConfig.reportWorkflowStatuses;
       }
-      localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
+      //localStorage.setItem('X-TENANT-CODE', this.appConfig.tenantCode);
 
     },error => {
                             const errorMsg = error as HttpErrorResponse;

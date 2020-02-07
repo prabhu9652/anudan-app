@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router, NavigationStart,ActivationEnd,RouterEvent} from '@angular/router';
 import {AppComponent} from '../../../app.component';
 import {Report, ReportFieldInfo, ReportDocInfo, ReportSectionInfo} from '../../../model/report'
-import {Section, TableData, ColumnData, Attribute, TemplateLibrary} from '../../../model/dahsboard'
+import {Section, TableData, ColumnData, Attribute, TemplateLibrary,AttachmentDownloadRequest} from '../../../model/dahsboard'
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
@@ -18,6 +18,7 @@ import {SectionEditComponent} from '../../../components/section-edit/section-edi
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class ReportSectionsComponent implements OnInit {
         private toastr: ToastrService,
         private adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent,
-        private dialog: MatDialog) {
+        private dialog: MatDialog,
+        private elem: ElementRef) {
 
         this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -68,7 +70,7 @@ export class ReportSectionsComponent implements OnInit {
         });
 
         this.myControl = new FormControl();
-        this.options = this.appComp.currentTenant?this.appComp.currentTenant.templateLibrary:[];
+        this.options = this.appComp.appConfig.templateLibrary;
         const docs = this.options.slice();
 
         this.filteredOptions = this.myControl.valueChanges
@@ -528,4 +530,59 @@ export class ReportSectionsComponent implements OnInit {
       });
 
    }
+
+   getFieldTypeDisplayValue(type:string):string{
+    if(type==="multiline"){
+        return "Descriptive";
+    } else if(type==="kpi"){
+        return "Measurement/KPI";
+    } else if(type==="table"){
+        return "Tablular";
+    } else if(type==="document"){
+        return "Document";
+    }
+    return "";
+   }
+
+   handleSelection(attribId,attachmentId){
+      const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+      if(elems.length>0){
+      for(let singleElem of elems){
+       if(singleElem.checked){
+           this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = false;
+           return;
+       }
+       this.elem.nativeElement.querySelector('[id^="attachments_download_'+attribId+'"]').disabled = true;
+      }
+      }
+      }
+
+      downloadSelection(attribId){
+         const elems = this.elem.nativeElement.querySelectorAll('[id^="attriute_'+attribId+'_attachment_"]');
+         const selectedAttachments = new AttachmentDownloadRequest();
+         if(elems.length>0){
+         selectedAttachments.attachmentIds = [];
+         for(let singleElem of elems){
+          if(singleElem.checked){
+              selectedAttachments.attachmentIds.push(singleElem.id.split('_')[3]);
+          }
+         }
+           const httpOptions = {
+                 responseType: 'blob' as 'json',
+                 headers: new HttpHeaders({
+                   'Content-Type': 'application/json',
+                   'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                   'Authorization': localStorage.getItem('AUTH_TOKEN')
+                 })
+               };
+
+               let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
+                   + this.currentReport.id + '/attachments';
+               this.http.post(url, selectedAttachments, httpOptions).subscribe((data) => {
+                   saveAs(data,this.currentReport.grant.name+'_'+this.currentReport.name+'.zip');
+               });
+        }
+      }
+
+
 }

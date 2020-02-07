@@ -193,7 +193,7 @@
 
                           </mat-form-field>
                           <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Type:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldType}}</p>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{getFieldTypeDisplayValue(attribute.fieldType)}}</p>
                         </div>
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
@@ -348,7 +348,7 @@
                                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                                     </mat-chip>-->
                                     <button class="btn btn-sm btn-blue w-100" [matAutocomplete]="auto"><img src="./assets/img/library.svg" class="w-10 mr-2" style="width:24px;">Browse from library</button>
-                                    <input id="templateLib_{{attribute.id}}" class="" style="max-width: 0; height: 0; padding: 0 !important; margin: 0;"
+                                    <input id="templateLib_{{attribute.id}}" class=""
                                            #fruitInput
                                            [formControl]="myControl"
                                            [matAutocomplete]="auto"
