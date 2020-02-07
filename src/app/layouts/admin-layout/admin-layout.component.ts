@@ -111,9 +111,9 @@ export class AdminLayoutComponent implements OnInit {
       }
 
       this.appComponent.initAppUI();
-      interval(30000).subscribe(t => {
+      /*interval(30000).subscribe(t => {
             this.appComponent.initAppUI();
-          });
+          });*/
 
       this.intervalSubscription = interval(10000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){

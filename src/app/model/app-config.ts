@@ -1,4 +1,4 @@
-import {Organization, Section, WorkflowStatus} from './dahsboard';
+import {Organization, Section, WorkflowStatus,TemplateLibrary} from './dahsboard';
 import {WorkflowTransition} from './workflow-transition';
 import {User} from './user';
 
@@ -19,6 +19,7 @@ export class AppConfig {
   transitions: WorkflowTransition[];
   reportTransitions: WorkflowTransition[];
   daysBeforePublishingReport: number;
+  templateLibrary: TemplateLibrary[];
 }
 
 export class Colors {
