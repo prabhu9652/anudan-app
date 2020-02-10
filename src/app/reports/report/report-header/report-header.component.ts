@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {SingleReportDataService} from '../../../single.report.data.service'
 import {Report,ReportSectionInfo} from '../../../model/report'
-import {CustomDateAdapter,Section} from '../../../model/dahsboard'
+import {CustomDateAdapter,Section,WorkflowStatus} from '../../../model/dahsboard'
 import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {ActivatedRoute, Router, NavigationStart,NavigationEnd, ActivationEnd,RouterEvent} from '@angular/router';
@@ -10,6 +10,8 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
+import {Configuration} from '../../../model/app-config';
+import {User} from '../../../model/user';
 
 
 export const APP_DATE_FORMATS = {
@@ -41,6 +43,8 @@ export class ReportHeaderComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   subscribers: any = {};
+  reportWorkflowStatuses:WorkflowStatus[];
+  tenantUsers: User[];
 
   @ViewChild('pickerStart') pickerStart: MatDatepicker<Date>;
   @ViewChild('pickerEnd') pickerEnd: MatDatepicker<Date>;
@@ -75,15 +79,33 @@ export class ReportHeaderComponent implements OnInit {
             console.log(']]]]]]]]]]]]]]]]]]]]]]]]] ' + val.url);
         }
     });
+
+    this.singleReportDataService.currentMessage.subscribe((report) => {
+                this.currentReport = report;
+                this.setDateDuration();
+                console.log(this.currentReport);
+            });
+             const httpOptions = {
+                headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+                })
+            };
+            let url = '/api/app/config/report/'+this.currentReport.id;
+
+            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                this.reportWorkflowStatuses = config.reportWorkflowStatuses;
+                this.appComp.reportWorkflowStatuses = config.reportWorkflowStatuses;
+                this.tenantUsers = config.tenantUsers;
+                this.appComp.tenantUsers = config.tenantUsers;
+                this.appComp.reportTransitions=config.reportTransitions;
+            });
   }
 
     ngOnInit() {
         this.appComp.reportSaved = false;
-        this.singleReportDataService.currentMessage.subscribe((report) => {
-            this.currentReport = report;
-            this.setDateDuration();
-            console.log(this.currentReport);
-        });
+
 
         this.appComp.createNewReportSection.subscribe((val) =>{
             if(val){

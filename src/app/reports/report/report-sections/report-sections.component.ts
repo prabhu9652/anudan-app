@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router, NavigationStart,ActivationEnd,RouterEvent} from '@angular/router';
 import {AppComponent} from '../../../app.component';
 import {Report, ReportFieldInfo, ReportDocInfo, ReportSectionInfo} from '../../../model/report'
-import {Section, TableData, ColumnData, Attribute, TemplateLibrary,AttachmentDownloadRequest} from '../../../model/dahsboard'
+import {Section, TableData, ColumnData, Attribute, TemplateLibrary,AttachmentDownloadRequest,WorkflowStatus} from '../../../model/dahsboard'
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
@@ -19,7 +19,8 @@ import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/mater
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
-
+import {Configuration} from '../../../model/app-config';
+import {User} from '../../../model/user';
 
 @Component({
   selector: 'app-report-sections',
@@ -44,6 +45,8 @@ export class ReportSectionsComponent implements OnInit {
     fruitCtrl = new FormControl();
     filteredOptions: Observable<TemplateLibrary[]>;
     allowScroll = true;
+    reportWorkflowStatuses:WorkflowStatus[];
+    tenantUsers: User[];
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -60,14 +63,33 @@ export class ReportSectionsComponent implements OnInit {
         this.action = p['action'];
         this.appComp.action = this.action;
         });
+
+
+        this.singleReportDataService.currentMessage.subscribe((report) => {
+                    this.currentReport = report;
+                    this.setDateDuration();
+                    console.log(this.currentReport);
+                });
+                 const httpOptions = {
+                    headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                    })
+                };
+                let url = '/api/app/config/report/'+this.currentReport.id;
+
+                this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+                    this.reportWorkflowStatuses = config.reportWorkflowStatuses;
+                    this.appComp.reportWorkflowStatuses = config.reportWorkflowStatuses;
+                    this.tenantUsers = config.tenantUsers;
+                    this.appComp.tenantUsers = config.tenantUsers;
+                    this.appComp.reportTransitions=config.reportTransitions;
+                });
     }
 
     ngOnInit() {
-        this.singleReportDataService.currentMessage.subscribe((report) => {
-            this.currentReport = report;
-            this.setDateDuration();
-            console.log(this.currentReport);
-        });
+
 
         this.myControl = new FormControl();
         this.options = this.appComp.appConfig.templateLibrary;
