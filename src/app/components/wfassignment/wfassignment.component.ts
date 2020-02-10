@@ -205,7 +205,7 @@ ngOnInit() {
                                }else{
                                if(this.data.model.canManage){
                                     const nodeInvite = this.renderer.createElement('input');
-                                    this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user (comma separated)');
+                                    this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user');
                                     this.renderer.addClass(nodeInvite,'anu-input');
                                     this.renderer.setAttribute(nodeInvite,'style','width: 80%; text-align: center;');
                                     this.renderer.setAttribute(nodeInvite,'id','custom_assignment');
@@ -217,12 +217,27 @@ ngOnInit() {
                                             if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
                                                 this.renderer.setAttribute(nodeOwnerOptions,'selected','selected');
                                             }
-                                            let username = option.firstName + ' '  + option.lastName + this.getRoles(option);
+                                            let username = (!option.active?('Unregistered: ' + option.emailId) :option.firstName + ' '  + option.lastName) + ' ['+ option.organization.name+']';
 
                                             this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
                                             this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
                                         }
                                     }
+                               }else{
+                                if(this.data.model.granteeUsers){
+                                    for(let option of this.data.model.granteeUsers){
+                                        const nodeOwnerOptions = this.renderer.createElement('option');
+                                        this.renderer.setAttribute(nodeOwnerOptions,'value',String(option.id));
+                                        if(assignment.length > 0 && (assignment[0].assignmentUser?Number(assignment[0].assignmentUser.id):0) === Number(option.id)){
+                                            this.renderer.setAttribute(nodeOwnerOptions,'selected','selected');
+                                        }
+                                        let username = (!option.active?('Unregistered: ' + option.emailId) :option.firstName + ' '  + option.lastName) + ' ['+ option.organization.name+']';
+
+                                        this.renderer.appendChild(nodeOwnerOptions,document.createTextNode(username));
+                                        this.renderer.appendChild(nodeOwner,nodeOwnerOptions);
+                                    }
+                                }
+
                                }
                                }
 
