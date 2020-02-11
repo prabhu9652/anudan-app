@@ -17,7 +17,7 @@ export class AddnlreportsDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public data: AdditionReportsModel) {
-    this.dialogRef.disableClose = true;
+    this.dialogRef.disableClose = false;
     this.grantId = data.grant;
     this.grants = data.grants;
     this.futureReports = data.futureReports;
@@ -30,15 +30,19 @@ export class AddnlreportsDialogComponent implements OnInit {
 
 
   onNoClick(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close({result:false});
   }
 
   onYesClick(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close({result:false});
   }
 
   updateSelectedReports(evt){
     console.log();
     this.selectedReports = this.futureReports.filter(r => r.grant.id===Number(evt.currentTarget.value));
+  }
+
+  manageReport(report: Report){
+    this.dialogRef.close({result:true, selectedReport: report});
   }
 }

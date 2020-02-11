@@ -164,8 +164,8 @@ export class UpcomingReportsComponent implements OnInit {
         });
 
         dialogRef1.afterClosed().subscribe(result => {
-            if(result.result){
-                console.log('done');
+            if(result && result.result){
+                this.manageReport(result.selectedReport);
             }
         });
     }
