@@ -157,6 +157,12 @@ export class GrantsComponent implements OnInit {
           }else if(grant.grantStatus.internalStatus === 'CLOSED'){
             this.grantsClosed.push(grant);
           }
+
+          if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'){
+              grant.canManage=true;
+          }else{
+              grant.canManage=false;
+          }
           for (const submission of grant.submissions) {
             if (submission.flowAuthorities) {
               this.hasKpisToSubmit = true;
@@ -204,7 +210,7 @@ export class GrantsComponent implements OnInit {
 
                 this.appComponent.selectedTemplate = grant.grantTemplate;
 
-        if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+        if(grant.canManage){
             this.router.navigate(['grant/basic-details']);
         } else{
             this.appComponent.action = 'preview';

@@ -60,17 +60,17 @@
         <ng-container *ngIf="appComponent.currentView === 'grant'">
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
-                <ng-container *ngIf="menuItem.title !== 'Grant Details' && menuItem.title !== 'Monitoring & Evaluation'">
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(currentGrant && currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
+                <ng-container *ngIf="menuItem.title !== 'Grant Details'">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant.canManage">
 
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant && (currentGrant.grantStatus.internalStatus=='ACTIVE' || currentGrant.grantStatus.internalStatus=='CLOSED')  && menuItem.title=='Preview & Submit'">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="!currentGrant.canManage && menuItem.title==='Preview & Submit'">
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
             
-                <ng-container *ngIf="menuItem.title === 'Grant Details' && (currentGrant && currentGrant.grantStatus.internalStatus!='ACTIVE' && currentGrant.grantStatus.internalStatus!='CLOSED')">
+                <ng-container *ngIf="menuItem.title === 'Grant Details' && currentGrant.canManage">
                     <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                           <mat-panel-title style="display: flex; align-items: center">
@@ -89,16 +89,6 @@
                         <li>
                             <button *ngIf="currentGrant.actionAuthorities && currentGrant.actionAuthorities.permissions.includes('MANAGE')" (click)="createNewSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
                         </li>
-
-                    <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
-                class="{{menuItem.class}} nav-item text-left">
-                    <ng-container *ngIf="menuItem.title === 'Monitoring & Evaluation'">
-                        <a class="nav-link" [routerLink]="[menuItem.path]" style="padding-top: 0;padding-bottom: 0;">
-                            <i class="material-icons">{{menuItem.icon}}</i>
-                            <p>{{menuItem.title}}</p>
-                        </a>
-                    </ng-container>
-                </li>
                     </mat-expansion-panel>
                 </ng-container>
             </li>

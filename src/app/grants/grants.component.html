@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <button *ngIf="appComponent.loggedInUser.permissions && appComponent.loggedInUser.permissions.includes('Create Grant')"
+                <button *ngIf="appComponent.loggedInUser.organization.organizationType==='GRANTER'"
                         class="btn btn-sm btn-green float-right"
                         (click)="createGrant()">New Grant
                 </button>
@@ -54,7 +54,7 @@
                                             </small></div-->
                                         </div>
                                         <div class="col-12 h-100" style="display: flex; align-items: center; justify-content: flex-end;">
-                                        <button *ngIf="appComponent.loggedInUser.permissions.includes('Delete Grant') && grant.grantStatus.name==='DRAFT'"
+                                        <button *ngIf="grant.canManage && grant.grantStatus.internalStatus==='DRAFT'"
                                                 class="btn btn-sm btn-red"
                                                 (click)="deleteGrant(grant)">Delete Grant
                                         </button>

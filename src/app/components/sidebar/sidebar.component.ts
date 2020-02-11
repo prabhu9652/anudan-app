@@ -181,9 +181,9 @@ drop(event: CdkDragDrop<string[]>) {
     this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
 
-    if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
+    /*if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
       this.appComponent.action = 'preview';
-    }
+    }*/
     
   }
 

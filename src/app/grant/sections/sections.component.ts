@@ -258,7 +258,7 @@ ngOnDestroy(){
      }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if (this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE') {
       this.canManage = this.currentGrant.canManage;
     } else {
       this.canManage = this.currentGrant.canManage;

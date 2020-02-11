@@ -20,6 +20,7 @@ export class WfassignmentComponent implements OnInit {
     elemRef: ElementRef;
     jsPlumbInstance;
     scrollListener;
+    canManage: boolean = true;
     @ViewChild("flowContainer") flowContainer: ElementRef;
 
   constructor(
@@ -59,9 +60,11 @@ ngOnInit() {
 
                     const nodeOwner = this.renderer.createElement('select');
                     const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
-                    if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor || !this.data.model.canManage){
+                    if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
+                        this.canManage = false;
                         this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                     }
+
                     this.renderer.addClass(nodeOwner,'ml-3');
                     this.renderer.addClass(nodeOwner,'px-2');
                     this.renderer.addClass(nodeOwner,'anu-input');

@@ -225,7 +225,7 @@ export class BasicComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE') || this.currentGrant.grantStatus.internalStatus==='DRAFT') {
+    if (this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE') {
       this.canManage = this.currentGrant.canManage;
     } else {
       this.canManage = this.currentGrant.canManage;
@@ -441,10 +441,10 @@ export class BasicComponent implements OnInit {
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
-                        grant.canManage=true;
+                    if(this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'){
+                        this.currentGrant.canManage=true;
                     }else{
-                        grant.canManage=false;
+                        this.currentGrant.canManage=false;
                     }
                     this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                     this.setDateDuration();
