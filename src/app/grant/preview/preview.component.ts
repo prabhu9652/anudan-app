@@ -39,6 +39,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-preview',
@@ -1514,5 +1515,25 @@ getCleanText(section:Section): string{
                 });
             }
         });
+    }
+
+    downloadAttachment(grantId:number,fileId:number, docName:string,docType:string){
+
+        const httpOptions = {
+            responseType: 'blob' as 'json',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                        + grantId + '/file/'+fileId;
+
+        this.http.get(url,httpOptions).subscribe((data) =>{
+            saveAs(data,docName+"."+docType);
+        });
+
     }
 }

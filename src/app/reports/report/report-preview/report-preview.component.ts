@@ -18,6 +18,8 @@ import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
+import { saveAs } from 'file-saver';
+
 
 @Component({
   selector: 'app-report-preview',
@@ -372,5 +374,25 @@ export class ReportPreviewComponent implements OnInit {
             obj = JSON.parse(val);
         }
         return obj;
+    }
+
+    downloadAttachment(reportId:number,fileId:number, docName:string,docType:string){
+
+        const httpOptions = {
+            responseType: 'blob' as 'json',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
+                        + reportId + '/file/'+fileId;
+
+        this.http.get(url,httpOptions).subscribe((data) =>{
+            saveAs(data,docName+"."+docType);
+        });
+
     }
 }

@@ -217,21 +217,14 @@
             </h5>
             <ng-container *ngFor="let section of currentReport.reportDetails.sections">
 
-
               <div>
                 <div class="row mb-2 mt-2">
                   <ng-container *ngFor="let attribute of section.attributes">
 
-
-                    <ng-container *ngIf="attribute.field
-
-
-
-
-                    ==='document'">
+                    <ng-container *ngIf="attribute.fieldType==='document'">
                       <div class="col-sm-12 col-lg-12 mb-3">
                         <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
-                          <a href="/api/public/reports/{{currentReport.id}}/file/{{doc.id}}" target="_blank">
+                          <a (click)="downloadAttachment(currentReport.id,doc.id,doc.name,doc.type)">
                                                 <span class="ml-3">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
                                                         <img src="./assets/img/pdf.png" style="width:20px;">
