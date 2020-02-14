@@ -153,7 +153,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     }
 
     public checkGrantPermissions() {
-        if (this.currentGrant && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+        if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
             this.canManage = true;
         } else {
             this.canManage = false;
@@ -863,7 +863,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/create/' + template.id;
 
     this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
-        if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+        if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
             grant.canManage=true;
         }else{
             grant.canManage=false;

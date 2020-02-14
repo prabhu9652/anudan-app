@@ -158,7 +158,7 @@ export class GrantsComponent implements OnInit {
             this.grantsClosed.push(grant);
           }
 
-          if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'){
+          if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
               grant.canManage=true;
           }else{
               grant.canManage=false;
@@ -198,7 +198,7 @@ export class GrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-        if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 && grant.grantStatus.internalStatus==='DRAFT') && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'){
+        if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
             grant.canManage=true;
         }else{
             grant.canManage=false;

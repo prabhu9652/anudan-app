@@ -258,7 +258,7 @@ ngOnDestroy(){
      }
 
   private checkGrantPermissions() {
-    if (this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE') {
+    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
       this.canManage = this.currentGrant.canManage;
     } else {
       this.canManage = this.currentGrant.canManage;
@@ -502,7 +502,7 @@ ngOnDestroy(){
                     //this.grantData.changeMessage(grant);
                     //this.dataService.changeMessage(grant.id);
                     //this.currentGrant = grant;
-                    if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+                    if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
                         grant.canManage=true;
                     }else{
                         grant.canManage=false;

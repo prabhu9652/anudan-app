@@ -61,16 +61,16 @@
             <li routerLinkActive="active" *ngFor="let menuItem of grantMenuItems"
                 class="{{menuItem.class}} nav-item text-left">
                 <ng-container *ngIf="menuItem.title !== 'Grant Details'">
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant.canManage">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant && currentGrant.canManage">
 
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">{{menuItem.title}}</p>
                     </a>
-                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="!currentGrant.canManage && menuItem.title==='Preview & Submit'">
+                    <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="currentGrant && !currentGrant.canManage && menuItem.title==='Preview & Submit'">
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                 </ng-container>
             
-                <ng-container *ngIf="menuItem.title === 'Grant Details' && currentGrant.canManage">
+                <ng-container *ngIf="menuItem.title === 'Grant Details' && currentGrant && currentGrant.canManage">
                     <mat-expansion-panel cdkDropList (cdkDropListDropped)="drop($event)">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav()" style="padding: 15px;">
                           <mat-panel-title style="display: flex; align-items: center">

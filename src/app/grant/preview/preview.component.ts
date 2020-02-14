@@ -230,8 +230,9 @@ export class PreviewComponent implements OnInit {
     }
     return obj;
   }
+
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -447,7 +448,7 @@ export class PreviewComponent implements OnInit {
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
-          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+          if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
               grant.canManage=true;
           }else{
               grant.canManage=false;
@@ -1432,7 +1433,7 @@ export class PreviewComponent implements OnInit {
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
        wfModel.type=this.appComp.currentView;
        wfModel.grant = this.currentGrant;
-       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE';
+       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:(this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED');
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: {model:wfModel,userId:this.appComp.loggedInUser.id},
               panelClass: 'wf-assignment-class'

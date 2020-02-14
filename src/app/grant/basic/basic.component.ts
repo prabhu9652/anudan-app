@@ -441,7 +441,7 @@ export class BasicComponent implements OnInit {
 
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
-                    if(this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'){
+                    if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
                         this.currentGrant.canManage=true;
                     }else{
                         this.currentGrant.canManage=false;
