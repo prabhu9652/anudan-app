@@ -607,4 +607,31 @@ export class ReportSectionsComponent implements OnInit {
       }
 
 
+deleteAttachment(attributeId, attachmentId){
+
+    const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+      };
+
+      const url = '/api/user/' + this.appComp.loggedInUser.id + '/report/' + this.currentReport.id + '/attribute/'+attributeId+'/attachment/'+attachmentId;
+        this.http.post<Report>(url, this.currentReport, httpOptions).subscribe((report: Report) => {
+            this.singleReportDataService.changeMessage(report);
+            this.currentReport = report;
+            for(let section of this.currentReport.reportDetails.sections){
+                if(section && section.attributes){
+                    for(let attr of section.attributes){
+                    if(attributeId===attr.id){
+                        if(attr.attachments && attr.attachments.length>0){
+                        this.newField = 'attriute_'+attributeId+'_attachment_' + attr.attachments[attr.attachments.length-1].id;
+                        }
+                    }
+                    }
+                }
+            }
+        });
+    }
 }
