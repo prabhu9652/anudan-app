@@ -209,7 +209,7 @@ export class AdminLayoutComponent implements OnInit {
     }
 
     this.appComponent.currentView = 'grants';
-    this.router.navigate(['grants']);
+    this.router.navigate(['grants/draft']);
   }
 
   showHistory(historyOf,what2Show){

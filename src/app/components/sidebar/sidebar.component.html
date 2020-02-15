@@ -15,7 +15,7 @@
 
         <ng-container *ngIf="appComponent.currentView === 'dashboard' || appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
             <ng-container *ngFor="let menuItem of menuItems">
-                    <li (click)="manageMenutItemsDisplay($event)" routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports'"
+                    <li (click)="manageMenutItemsDisplay($event)" routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports' && menuItem.title !=='Grants'"
                         class="{{menuItem.class}} nav-item text-left">
                         <a class="nav-link" [routerLink]="[menuItem.path]">
                             <!--<i class="material-icons">{{menuItem.icon}}</i>-->
@@ -38,6 +38,22 @@
                             </a>
                         </li>
                     </mat-expansion-panel>
+
+
+                <mat-expansion-panel #grants id="grants" *ngIf="menuItem.title === 'Grants'">
+                    <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
+                        <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
+                            <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Grants
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <li routerLinkActive="active" *ngFor="let subMenu of grantSubMenuItems"
+                        class="{{subMenu.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
+                        <a class="nav-link py-0" [routerLink]="[subMenu.path]">
+                            <i class="material-icons" style="font-size:18px;">remove</i>
+                            <p>{{subMenu.title}}</p>
+                        </a>
+                    </li>
+                </mat-expansion-panel>
 
                     <mat-expansion-panel #reports id="reports" *ngIf="menuItem.title === 'Reports'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">

@@ -54,6 +54,9 @@ import {GrantNotesComponent} from '../../components/grantNotes/grantNotes.compon
 import {ReportNotesComponent} from '../../components/reportNotes/reportNotes.component';
 import {WorkflowManagementComponent} from '../../workflow-management/workflow-management.component';
 import {GrantsComponent} from '../../grants/grants.component';
+import {DraftGrantsComponent} from '../../grants/draft-grants/draft-grants.component';
+import {ActiveGrantsComponent} from '../../grants/active-grants/active-grants.component';
+import {ClosedGrantsComponent} from '../../grants/closed-grants/closed-grants.component';
 import {ApplicationsComponent} from '../../applications/applications.component';
 import {ReportsComponent} from '../../reports/reports.component';
 import {DisbursementsComponent} from '../../disbursements/disbursements.component';
@@ -116,6 +119,9 @@ import { UsersComponent } from '../../admin/users/users.component';
         GrantComponent,
         DashboardComponent,
         GrantsComponent,
+        DraftGrantsComponent,
+        ActiveGrantsComponent,
+        ClosedGrantsComponent,
         BasicComponent,
         SectionsComponent,
         ReportingComponent,

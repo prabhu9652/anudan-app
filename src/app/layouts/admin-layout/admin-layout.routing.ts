@@ -17,6 +17,9 @@ import {OrgadminComponent} from '../../organization//orgadmin/orgadmin.component
 import {RfpsComponent} from '../../rfps/rfps.component';
 import {WorkflowManagementComponent} from "../../workflow-management/workflow-management.component";
 import {GrantsComponent} from '../../grants/grants.component';
+import {DraftGrantsComponent} from '../../grants/draft-grants/draft-grants.component';
+import {ActiveGrantsComponent} from '../../grants/active-grants/active-grants.component';
+import {ClosedGrantsComponent} from '../../grants/closed-grants/closed-grants.component';
 import {BasicComponent} from '../../grant/basic/basic.component';
 import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
@@ -74,7 +77,9 @@ export const AdminLayoutRoutes: Routes = [
   //     }]
   // }
   {path: 'dashboard', component: DashboardComponent},
-  {path: 'grants', component: GrantsComponent},
+  {path: 'grants/draft', component: DraftGrantsComponent},
+  {path: 'grants/active', component: ActiveGrantsComponent},
+  {path: 'grants/closed', component: ClosedGrantsComponent},
   {path: 'applications', component: ApplicationsComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'disbursements', component: DisbursementsComponent},
