@@ -46,6 +46,8 @@ import {DatePipe} from '@angular/common';
 import {BottomsheetAttachmentsComponent} from '../components/bottomsheetAttachments/bottomsheetAttachments.component';
 import {BottomsheetNotesComponent} from "../components/bottomsheetNotes/bottomsheetNotes.component";
 import {interval,Subject} from "rxjs";
+import {Report, ReportTemplate} from '../model/report'
+import {ReportDataService} from '../report.data.service'
 
 declare var $: any;
 
@@ -76,6 +78,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     currentGrantId = 0;
     userActivity;
     userInactive: Subject<any> = new Subject();
+    approvedReports: Report[];
+    reports: Report[];
 
     @ViewChild('editFieldModal') editFieldModal: ElementRef;
     @ViewChild('createFieldModal') createFieldModal: ElementRef;
@@ -104,7 +108,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         , private _bottomSheet: MatBottomSheet
         , private elem: ElementRef
         , private datepipe: DatePipe
-        , public colors: Colors) {
+        , public colors: Colors
+        , private reportService: ReportDataService) {
         this.colors = new Colors();
     }
 
@@ -1157,5 +1162,25 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   refreshUserState() {
     clearTimeout(this.userActivity);
     this.setTimeout();
+  }
+
+
+  public showActiveReports(){
+      console.log(this);
+      const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })};
+
+      const user = JSON.parse(localStorage.getItem('USER'));
+      const url = '/api/user/' + user.id + '/report/';
+      this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
+          reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+          this.reportService.changeMessage(reports);
+          this.approvedReports = this.reports.filter(a => a.status.internalStatus=='CLOSED');
+
+      });
   }
 }

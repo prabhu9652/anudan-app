@@ -40,12 +40,13 @@ import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
+import {GrantComponent} from '../grant.component'
 
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
-  providers:[SidebarComponent, PDFExportComponent],
+  providers:[SidebarComponent, PDFExportComponent, GrantComponent],
   styles: [`
     ::ng-deep .cdk-global-overlay-wrapper {
     justify-content:center !important;
@@ -117,7 +118,8 @@ export class PreviewComponent implements OnInit {
       , private datepipe: DatePipe
       , public colors: Colors
       , private sidebar: SidebarComponent
-      , private exportAsService: ExportAsService) {
+      , private exportAsService: ExportAsService
+      , public grantComponent: GrantComponent) {
     this.colors = new Colors();
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
@@ -920,7 +922,7 @@ export class PreviewComponent implements OnInit {
 
         if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
-            this.router.navigate(['grants']);
+            this.router.navigate(['grants/draft']);
         }
 
         //this.checkGrantPermissions();
@@ -1536,5 +1538,10 @@ getCleanText(section:Section): string{
             saveAs(data,docName+"."+docType);
         });
 
+    }
+
+
+    showActiveReports(){
+        this.grantComponent.showActiveReports();
     }
 }

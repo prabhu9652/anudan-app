@@ -727,3 +727,14 @@ kendo-pdf-export {
 .mat-list-item{
     border: 1px 1px #d4d4d4;
 }
+
+.addnl-report-class{
+    min-width: calc(100% - 422px) !important;
+    max-width: calc(100% - 422px) !important;
+    height: 100% !important;
+    position: relative !important;
+    left: 150px !important;
+    overflow: scroll !important;
+    top: 53px;
+    max-height: calc(100% - 35px);
+}
