@@ -55,6 +55,12 @@ export const REPORT_ROUTES: RouteInfo[] = [
     { path: '/reports/approved', title: 'Approved',  icon: 'preview.svg', class: '' }
 ];
 
+export const GRANT_SUB_ROUTES: RouteInfo[] = [
+    { path: '/grants/draft', title: 'Draft',  icon: 'grant.svg', class: '' },
+    { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '' },
+    { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '' }
+];
+
 export const PLATFORM_ROUTES: RouteInfo[] = [
     { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '' }
 ];
@@ -89,6 +95,7 @@ export const ADMIN_ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
   grantMenuItems: any[];
+  grantSubMenuItems: any[];
   sectionMenuItems: any[];
   reportSectionMenuItems: any[];
   adminMenuItems: any[];
@@ -110,6 +117,7 @@ export class SidebarComponent implements OnInit {
 
   @ViewChild('organization') organizationElem: MatExpansionPanel;
   @ViewChild('reports') reportsElem: MatExpansionPanel;
+  @ViewChild('grants') grantsElem: MatExpansionPanel;
 
 
   constructor(public appComponent: AppComponent,
@@ -164,6 +172,7 @@ drop(event: CdkDragDrop<string[]>) {
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
+    this.grantSubMenuItems = GRANT_SUB_ROUTES.filter(menuItem => menuItem);
     this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
 
@@ -181,9 +190,9 @@ drop(event: CdkDragDrop<string[]>) {
     this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
 
 
-    if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
+    /*if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
       this.appComponent.action = 'preview';
-    }
+    }*/
     
   }
 
@@ -313,8 +322,13 @@ drop(event: CdkDragDrop<string[]>) {
         const thisMenu = $(submenu[0]).attr('id');
         if(thisMenu==='organization'){
             this.reportsElem.close();
+            this.grantsElem.close();
         } else if(thisMenu==='reports'){
            this.organizationElem.close();
+           this.grantsElem.close();
+       }else if(thisMenu==='grants'){
+           this.organizationElem.close();
+           this.reportsElem.close();
        }
     }
   }

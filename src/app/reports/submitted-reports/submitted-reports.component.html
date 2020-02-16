@@ -13,8 +13,9 @@
                 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
                      *ngFor="let report of submittedReports; let i = index" (click)="manageReport(report)">
-                  <div class="col-12 mb-0"><p class="text-subheader text-left mb-0">
-                    {{report.grant.name}}</p>
+                  <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">
+                    Grant Name: <b>{{report.grant.name}}</b>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    Grantee Organization: <b>{{report.grant.organization.name}}</b></p>
                   </div>
                   <div class="col-12">
                     <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>

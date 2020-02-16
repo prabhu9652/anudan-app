@@ -39,6 +39,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-preview',
@@ -229,8 +230,9 @@ export class PreviewComponent implements OnInit {
     }
     return obj;
   }
+
   private checkGrantPermissions() {
-    if (this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')) {
+    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -446,7 +448,7 @@ export class PreviewComponent implements OnInit {
 
     this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
-          if(grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 || grant.grantStatus.internalStatus==='DRAFT'){
+          if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
               grant.canManage=true;
           }else{
               grant.canManage=false;
@@ -1431,7 +1433,7 @@ export class PreviewComponent implements OnInit {
        wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
        wfModel.type=this.appComp.currentView;
        wfModel.grant = this.currentGrant;
-       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:this.currentGrant.actionAuthorities && this.currentGrant.actionAuthorities.permissions.includes('MANAGE')
+       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:(this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED');
         const dialogRef = this.dialog.open(WfassignmentComponent, {
               data: {model:wfModel,userId:this.appComp.loggedInUser.id},
               panelClass: 'wf-assignment-class'
@@ -1514,5 +1516,25 @@ getCleanText(section:Section): string{
                 });
             }
         });
+    }
+
+    downloadAttachment(grantId:number,fileId:number, docName:string,docType:string){
+
+        const httpOptions = {
+            responseType: 'blob' as 'json',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                        + grantId + '/file/'+fileId;
+
+        this.http.get(url,httpOptions).subscribe((data) =>{
+            saveAs(data,docName+"."+docType);
+        });
+
     }
 }

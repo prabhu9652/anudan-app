@@ -192,7 +192,7 @@
                                     <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
                                             <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
-                                                <a href="/api/public/grants/{{currentGrant.id}}/file/{{doc.id}}" target="_blank">
+                                                <a (click)="downloadAttachment(currentGrant.id,doc.id,doc.name,doc.type)">
                                                 <span class="ml-3">
                                                     <ng-container *ngIf="doc.type === 'pdf'">
                                                         <img src="./assets/img/pdf.png" style="width:20px;">

@@ -1,24 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders,HTTP_INTERCEPTORS} from '@angular/common/http';
-import {User} from '../model/user';
-import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
-import {AppComponent} from '../app.component';
+import {User} from '../../model/user';
+import {SerializationHelper, Tenant, Tenants} from '../../model/dahsboard';
+import {AppComponent} from '../../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {GrantDataService} from '../grant.data.service';
-import {DataService} from '../data.service';
-import {GrantUpdateService} from '../grant.update.service';
-import {Grant,GrantTemplate} from '../model/dahsboard'
+import {GrantDataService} from '../../grant.data.service';
+import {DataService} from '../../data.service';
+import {GrantUpdateService} from '../../grant.update.service';
+import {Grant,GrantTemplate} from '../../model/dahsboard'
 import * as $ from 'jquery'
 import {ToastrService, IndividualConfig} from 'ngx-toastr';
-import {GrantComponent} from "../grant/grant.component";
+import {GrantComponent} from "../../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
-import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
-import {FieldDialogComponent} from '../components/field-dialog/field-dialog.component';
+import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
+import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './grants.component.html',
-  styleUrls: ['./grants.component.css'],
+  selector: 'app-closed-grants',
+  templateUrl: './closed-grants.component.html',
+  styleUrls: ['./closed-grants.component.css'],
   providers: [GrantComponent],
   styles: [`
       ::ng-deep .specific-class > .mat-expansion-indicator:after {
@@ -39,7 +39,7 @@ import {FieldDialogComponent} from '../components/field-dialog/field-dialog.comp
       }
     `]
 })
-export class GrantsComponent implements OnInit {
+export class ClosedGrantsComponent implements OnInit {
 
   user: User;
   tenants: Tenants;
