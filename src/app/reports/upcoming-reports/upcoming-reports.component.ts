@@ -160,7 +160,7 @@ export class UpcomingReportsComponent implements OnInit {
     viewAddnlReports(grantId: number){
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
             data: {grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
-            panelClass: 'wf-assignment-class'
+            panelClass: 'addnl-report-class'
         });
 
         dialogRef1.afterClosed().subscribe(result => {
