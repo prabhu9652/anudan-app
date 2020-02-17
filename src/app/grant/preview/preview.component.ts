@@ -154,7 +154,7 @@ export class PreviewComponent implements OnInit {
     });
 
   const tenantCode = localStorage.getItem('X-TENANT-CODE');
-  this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+  this.logoUrl = "/api/public/images/"+this.currentGrant.grantorOrganization.code+"/logo";
 
     /*interval(3000).subscribe(t => {
 

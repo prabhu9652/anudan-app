@@ -85,7 +85,7 @@ export class ReportPreviewComponent implements OnInit {
         this.originalReport = JSON.parse(JSON.stringify(this.currentReport));
 
         const tenantCode = localStorage.getItem('X-TENANT-CODE');
-        this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+        this.logoUrl = "/api/public/images/"+this.currentReport.grant.grantorOrganization.code+"/logo";
 
         this.appComp.createNewReportSection.subscribe((val) =>{
             if(val){
