@@ -324,14 +324,19 @@ drop(event: CdkDragDrop<string[]>) {
             this.reportsElem.close();
             this.grantsElem.close();
         } else if(thisMenu==='reports'){
-           this.organizationElem.close();
+           if(this.organizationElem){
+               this.organizationElem.close();
+           }
            this.grantsElem.close();
        }else if(thisMenu==='grants'){
-           this.organizationElem.close();
+            if(this.organizationElem){
+                this.organizationElem.close();
+            }
            this.reportsElem.close();
        }
     }
   }
+
 
 }
 
