@@ -1822,6 +1822,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                             }
               }
 
+              console.log(">>>>"+JSON.stringify(this.currentGrant));
               formData.append('grantToSave',JSON.stringify(this.currentGrant));
 
 
