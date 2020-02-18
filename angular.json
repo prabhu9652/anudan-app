@@ -46,7 +46,8 @@
               "node_modules/hammerjs/hammer.min.js",
               "src/assets/js/oauth.min.js",
               "src/assets/js/jquery.connections.js",
-              "node_modules/jsplumb/dist/js/jsplumb.js"
+              "node_modules/jsplumb/dist/js/jsplumb.js",
+              "node_modules/indian-currency-in-words/index.js"
             ]
           },
           "configurations": {

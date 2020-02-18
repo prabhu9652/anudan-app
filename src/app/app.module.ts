@@ -43,7 +43,6 @@ import {Colors} from './model/app-config';
 import { ExportAsModule } from 'ngx-export-as';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { NgxSpinnerModule } from "ngx-spinner";
-import {indianCurrencyInWords} from 'indian-currency-in-words';
 
 const config = new AuthServiceConfig([
   {
@@ -129,8 +128,7 @@ export function provideConfig() {
       MatTooltipModule,
       DatePipe,
       Colors,
-      MatMenuModule,
-      indianCurrencyInWords
+      MatMenuModule
   ],
   entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent,MessagingComponent],
   schemas: [NO_ERRORS_SCHEMA],
