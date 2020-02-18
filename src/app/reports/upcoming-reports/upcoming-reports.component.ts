@@ -11,8 +11,8 @@ import {ReportTemplateDialogComponent} from '../../components/report-template-di
 import {GrantSelectionDialogComponent} from '../../components/grant-selection-dialog/grant-selection-dialog.component';
 import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/addnlreports-dialog.component';
 import {ReportComponent} from '../report/report.component';
-import indianCurrencyInWords from 'indian-currency-in-words';
 import {TitleCasePipe} from '@angular/common';
+import {indianCurrencyInWords} from 'indian-currency-in-words';
 
 @Component({
   selector: 'app-upcoming-reports',

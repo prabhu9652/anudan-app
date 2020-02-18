@@ -34,7 +34,7 @@ import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
-import indianCurrencyInWords from 'indian-currency-in-words';
+import {indianCurrencyInWords} from 'indian-currency-in-words';
 
 export const APP_DATE_FORMATS = {
    parse: {

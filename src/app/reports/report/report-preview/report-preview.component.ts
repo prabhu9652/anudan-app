@@ -19,8 +19,8 @@ import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
-import indianCurrencyInWords from 'indian-currency-in-words';
 import {TitleCasePipe} from '@angular/common';
+import {indianCurrencyInWords} from 'indian-currency-in-words';
 
 
 @Component({
