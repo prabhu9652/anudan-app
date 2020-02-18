@@ -13,7 +13,8 @@ import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.c
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import {TitleCasePipe} from '@angular/common';
-import {indianCurrencyInWords} from 'indian-currency-in-words';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 
 export const APP_DATE_FORMATS = {

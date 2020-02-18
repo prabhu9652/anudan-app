@@ -6,7 +6,8 @@ import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {TitleCasePipe} from '@angular/common';
-import {indianCurrencyInWords} from 'indian-currency-in-words';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 @Component({
   selector: 'app-submitted-reports',

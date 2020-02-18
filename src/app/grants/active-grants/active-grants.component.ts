@@ -14,7 +14,7 @@ import {GrantComponent} from "../../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
-import {indianCurrencyInWords} from 'indian-currency-in-words';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
 import {TitleCasePipe} from '@angular/common';
 
 @Component({

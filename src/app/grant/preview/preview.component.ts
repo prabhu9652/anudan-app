@@ -41,7 +41,8 @@ import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
 import {GrantComponent} from '../grant.component'
-import {indianCurrencyInWords} from 'indian-currency-in-words';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 @Component({
   selector: 'app-preview',

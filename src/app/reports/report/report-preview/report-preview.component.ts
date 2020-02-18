@@ -20,7 +20,8 @@ import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
 import {TitleCasePipe} from '@angular/common';
-import {indianCurrencyInWords} from 'indian-currency-in-words';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 
 @Component({
