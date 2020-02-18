@@ -59,7 +59,6 @@
     "html2pdf.js": "^0.9.1",
     "humanize-duration": "^3.20.1",
     "humanize-duration-ts": "^2.0.0",
-    "indian-currency-in-words": "^1.0.5",
     "jquery": "^3.4.0",
     "jspdf": "^1.5.3",
     "jsplumb": "^2.11.2",
