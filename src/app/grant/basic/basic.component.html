@@ -92,11 +92,17 @@
                             </div> 
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <mat-form-field [floatLabel]="'always'">
                             <mat-label>Grant Amount (₹)</mat-label>
                             <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" placeholder="Enter grant amount" autocomplete="false">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-9">
+                        <mat-form-field [floatLabel]="'always'">
+                            <mat-label>Grant Amount (In Words)</mat-label>
+                            <input matInput disabled readonly [value]="getGrantAmountInWords(currentGrant.amount)">
                         </mat-form-field>
                     </div>
                     <!--div class="col-12">

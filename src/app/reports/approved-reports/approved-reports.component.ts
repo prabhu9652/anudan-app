@@ -6,11 +6,14 @@ import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
+import indianCurrencyInWords from 'indian-currency-in-words';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-approved-reports',
   templateUrl: './approved-reports.component.html',
-  styleUrls: ['./approved-reports.component.scss']
+  styleUrls: ['./approved-reports.component.scss'],
+                                                    providers: [TitleCasePipe]
 })
 export class ApprovedReportsComponent implements OnInit {
     reports: Report[];
@@ -23,7 +26,8 @@ export class ApprovedReportsComponent implements OnInit {
         private http: HttpClient,
         private router: Router,
         private appComp: AppComponent,
-        private spinner: NgxSpinnerService){
+        private spinner: NgxSpinnerService,
+        private titlecasePipe: TitleCasePipe){
         }
 
   ngOnInit() {
@@ -65,4 +69,13 @@ export class ApprovedReportsComponent implements OnInit {
         this.router.navigate(['report/report-preview']);
     }
   }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
+    }
 }
