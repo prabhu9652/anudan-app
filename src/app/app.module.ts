@@ -43,6 +43,7 @@ import {Colors} from './model/app-config';
 import { ExportAsModule } from 'ngx-export-as';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { NgxSpinnerModule } from "ngx-spinner";
+import {indianCurrencyInWords} from 'indian-currency-in-words';
 
 const config = new AuthServiceConfig([
   {
@@ -90,6 +91,7 @@ export function provideConfig() {
     MatMenuModule,
     MDBBootstrapModule.forRoot(),
     ExportAsModule,
+    indianCurrencyInWords,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),
