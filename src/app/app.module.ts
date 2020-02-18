@@ -91,7 +91,6 @@ export function provideConfig() {
     MatMenuModule,
     MDBBootstrapModule.forRoot(),
     ExportAsModule,
-    indianCurrencyInWords,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),
@@ -130,7 +129,8 @@ export function provideConfig() {
       MatTooltipModule,
       DatePipe,
       Colors,
-      MatMenuModule
+      MatMenuModule,
+      indianCurrencyInWords
   ],
   entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent,MessagingComponent],
   schemas: [NO_ERRORS_SCHEMA],
