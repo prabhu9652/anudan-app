@@ -634,4 +634,77 @@ deleteAttachment(attributeId, attachmentId){
             }
         });
     }
+
+
+
+    addColumn(attr: Attribute){
+           for(let row of attr.fieldTableValue) {
+
+            const col = new ColumnData();
+              col.id = Math.round(Math.random() * 1000000000);
+              col.name = "";
+              col.value = '';
+            row.columns.push(col);
+           }
+           this.newField = 'column_' + attr.fieldTableValue[0].columns[attr.fieldTableValue[0].columns.length-1].id;
+      }
+
+      addRow(attr: Attribute){
+           const row = new TableData();
+           row.name = '';
+           row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+           for(let i=0; i<row.columns.length;i++){
+            row.columns[i].value = '';
+           }
+
+           attr.fieldTableValue.push(row);
+      }
+
+     deleteRow(sectionId, attributeId,rowIndex){
+
+        const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: 'Delete Row?'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              for(let section of this.currentReport.reportDetails.sections){
+                if(section.id === sectionId){
+                    for(let attrib of section.attributes){
+                        if(attrib.id == attributeId){
+                            console.log(attrib.fieldTableValue);
+                            const tableData = attrib.fieldTableValue;
+                            tableData.splice(rowIndex,1);
+                        }
+                    }
+                }
+              }
+            }
+        });
+}
+
+    deleteColumn(sectionId, attributeId,colIndex){
+
+        const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: 'Delete Column?'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                for(let section of this.currentReport.reportDetails.sections){
+                  if(section.id === sectionId){
+                      for(let attrib of section.attributes){
+                          if(attrib.id == attributeId){
+                              console.log(attrib.fieldTableValue);
+                              for(let row of attrib.fieldTableValue){
+                                row.columns.splice(colIndex, 1);
+                              }
+                          }
+                      }
+                  }
+                }
+            }
+        });
+
+    }
 }
