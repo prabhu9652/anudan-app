@@ -213,15 +213,16 @@
                             <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
                               
                                 <td style="border: 1px solid #e4e4e4;">
-                                  <mat-icon (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
-                                            aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
-                                            aria-label="Example home icon" inline="true" title="Delete this column">
-                                    delete_outline
-                                  </mat-icon>
+
                                   <mat-form-field>
+                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
+                                              aria-hidden="false" style="font-size:18px;position: relative; left: 90%;z-index:0;cursor:pointer;top:3px;"
+                                              aria-label="Example home icon" inline="false" title="Delete this column">
+                                      delete_outline
+                                    </mat-icon>
+                                    <label>Column Description</label>
                                     <input id="column_{{column.id}}" matInput [(ngModel)]="column.name" class="anu-input"
                                            [ngModelOptions]="{standAlone:true}"
-                                           placeholder="Column description" 
                                            (ngModelChange)="checkGrant()">
                                   </mat-form-field>
                                 </td>
@@ -231,15 +232,16 @@
                             <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                               <tr>
                                 <td width="20%" style="position: sticky; left: 0; z-index: 1;background: rgb(244,244,244)">
-                                  <mat-icon (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
-                                            aria-hidden="false" style="top: 18px; position: relative; left: 90%;z-index:0;cursor:pointer;"
-                                            aria-label="Example home icon" inline="true" title="Delete this row">
-                                    delete_outline
-                                  </mat-icon>
+
                                   <mat-form-field>
-                                    <textarea matInput [(ngModel)]="row.name" class="anu-input"
+                                    <mat-icon (click)="confirm(section.id,attribute.id,[],i,'row','Delete row?')"
+                                              aria-hidden="false" style="font-size:18px;top: 25px; position: relative; left: 90%;z-index:1;cursor:pointer;"
+                                              aria-label="Example home icon" inline="false" title="Delete this row">
+                                      delete_outline
+                                    </mat-icon>
+                                    <label style="width: 100%;position: relative;text-align: center;">Row Description</label>
+                                    <textarea matInput [(ngModel)]="row.name" class="anu-input" style="height:80px !important;"
                                            [ngModelOptions]="{standAlone:true}"
-                                           placeholder="Row description" 
                                            (ngModelChange)="checkGrant()"></textarea>
                                   </mat-form-field>
                                 </td>

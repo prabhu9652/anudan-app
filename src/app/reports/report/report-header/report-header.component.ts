@@ -12,6 +12,9 @@ import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
+import {TitleCasePipe} from '@angular/common';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 
 export const APP_DATE_FORMATS = {
@@ -34,7 +37,7 @@ export const APP_DATE_FORMATS = {
                 provide: DateAdapter, useClass: CustomDateAdapter
               },{
                 provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-             }]
+             },TitleCasePipe]
 })
 export class ReportHeaderComponent implements OnInit {
 
@@ -58,7 +61,8 @@ export class ReportHeaderComponent implements OnInit {
     private adminComp: AdminLayoutComponent,
     private http: HttpClient,
     private toastr: ToastrService,
-    private sidebar: SidebarComponent) {
+    private sidebar: SidebarComponent,
+    private titlecasePipe: TitleCasePipe) {
     this.route.params.subscribe( (p) => {
         this.action = p['action'];
         this.appComp.action = this.action;
@@ -253,5 +257,14 @@ export class ReportHeaderComponent implements OnInit {
 
     showWorkflowAssigments(){
         this.adminComp.showWorkflowAssigments();
+    }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
     }
 }

@@ -58,20 +58,15 @@
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Name:</span>
                 <div class="ml-0 mb-3"><b>{{currentReport.grant.name}}</b></div>
               </div>
-              <div class="col-4 mb-2">
+              <div class="col-3 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Start Date:</span>
-                <div class="ml-0 mb-3"><b>{{currentReport.stDate | date:'dd-MMM-yyyy'}}</b></div>
+                <div class="ml-0 mb-3"><b>{{currentReport.grant.stDate | date:'dd-MMM-yyyy'}}</b></div>
               </div>
-              <div class="col-4 mb-2">
+              <div class="col-3 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant End Date:</span>
-                <div class="ml-0 mb-3"><b>{{currentReport.enDate | date:'dd-MMM-yyyy'}}</b></div>
+                <div class="ml-0 mb-3"><b>{{currentReport.grant.enDate | date:'dd-MMM-yyyy'}}</b></div>
               </div>
-              <div class="col-4 mb-2">
-                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Amount:</span>
-                <div class="ml-0 mb-3" style="display: flex; align-items: center;"><img src="./assets/img/rupee.png" style="width:12px;"><b>{{currentReport.grant.amount}}</b></div>
-
-              </div>
-              <div class="col-4 mb-2">
+              <div class="col-6 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization:</span>
                 <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3"><b>{{currentReport.grant.organization.name}}</b></div>
               </div>
@@ -79,6 +74,14 @@
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization Representative:</span>
                 <div class="ml-0 mb-3"><b>{{currentReport.grant.representative}}</b></div>
               </div>
+              <div class="col-7 mb-2">
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Amount:</span>
+                <div class="ml-0 mb-3" style="display: flex; align-items: center;"><b><img src="./assets/img/rupee.png" style="width:9px;">{{currentReport.grant.amount}}&nbsp;&nbsp;&nbsp;
+                  <small>{{getGrantAmountInWords(currentReport.grant.amount)}}</small></b>
+                </div>
+              </div>
+
+
             </div>
           </div>
           <div class="col-4 mb-2">

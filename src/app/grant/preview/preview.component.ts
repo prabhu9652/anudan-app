@@ -18,7 +18,7 @@ import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
-import {DatePipe} from '@angular/common';
+import {DatePipe,TitleCasePipe} from '@angular/common';
 import {Colors,Configuration} from '../../model/app-config';
 import {User} from '../../model/user';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
@@ -41,12 +41,14 @@ import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
 import {GrantComponent} from '../grant.component'
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
-  providers:[SidebarComponent, PDFExportComponent, GrantComponent],
+  providers:[SidebarComponent, PDFExportComponent, GrantComponent,TitleCasePipe],
   styles: [`
     ::ng-deep .cdk-global-overlay-wrapper {
     justify-content:center !important;
@@ -119,7 +121,8 @@ export class PreviewComponent implements OnInit {
       , public colors: Colors
       , private sidebar: SidebarComponent
       , private exportAsService: ExportAsService
-      , public grantComponent: GrantComponent) {
+      , public grantComponent: GrantComponent
+      , private titlecasePipe:TitleCasePipe) {
     this.colors = new Colors();
 
     this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
@@ -154,7 +157,7 @@ export class PreviewComponent implements OnInit {
     });
 
   const tenantCode = localStorage.getItem('X-TENANT-CODE');
-  this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+  this.logoUrl = "/api/public/images/"+this.currentGrant.grantorOrganization.code+"/logo";
 
     /*interval(3000).subscribe(t => {
 
@@ -920,7 +923,7 @@ export class PreviewComponent implements OnInit {
         this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
 
-        if(this.currentGrant.actionAuthorities===undefined && this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
+        if(this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
             this.router.navigate(['grants/draft']);
         }
@@ -1543,5 +1546,14 @@ getCleanText(section:Section): string{
 
     showActiveReports(){
         this.grantComponent.showActiveReports();
+    }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
     }
 }

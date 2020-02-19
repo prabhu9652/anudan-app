@@ -19,13 +19,16 @@ import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
+import {TitleCasePipe} from '@angular/common';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 
 @Component({
   selector: 'app-report-preview',
   templateUrl: './report-preview.component.html',
   styleUrls: ['./report-preview.component.scss'],
-  providers: [PDFExportComponent, SidebarComponent],
+  providers: [PDFExportComponent, SidebarComponent,TitleCasePipe],
   styles:[`
     ::ng-deep .wf-assignment-class .mat-dialog-container{
         overflow: hidden !important;
@@ -53,6 +56,7 @@ export class ReportPreviewComponent implements OnInit {
         private router: Router,
         public adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent
+        ,private titlecasePipe: TitleCasePipe
         ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
@@ -85,7 +89,7 @@ export class ReportPreviewComponent implements OnInit {
         this.originalReport = JSON.parse(JSON.stringify(this.currentReport));
 
         const tenantCode = localStorage.getItem('X-TENANT-CODE');
-        this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+        this.logoUrl = "/api/public/images/"+this.currentReport.grant.grantorOrganization.code+"/logo";
 
         this.appComp.createNewReportSection.subscribe((val) =>{
             if(val){
@@ -394,5 +398,14 @@ export class ReportPreviewComponent implements OnInit {
             saveAs(data,docName+"."+docType);
         });
 
+    }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
     }
 }

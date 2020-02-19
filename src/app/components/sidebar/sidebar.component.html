@@ -143,9 +143,7 @@
                         <li *ngIf="currentReport.canManage && !currentReport.forGranteeUse">
                             <button  (click)="createNewReportSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
                         </li>
-                        <li>
-                            <button *ngIf="currentReport.canManage" (click)="createNewReportSection()" class="btn btn-sm btn-white" style="margin: 7px 0 0px 63px;border-radius: 2px !important;padding: 1px 10px 1px 10px;">Add a section<img src="./assets/img/add.svg" class="ml-2" style="width:24px;"></button>
-                        </li>
+
                     </mat-expansion-panel>
                 </ng-container>
             </li>

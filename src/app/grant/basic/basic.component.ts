@@ -20,7 +20,7 @@ import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService, IndividualConfig} from 'ngx-toastr';
 import {MatBottomSheet, MatDatepicker, MatDatepickerInputEvent, MatDialog, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
-import {DatePipe} from '@angular/common';
+import {DatePipe,TitleCasePipe} from '@angular/common';
 import {Colors,Configuration} from '../../model/app-config';
 import {interval, Observable, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
@@ -34,6 +34,7 @@ import {SectionsComponent} from '../sections/sections.component'
 import {map, startWith} from 'rxjs/operators';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
 
 
 export const APP_DATE_FORMATS = {
@@ -57,7 +58,7 @@ export const APP_DATE_FORMATS = {
       },
       {
          provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-      }, SectionsComponent]
+      }, SectionsComponent,TitleCasePipe]
 })
 export class BasicComponent implements OnInit {
 
@@ -124,7 +125,8 @@ export class BasicComponent implements OnInit {
       , private datepipe: DatePipe
       , public colors: Colors
       , public sidebar: SidebarComponent
-      , private sectionsRef: SectionsComponent) {
+      , private sectionsRef: SectionsComponent
+      , private titlecasePipe:TitleCasePipe) {
     this.colors = new Colors();
     this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -1424,5 +1426,13 @@ setTimeout() {
         this.adminComp.showWorkflowAssigments();
     }
 
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
+    }
 
 }

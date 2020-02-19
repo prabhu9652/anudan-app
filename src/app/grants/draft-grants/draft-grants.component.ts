@@ -14,12 +14,14 @@ import {GrantComponent} from "../../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../../components/grant-template-dialog/grant-template-dialog.component';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
+import {TitleCasePipe} from '@angular/common';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
 
 @Component({
   selector: 'app-draft-grants',
   templateUrl: './draft-grants.component.html',
   styleUrls: ['./draft-grants.component.css'],
-  providers: [GrantComponent],
+  providers: [GrantComponent,TitleCasePipe],
   styles: [`
       ::ng-deep .specific-class > .mat-expansion-indicator:after {
         color: black;
@@ -65,7 +67,8 @@ export class DraftGrantsComponent implements OnInit {
               public grantComponent: GrantComponent,
               private dataService: DataService,
               private grantUpdateService: GrantUpdateService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private titlecasePipe: TitleCasePipe) {
   }
 
   ngOnInit() {
@@ -292,5 +295,14 @@ export class DraftGrantsComponent implements OnInit {
 
                               });
           // }
+      }
+
+      getGrantAmountInWords(amount:number){
+          let amtInWords = '-';
+          if(amount){
+              amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+              return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+          }
+          return amtInWords;
       }
 }

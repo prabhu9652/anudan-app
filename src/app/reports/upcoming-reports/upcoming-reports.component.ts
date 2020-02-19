@@ -10,12 +10,16 @@ import {MatDialog} from '@angular/material';
 import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
 import {GrantSelectionDialogComponent} from '../../components/grant-selection-dialog/grant-selection-dialog.component';
 import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/addnlreports-dialog.component';
-import {ReportComponent} from '../report/report.component'
+import {ReportComponent} from '../report/report.component';
+import {TitleCasePipe} from '@angular/common';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
+
 @Component({
   selector: 'app-upcoming-reports',
   templateUrl: './upcoming-reports.component.html',
   styleUrls: ['./upcoming-reports.component.scss'],
-  providers: [ReportComponent]
+  providers: [ReportComponent,TitleCasePipe]
 })
 export class UpcomingReportsComponent implements OnInit {
     reports: Report[];
@@ -35,7 +39,8 @@ export class UpcomingReportsComponent implements OnInit {
         private router: Router,
         public appComp: AppComponent,
         private dialog: MatDialog,
-        public reportComponent: ReportComponent){
+        public reportComponent: ReportComponent,
+        private titlecasePipe: TitleCasePipe){
         }
 
   ngOnInit() {
@@ -170,4 +175,12 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
+    }
 }

@@ -5,11 +5,15 @@ import {Report} from '../../model/report'
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {TitleCasePipe} from '@angular/common';
+import * as indianCurrencyInWords from 'indian-currency-in-words';
+
 
 @Component({
   selector: 'app-submitted-reports',
   templateUrl: './submitted-reports.component.html',
-  styleUrls: ['./submitted-reports.component.scss']
+  styleUrls: ['./submitted-reports.component.scss'],
+  providers: [TitleCasePipe]
 })
 export class SubmittedReportsComponent implements OnInit {
     reports: Report[];
@@ -21,7 +25,8 @@ export class SubmittedReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent){
+        private appComp: AppComponent,
+        private titlecasePipe: TitleCasePipe){
         }
 
   ngOnInit() {
@@ -61,4 +66,13 @@ export class SubmittedReportsComponent implements OnInit {
         this.router.navigate(['report/report-preview']);
     }
   }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords = '-';
+        if(amount){
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
+    }
 }
