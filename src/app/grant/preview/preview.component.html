@@ -17,8 +17,8 @@
                     <button mat-menu-item (click)="saveAs(currentGrant.name+'.pdf')"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF</button>
                     <button *ngIf="currentGrant.grantStatus.internalStatus==='ACTIVE' && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="inviteGrantee()"><mat-icon class="ml-1">mail</mat-icon>Invite Grantee</button>
                     <hr>
-                    <button *ngIf="this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="showHistory('grant',currentGrant)">View notes</button>
-                    <button mat-menu-item (click)="showWFAssigments()">View assignments</button>
+                    <button *ngIf="this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="showHistory('grant',currentGrant)">Notes</button>
+                    <button mat-menu-item (click)="showWFAssigments()">Assignments</button>
                     <button mat-menu-item *ngIf="(currentGrant.grantStatus.internalStatus==='ACTIVE' || currentGrant.grantStatus.internalStatus==='CLOSED') && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" (click)="showActiveReports()">View Reports</button>
                 </mat-menu>
             </div>

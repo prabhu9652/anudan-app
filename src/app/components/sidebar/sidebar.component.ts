@@ -7,7 +7,7 @@ import {Grant, Notifications} from '../../model/dahsboard';
 import {Report} from '../../model/report';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatDialog,MatExpansionPanel} from '@angular/material';
+import {MatDialog,MatExpansionPanel,MatDivider} from '@angular/material';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 
@@ -17,16 +17,17 @@ declare interface RouteInfo {
     title: string;
     icon: string;
     class: string;
+    divide: boolean;
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard.svg', class: '' },
-  { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '' },
-  { path: '/rfps', title: 'RFPs',  icon: 'rfp.svg', class: '' },
-  { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '' },
-  { path: '/grants', title: 'Grants',  icon: 'grant.svg', class: '' },
-  { path: '/reports', title: 'Reports',  icon: 'report.svg', class: '' },
-  { path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '' },
+  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard.svg', class: '',divide:false  },
+  { path: '/rfps', title: 'RFPs',  icon: 'rfp.svg', class: '',divide:false },
+  { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '',divide:false },
+  { path: '/grants', title: 'Grants',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/reports', title: 'Reports',  icon: 'report.svg', class: '',divide:false },
+  /*{ path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '',divide:false },*/
+  { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '',divide:true }
   /*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
@@ -38,43 +39,43 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_ROUTES: RouteInfo[] = [
-    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'grant.svg', class: '' },
-    { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '' },
-    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
+    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '',divide:false },
+    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const SINGLE_REPORT_ROUTES: RouteInfo[] = [
-    { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '' },
-    { path: '/report/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '' },
-    { path: '/report/report-preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '' }
+    { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/report/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '',divide:false },
+    { path: '/report/report-preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const REPORT_ROUTES: RouteInfo[] = [
-    { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '' },
-    { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '' },
-    { path: '/reports/approved', title: 'Approved',  icon: 'preview.svg', class: '' }
+    { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '',divide:false },
+    { path: '/reports/approved', title: 'Approved',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const GRANT_SUB_ROUTES: RouteInfo[] = [
-    { path: '/grants/draft', title: 'Draft',  icon: 'grant.svg', class: '' },
-    { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '' },
-    { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '' }
+    { path: '/grants/draft', title: 'In Progress',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '',divide:false },
+    { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const PLATFORM_ROUTES: RouteInfo[] = [
-    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '' }
+    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '',divide:false }
 ];
 
 
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
-  { path: '/organization/details', title: 'Details',  icon: 'stop', class: '' },
-  { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '' },
+  { path: '/organization/details', title: 'Details',  icon: 'stop', class: '',divide:false },
+  { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '',divide:false },
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
 export let REPORT_SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
-    { path: '/workflow-management', title: 'Manage Workflows',  icon:'person', class: '' }
+    { path: '/workflow-management', title: 'Manage Workflows',  icon:'person', class: '',divide:false }
 ];
 
 @Component({
@@ -263,9 +264,9 @@ drop(event: CdkDragDrop<string[]>) {
       this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
       for (let section of this.currentGrant.grantDetails.sections){
         if(section.sectionName!=='' && section.sectionName!=='_'){
-            SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
+            SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:'',divide:false});
         }else{
-            SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:''});
+            SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:'',divide:false});
         }
       }
 
@@ -280,9 +281,9 @@ drop(event: CdkDragDrop<string[]>) {
           this.currentReport.reportDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
           for (let section of this.currentReport.reportDetails.sections){
             if(section.sectionName!=='' && section.sectionName!=='_'){
-                REPORT_SECTION_ROUTES.push({path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:''});
+                REPORT_SECTION_ROUTES.push({path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:'',divide:false});
             }else{
-                REPORT_SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:''});
+                REPORT_SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:'',divide:false});
             }
           }
 
