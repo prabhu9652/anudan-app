@@ -122,7 +122,7 @@ export class DraftGrantsComponent implements OnInit {
 
   fetchDashboard(userId: string, grant: Grant) {
 
-  grant = null;
+ // grant = null;
   if(grant){
     this.saveGrant(grant);
   }else{
