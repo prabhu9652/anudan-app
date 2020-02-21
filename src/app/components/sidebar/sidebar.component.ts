@@ -57,7 +57,7 @@ export const REPORT_ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_SUB_ROUTES: RouteInfo[] = [
-    { path: '/grants/draft', title: 'In Progress',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/grants/draft', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
     { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '',divide:false },
     { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
 ];
