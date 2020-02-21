@@ -23,7 +23,9 @@
                         </a>
                     </li>
 
-
+                    <ng-container *ngIf="menuItem.divide && canManageOrg">
+                        <mat-divider></mat-divider>
+                    </ng-container>
                     <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization' && canManageOrg">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
@@ -33,7 +35,7 @@
                         <li routerLinkActive="active" *ngFor="let orgMenuItem of orgMenuItems"
                             class="{{orgMenuItem.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
                             <a class="nav-link py-0" [routerLink]="[orgMenuItem.path]">
-                                <i class="material-icons" style="font-size:18px;">{{orgMenuItem.icon}}</i>
+                                <i class="material-icons" style="font-size:18px;">remove</i>
                                 <p>{{orgMenuItem.title}}</p>
                             </a>
                         </li>
@@ -48,7 +50,11 @@
                     </mat-expansion-panel-header>
                     <li routerLinkActive="active" *ngFor="let subMenu of grantSubMenuItems"
                         class="{{subMenu.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
-                        <a class="nav-link py-0" [routerLink]="[subMenu.path]">
+                        <a class="nav-link py-0" [routerLink]="[subMenu.path]" *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && subMenu.title==='In-progress'">
+                            <i class="material-icons" style="font-size:18px;">remove</i>
+                            <p>{{subMenu.title}}</p>
+                        </a>
+                        <a class="nav-link py-0" [routerLink]="[subMenu.path]" *ngIf="subMenu.title!=='In-progress'">
                             <i class="material-icons" style="font-size:18px;">remove</i>
                             <p>{{subMenu.title}}</p>
                         </a>

@@ -20,8 +20,8 @@
               <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="editSection(section)">Edit Section name</button>
               <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
                 <hr>
-                <button  mat-menu-item (click)="showHistory('report',currentReport)">View notes</button>
-                <button mat-menu-item (click)="showWorkflowAssigments()">View assignments</button>
+                <button  mat-menu-item (click)="showHistory('report',currentReport)">Notes</button>
+                <button mat-menu-item (click)="showWorkflowAssigments()">Assignments</button>
             </ng-container>
           </ng-container>
         </mat-menu>
@@ -347,7 +347,7 @@
                                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                                     </mat-chip>-->
                                     <button class="btn btn-sm btn-blue w-100" [matAutocomplete]="auto"><img src="./assets/img/library.svg" class="w-10 mr-2" style="width:24px;">Browse from library</button>
-                                    <input id="templateLib_{{attribute.id}}" class=""
+                                    <input id="templateLib_{{attribute.id}}" class="" style="max-width: 0; height: 0; padding: 0 !important; margin: 0;"
                                            #fruitInput
                                            [formControl]="myControl"
                                            [matAutocomplete]="auto"
