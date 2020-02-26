@@ -31,6 +31,7 @@ export class UpcomingReportsComponent implements OnInit {
     futureReportsToSetup: Report[];
     subscribers: any = {};
     grants: Grant[] = [];
+    otherReportsClicked: boolean = false;
 
     constructor(
         private reportService: ReportDataService,
@@ -104,6 +105,9 @@ export class UpcomingReportsComponent implements OnInit {
       console.log(this.reportStartDate + "    " + this.reportEndDate);
   }
   manageReport(report:Report){
+    if(this.otherReportsClicked){
+        return;
+    }
     this.appComp.currentView = 'report';
     this.singleReportService.changeMessage(report);
     if(report.canManage && report.status.internalStatus!='CLOSED'){
@@ -163,6 +167,7 @@ export class UpcomingReportsComponent implements OnInit {
     }
 
     viewAddnlReports(grantId: number){
+        this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
             data: {grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
             panelClass: 'addnl-report-class'
@@ -170,7 +175,10 @@ export class UpcomingReportsComponent implements OnInit {
 
         dialogRef1.afterClosed().subscribe(result => {
             if(result && result.result){
+                this.otherReportsClicked = false;
                 this.manageReport(result.selectedReport);
+            }else{
+                this.otherReportsClicked = false;
             }
         });
     }
@@ -182,5 +190,14 @@ export class UpcomingReportsComponent implements OnInit {
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    highlight(ev: Event, state:boolean){
+        const target = ev.target as HTMLElement;
+        if(state){
+            target.style.fontWeight='bold';
+        }else{
+            target.style.fontWeight='normal';
+        }
     }
 }
