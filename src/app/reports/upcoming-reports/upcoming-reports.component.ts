@@ -186,7 +186,7 @@ export class UpcomingReportsComponent implements OnInit {
     getGrantAmountInWords(amount:number){
         let amtInWords = '-';
         if(amount){
-            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","").replace("only","");
+            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
