@@ -79,7 +79,6 @@ export class LoginComponent implements OnInit {
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     if(this.parameters.email){
         this.currentEmail=this.parameters.email;
-        this.loginForm.emailId = this.currentEmail;
     }
     this.logoURL = "/api/public/images/"+tenantCode+"/logo";
 
@@ -99,7 +98,7 @@ export class LoginComponent implements OnInit {
         return;
     }*/
     console.warn(this.loginForm.value);
-    const email = (this.emailId.value!==null && this.emailId.value!=="")?this.emailId.value:(this.currentEmail.value!==null && this.currentEmail.value!=="")?this.currentEmail:"";
+    const email = (this.emailId.value!==null && this.emailId.value!=="")?this.emailId.value:(this.currentEmail!==null && this.currentEmail!=="")?this.currentEmail:"";
     const user: AccessCredentials = {
       username: email,
       password: this.password.value,
