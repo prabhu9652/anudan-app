@@ -36,7 +36,7 @@
   <div class="col-lg-12">
     <div #container class="container text-left mt-2 px-3 py-2">
 
-      <div *ngIf="!canManage">
+      <div *ngIf="!currentGrant.canManage">
         <div class="row">
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
               <div *ngIf="action === getCleanText(section)" [disabled]="true">
@@ -98,7 +98,7 @@
         <hr>
       </div>
       <!--MANAGEMENT SECTION-->
-      <div *ngIf="canManage">
+      <div *ngIf="currentGrant.canManage">
 
         <div class="row">
           <div class="col-12">
