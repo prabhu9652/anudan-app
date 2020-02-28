@@ -36,7 +36,7 @@
   <div class="col-lg-12">
     <div #container class="container text-left mt-2 px-3 py-2">
 
-      <div *ngIf="!canManage">
+      <div *ngIf="!currentGrant.canManage">
         <div class="row">
           <ng-container *ngFor="let section of currentGrant.grantDetails.sections">
               <div *ngIf="action === getCleanText(section)" [disabled]="true">
@@ -98,7 +98,7 @@
         <hr>
       </div>
       <!--MANAGEMENT SECTION-->
-      <div *ngIf="canManage">
+      <div *ngIf="currentGrant.canManage">
 
         <div class="row">
           <div class="col-12">
@@ -130,7 +130,7 @@
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field>
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Title">
@@ -139,7 +139,7 @@
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
                           <mat-form-field>
 
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Title">
@@ -148,7 +148,7 @@
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Title">
@@ -157,7 +157,7 @@
                         <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
                           <mat-form-field>
 
-                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Title">
@@ -165,7 +165,7 @@
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"
                                    matInput placeholder="Title">
@@ -194,7 +194,7 @@
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Field Value"
                                    (ngModelChange)="checkGrant()">
@@ -267,7 +267,7 @@
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Target/Goal"
                                    (ngModelChange)="checkGrant()">
@@ -292,7 +292,7 @@
                         </div>
                         <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='multiline'">
                           <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    (ngModelChange)="checkGrant()"></textarea>
                         </div>

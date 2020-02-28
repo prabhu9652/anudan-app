@@ -23,6 +23,7 @@ import {interval} from 'rxjs';
 export class LoginComponent implements OnInit {
 
   user: User;
+  signInUser: AccessCredentials;
   provider: string;
   socialUser: SocialUser;
   headers: HttpHeaders;
@@ -32,12 +33,14 @@ export class LoginComponent implements OnInit {
   host: string;
   currentEmail:string='';
   orgName: string;
+  canSignIn: boolean = false;
+  reCaptchaResolved: boolean = false;
   showPassword: boolean = false;
   recaptchaToken:string;
   //recaptchaVisible = false;
   loginForm = new FormGroup({
     emailId: new FormControl('', Validators.email),
-    password: new FormControl(''),
+    password: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
   });
 
   constructor(private http: HttpClient,
@@ -76,6 +79,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+  this.loginForm.valueChanges.subscribe(data => {
+    if(data.emailId===null || data.password===null || data.emailId.trim()==="" || data.password.trim()===""){
+    this.reCaptchaResolved = false;
+    }
+  });
+
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     if(this.parameters.email){
         this.currentEmail=this.parameters.email;
@@ -98,8 +107,9 @@ export class LoginComponent implements OnInit {
         return;
     }*/
     console.warn(this.loginForm.value);
+    const email = (this.emailId.value!==null && this.emailId.value!=="")?this.emailId.value:(this.currentEmail!==null && this.currentEmail!=="")?this.currentEmail:"";
     const user: AccessCredentials = {
-      username: this.emailId.value,
+      username: email,
       password: this.password.value,
       provider: 'ANUDAN',
       role: 'user',
@@ -175,6 +185,11 @@ export class LoginComponent implements OnInit {
 
   resolved(evt){
     this.recaptchaToken = evt;
+    if(evt!=null){
+        this.reCaptchaResolved = true;
+    }else{
+        this.reCaptchaResolved = false;
+    }
   }
 
     togglePassword(action:string){
@@ -183,5 +198,12 @@ export class LoginComponent implements OnInit {
         }else if(action==='hide'){
             this.showPassword = false;
         }
+    }
+
+
+    public noWhitespaceValidator(control: FormControl) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
     }
 }

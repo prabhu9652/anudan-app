@@ -106,7 +106,7 @@
                       <ng-container class="mb-2">
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
@@ -117,7 +117,7 @@
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
@@ -128,7 +128,7 @@
                         <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
 
-                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
@@ -137,7 +137,7 @@
                         <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
-                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                     [ngModelOptions]="{standAlone:true}"
                                     
                                     matInput placeholder="Title">
@@ -147,11 +147,11 @@
                         </div>
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
-                            <input *ngIf="attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input *ngIf="attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
-                            <input *ngIf="!attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName" required class="anu-input"
+                            <input *ngIf="!attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                     readonly style="background:#F0F1F0 !important;"
                                    matInput placeholder="Title">
@@ -198,7 +198,7 @@
                         <div class="col-sm-3 col-lg-3 text-left" *ngIf="attribute.fieldType==='text'">
                           <mat-form-field>
                             <input matInput [(ngModel)]="attribute.fieldValue" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Field Value"
                                    >
@@ -270,7 +270,7 @@
                         <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field  *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                             <input matInput [(ngModel)]="attribute.grantLevelTarget" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Grant Level Target/Goal" readonly style="background:#F0F1F0 !important;"
                                    >
@@ -281,7 +281,7 @@
                         <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                             <input matInput [(ngModel)]="attribute.cumulativeActuals" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Grant Level Accomplishment" readonly style="background:#F0F1F0 !important;"
                             >
@@ -292,7 +292,7 @@
                         <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Report Target/Goal">
                           </mat-form-field>
@@ -302,7 +302,7 @@
                         <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi' && currentReport.status.name!=='ACTIVE'">
                           <mat-form-field *ngIf="(currentReport.canManage && currentReport.forGranteeUse)">
                             <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
-                                   [required]="attribute.deletable?'required':''"
+
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Report Level Accomplishment">
                           </mat-form-field>
@@ -328,7 +328,7 @@
                         </div>-->
                         <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='multiline'">
                           <textarea [(ngModel)]="attribute.fieldValue" class="anu-input h-100 w-100"
-                                    [required]="attribute.deletable?'required':''"
+
                                     [ngModelOptions]="{standAlone:true}"
                                     ></textarea>
                         </div>

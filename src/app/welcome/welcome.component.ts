@@ -60,7 +60,12 @@ export class WelcomeComponent implements OnInit {
 
             this.appComponent.selectedTemplate = grant.grantTemplate;
 
-            if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+            if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
+                grant.canManage=true;
+            }else{
+                grant.canManage=false;
+            }
+            if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
                 this.router.navigate(['grant/basic-details']);
             } else{
                 this.appComponent.action = 'preview';
