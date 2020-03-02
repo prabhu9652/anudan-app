@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
   kpiSubmissionTitle: string;
   currentGrantId: number;
   parameters: any;
+  grantInProgressCount:number;
 
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
@@ -78,7 +79,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  fetchDashboard(userId: string) {
+  fetchDashboard(userId: number) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -89,32 +90,10 @@ export class DashboardComponent implements OnInit {
 
     this.appComponent.loggedIn = true;
 
-    const url = '/api/users/' + userId + '/dashboard';
-    this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
+    const url = '/api/users/' + userId + '/dashboard/in-progress';
+    this.http.get<number>(url, httpOptions).subscribe((count: number) => {
 
-      // this.tenants = new Tenants();
-      this.tenants = tenants;
-      console.log(this.tenants);
-      // this.tenants = tenants;
-        if (this.tenants.tenants && this.tenants.tenants.length > 0) {
-        this.currentTenant = this.tenants.tenants[0];
-        this.hasTenant = true;
-        localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
-
-        for (const grant of this.currentTenant.grants) {
-          for (const submission of grant.submissions) {
-            if (submission.flowAuthorities) {
-              this.hasKpisToSubmit = true;
-              this.kpiSubmissionTitle = submission.title;
-              // this.kpiSubmissionDate = submission.submitBy;
-              break;
-            }
-          }
-          if (this.hasKpisToSubmit) {
-            break;
-          }
-        }
-      }
+     this.grantInProgressCount = count;
     },
         error1 => {
       const errorMsg = error1 as HttpErrorResponse;
@@ -205,6 +184,8 @@ export class DashboardComponent implements OnInit {
               }
              // this.router.navigate(['grants']);
           });
+    }else{
+        this.fetchDashboard(this.appComponent.loggedInUser.id);
     }
   }
 }

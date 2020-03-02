@@ -1,3 +1,13 @@
 <div class="main-content" style="display:flex;align-items:center;justify-content:center;">
-    DASHBOARD
+    <mat-card class="example-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"><img src="./assets/img/granticon.svg"></div>
+            <mat-card-title>In-progress Grants</mat-card-title>
+            <mat-card-subtitle>View Grants currently in-progress. These Grants are either assigned to you or part of a workflow of which you're an asignee.</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <h2>{{grantInProgressCount}}</h2>
+        </mat-card-content>
+    </mat-card>
 </div>
