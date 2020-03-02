@@ -5,8 +5,10 @@ import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
 import {AppComponent} from '../app.component';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {GrantDataService} from '../grant.data.service';
+import {SingleReportDataService} from '../single.report.data.service';
 import {DataService} from '../data.service';
 import {Grant} from '../model/dahsboard'
+import {Report} from '../model/report'
 import * as $ from 'jquery'
 import {ToastrService} from 'ngx-toastr';
 import {GrantComponent} from "../grant/grant.component";
@@ -41,7 +43,8 @@ export class DashboardComponent implements OnInit {
               private toastr: ToastrService,
               public grantComponent: GrantComponent,
               private dataService: DataService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private singleReportDataService:SingleReportDataService) {
 
               this.route.queryParams.subscribe(params => {
                       this.parameters = params;
@@ -177,6 +180,31 @@ export class DashboardComponent implements OnInit {
          // this.router.navigate(['grants']);
       });
     }else if(type==='report'){
+        const reportCode = this.parameters.r;
+          const queryParams = new HttpParams().set('r', reportCode)
+          const httpOptions = {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json',
+                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                  'Authorization': localStorage.getItem('AUTH_TOKEN')
+              }),
+              params: queryParams
+          };
+          const url = '/api/user/'+this.appComponent.loggedInUser.id+'/report/resolve';
+
+
+          this.http.get(url,httpOptions).subscribe((report:Report) => {
+              this.appComponent.currentView = 'report';
+              this.singleReportDataService.changeMessage(report);
+
+
+              if(report.canManage ){
+                  this.router.navigate(['report/report-header']);
+              } else{
+                  this.router.navigate(['report/report-preview']);
+              }
+             // this.router.navigate(['grants']);
+          });
     }
   }
 }
