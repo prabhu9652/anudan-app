@@ -188,4 +188,8 @@ export class DashboardComponent implements OnInit {
         this.fetchDashboard(this.appComponent.loggedInUser.id);
     }
   }
+
+  viewInProgressGrants(){
+    this.router.navigate(['grants/draft']);
+  }
 }
