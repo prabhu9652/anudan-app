@@ -21,7 +21,12 @@ import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.c
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [GrantComponent]
+  providers: [GrantComponent],
+    styles: [`
+     ::ng-deep .mat-card-header-text {
+        width:100% !important;
+     }
+    `]
 })
 export class DashboardComponent implements OnInit {
 
@@ -35,6 +40,8 @@ export class DashboardComponent implements OnInit {
   currentGrantId: number;
   parameters: any;
   grantInProgressCount:number;
+  grantActiveCount:number;
+  grantClosedCount:number;
 
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
@@ -90,7 +97,7 @@ export class DashboardComponent implements OnInit {
 
     this.appComponent.loggedIn = true;
 
-    const url = '/api/users/' + userId + '/dashboard/in-progress';
+    let url = '/api/users/' + userId + '/dashboard/in-progress';
     this.http.get<number>(url, httpOptions).subscribe((count: number) => {
 
      this.grantInProgressCount = count;
@@ -101,7 +108,33 @@ export class DashboardComponent implements OnInit {
             enableHtml: true,
             positionClass: 'toast-top-center'
           });
-        });
+    });
+
+    url = '/api/users/' + userId + '/dashboard/active';
+        this.http.get<number>(url, httpOptions).subscribe((count: number) => {
+
+         this.grantActiveCount = count;
+        },
+            error1 => {
+          const errorMsg = error1 as HttpErrorResponse;
+              this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                enableHtml: true,
+                positionClass: 'toast-top-center'
+              });
+    });
+
+     url = '/api/users/' + userId + '/dashboard/closed';
+        this.http.get<number>(url, httpOptions).subscribe((count: number) => {
+
+         this.grantClosedCount = count;
+        },
+            error1 => {
+          const errorMsg = error1 as HttpErrorResponse;
+              this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+                enableHtml: true,
+                positionClass: 'toast-top-center'
+              });
+    });
   }
 
   manageGrant(grant: Grant) {
@@ -191,5 +224,13 @@ export class DashboardComponent implements OnInit {
 
   viewInProgressGrants(){
     this.router.navigate(['grants/draft']);
+  }
+
+  viewActiveGrants(){
+      this.router.navigate(['grants/active']);
+  }
+
+  viewClosedGrants(){
+      this.router.navigate(['grants/closed']);
   }
 }
