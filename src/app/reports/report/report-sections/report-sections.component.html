@@ -104,17 +104,20 @@
                   <ng-container #sectionsContainer *ngFor="let attribute of section.attributes; let i=index">
                     <div id="fieldBlock_{{attribute.id}}" class="row mb-4 mt-2" style="border:1px solid #ececec;border-radius:4px; padding: 20px; background: #FCFCFC;">
                       <ng-container class="mb-2">
-                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='multiline'">
-                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                        <div class="col-sm-4 col-lg-6" *ngIf="attribute.fieldType==='multiline' && (currentReport.canManage && !currentReport.forGranteeUse)">
+                          <mat-form-field>
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
                           </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
+
                         </div>
-                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='document'">
+                        <div class="col-sm-4 col-lg-12" *ngIf="attribute.fieldType==='multiline' && (currentReport.canManage && currentReport.forGranteeUse)">
+                          <label>Title:</label>
+                          <p>{{attribute.fieldName}}</p>
+                        </div>
+                        <div class="col-sm-4 col-lg-6" *ngIf="attribute.fieldType==='document'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
                             <input id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
@@ -134,7 +137,7 @@
                                    matInput placeholder="Title">
                           </mat-form-field>
                         </div>
-                        <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='table'">
+                        <div class="col-sm-8 col-lg-6" *ngIf="attribute.fieldType==='table'">
                           <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
 
                             <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
@@ -145,24 +148,28 @@
                           <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
-                        <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi'">
-                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
-                            <input *ngIf="attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
+                        <div class="col-sm-4 col-lg-6" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && !currentReport.forGranteeUse)">
+                          <mat-form-field *ngIf="attribute.canEdit">
+                            <input [(ngModel)]="attribute.fieldName"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}"
                                    
                                    matInput placeholder="Title">
-                            <input *ngIf="!attribute.canEdit" id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
-                                   [ngModelOptions]="{standAlone:true}"
-                                    readonly style="background:#F0F1F0 !important;"
-                                   matInput placeholder="Title">
                           </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
+
+                          <label *ngIf="!attribute.canEdit">Title:</label>
+                          <p *ngIf="!attribute.canEdit">{{attribute.fieldName}}</p>
+
                         </div>
-                        <div class="col-sm-4 col-lg-4 text-left">
-                          <mat-form-field  *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                        <div class="col-sm-4 col-lg-4" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && currentReport.forGranteeUse)">
+
+                          <label>Title:</label>
+                          <p>{{attribute.fieldName}}</p>
+
+                        </div>
+                        <div class="col-sm-4 col-lg-6 text-left" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse) && attribute.canEdit">
+                          <mat-form-field >
                             <mat-label>Type</mat-label>
-                            <mat-select *ngIf="attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
+                            <mat-select [(ngModel)]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}"
                                         (ngModelChange)="handleTypeChange($event,attribute,section)">
                               <mat-option value="none" aria-selected="true">--Select type
@@ -176,7 +183,7 @@
                               <!--mat-op
                               <!--mat-option value="document">Document</mat-option-->
                             </mat-select>
-                            <mat-select *ngIf="!attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
+                            <!--mat-select *ngIf="!attribute.canEdit" [(ngModel)]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}" (click)="changeFieldType()" (blur)="selectionClosed()"
                                         (ngModelChange)="handleTypeChange($event,attribute,section)" disabled readonly style="background:#F0F1F0 !important;">
                               <mat-option value="none" aria-selected="true">--Select type
@@ -186,10 +193,7 @@
                               <mat-option value="kpi">Measurement/KPI</mat-option>
                               <mat-option value="table">Tablular</mat-option>
                               <mat-option value="document">Document</mat-option>
-                              <!--mat-op
-                              <!--mat-op
-                              <!--mat-option value="document">Document</mat-option-->
-                            </mat-select>
+                            </mat-select-->
 
                           </mat-form-field>
                           <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Type:</label>
@@ -267,47 +271,52 @@
                           </div></div>
 
                         </div>
-                        <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
-                          <mat-form-field  *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
-                            <input matInput [(ngModel)]="attribute.grantLevelTarget" class="anu-input"
-
-                                   [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Grant Level Target/Goal" readonly style="background:#F0F1F0 !important;"
-                                   >
-                          </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Grant Level Target/Goal:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.grantLevelTarget}}</p>
+                        <div class="col-sm-4 col-lg-2 text-left" *ngIf="attribute.fieldType==='kpi'">
+                          <label >Frequency:</label>
+                          <p>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</p>
                         </div>
-                        <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
-                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
-                            <input matInput [(ngModel)]="attribute.cumulativeActuals" class="anu-input"
-
-                                   [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Grant Level Accomplishment" readonly style="background:#F0F1F0 !important;"
-                            >
-                          </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Grant Level Accomplishment:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.cumulativeActuals?attribute.cumulativeActuals:''}}</p>
+                        <div class="col-sm-4 col-lg-2 text-left" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && !currentReport.forGranteeUse)">
+                            <label >Grant Target:</label>
+                            <p>{{attribute.grantLevelTarget && (attribute.grantLevelTarget!==null)?attribute.grantLevelTarget:'-'}}</p>
+                          <!--label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Grant Level Target/Goal:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.grantLevelTarget}}</p-->
                         </div>
-                        <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi'">
-                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+                        <div class="col-sm-4 col-lg-2 text-left" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && currentReport.forGranteeUse)">
+                          <label >Grant Target:</label>
+                          <p>{{attribute.grantLevelTarget && (attribute.grantLevelTarget!==null)?attribute.grantLevelTarget:'-'}}</p>
+                          <!--label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Grant Level Target/Goal:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.grantLevelTarget}}</p-->
+                        </div>
+
+                        <div class="col-sm-4 col-lg-2 text-left" *ngIf="attribute.fieldType==='kpi'">
+                          <label>Achieved:</label>
+                          <p>{{attribute.cumulativeActuals?attribute.cumulativeActuals:'-'}}</p>
+                        </div>
+                        <div class="col-sm-4 col-lg-12 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTER' && (currentReport.canManage && !currentReport.forGranteeUse)">
+                          <mat-form-field>
                             <input matInput [(ngModel)]="attribute.target" class="anu-input"
 
                                    [ngModelOptions]="{standAlone:true}"
-                                   placeholder="Report Target/Goal">
+                                   placeholder="Report Target:">
                           </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Report Target/Goal:</label>
+                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Report Target:</label>
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.target}}</p>
                         </div>
-                        <div class="col-sm-4 col-lg-6 text-left" *ngIf="attribute.fieldType==='kpi' && currentReport.status.name!=='ACTIVE'">
-                          <mat-form-field *ngIf="(currentReport.canManage && currentReport.forGranteeUse)">
+                        <div class="col-sm-4 col-lg-2 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTEE' && (currentReport.canManage && currentReport.forGranteeUse)">
+                          <label>Report Target:</label>
+                          <p>{{attribute.target}}</p>
+                        </div>
+                        <div class="col-sm-4 col-lg-12 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTER' && (currentReport.canManage && !currentReport.forGranteeUse)">
+                          <label >Report Level Accomplishment:</label>
+                          <p>{{attribute.actualTarget}}</p>
+                        </div>
+                        <div class="col-sm-4 col-lg-12 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTEE' && (currentReport.canManage && currentReport.forGranteeUse)">
+                          <mat-form-field>
                             <input matInput [(ngModel)]="attribute.actualTarget" class="anu-input"
 
                                    [ngModelOptions]="{standAlone:true}"
                                    placeholder="Report Level Accomplishment">
                           </mat-form-field>
-                          <label *ngIf="(currentReport.canManage && !currentReport.forGranteeUse) || !currentReport.canManage">Report Level Accomplishment:</label>
-                          <p class="anu-input" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.actualTarget}}</p>
                         </div>
 
                         <!--<div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && attribute.canEdit">
