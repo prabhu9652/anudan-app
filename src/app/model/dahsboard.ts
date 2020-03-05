@@ -406,6 +406,8 @@ export class Notifications{
   read: boolean;
   postedOn: Date;
   grantId: number;
+  reportId: number;
+  notificationFor;
 }
 
 export class ColumnData{

@@ -275,6 +275,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: rgba(255,255,255,1) !important;
 }
 
+
 .grant-expansion-panel> .mat-expansion-indicator, .grant-expansion-panel > .mat-expansion-indicator:after {
     color: black !important;
 }
@@ -592,6 +593,10 @@ background:#DAE3D9;
     top: 50px;
 }
 
+.notifications-panel{
+    margin-top: 0px !important;
+}
+
 .wf-assignment-class{
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
@@ -737,4 +742,8 @@ kendo-pdf-export {
     overflow: scroll !important;
     top: 53px;
     max-height: calc(100% - 35px);
+}
+
+.grant-expansion-panel-notifications .mat-expansion-panel-header-title{
+    font-weight: normal !important;
 }

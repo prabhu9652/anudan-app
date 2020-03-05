@@ -22,20 +22,24 @@ export class NotificationspopupComponent implements OnInit {
 
     messages: Notifications[]=[];
     langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
-      humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+    humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+    expanded: boolean = false;
+    notifications: Notifications[];
 
   constructor(
     public dialogRef: MatDialogRef<NotificationspopupComponent>
-     , @Inject(MAT_DIALOG_DATA) public notifications: Notifications[]
+     , @Inject(MAT_DIALOG_DATA) public notificationsData: any
      , private http: HttpClient
      , private renderer: Renderer2
      , @Inject(ElementRef)er: ElementRef
      , private router: Router
      , private grantData: GrantDataService
      ) {
+     this.notifications = notificationsData.notifs;
     this.dialogRef.disableClose = false;
-    this.messages = notifications;
+    this.messages = this.notifications;
   }
+
 
   ngOnInit() {
 
@@ -55,6 +59,30 @@ getHumanTime(notification): string{
     }
 
 manageGrant(notification: Notifications){
-    this.dialogRef.close({result:true, data: notification});
+    this.dialogRef.close({result:true, notificationFor:'GRANT', data: notification});
 }
+
+manageReport(notification: Notifications){
+    this.dialogRef.close({result:true, notificationFor:'REPORT', data: notification});
+}
+
+    markAsRead(ev:any,notification:Notifications){
+        this.expanded = !this.expanded;
+
+        if(this.expanded){
+            const httpOptions = {
+                                    headers: new HttpHeaders({
+                                        'Content-Type': 'application/json',
+                                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                                    })
+                                };
+                           let url = '/api/user/' + this.notificationsData.user.id + '/notifications/markread/'
+                                                  + notification.id;
+
+                            this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
+                                notification.read=true;// = notif;
+                                });
+        }
+    }
 }

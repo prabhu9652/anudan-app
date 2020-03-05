@@ -253,6 +253,8 @@ interval(10000).subscribe(t => {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
     localStorage.removeItem('MESSAGE_COUNT');
+    localStorage.removeItem('CM');
+    localStorage.removeItem('TM');
     this.notifications = [];
 
     this.grantService.changeMessage(null,0);

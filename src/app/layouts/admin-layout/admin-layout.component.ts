@@ -32,7 +32,7 @@ import {SingleReportDataService} from '../../single.report.data.service'
   providers: [GrantComponent],
   styles: [`
     ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
-        background:#EBEBEB !important;
+        background:#f5f9ff !important;
         padding: 5px 20px !important;
     }
   `]
@@ -48,6 +48,7 @@ export class AdminLayoutComponent implements OnInit {
   currentGrantId: number;
   subscription: any;
   intervalSubscription: any;
+  msgCount: number = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
@@ -115,7 +116,7 @@ export class AdminLayoutComponent implements OnInit {
             this.appComponent.initAppUI();
           });*/
 
-      this.intervalSubscription = interval(10000).subscribe(t => {
+      this.intervalSubscription = interval(1000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
@@ -143,6 +144,17 @@ export class AdminLayoutComponent implements OnInit {
                         localStorage.setItem("MESSAGE_COUNT",String(this.appComponent.unreadMessages));
                         this.appComponent.hasUnreadMessages = true;
                     }
+                    if(localStorage.getItem('TM')===undefined && localStorage.getItem('CM')===undefined){
+                        localStorage.setItem('TM','0');
+                        localStorage.setItem('CM','0');
+                    }
+
+                    const urmVal = notifications.length;
+                    let tmVal = Number(JSON.parse(localStorage.getItem('TM')));
+                    let cmVal = Number(JSON.parse(localStorage.getItem('CM')));
+                    localStorage.setItem('CM',String(urmVal-tmVal+cmVal));
+                    localStorage.setItem('TM',String(urmVal));
+                    this.msgCount = cmVal
                     this.grantUpdateService.changeMessage(true);
                   },
                      error => {
@@ -364,56 +376,74 @@ export class AdminLayoutComponent implements OnInit {
     }
 
 
-manageGrant(notification: Notifications, grantId: number) {
-                    const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
-               let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
-                                      + notification.id;
+    manageGrant(notification: Notifications, grantId: number) {
 
-                this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
-                    notification = notif;
-                    const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
 
-                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
-                    this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
-                    let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
-                    if(localgrant){
-                    localgrant = grant;
-                    }else{
-                        this.appComponent.currentTenant.grants.push(grant);
-                    }
-                      this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
-                      this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
-                      this.appComponent.currentView = 'grant';
-
-                              this.appComponent.selectedTemplate = grant.grantTemplate;
-
-                      if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
-                          grant.canManage=true;
-                      }else{
-                          grant.canManage=false;
-                      }
-                      if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-                          this.router.navigate(['grant/basic-details']);
-                      } else{
-                          this.appComponent.action = 'preview';
-                          this.router.navigate(['grant/preview']);
-                      }
-                      $("#messagepopover").css('display','none');
-                    });
-                });
+        const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+        this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+        let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+        if(localgrant){
+        localgrant = grant;
+        }else{
+            this.appComponent.currentTenant.grants.push(grant);
         }
+          this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
+          this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+          this.appComponent.currentView = 'grant';
+
+                  this.appComponent.selectedTemplate = grant.grantTemplate;
+
+          if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
+              grant.canManage=true;
+          }else{
+              grant.canManage=false;
+          }
+          if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+              this.router.navigate(['grant/basic-details']);
+          } else{
+              this.appComponent.action = 'preview';
+              this.router.navigate(['grant/preview']);
+          }
+          $("#messagepopover").css('display','none');
+        });
+
+    }
+
+manageReport(notification: Notifications, reportId: number) {
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComponent.loggedInUser.id + '/report/' + reportId;
+    this.http.get(url,httpOptions).subscribe((report:Report) =>{
+
+      this.singleReportDataService.changeMessage(report);
+      this.appComponent.currentView = 'report';
+
+        if(report.canManage && report.status.internalStatus!='CLOSED'){
+            this.appComponent.action = 'report';
+            this.router.navigate(['report/report-header']);
+        } else{
+            this.appComponent.action = 'report';
+            this.router.navigate(['report/report-preview']);
+        }
+
+      $("#messagepopover").css('display','none');
+    });
+
+}
 
 getHumanTime(notification): string{
     var time = new Date().getTime() - new Date(notification.postedOn).getTime();
@@ -427,14 +457,15 @@ closeMessagePopup(){
 
 showMessages(){
    let notifs: Notifications[] = [];
+   localStorage.setItem('CM','0');
    for(let i=0; i<this.appComponent.notifications.length;i++){
-    if(i<10){
+    if(i<15){
         notifs.push(this.appComponent.notifications[i]);
     }
    }
   this.appComponent.notifications = notifs;
   const dialogRef = this.dialog.open(NotificationspopupComponent, {
-           data: this.appComponent.notifications,
+           data: {notifs:this.appComponent.notifications,user:this.appComponent.loggedInUser},
            panelClass: 'notifications-class'
         });
 
@@ -443,11 +474,16 @@ showMessages(){
                     return;
                   }
                   if (result.result) {
-                    this.manageGrant(result.data,result.data.grantId);
+                    if(result.notificationFor==='GRANT'){
+                        this.manageGrant(result.data,result.data.grantId);
+                    }else if(result.notificationFor==='REPORT'){
+                        this.manageReport(result.data,result.data.reportId);
+                    }
+
                   }
                   });
-
   }
+
 
   showUpcomingReports(){
   this.appComponent.currentView = 'upcoming';
