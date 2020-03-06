@@ -3,7 +3,7 @@ import {ReportDataService} from '../../report.data.service'
 import {SingleReportDataService} from '../../single.report.data.service'
 import {Report} from '../../model/report'
 import {AppComponent} from '../../app.component';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import {TitleCasePipe} from '@angular/common';
@@ -42,19 +42,22 @@ export class ApprovedReportsComponent implements OnInit {
   }
 
   getReports(){
+    const queryParams = new HttpParams().set('q', 'approved');
     const httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
             'Authorization': localStorage.getItem('AUTH_TOKEN')
-        })};
+        }),
+        params: queryParams
+        };
 
     const user = JSON.parse(localStorage.getItem('USER'));
     const url = '/api/user/' + user.id + '/report/';
     this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
-        reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+        //reports.sort((a,b) => a.endDate>b.endDate?1:-1);
         this.reportService.changeMessage(reports);
-        this.approvedReports = this.reports.filter(a => a.status.internalStatus=='CLOSED');
+        this.approvedReports = reports
 
     });
   }
