@@ -27,10 +27,10 @@
                                     </div>
                                     <div class="col-12" style="display:flex;align-items:center;">
                                         <p class="text-header text-left mr-3 my-0" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
-                                        <ng-container *ngIf="report.linkedReports" class="col-2">
-                                           <small><a (click)="viewAddnlReports(report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.linkedReports}})</a></small>
+                                        <ng-container *ngIf="report.futureReportsCount" class="col-2">
+                                           <small><a (click)="viewAddnlReports(report.id,report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.futureReportsCount}})</a></small>
                                         </ng-container>
-                                        <ng-container *ngIf="!report.linkedReports" class="col-2">
+                                        <ng-container *ngIf="!report.futureReportsCount" class="col-2">
                                             <small class="ml-3"><a> Additional reports not available</a></small>
                                         </ng-container>
                                     </div>

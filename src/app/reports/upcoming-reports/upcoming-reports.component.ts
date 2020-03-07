@@ -75,6 +75,7 @@ export class UpcomingReportsComponent implements OnInit {
     this.http.get<Report[]>(url, httpOptions1).subscribe((reports: Report[]) => {
         //this.processReports(reports);
         this.reportsToSetup = reports;
+        this.processReports(reports);
     });
 
     const queryParams2 = new HttpParams().set('q', 'upcoming-due');
@@ -106,9 +107,9 @@ export class UpcomingReportsComponent implements OnInit {
       this.reportService.changeMessage(reports);
       this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
       */
-      for(let i=0; i< this.reports.length;i++){
-          if(this.grants.filter(g => g.id===this.reports[i].grant.id).length===0 ){
-              this.grants.push(this.reports[i].grant);
+      for(let i=0; i< reports.length;i++){
+          if(this.grants.filter(g => g.id===reports[i].grant.id).length===0 ){
+              this.grants.push(reports[i].grant);
           }
       }
       /*
@@ -188,10 +189,10 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
-    viewAddnlReports(grantId: number){
+    viewAddnlReports(reportId:number,grantId: number){
         this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
-            data: {grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
+            data: {report:reportId,grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
             panelClass: 'addnl-report-class'
         });
 
