@@ -116,13 +116,13 @@ export class AdminLayoutComponent implements OnInit {
             this.appComponent.initAppUI();
           });*/
 
-      this.intervalSubscription = interval(1000).subscribe(t => {
+      this.intervalSubscription = interval(3000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
 
             if(localStorage.getItem('USER')) {
-                const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
+                let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
                   const httpOptions = {
                     headers: new HttpHeaders({
                       'Content-Type': 'application/json',
@@ -133,6 +133,39 @@ export class AdminLayoutComponent implements OnInit {
 
 
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+                    if(this.appComponent.notifications && notifications && this.appComponent.notifications.length!==notifications.length){
+                       if(this.appComponent.currentTenant){
+                        for(let i=0;i<notifications.length;i++){
+                            if(!notifications[i].read && notifications[i].notificationFor==='GRANT'){
+                                const idx = this.appComponent.currentTenant.grants.findIndex(g => g.id===notifications[i].grantId);
+                                if(idx>=0){
+                                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + notifications[i].grantId;
+                                    this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+                                        this.appComponent.currentTenant.grants[idx] = updatedGrant;
+                                        this.appComponent.grantRemoteUpdate.next(true);
+                                    });
+
+                                }
+                            }
+
+                        }
+                       }
+
+                       if(this.currentGrant){
+                               for(let i=0;i<notifications.length;i++){
+                               if(!notifications[i].read && notifications[i].notificationFor==='GRANT' && notifications[i].grantId===this.currentGrant.id){
+
+                                       url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + notifications[i].grantId;
+                                       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+                                           this.grantData.changeMessage(updatedGrant,this.appComponent.loggedInUser.id)
+                                           //this.appComponent.grantRemoteUpdate.next(true);
+                                       });
+
+                               }
+
+                           }
+                       }
+                    }
                     this.appComponent.notifications = notifications;
                     this.appComponent.unreadMessages = 0;
                     for(let notice of this.appComponent.notifications){
@@ -151,7 +184,7 @@ export class AdminLayoutComponent implements OnInit {
 
                     const urmVal = notifications.length;
                     let tmVal = Number(JSON.parse(localStorage.getItem('TM')));
-                    let cmVal = Number(JSON.parse(localStorage.getItem('CM')));
+                    let cmVal = Number(JSON.parse(localStorage.getItem('CM')))<0?0:Number(JSON.parse(localStorage.getItem('CM')));
                     localStorage.setItem('CM',String(urmVal-tmVal+cmVal));
                     localStorage.setItem('TM',String(urmVal));
                     this.msgCount = cmVal
@@ -388,11 +421,13 @@ export class AdminLayoutComponent implements OnInit {
 
         const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
         this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
-        let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
-        if(localgrant){
-        localgrant = grant;
-        }else{
-            this.appComponent.currentTenant.grants.push(grant);
+        if(this.appComponent.currentTenant){
+            let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+            if(localgrant){
+            localgrant = grant;
+            }else{
+                this.appComponent.currentTenant.grants.push(grant);
+            }
         }
           this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
           this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;

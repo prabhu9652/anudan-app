@@ -78,6 +78,14 @@ export class DraftGrantsComponent implements OnInit {
 
     this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
     this.data.currentMessage.subscribe(grant => this.currentGrant = grant);
+
+    this.appComponent.grantRemoteUpdate.subscribe((val) => {
+        if(val){
+            this.segregateGrantData();
+            this.appComponent.grantRemoteUpdate.next(false);
+        }
+    });
+
     this.fetchDashboard(user.id, this.currentGrant);
     this.grantUpdateService.currentMessage.subscribe(id => {
         if(id){
@@ -149,12 +157,36 @@ export class DraftGrantsComponent implements OnInit {
         this.appComponent.currentTenant = this.currentTenant;
         this.hasTenant = true;
         localStorage.setItem('X-TENANT-CODE', this.currentTenant.name);
-         this.grantsDraft = [];
+        this.segregateGrantData();
+        this.grantUpdateService.changeMessage(false);
+      }
+    },
+        error => {
+                               const errorMsg = error as HttpErrorResponse;
+                               const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
+                               const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
+                               const errorconfig: Partial<IndividualConfig> = x;
+                               const config: Partial<IndividualConfig> = y;
+                               if(errorMsg.error.message==='Token Expired'){
+                                //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
+                                alert("Your session has timed out. Please sign in again.")
+                                this.appComponent.logout();
+                               } else {
+                                this.toastr.error(errorMsg.error.message,"15 We encountered an error", config);
+                               }
+
+
+                             });
+                          }
+  }
+
+  segregateGrantData(){
+    this.grantsDraft = [];
          this.grantsActive = [];
          this.grantsClosed = [];
-        for (const grant of this.currentTenant.grants) {
+        for (const grant of this.appComponent.currentTenant.grants) {
           if(grant.grantStatus.internalStatus === 'DRAFT' || grant.grantStatus.internalStatus === 'REVIEW'){
-            this.grantsDraft.push(grant); 
+            this.grantsDraft.push(grant);
           }else if(grant.grantStatus.internalStatus === 'ACTIVE'){
             this.grantsActive.push(grant);
           }else if(grant.grantStatus.internalStatus === 'CLOSED'){
@@ -178,26 +210,6 @@ export class DraftGrantsComponent implements OnInit {
             break;
           }
         }
-        this.grantUpdateService.changeMessage(false);
-      }
-    },
-        error => {
-                               const errorMsg = error as HttpErrorResponse;
-                               const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
-                               const y = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-right','progressBar':true} as Partial<IndividualConfig>;
-                               const errorconfig: Partial<IndividualConfig> = x;
-                               const config: Partial<IndividualConfig> = y;
-                               if(errorMsg.error.message==='Token Expired'){
-                                //this.toastr.error('Logging you out now...',"Your session has expired", errorconfig);
-                                alert("Your session has timed out. Please sign in again.")
-                                this.appComponent.logout();
-                               } else {
-                                this.toastr.error(errorMsg.error.message,"15 We encountered an error", config);
-                               }
-
-
-                             });
-                          }
   }
 
   manageGrant(grant: Grant) {

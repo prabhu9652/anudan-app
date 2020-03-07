@@ -95,7 +95,7 @@
                     <div class="col-3">
                         <mat-form-field [floatLabel]="'always'">
                             <mat-label>Grant Amount (₹)</mat-label>
-                            <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input" pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$"
+                            <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" placeholder="Enter grant amount" autocomplete="false">
                         </mat-form-field>
                     </div>

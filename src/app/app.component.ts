@@ -53,6 +53,7 @@ export class AppComponent implements AfterViewChecked{
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
   createNewReportSection = new BehaviorSubject<boolean>(false);
+  grantRemoteUpdate = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
   parameters: any;
   tenantUsers:User[];
