@@ -14,6 +14,7 @@ import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 
@@ -266,5 +267,9 @@ export class ReportHeaderComponent implements OnInit {
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }

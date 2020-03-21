@@ -315,7 +315,7 @@
 
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
-                          <input matInput placeholder="Grant Level Achieved:&#185;" style="background:#F0F1F0 !important;" [value]="attribute.cumulativeActuals?attribute.cumulativeActuals:'N/A'" readonly disabled class="anu-input">
+                            <input matInput placeholder="Grant Level Achieved:&#185;" style="background:#F0F1F0 !important;" [value]="attribute.cumulativeActuals?attribute.cumulativeActuals:'N/A'" readonly disabled class="anu-input"><sup>&iexcl;</sup>
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTER' && (currentReport.canManage && !currentReport.forGranteeUse)">

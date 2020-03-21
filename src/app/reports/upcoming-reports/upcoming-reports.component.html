@@ -21,8 +21,8 @@
                                     <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">
                                         Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
                                         Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:''}}</b><br>
-                                        Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{report.grant.amount}} </b>
-                                        <span>{{getGrantAmountInWords(report.grant.amount)}}</span>
+                                        Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>
+                                        &nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                     </p>
                                     </div>
                                     <div class="col-12" style="display:flex;align-items:center;">
@@ -95,8 +95,8 @@
                                  *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
                                 <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
                                     Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:''}}</b><br>
-                                    Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{report.grant.amount}} </b>
-                                    &nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
+                                    Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                 </p>
                                 </div>
                                 <div class="col-12">

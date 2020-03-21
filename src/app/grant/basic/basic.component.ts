@@ -35,6 +35,7 @@ import {map, startWith} from 'rxjs/operators';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 export const APP_DATE_FORMATS = {
@@ -88,6 +89,7 @@ export class BasicComponent implements OnInit {
   filteredOptions: Observable<Organization[]>;
   grantWorkflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
+  grantAmountFormattedValue: string;
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -108,6 +110,8 @@ export class BasicComponent implements OnInit {
   @ViewChild('container') container: ElementRef;
   @ViewChild('pickerStart') pickerStart: MatDatepicker<Date>;
   @ViewChild('pickerEnd') pickerEnd: MatDatepicker<Date>;
+  @ViewChild('grantAmount') grantAmount: ElementRef;
+  @ViewChild('grantAmountFormatted') grantAmountFormatted: ElementRef;
 
 
   constructor(private grantData: GrantDataService
@@ -1434,6 +1438,21 @@ setTimeout() {
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
+    }
+
+
+    showGrantAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        this.grantAmount.nativeElement.style.visibility='visible';
+    }
+
+    showFormattedGrantAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        this.grantAmountFormatted.nativeElement.style.visibility='visible';
     }
 
 }

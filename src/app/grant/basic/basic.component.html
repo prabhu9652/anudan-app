@@ -95,8 +95,9 @@
                     <div class="col-3">
                         <mat-form-field [floatLabel]="'always'">
                             <mat-label>Grant Amount (₹)</mat-label>
-                            <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input"
+                            <input (blur)="showFormattedGrantAmount($event)" #grantAmount id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input" type="number"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" placeholder="Enter grant amount" autocomplete="false">
+                            <p #grantAmountFormatted (click)="showGrantAmountInput($event)" class="anu-input w-100" style="position:absolute;top:7px;">{{getFormattedGrantAmount(currentGrant.amount)}}</p>
                         </mat-form-field>
                     </div>
                     <div class="col-9">

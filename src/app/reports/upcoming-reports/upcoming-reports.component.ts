@@ -13,6 +13,7 @@ import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/
 import {ReportComponent} from '../report/report.component';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -222,5 +223,9 @@ export class UpcomingReportsComponent implements OnInit {
         }else{
             target.style.fontWeight='normal';
         }
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }

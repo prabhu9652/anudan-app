@@ -7,6 +7,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/c
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -76,5 +77,9 @@ export class SubmittedReportsComponent implements OnInit {
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }
