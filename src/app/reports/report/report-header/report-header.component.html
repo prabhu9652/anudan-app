@@ -104,10 +104,11 @@
                                                    [ngModelOptions]="{standAlone:true}"
                                                    (ngModelChange)="manageDate('start', $event, currentReport.stDate)"
                                                    [matDatepicker]="pickerStart" placeholder="Report Start date"
+                                                   (click)="pickerStart.open()" style="cursor:pointer;"
                                                    readonly>
                                             <mat-datepicker #pickerStart></mat-datepicker>
                                             <mat-icon (click)="openStartDate()"
-                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
                                                 calendar_today
                                             </mat-icon>
                                         </mat-form-field>
@@ -121,10 +122,10 @@
                                                    class="anu-input" (dateInput)="datePickerSelected($event)"
                                                    [ngModelOptions]="{standAlone:true}"
                                                    (ngModelChange)="manageDate('end', $event, currentReport.enDate)"
-                                                   [matDatepicker]="pickerEnd" placeholder="Report End date" readonly>
+                                                   [matDatepicker]="pickerEnd" placeholder="Report End date" readonly (click)="pickerEnd.open()" style="cursor:pointer;">
                                             <mat-datepicker #pickerEnd></mat-datepicker>
                                             <mat-icon (click)="openEndDate()"
-                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
                                                 calendar_today
                                             </mat-icon>
                                         </mat-form-field>
@@ -150,10 +151,10 @@
                                            class="anu-input" (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}"
                                            (ngModelChange)="manageDate('due', $event, currentReport.dDate)"
-                                           [matDatepicker]="pickerDue" placeholder="Report Due date" readonly>
+                                           [matDatepicker]="pickerDue" placeholder="Report Due date" readonly (click)="pickerDue.open()" style="cursor:pointer;">
                                     <mat-datepicker #pickerDue></mat-datepicker>
                                     <mat-icon (click)="openDueDate()"
-                                              style="transform: scale(0.5);position: absolute;right: 0;top:30%;">
+                                              style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
                                         calendar_today
                                     </mat-icon>
                                 </mat-form-field>
