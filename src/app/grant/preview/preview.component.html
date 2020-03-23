@@ -118,8 +118,18 @@
                                                 </tr>
                                                 <tr>
                                                     <td width="50%" style="padding:5px;font-size: 16px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
-                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding: 5px"><b>{{attribute.target}}</b></td>
-                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding:5px;"><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</b></td>
+                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding: 5px" valign="top">
+                                                        <table>
+                                                            <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level Goal:</span></td></tr>
+                                                            <tr><td><b>{{attribute.target}}</b></td></tr>
+                                                        </table>
+                                                    </td>
+                                                    <td width="25%" style="font-size: 16px;font-family:Roboto;padding:5px;" valign="top">
+                                                        <table>
+                                                            <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Frequency:</span></td></tr>
+                                                            <tr><td><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</b></td></tr>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                             </table>
                                             <!--<div class="row mx-2">

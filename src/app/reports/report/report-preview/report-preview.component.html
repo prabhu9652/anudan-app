@@ -131,26 +131,31 @@
                             <td colspan="5" style="padding: 5px">KPI</td>
                           </tr>
                           <tr>
-                            <td width="50%" style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
-                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                            <td width="40%" style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
                                 <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level Goal:</span></td></tr>
                                 <tr><td><b>{{attribute.grantLevelTarget}}</b></td></tr>
                               </table>
                               </td>
-                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
                                 <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Report Level Goal:</span></td></tr>
                                 <tr><td><b>{{attribute.target}}</b></td></tr>
                               </table>
                             </td>
-                            <td style="font-size: 14px;font-family:Roboto;padding: 5px">
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
-                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Actual Goal Achieved:</span></td></tr>
+                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;" >Actual Goal Achieved:</span></td></tr>
                                 <tr><td><b>{{attribute.actualTarget}}</b></td></tr>
                               </table>
                             </td>
-                            <td width="10%" style="font-size: 14px;font-family:Roboto;padding:5px;"><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency | titlecase}}</b></td>
+                            <td width="10%" style="font-size: 14px;font-family:Roboto;padding:5px;" valign="top">
+                              <table>
+                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Frequency:</span></td></tr>
+                                <tr><td><b><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency==='adhoc'?'N/A':attribute.frequency | titlecase}}</b></b></td></tr>
+                              </table>
+                              </td>
                           </tr>
                         </table>
                         <!--<div class="row mx-2">
