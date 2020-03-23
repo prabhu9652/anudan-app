@@ -253,8 +253,14 @@ export class AdminLayoutComponent implements OnInit {
       //this.grantComponent.saveGrant(this.currentGrant);
     }
 
+    const orgType = this.appComponent.loggedInUser.organization.organizationType;
+
     this.appComponent.currentView = 'grants';
-    this.router.navigate(['grants/draft']);
+    if(orgType==='GRANTER'){
+        this.router.navigate(['grants/draft']);
+    }else if(orgType==='GRANTEE'){
+        this.router.navigate(['grants/active']);
+    }
   }
 
   showHistory(historyOf,what2Show){
@@ -521,7 +527,7 @@ showMessages(){
 
 
   showUpcomingReports(){
-  this.appComponent.currentView = 'upcoming';
+    this.appComponent.currentView = 'upcoming';
     this.router.navigate(['reports/upcoming']);
   }
 
