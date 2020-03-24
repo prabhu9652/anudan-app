@@ -418,6 +418,7 @@ export class ColumnData{
 
 export class TableData {
   name: string;
+  header:string;
   columns: ColumnData[];
 }
 
