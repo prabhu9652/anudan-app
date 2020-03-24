@@ -445,7 +445,7 @@ export class BasicComponent implements OnInit {
             };
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
-
+            this.appComp.showSaving = true;
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
@@ -465,6 +465,7 @@ export class BasicComponent implements OnInit {
                     }
                     this.appComp.autosave = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                    //this.appComp.showSaving = false;
                 },error => {
                               const errorMsg = error as HttpErrorResponse;
                               //console.log(error);

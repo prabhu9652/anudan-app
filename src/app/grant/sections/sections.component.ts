@@ -482,6 +482,7 @@ ngOnDestroy(){
         }
 
         this.appComp.autosaveDisplay = '';
+        this.appComp.showSaving = true;
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -516,6 +517,7 @@ ngOnDestroy(){
                     this.appComp.autosave = false;
                     this.appComp.grantSaved = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                    //this.appComp.showSaving = false;
                 },error => {
                          const errorMsg = error as HttpErrorResponse;
                          console.log(error);

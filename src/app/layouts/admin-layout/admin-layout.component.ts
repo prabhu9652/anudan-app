@@ -246,6 +246,7 @@ export class AdminLayoutComponent implements OnInit {
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
      this.appComponent.reportSaved = true;
+     this.appComponent.showSaving = false;
 
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
@@ -527,6 +528,7 @@ showMessages(){
 
 
   showUpcomingReports(){
+    this.appComponent.showSaving = false;
     this.appComponent.currentView = 'upcoming';
     this.router.navigate(['reports/upcoming']);
   }

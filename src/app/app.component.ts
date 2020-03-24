@@ -40,6 +40,7 @@ export class AppComponent implements AfterViewChecked{
   sectionUpdated = false;
   notifications = [];
   hasUnreadMessages = false;
+  showSaving = false;
   unreadMessages = 0;
   selectedTemplate: GrantTemplate;
   selectedReportTemplate: ReportTemplate;
