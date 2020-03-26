@@ -16,6 +16,7 @@ import {GrantTemplateDialogComponent} from '../../components/grant-template-dial
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -306,4 +307,8 @@ export class ClosedGrantsComponent implements OnInit {
           }
           return amtInWords;
       }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
+    }
 }

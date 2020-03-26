@@ -4,11 +4,17 @@
     <button mat-button mat-flat-button class="text-green btn-link" (click)="onNoClick()">< Go Back</button>
   </div>
   <div class="col-10">
-    <label for="grantselection">Showing report for:</label>
-    <select id="grantselection" [value]="grantId" class="anu-input" (change)="updateSelectedReports($event)">
-      <option *ngFor="let grant of grants" [value]="grant.id" >{{grant.name}}</option>
-    </select>
+    <mat-form-field >
+      <mat-label>Showing reports for: </mat-label>
+    <mat-select id="grantselection" [(ngModel)]="grantId" [ngModelOptions]="{standAlone:true}" class="anu-input" (ngModelChange)="updateSelectedReports($event)">
+      <mat-option *ngFor="let grant of grants" [value]="grant.id" >{{grant.name}}</mat-option>
+    </mat-select>
+    </mat-form-field>
   </div>
+</div>
+<div *ngIf="!selectedReports" style="text-align:center;">
+  <img src="./assets/img/loader.gif" style="width:10%;">
+  <p style="color: black" > Loading reports... </p>
 </div>
 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"

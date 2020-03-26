@@ -10,10 +10,9 @@
 
         <div *ngIf="appComponent.notifications.length > 0" style="position: sticky;top:0;z-index: 3;color: #000;background-color:#fff">
             <div style="position:absolute; right:20px;z-index:3;">
-
                 <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;" class="float-right mr-3 mt-3 text-white">
-                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="this.appComponent.hasUnreadMessages && this.appComponent.unreadMessages>0" class="float-left mr-5 text-white" [matBadge]="this.appComponent.unreadMessages" matBadgeColor="warn">notifications</mat-icon>
-                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="!this.appComponent.hasUnreadMessages || this.appComponent.unreadMessages===0" class="float-left mr-5 text-white">notifications</mat-icon>
+                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="msgCount>0" class="float-left mr-5 text-white" [matBadge]="msgCount" matBadgeColor="warn">notifications</mat-icon>
+                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="msgCount===0" class="float-left mr-5 text-white">notifications</mat-icon>
                     <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">
                     <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">{{appComponent.loggedInUser.lastName}}, {{appComponent.loggedInUser.firstName}}
                     <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
@@ -26,7 +25,7 @@
         </div>
 
         <div *ngIf="appComponent.notifications.length === 0" style="position: sticky;top:0;z-index: 3;color: #000;background-color:#fff">
-            <div style="position:absolute; right:20px;z-index:3;">
+            <div style="position:absolute; right:20px;z-index:3;" class="w-100">
                 <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;" class="float-right mr-3 mt-3 text-white">
                     <mat-icon class="float-left mr-5 text-light">notifications_none</mat-icon>
                     <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}" class="img-fluid w-10 mr-2 rounded-circle" style="width:8%;">
@@ -42,8 +41,15 @@
         <div *ngIf="appComponent.currentView !== 'grant' && appComponent.currentView !== 'report'" class="p-4 text-left" style="width:100%;position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">&nbsp;</div>
 
         <!--<app-navbar></app-navbar>-->
-        <div *ngIf="appComponent.currentView === 'grant'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;"><a (click)="showAllGrants(currentGrant)"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentGrant"><span style="color:#fff;">{{currentGrant.name}}</span></ng-container></div>
-        <div *ngIf="appComponent.currentView === 'report'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;"><a (click)="showUpcomingReports()"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentReport"><span style="color:#fff;">{{currentReport.name}}</span></ng-container></div>
+        <div *ngIf="appComponent.currentView === 'grant'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">
+            <a (click)="showAllGrants(currentGrant)"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentGrant"><span style="color:#fff;">{{currentGrant.name}}</span>
+            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #fff; left: 50%; top: 24px; font-weight: 800; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
+        </ng-container>
+        </div>
+        <div *ngIf="appComponent.currentView === 'report'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">
+            <a (click)="showUpcomingReports()"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentReport"><span style="color:#fff;">{{currentReport.name}}</span></ng-container>
+            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #fff; left: 50%; top: 24px; font-weight: 800; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
+        </div>
         <!--div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'upcoming' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
             <div class="col-12">
                 <div class="float-right ml-2">

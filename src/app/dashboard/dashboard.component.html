@@ -1,3 +1,36 @@
-<div class="main-content" style="display:flex;align-items:center;justify-content:center;">
-    DASHBOARD
+<div class="main-content" style="background:#f4f4f4;">
+    <h4 style="display:flex;align-items:center;justify-content:center;"><img src="./assets/img/granticon.svg">Grants</h4>
+    <div class="p-2" style="display:flex;align-items:center;justify-content:center;background:#f4f4f4;">
+
+    <mat-card *ngIf="this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'" class="mx-5 mt-1" (click)="viewInProgressGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #f5a956;">
+        <mat-card-header>
+            <mat-card-title>In-progress</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <h2>{{grantInProgressCount}}</h2>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mx-5 mt-1" (click)="viewActiveGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #3db349;">
+        <mat-card-header>
+            <mat-card-title>Active</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <h2>{{grantActiveCount}}</h2>
+        </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="mx-5 mt-1" (click)="viewClosedGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #6b6c6b;">
+        <mat-card-header>
+            <mat-card-title>Closed</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <h2>{{grantClosedCount}}</h2>
+        </mat-card-content>
+    </mat-card>
+    </div>
 </div>

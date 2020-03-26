@@ -28,6 +28,7 @@ export class Report{
     cumulativeActuals:number;
     linkedReports: number;
     forGranteeUse: boolean;
+    futureReportsCount: number;
 }
 
 export class ReportHistory{
@@ -152,6 +153,7 @@ export class ReportTemplate{
 
 export class AdditionReportsModel{
     grant: number;
+    report: number;
     grants: Grant[];
     futureReports: Report[];
 }

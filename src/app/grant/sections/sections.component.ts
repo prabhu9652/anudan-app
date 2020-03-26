@@ -482,6 +482,7 @@ ngOnDestroy(){
         }
 
         this.appComp.autosaveDisplay = '';
+        this.appComp.showSaving = true;
         /*const errors = this.validateFields();
         if (errors) {
             this.toastr.error($(this.erroredElement).attr('placeholder') + ' is required', 'Missing entries');
@@ -516,6 +517,7 @@ ngOnDestroy(){
                     this.appComp.autosave = false;
                     this.appComp.grantSaved = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                    //this.appComp.showSaving = false;
                 },error => {
                          const errorMsg = error as HttpErrorResponse;
                          console.log(error);
@@ -1268,6 +1270,7 @@ ngOnDestroy(){
         attr.fieldTableValue = [];
         const data = new TableData();
         data.name = "";
+        data.header="";
         data.columns = [];
 
         for(let i=0; i< 5; i++){
@@ -1327,6 +1330,7 @@ ngOnDestroy(){
   addRow(attr: Attribute){
        const row = new TableData();
        row.name = '';
+       row.header = attr.fieldTableValue[0].header;
        row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
        for(let i=0; i<row.columns.length;i++){
         row.columns[i].value = '';

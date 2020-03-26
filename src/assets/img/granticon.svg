@@ -1,0 +1,15 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="7" y="7" width="34" height="34">
+<path d="M33.6002 27.2H30.709C30.2659 27.2003 29.8367 27.3547 29.495 27.6369C29.1534 27.9191 28.9205 28.3113 28.8364 28.7464C28.7524 29.1815 28.8223 29.6322 29.0342 30.0214C29.2461 30.4105 29.5868 30.7138 29.9979 30.8792L32.9332 32.054C33.3443 32.2194 33.685 32.5227 33.897 32.9119C34.1089 33.301 34.1788 33.7518 34.0947 34.1868C34.0106 34.6219 33.7778 35.0142 33.4361 35.2963C33.0945 35.5785 32.6653 35.733 32.2222 35.7333H29.3337" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M31.467 27.2V26.1333" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M31.467 36.7999V35.7333" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M31.467 40C36.1797 40 40 36.1795 40 31.4667C40 26.7539 36.1797 22.9333 31.467 22.9333C26.7544 22.9333 22.934 26.7539 22.934 31.4667C22.934 36.1795 26.7544 40 31.467 40Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.6675 35.7333H10.1345C9.85243 35.7403 9.57188 35.6899 9.30989 35.5852C9.04789 35.4805 8.80992 35.3236 8.61041 35.1241C8.4109 34.9246 8.25403 34.6866 8.14931 34.4246C8.04459 34.1626 7.99421 33.882 8.00124 33.6V12.4188C7.98166 11.833 8.19528 11.2633 8.59521 10.8349C8.99515 10.4064 9.54874 10.1541 10.1345 10.1333H31.467C32.0527 10.1541 32.6063 10.4064 33.0063 10.8349C33.4062 11.2633 33.6198 11.833 33.6002 12.4188V18.6666" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.401 8V14.4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.8008 8V14.4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M27.2005 8V14.4" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</mask>
+<g mask="url(#mask0)">
+<rect opacity="0.6" width="48" height="48" fill="#4DC252"/>
+</g>
+</svg>

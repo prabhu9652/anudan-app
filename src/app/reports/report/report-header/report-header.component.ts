@@ -12,8 +12,9 @@ import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
-import {TitleCasePipe} from '@angular/common';
+import {DatePipe,TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 
@@ -62,7 +63,8 @@ export class ReportHeaderComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     private sidebar: SidebarComponent,
-    private titlecasePipe: TitleCasePipe) {
+    private titlecasePipe: TitleCasePipe,
+    private datePipe:DatePipe) {
     this.route.params.subscribe( (p) => {
         this.action = p['action'];
         this.appComp.action = this.action;
@@ -175,6 +177,8 @@ export class ReportHeaderComponent implements OnInit {
     }
 
     saveReport(){
+
+        this.appComp.showSaving = true;
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -187,6 +191,8 @@ export class ReportHeaderComponent implements OnInit {
 
         this.http.put(url, this.currentReport, httpOptions).subscribe((report: Report) => {
             this.singleReportDataService.changeMessage(report);
+            this.appComp.autosaveDisplay = 'Last saved @ ' + this.datePipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+            //this.appComp.showSaving = false;
         });
     }
 
@@ -266,5 +272,9 @@ export class ReportHeaderComponent implements OnInit {
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }

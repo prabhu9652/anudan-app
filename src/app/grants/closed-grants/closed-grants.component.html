@@ -25,7 +25,7 @@
                                     <div class="col-8 text-left">
                                         
                                         <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
-                                        <p class="mb-0">₹ <span class="text-header">{{grant.amount}}</span></p>
+                                        <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
                                         <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
                                         <div class="row">
                                             <div class="col-6">

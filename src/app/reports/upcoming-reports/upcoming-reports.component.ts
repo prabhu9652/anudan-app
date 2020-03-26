@@ -4,7 +4,7 @@ import {SingleReportDataService} from '../../single.report.data.service'
 import {Report, ReportTemplate} from '../../model/report'
 import {Grant} from '../../model/dahsboard';
 import {AppComponent} from '../../app.component';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {ReportTemplateDialogComponent} from '../../components/report-template-dialog/report-template-dialog.component';
@@ -13,6 +13,7 @@ import {AddnlreportsDialogComponent} from '../../components/addnlreports-dialog/
 import {ReportComponent} from '../report/report.component';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -58,22 +59,43 @@ export class UpcomingReportsComponent implements OnInit {
   }
 
   getReports(){
-    const httpOptions = {
+
+    const queryParams1 = new HttpParams().set('q', 'upcoming');
+    const httpOptions1 = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
             'Authorization': localStorage.getItem('AUTH_TOKEN')
-        })};
+        }),
+        params: queryParams1
+        };
+
 
     const user = JSON.parse(localStorage.getItem('USER'));
     const url = '/api/user/' + user.id + '/report/';
-    this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
+    this.http.get<Report[]>(url, httpOptions1).subscribe((reports: Report[]) => {
+        //this.processReports(reports);
+        this.reportsToSetup = reports;
         this.processReports(reports);
+    });
+
+    const queryParams2 = new HttpParams().set('q', 'upcoming-due');
+    const httpOptions2 = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        }),
+        params: queryParams2
+     };
+    this.http.get<Report[]>(url, httpOptions2).subscribe((reports: Report[]) => {
+        //this.processReports(reports);
+        this.reportsReadyToSubmit = reports;
     });
   }
 
   processReports(reports: Report[]){
-      reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+      /*reports.sort((a,b) => a.endDate>b.endDate?1:-1);
       let reportStartDate = new Date();
       let reportEndDate = new Date();
       reportEndDate.setDate(reportEndDate.getDate()+30);
@@ -85,12 +107,13 @@ export class UpcomingReportsComponent implements OnInit {
       reportEndDate.setSeconds(59);
       this.reportService.changeMessage(reports);
       this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
-
-      for(let i=0; i< this.reports.length;i++){
-          if(this.grants.filter(g => g.id===this.reports[i].grant.id).length===0 ){
-              this.grants.push(this.reports[i].grant);
+      */
+      for(let i=0; i< reports.length;i++){
+          if(this.grants.filter(g => g.id===reports[i].grant.id).length===0 ){
+              this.grants.push(reports[i].grant);
           }
       }
+      /*
       this.reportsReadyToSubmit = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus==='ACTIVE'));
       this.futureReportsToSetup = this.reports.filter(a => new Date(a.endDate).getTime() > reportEndDate.getTime() && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
 
@@ -103,6 +126,7 @@ export class UpcomingReportsComponent implements OnInit {
           }
       }
       console.log(this.reportStartDate + "    " + this.reportEndDate);
+      */
   }
   manageReport(report:Report){
     if(this.otherReportsClicked){
@@ -166,10 +190,10 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
-    viewAddnlReports(grantId: number){
+    viewAddnlReports(reportId:number,grantId: number){
         this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
-            data: {grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
+            data: {report:reportId,grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
             panelClass: 'addnl-report-class'
         });
 
@@ -199,5 +223,9 @@ export class UpcomingReportsComponent implements OnInit {
         }else{
             target.style.fontWeight='normal';
         }
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }

@@ -179,8 +179,8 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   attributeOrder: number;
-  fieldValue: string;
-  fieldTableValue: TableData[];
+  fieldValue: string = null;
+  fieldTableValue: TableData[] = null;
   docs: TemplateLibrary[];
   attachments: Attachment[];
   target: string;
@@ -406,6 +406,8 @@ export class Notifications{
   read: boolean;
   postedOn: Date;
   grantId: number;
+  reportId: number;
+  notificationFor;
 }
 
 export class ColumnData{
@@ -416,6 +418,7 @@ export class ColumnData{
 
 export class TableData {
   name: string;
+  header:string;
   columns: ColumnData[];
 }
 

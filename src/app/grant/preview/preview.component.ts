@@ -42,6 +42,7 @@ import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.comp
 import { saveAs } from 'file-saver';
 import {GrantComponent} from '../grant.component'
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -1555,5 +1556,9 @@ getCleanText(section:Section): string{
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
     }
 }

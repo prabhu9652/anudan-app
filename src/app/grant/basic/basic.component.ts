@@ -35,6 +35,7 @@ import {map, startWith} from 'rxjs/operators';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
+import * as inf from 'indian-number-format';
 
 
 export const APP_DATE_FORMATS = {
@@ -88,6 +89,7 @@ export class BasicComponent implements OnInit {
   filteredOptions: Observable<Organization[]>;
   grantWorkflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
+  grantAmountFormattedValue: string;
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -108,6 +110,8 @@ export class BasicComponent implements OnInit {
   @ViewChild('container') container: ElementRef;
   @ViewChild('pickerStart') pickerStart: MatDatepicker<Date>;
   @ViewChild('pickerEnd') pickerEnd: MatDatepicker<Date>;
+  @ViewChild('grantAmount') grantAmount: ElementRef;
+  @ViewChild('grantAmountFormatted') grantAmountFormatted: ElementRef;
 
 
   constructor(private grantData: GrantDataService
@@ -441,7 +445,7 @@ export class BasicComponent implements OnInit {
             };
 
             const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
-
+            this.appComp.showSaving = true;
             this.http.put(url, this.currentGrant, httpOptions).toPromise().then((grant: Grant) => {
                     this.originalGrant = JSON.parse(JSON.stringify(grant));
                     if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
@@ -461,6 +465,7 @@ export class BasicComponent implements OnInit {
                     }
                     this.appComp.autosave = false;
                     this.appComp.autosaveDisplay = 'Last saved @ ' + this.datepipe.transform(new Date(), 'hh:mm:ss a') + '     ';
+                    //this.appComp.showSaving = false;
                 },error => {
                               const errorMsg = error as HttpErrorResponse;
                               //console.log(error);
@@ -1430,10 +1435,25 @@ setTimeout() {
     getGrantAmountInWords(amount:number){
         let amtInWords = '-';
         if(amount){
-            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
+            amtInWords = indianCurrencyInWords(amount.toString().replace(/[^0-9.]/g, '')).replace("Rupees","").replace("Paisa","");
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
         }
         return amtInWords;
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
+    }
+
+
+    showGrantAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        this.grantAmount.nativeElement.style.visibility='visible';
+    }
+
+    showFormattedGrantAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        this.grantAmountFormatted.nativeElement.style.visibility='visible';
     }
 
 }

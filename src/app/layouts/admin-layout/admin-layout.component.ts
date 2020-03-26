@@ -32,7 +32,7 @@ import {SingleReportDataService} from '../../single.report.data.service'
   providers: [GrantComponent],
   styles: [`
     ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
-        background:#EBEBEB !important;
+        background:#f5f9ff !important;
         padding: 5px 20px !important;
     }
   `]
@@ -48,6 +48,7 @@ export class AdminLayoutComponent implements OnInit {
   currentGrantId: number;
   subscription: any;
   intervalSubscription: any;
+  msgCount: number = 0;
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
@@ -115,13 +116,13 @@ export class AdminLayoutComponent implements OnInit {
             this.appComponent.initAppUI();
           });*/
 
-      this.intervalSubscription = interval(10000).subscribe(t => {
+      this.intervalSubscription = interval(3000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
 
             if(localStorage.getItem('USER')) {
-                const url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
+                let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/';
                   const httpOptions = {
                     headers: new HttpHeaders({
                       'Content-Type': 'application/json',
@@ -132,6 +133,39 @@ export class AdminLayoutComponent implements OnInit {
 
 
                   this.http.get<Notifications[]>(url, httpOptions).subscribe((notifications: Notifications[]) => {
+                    if(this.appComponent.notifications && notifications && this.appComponent.notifications.length!==notifications.length){
+                       if(this.appComponent.currentTenant){
+                        for(let i=0;i<notifications.length;i++){
+                            if(!notifications[i].read && notifications[i].notificationFor==='GRANT'){
+                                const idx = this.appComponent.currentTenant.grants.findIndex(g => g.id===notifications[i].grantId);
+                                if(idx>=0){
+                                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + notifications[i].grantId;
+                                    this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+                                        this.appComponent.currentTenant.grants[idx] = updatedGrant;
+                                        this.appComponent.grantRemoteUpdate.next(true);
+                                    });
+
+                                }
+                            }
+
+                        }
+                       }
+
+                       if(this.currentGrant){
+                               for(let i=0;i<notifications.length;i++){
+                               if(!notifications[i].read && notifications[i].notificationFor==='GRANT' && notifications[i].grantId===this.currentGrant.id){
+
+                                       url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + notifications[i].grantId;
+                                       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+                                           this.grantData.changeMessage(updatedGrant,this.appComponent.loggedInUser.id)
+                                           //this.appComponent.grantRemoteUpdate.next(true);
+                                       });
+
+                               }
+
+                           }
+                       }
+                    }
                     this.appComponent.notifications = notifications;
                     this.appComponent.unreadMessages = 0;
                     for(let notice of this.appComponent.notifications){
@@ -143,6 +177,17 @@ export class AdminLayoutComponent implements OnInit {
                         localStorage.setItem("MESSAGE_COUNT",String(this.appComponent.unreadMessages));
                         this.appComponent.hasUnreadMessages = true;
                     }
+                    if(localStorage.getItem('TM')===undefined && localStorage.getItem('CM')===undefined){
+                        localStorage.setItem('TM','0');
+                        localStorage.setItem('CM','0');
+                    }
+
+                    const urmVal = notifications.length;
+                    let tmVal = Number(JSON.parse(localStorage.getItem('TM')));
+                    let cmVal = Number(JSON.parse(localStorage.getItem('CM')))<0?0:Number(JSON.parse(localStorage.getItem('CM')));
+                    localStorage.setItem('CM',String(urmVal-tmVal+cmVal));
+                    localStorage.setItem('TM',String(urmVal));
+                    this.msgCount = cmVal
                     this.grantUpdateService.changeMessage(true);
                   },
                      error => {
@@ -201,6 +246,7 @@ export class AdminLayoutComponent implements OnInit {
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
      this.appComponent.reportSaved = true;
+     this.appComponent.showSaving = false;
 
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
@@ -208,8 +254,14 @@ export class AdminLayoutComponent implements OnInit {
       //this.grantComponent.saveGrant(this.currentGrant);
     }
 
+    const orgType = this.appComponent.loggedInUser.organization.organizationType;
+
     this.appComponent.currentView = 'grants';
-    this.router.navigate(['grants/draft']);
+    if(orgType==='GRANTER'){
+        this.router.navigate(['grants/draft']);
+    }else if(orgType==='GRANTEE'){
+        this.router.navigate(['grants/active']);
+    }
   }
 
   showHistory(historyOf,what2Show){
@@ -364,56 +416,76 @@ export class AdminLayoutComponent implements OnInit {
     }
 
 
-manageGrant(notification: Notifications, grantId: number) {
-                    const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
-               let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
-                                      + notification.id;
+    manageGrant(notification: Notifications, grantId: number) {
 
-                this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
-                    notification = notif;
-                    const httpOptions = {
-                        headers: new HttpHeaders({
-                            'Content-Type': 'application/json',
-                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                            'Authorization': localStorage.getItem('AUTH_TOKEN')
-                        })
-                    };
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
 
-                    url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
-                    this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
-                    let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
-                    if(localgrant){
-                    localgrant = grant;
-                    }else{
-                        this.appComponent.currentTenant.grants.push(grant);
-                    }
-                      this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
-                      this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
-                      this.appComponent.currentView = 'grant';
-
-                              this.appComponent.selectedTemplate = grant.grantTemplate;
-
-                      if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
-                          grant.canManage=true;
-                      }else{
-                          grant.canManage=false;
-                      }
-                      if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-                          this.router.navigate(['grant/basic-details']);
-                      } else{
-                          this.appComponent.action = 'preview';
-                          this.router.navigate(['grant/preview']);
-                      }
-                      $("#messagepopover").css('display','none');
-                    });
-                });
+        const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+        this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
+        if(this.appComponent.currentTenant){
+            let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
+            if(localgrant){
+            localgrant = grant;
+            }else{
+                this.appComponent.currentTenant.grants.push(grant);
+            }
         }
+          this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
+          this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+          this.appComponent.currentView = 'grant';
+
+                  this.appComponent.selectedTemplate = grant.grantTemplate;
+
+          if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
+              grant.canManage=true;
+          }else{
+              grant.canManage=false;
+          }
+          if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+              this.router.navigate(['grant/basic-details']);
+          } else{
+              this.appComponent.action = 'preview';
+              this.router.navigate(['grant/preview']);
+          }
+          $("#messagepopover").css('display','none');
+        });
+
+    }
+
+manageReport(notification: Notifications, reportId: number) {
+
+    const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    const url = '/api/user/' + this.appComponent.loggedInUser.id + '/report/' + reportId;
+    this.http.get(url,httpOptions).subscribe((report:Report) =>{
+
+      this.singleReportDataService.changeMessage(report);
+      this.appComponent.currentView = 'report';
+
+        if(report.canManage && report.status.internalStatus!='CLOSED'){
+            this.appComponent.action = 'report';
+            this.router.navigate(['report/report-header']);
+        } else{
+            this.appComponent.action = 'report';
+            this.router.navigate(['report/report-preview']);
+        }
+
+      $("#messagepopover").css('display','none');
+    });
+
+}
 
 getHumanTime(notification): string{
     var time = new Date().getTime() - new Date(notification.postedOn).getTime();
@@ -427,14 +499,15 @@ closeMessagePopup(){
 
 showMessages(){
    let notifs: Notifications[] = [];
+   localStorage.setItem('CM','0');
    for(let i=0; i<this.appComponent.notifications.length;i++){
-    if(i<10){
+    if(i<15){
         notifs.push(this.appComponent.notifications[i]);
     }
    }
   this.appComponent.notifications = notifs;
   const dialogRef = this.dialog.open(NotificationspopupComponent, {
-           data: this.appComponent.notifications,
+           data: {notifs:this.appComponent.notifications,user:this.appComponent.loggedInUser},
            panelClass: 'notifications-class'
         });
 
@@ -443,14 +516,20 @@ showMessages(){
                     return;
                   }
                   if (result.result) {
-                    this.manageGrant(result.data,result.data.grantId);
+                    if(result.notificationFor==='GRANT'){
+                        this.manageGrant(result.data,result.data.grantId);
+                    }else if(result.notificationFor==='REPORT'){
+                        this.manageReport(result.data,result.data.reportId);
+                    }
+
                   }
                   });
-
   }
 
+
   showUpcomingReports(){
-  this.appComponent.currentView = 'upcoming';
+    this.appComponent.showSaving = false;
+    this.appComponent.currentView = 'upcoming';
     this.router.navigate(['reports/upcoming']);
   }
 

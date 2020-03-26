@@ -21,16 +21,16 @@
                                     <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">
                                         Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
                                         Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:''}}</b><br>
-                                        Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{report.grant.amount}} </b>
-                                        <span>{{getGrantAmountInWords(report.grant.amount)}}</span>
+                                        Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>
+                                        &nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                     </p>
                                     </div>
                                     <div class="col-12" style="display:flex;align-items:center;">
                                         <p class="text-header text-left mr-3 my-0" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
-                                        <ng-container *ngIf="report.linkedReports" class="col-2">
-                                           <small><a (click)="viewAddnlReports(report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.linkedReports}})</a></small>
+                                        <ng-container *ngIf="report.futureReportsCount" class="col-2">
+                                           <small><a (click)="viewAddnlReports(report.id,report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.futureReportsCount}})</a></small>
                                         </ng-container>
-                                        <ng-container *ngIf="!report.linkedReports" class="col-2">
+                                        <ng-container *ngIf="!report.futureReportsCount" class="col-2">
                                             <small class="ml-3"><a> Additional reports not available</a></small>
                                         </ng-container>
                                     </div>
@@ -95,8 +95,8 @@
                                  *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
                                 <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
                                     Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:''}}</b><br>
-                                    Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{report.grant.amount}} </b>
-                                    &nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
+                                    Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                 </p>
                                 </div>
                                 <div class="col-12">

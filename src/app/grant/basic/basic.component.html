@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-12">
                         <mat-form-field [floatLabel]="'always'">
-                            <mat-label>Grant Title</mat-label>
+                            <mat-label>Grant Name</mat-label>
                             <input matInput id="grantName" [(ngModel)]="currentGrant.name"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()"
                                    placeholder="Enter grant title ..." required
@@ -64,22 +64,22 @@
                             <div class="col-4">
                                 <mat-form-field [floatLabel]="'always'">
                                     <mat-label>Grant Start Date</mat-label>
-                                    <input id="grantStart" matInput [(ngModel)]="currentGrant.stDate"  class="anu-input"  (dateInput)="datePickerSelected($event)"
+                                    <input style="cursor:pointer;" id="grantStart" matInput [(ngModel)]="currentGrant.stDate"  class="anu-input"  (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
-                                           [matDatepicker]="pickerStart" placeholder="Select grant start date" type="text" readonly>
+                                           [matDatepicker]="pickerStart" (click)="pickerStart.open()" placeholder="Select grant start date" type="text" readonly>
                                     <mat-datepicker #pickerStart></mat-datepicker>
-                                    <mat-icon (click)="openStartDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;">calendar_today</mat-icon>
+                                    <mat-icon (click)="openStartDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
                                 </mat-form-field>
 
                             </div>
                             <div class="col-4">
                                 <mat-form-field [floatLabel]="'always'">
                                     <mat-label>Grant End Date</mat-label>
-                                    <input id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input" (dateInput)="datePickerSelected($event)"
+                                    <input style="cursor:pointer;" id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input" (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('end', $event, currentGrant.stDate)"
-                                           [matDatepicker]="pickerEnd" placeholder="Select grant end date" readonly>
+                                           [matDatepicker]="pickerEnd" (click)="pickerEnd.open()" placeholder="Select grant end date" readonly>
                                     <mat-datepicker #pickerEnd></mat-datepicker>
-                                    <mat-icon (click)="openEndDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;">calendar_today</mat-icon>
+                                    <mat-icon (click)="openEndDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
@@ -95,8 +95,9 @@
                     <div class="col-3">
                         <mat-form-field [floatLabel]="'always'">
                             <mat-label>Grant Amount (₹)</mat-label>
-                            <input id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input"
+                            <input (blur)="showFormattedGrantAmount($event)" #grantAmount id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input" type="number"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" placeholder="Enter grant amount" autocomplete="false">
+                            <p #grantAmountFormatted (click)="showGrantAmountInput($event)" class="anu-input w-100" style="position:absolute;top:7px;cursor: text;">{{getFormattedGrantAmount(currentGrant.amount)}}</p>
                         </mat-form-field>
                     </div>
                     <div class="col-9">

@@ -160,9 +160,9 @@ export class LoginComponent implements OnInit {
         console.log(this.user);
 
         if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
-          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         } else {
-          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         }
       },
       error => {

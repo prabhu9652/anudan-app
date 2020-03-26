@@ -40,6 +40,7 @@ export class AppComponent implements AfterViewChecked{
   sectionUpdated = false;
   notifications = [];
   hasUnreadMessages = false;
+  showSaving = false;
   unreadMessages = 0;
   selectedTemplate: GrantTemplate;
   selectedReportTemplate: ReportTemplate;
@@ -53,6 +54,7 @@ export class AppComponent implements AfterViewChecked{
   action: string;
   createNewSection = new BehaviorSubject<boolean>(false);
   createNewReportSection = new BehaviorSubject<boolean>(false);
+  grantRemoteUpdate = new BehaviorSubject<boolean>(false);
   failedAttempts = 0;
   parameters: any;
   tenantUsers:User[];
@@ -253,6 +255,8 @@ interval(10000).subscribe(t => {
     localStorage.removeItem('AUTH_TOKEN');
     localStorage.removeItem('USER');
     localStorage.removeItem('MESSAGE_COUNT');
+    localStorage.removeItem('CM');
+    localStorage.removeItem('TM');
     this.notifications = [];
 
     this.grantService.changeMessage(null,0);
