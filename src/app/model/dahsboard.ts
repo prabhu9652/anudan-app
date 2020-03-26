@@ -179,8 +179,8 @@ export class Attribute {
   fieldName: string;
   fieldType: string;
   attributeOrder: number;
-  fieldValue: string;
-  fieldTableValue: TableData[];
+  fieldValue: string = null;
+  fieldTableValue: TableData[] = null;
   docs: TemplateLibrary[];
   attachments: Attachment[];
   target: string;
