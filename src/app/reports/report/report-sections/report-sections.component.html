@@ -329,7 +329,7 @@
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTEE' && (currentReport.canManage && currentReport.forGranteeUse)">
                           <mat-form-field>
-                          <input matInput placeholder="Report Level Target:" style="background:#F0F1F0 !important;" [value]="attribute.target" readonly disabled class="anu-input">
+                          <input matInput placeholder="Report Level Target:" style="background:#F0F1F0 !important;" [value]="attribute.target?attribute.target:null" readonly disabled class="anu-input">
                           </mat-form-field>
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi' && appComp.loggedInUser.organization.organizationType==='GRANTER' && (currentReport.canManage && !currentReport.forGranteeUse)">
