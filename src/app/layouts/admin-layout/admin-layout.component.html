@@ -43,12 +43,12 @@
         <!--<app-navbar></app-navbar>-->
         <div *ngIf="appComponent.currentView === 'grant'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">
             <a (click)="showAllGrants(currentGrant)"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentGrant"><span style="color:#fff;">{{currentGrant.name}}</span>
-            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #fff; left: 50%; top: 24px; font-weight: 800; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
+            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #f2f2f2; left: 50%; top: 24px; font-weight: normal; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
         </ng-container>
         </div>
         <div *ngIf="appComponent.currentView === 'report'" class="p-4 text-left" style="position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">
             <a (click)="showUpcomingReports()"><b>Home</b></a> <span style="color:#f4f4f4;"> > </span> <ng-container *ngIf="currentReport"><span style="color:#fff;">{{currentReport.name}}</span></ng-container>
-            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #fff; left: 50%; top: 24px; font-weight: 800; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
+            <p *ngIf="appComponent.showSaving" style="position: absolute; color: #f2f2f2; left: 50%; top: 24px; font-weight: normal; font-style: oblique; font-size: smaller;">{{appComponent.autosaveDisplay}}</p>
         </div>
         <!--div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'upcoming' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
             <div class="col-12">
