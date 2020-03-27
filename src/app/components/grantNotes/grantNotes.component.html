@@ -107,8 +107,8 @@
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='kpi'" class="col-3">
                       <label>Frequency:</label>
-                      <p *ngIf="attrDiff.newAttribute.frequency!=='half-yearly'">{{attrDiff.newAttribute.frequency | titlecase}}</p>
-                      <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
+                      <p *ngIf="attrDiff.oldAttribute.frequency!=='half-yearly'">{{attrDiff.oldAttribute.frequency | titlecase}}</p>
+                      <p *ngIf="attrDiff.oldAttribute.frequency==='half-yearly'">Half Yearly</p>
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
