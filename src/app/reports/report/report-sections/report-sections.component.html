@@ -20,8 +20,8 @@
               <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="editSection(section)">Edit Section name</button>
               <button *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" mat-menu-item (click)="deleteSection(section.id,'Delete section ' + section.sectionName + '?')">Delete Section</button>
                 <hr>
-                <button  mat-menu-item (click)="showHistory('report',currentReport)">Notes</button>
-                <button mat-menu-item (click)="showWorkflowAssigments()">Assignments</button>
+                <button  mat-menu-item (click)="showHistory('report',currentReport)"><mat-icon class="ml-1">comment</mat-icon>Notes</button>
+                <button mat-menu-item (click)="showWorkflowAssigments()"><mat-icon class="ml-1">assignment</mat-icon>Assignments</button>
             </ng-container>
           </ng-container>
         </mat-menu>

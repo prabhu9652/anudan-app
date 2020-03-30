@@ -885,6 +885,38 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         });
     }
 
+    copyGrant(grantId: number) {
+
+            this.appComp.currentView = 'grant';
+
+            const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+ grantId+ '/copy';
+
+        this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+            if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
+                grant.canManage=true;
+            }else{
+                grant.canManage=false;
+            }
+
+            //grant.templateId = template.id;
+            const savedgrant = grant;
+            this.appComp.originalGrant = JSON.parse(JSON.stringify(grant));
+            this.currentGrant = grant;
+            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+            this.appComp.currentView = 'grant';
+
+            this.router.navigate(['grant/basic-details']);
+            });
+        }
+
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
         const sub = new Submission();
         sub.id = 0 - Math.round(Math.random() * 10000000000);

@@ -1561,4 +1561,8 @@ getCleanText(section:Section): string{
     getFormattedGrantAmount(amount: number):string{
         return inf.format(amount,2);
     }
+
+    copyGrant(grantId: number){
+        this.grantComponent.copyGrant(grantId);
+    }
 }
