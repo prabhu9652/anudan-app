@@ -3,8 +3,8 @@
   <mat-expansion-panel [expanded]="false" class="notifications-panel"  *ngFor="let notification of messages" style="border-bottom:1px solid #E5E5E5;">
     <mat-expansion-panel-header class="grant-expansion-panel-notifications" style="padding: 5px 10px !important;height: auto !important; " [collapsedHeight]="'55px'" [expandedHeight]="'55px'" (click)="markAsRead($event,notification)">
       <mat-panel-title style="display: flex; align-items: flex-start; flex-direction: column;">
-        <p class="my-0 mr-2 text-green" *ngIf="!notification.read"><b>{{notification.title}}</b></p>
-        <p class="my-0 mr-2" *ngIf="notification.read">{{notification.title}}</p>
+        <p class="my-0 mr-2 text-green" *ngIf="!notification.read" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 620px;"><b>{{notification.title}}</b></p>
+        <p class="my-0 mr-2" *ngIf="notification.read" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 620px;">{{notification.title}}</p>
         <small style="display:flex;aligh-items:center;color:#C7C8C7;margin-top:10px;"><img src="./assets/img/clock.svg" class="mr-2">{{getHumanTime(notification)}}</small>
       </mat-panel-title>
     </mat-expansion-panel-header>
