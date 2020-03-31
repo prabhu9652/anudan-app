@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AppComponent} from '../../app.component';
 
 
 @Component({
@@ -9,10 +10,12 @@ import {Component, OnInit} from '@angular/core';
 export class DetailsComponent implements OnInit {
 
 
+    constructor(
+        public appComp: AppComponent
+    ){}
 
-  ngOnInit() {
-
-  }
-
+    ngOnInit() {
+        this.appComp.subMenu = {name:'Organization Details'};
+    }
 
 }

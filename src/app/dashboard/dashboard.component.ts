@@ -60,7 +60,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-  console.log('dashboard');
+
+    this.appComponent.subMenu = {name:''};
     if(this.parameters.status && this.parameters.status==='n'){
 
     const dialogRef = this.dialog.open(WelcomePopupComponent, {

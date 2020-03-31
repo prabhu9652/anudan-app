@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AppComponent} from '../../app.component';
 
 
 @Component({
@@ -8,11 +9,13 @@ import {Component, OnInit} from '@angular/core';
 })
 export class OrgadminComponent implements OnInit {
 
+    constructor(
+        public appComp: AppComponent
+    ){}
 
-
-  ngOnInit() {
-
-  }
+    ngOnInit() {
+        this.appComp.subMenu = {name:'Organization Admin'};
+    }
 
 
 }

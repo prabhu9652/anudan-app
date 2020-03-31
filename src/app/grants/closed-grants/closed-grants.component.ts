@@ -74,6 +74,7 @@ export class ClosedGrantsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appComponent.subMenu = {name:'Closed Grants',action:'cg'};
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     console.log(this.appComponent.loggedInUser.permissions);

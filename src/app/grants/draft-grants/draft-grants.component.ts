@@ -73,6 +73,7 @@ export class DraftGrantsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appComponent.subMenu = {name:'Draft Grants',action:'dg'};
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     console.log(this.appComponent.loggedInUser.permissions);

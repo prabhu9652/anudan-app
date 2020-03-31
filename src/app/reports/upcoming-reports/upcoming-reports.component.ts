@@ -46,6 +46,7 @@ export class UpcomingReportsComponent implements OnInit {
         }
 
   ngOnInit() {
+    this.appComp.subMenu = {name:'Upcoming Reports',action:'ur'};
     this.reportService.currentMessage.subscribe(r => {
         this.reports = r;
      });

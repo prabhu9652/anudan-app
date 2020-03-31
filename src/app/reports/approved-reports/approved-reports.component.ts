@@ -33,6 +33,7 @@ export class ApprovedReportsComponent implements OnInit {
         }
 
   ngOnInit() {
+    this.appComp.subMenu = {name:'Approved Reports',action:'ar'};
     this.reportService.currentMessage.subscribe(r => {
         this.reports = r;
      });
