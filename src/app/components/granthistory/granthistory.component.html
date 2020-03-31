@@ -13,8 +13,8 @@
   </ng-container>
 </div>
 <div *ngIf="data.type==='report'" #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
-  <p class="mb-0 bg-light p-1" *ngIf="data.data.noteAddedByUser"><b>{{data.data.noteAddedByUser.firstName}} {{data.data.noteAddedByUser.lastName}}</b> <small> ({{data.data.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
-  <p *ngIf="data.data.noteAddedByUser" style="border-bottom:1px solid #d4d4d4;">{{data.data.note}}</p>
+  <p class="mb-0 bg-light p-1" *ngIf="data.data.noteAddedByUser && ((data.currentUser.organization.organizationType==='GRANTEE' && (data.data.status.internalStatus==='ACTIVE' || data.data.status.internalStatus==='CLOSED' || data.currentUser.id===data.data.noteAddedBy)) || data.currentUser.organization.organizationType==='GRANTER')"><b>{{data.data.noteAddedByUser.firstName}} {{data.data.noteAddedByUser.lastName}}</b> <small> ({{data.data.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+  <p *ngIf="data.data.noteAddedByUser && ((data.currentUser.organization.organizationType==='GRANTEE' && (data.data.status.internalStatus==='ACTIVE' || data.data.status.internalStatus==='CLOSED' || data.currentUser.id===data.data.noteAddedBy)) || data.currentUser.organization.organizationType==='GRANTER')" style="border-bottom:1px solid #d4d4d4;">{{data.data.note}}</p>
   <ng-container *ngFor="let item of reportHistory">
     <ng-container *ngIf="item.note!=='' && item.noteAddedByUser">
       <p class="mb-0 bg-light p-1"><b>{{item.noteAddedByUser.firstName}} {{item.noteAddedByUser.lastName}}</b> <small> ({{item.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>

@@ -266,7 +266,7 @@ export class AdminLayoutComponent implements OnInit {
 
   showHistory(historyOf,what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
-      data: {type:historyOf,data:what2Show},
+      data: {type:historyOf,data:what2Show,currentUser: this.appComponent.loggedInUser},
       panelClass: 'grant-notes-class',
       disableClose: false
       });
