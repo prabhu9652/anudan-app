@@ -109,7 +109,7 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user){
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: 'Are you sure you want to delete role ' + user.emailId
+            data: {title:'Are you sure you want to delete role ' + user.emailId}
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -73,7 +73,7 @@ export class RolesComponent implements OnInit {
 
     deleteRole(role){
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: 'Are you sure you want to delete role ' + role.name
+            data: {title:'Are you sure you want to delete role ' + role.name}
         });
 
         dialogRef.afterClosed().subscribe(result => {
