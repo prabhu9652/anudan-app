@@ -320,7 +320,8 @@ ngOnDestroy(){
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
     this.appComp.sectionInModification = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: {title:title}
+      data: {title:title},
+      panelClass: 'center-class'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1901,7 +1902,7 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   editSection(section){
     const dialogRef = this.dialog.open(SectionEditComponent, {
         data: section,
-        panelClass: 'field-class'
+        panelClass: 'center-class'
     });
 
 
