@@ -428,7 +428,7 @@ export class ReportSectionsComponent implements OnInit {
     editSection(section){
         const dialogRef = this.dialog.open(SectionEditComponent, {
             data: section,
-            panelClass: 'field-class'
+            panelClass: 'center-class'
         });
 
 
@@ -445,7 +445,8 @@ export class ReportSectionsComponent implements OnInit {
 
     deleteSection(secId: number, title: string) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: title
+          data: {title:title},
+          panelClass: 'center-class'
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -503,7 +504,8 @@ export class ReportSectionsComponent implements OnInit {
 
     deleteFieldEntry(sectionId: number, attributeId: number, attributeName: string) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-              data: 'Are you sure you want to delete ' + attributeName
+              data: {title:'Are you sure you want to delete ' + attributeName},
+              panelClass: 'center-class'
             });
 
             dialogRef.afterClosed().subscribe(result => {
@@ -663,7 +665,7 @@ deleteAttachment(attributeId, attachmentId){
      deleteRow(sectionId, attributeId,rowIndex){
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: 'Delete Row?'
+          data: {title:'Delete Row?'}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -686,7 +688,7 @@ deleteAttachment(attributeId, attachmentId){
     deleteColumn(sectionId, attributeId,colIndex){
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: 'Delete Column?'
+          data: {title:'Delete Column?'}
         });
 
         dialogRef.afterClosed().subscribe(result => {

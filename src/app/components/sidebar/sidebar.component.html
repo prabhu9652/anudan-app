@@ -26,7 +26,7 @@
                     <ng-container *ngIf="menuItem.divide && canManageOrg">
                         <mat-divider></mat-divider>
                     </ng-container>
-                    <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization' && canManageOrg">
+                    <mat-expansion-panel #organization id="organization" *ngIf="menuItem.title === 'Organization' && canManageOrg" [expanded]="appComponent.subMenu.name==='Organization Details' || appComponent.subMenu.name==='Organization Admin'" >
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Organization
@@ -42,7 +42,7 @@
                     </mat-expansion-panel>
 
 
-                <mat-expansion-panel #grants id="grants" *ngIf="menuItem.title === 'Grants'">
+                <mat-expansion-panel #grants id="grants" *ngIf="menuItem.title === 'Grants'" [expanded]="appComponent.subMenu.name==='Draft Grants' || appComponent.subMenu.name==='Active Grants' || appComponent.subMenu.name==='Closed Grants'">
                     <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                         <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                             <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Grants
@@ -61,7 +61,7 @@
                     </li>
                 </mat-expansion-panel>
 
-                    <mat-expansion-panel #reports id="reports" *ngIf="menuItem.title === 'Reports'">
+                    <mat-expansion-panel #reports id="reports" *ngIf="menuItem.title === 'Reports'" [expanded]="appComponent.subMenu.name==='Upcoming Reports' || appComponent.subMenu.name==='Submitted Reports' || appComponent.subMenu.name==='Approved Reports'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Reports

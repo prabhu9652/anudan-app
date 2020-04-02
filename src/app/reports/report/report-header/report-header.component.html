@@ -9,8 +9,8 @@
                 <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert
                 </mat-icon>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="showHistory('report',currentReport)">Notes</button>
-                    <button mat-menu-item (click)="showWorkflowAssigments()">Assignments</button>
+                    <button mat-menu-item (click)="showHistory('report',currentReport)"><mat-icon class="ml-1">comment</mat-icon>Notes</button>
+                    <button mat-menu-item (click)="showWorkflowAssigments()"><mat-icon class="ml-1">assignment</mat-icon>Assignments</button>
                 </mat-menu>
             </div>
         </div>

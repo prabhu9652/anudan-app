@@ -222,7 +222,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
     confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: title
+            data: {title:title}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -884,6 +884,53 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         this.router.navigate(['grant/basic-details']);
         });
     }
+
+    copyGrant(grantId: number) {
+
+        const dialogRef = this.dialog.open(FieldDialogComponent, {
+            data: {title:"Important!",content:'<p class="m-0"><strong>You are about to create a new grant (&lsquo;Draft&rsquo; state) with most of the contents from the original grant copied over.&nbsp; Please make sure that you review the new Grant for correctness and accuracy.&nbsp;</strong></p> <p class="m-0"><u>Grant Header</u></p> <p class="m-0">A temporary Grant Name with reference to the original Grant Name will appear in the new Grant Header.&nbsp; This will need to be replaced with a new relevant Grant Name.&nbsp; All other information in the Grant Header will be cleared and will need to be added for the new Grant.</p> <p class="m-0"><u>Grant Details</u></p> <p class="m-0">All content in the Grant Details will be copied over from the original Grant. &nbsp;Please do check to ensure that these are relevant to the new Grant.</p> <p class="m-0"><u>Workflow Assignments</u></p> <p class="m-0">All assignments from the original Grant will be cleared for this new Grant. The new Grant will be placed in a &lsquo;Draft&rsquo; stage with you as the owner of this state.&nbsp; You will need to add appropriate assignments to progress this Grant through the organizational workflow.</p> <p class="m-0"><u>Notes and History</u></p> <p class="m-0">All notes and history from the original Grant will be cleared for this new Grant.</p>'},
+            panelClass: 'grant-notes-class'
+        });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+
+                this.appComp.currentView = 'grant';
+
+                            const httpOptions = {
+                                headers: new HttpHeaders({
+                                    'Content-Type': 'application/json',
+                                    'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                                    'Authorization': localStorage.getItem('AUTH_TOKEN')
+                                })
+                            };
+
+                            const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+ grantId+ '/copy';
+
+                            this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
+                            if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
+                                grant.canManage=true;
+                            }else{
+                                grant.canManage=false;
+                            }
+
+                            //grant.templateId = template.id;
+                            const savedgrant = grant;
+                            this.appComp.originalGrant = JSON.parse(JSON.stringify(grant));
+                            this.currentGrant = grant;
+                            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+                            this.appComp.currentView = 'grant';
+
+                            this.router.navigate(['grant/basic-details']);
+                            });
+
+                }else {
+                     dialogRef.close();
+                 }
+            });
+
+
+        }
 
     private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
         const sub = new Submission();

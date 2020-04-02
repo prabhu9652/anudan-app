@@ -224,7 +224,7 @@ export class GrantsComponent implements OnInit {
 
   deleteGrant(grant: Grant){
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: "Are you sure you want to delete this grant?"
+          data: {title:"Are you sure you want to delete this grant?"}
         });
 
         dialogRef.afterClosed().subscribe(result => {

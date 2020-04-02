@@ -31,6 +31,7 @@ export class SubmittedReportsComponent implements OnInit {
         }
 
   ngOnInit() {
+    this.appComp.subMenu = {name:'Submitted Reports',action:'sr'};
     this.reportService.currentMessage.subscribe(r => {
         this.reports = r;
      });

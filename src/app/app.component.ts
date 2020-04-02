@@ -81,6 +81,7 @@ export class AppComponent implements AfterViewChecked{
     templateLibrary: []
   };
 
+  subMenu = {};
 
   org: string;
   public defaultClass = '';

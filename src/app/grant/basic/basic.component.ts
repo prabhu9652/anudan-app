@@ -296,7 +296,7 @@ export class BasicComponent implements OnInit {
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: title
+      data: {title:title}
     });
 
     dialogRef.afterClosed().subscribe(result => {

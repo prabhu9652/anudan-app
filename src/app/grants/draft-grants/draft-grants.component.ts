@@ -73,6 +73,7 @@ export class DraftGrantsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     console.log(this.appComponent.loggedInUser.permissions);
@@ -236,7 +237,8 @@ export class DraftGrantsComponent implements OnInit {
 
   deleteGrant(grant: Grant){
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: "Are you sure you want to delete this grant?"
+          data: {title:"Are you sure you want to delete this grant?"},
+          panelClass: 'center-class'
         });
 
         dialogRef.afterClosed().subscribe(result => {

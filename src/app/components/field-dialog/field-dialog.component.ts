@@ -10,7 +10,7 @@ export class FieldDialogComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<FieldDialogComponent>
-      , @Inject(MAT_DIALOG_DATA) public message: string) {
+      , @Inject(MAT_DIALOG_DATA) public message: any) {
     this.dialogRef.disableClose = true;
   }
 

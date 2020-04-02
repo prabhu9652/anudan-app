@@ -241,7 +241,7 @@ export class AdminLayoutComponent implements OnInit {
       return bool;
   }
 
-  showAllGrants(grant: Grant) {
+  showAllGrants(grant: Grant,action: string) {
 
     //this.subscription.unsubscribe();
     //this.dataService.changeMessage(0);
@@ -258,15 +258,29 @@ export class AdminLayoutComponent implements OnInit {
 
     this.appComponent.currentView = 'grants';
     if(orgType==='GRANTER'){
-        this.router.navigate(['grants/draft']);
+        if(action==='dg'){
+            this.router.navigate(['grants/draft']);
+        } else if(action==='ag'){
+            this.router.navigate(['grants/active']);
+        } else if(action==='cg'){
+            this.router.navigate(['grants/closed']);
+        }else if(action==='db'){
+            this.router.navigate(['/dashboard']);
+        }
     }else if(orgType==='GRANTEE'){
-        this.router.navigate(['grants/active']);
+        if(action==='ag'){
+            this.router.navigate(['grants/active']);
+        } else if(action==='cg'){
+            this.router.navigate(['grants/closed']);
+        }else if(action==='db'){
+            this.router.navigate(['/dashboard']);
+        }
     }
   }
 
   showHistory(historyOf,what2Show){
     const dialogRef = this.dialog.open(GranthistoryComponent, {
-      data: {type:historyOf,data:what2Show},
+      data: {type:historyOf,data:what2Show,currentUser: this.appComponent.loggedInUser},
       panelClass: 'grant-notes-class',
       disableClose: false
       });
@@ -527,10 +541,18 @@ showMessages(){
   }
 
 
-  showUpcomingReports(){
+  showAllReports(report: Report, action: string){
     this.appComponent.showSaving = false;
     this.appComponent.currentView = 'upcoming';
-    this.router.navigate(['reports/upcoming']);
+    if(action==='ur'){
+        this.router.navigate(['reports/upcoming']);
+    } else if(action==='sr'){
+        this.router.navigate(['reports/submitted']);
+    } else if(action==='ar'){
+        this.router.navigate(['reports/approved']);
+    } else if(action==='db'){
+        this.router.navigate(['/dashboard']);
+    }
   }
 
   showProfile(){
@@ -540,6 +562,22 @@ showMessages(){
 
   logout(){
     this.appComponent.logout();
+  }
+
+  navigateToGrants(sm:any){
+    this.showAllGrants(this.currentGrant,sm.action);
+  }
+
+  navigateToReports(sm:any){
+    this.showAllReports(this.currentReport,sm.action);
+  }
+
+  goToDashboard(toSave:any,type:string){
+    if(type==='GRANT'){
+        this.showAllGrants(toSave,'db');
+    } else if(type==='REPORT'){
+        this.showAllReports(toSave,'db');
+    }
   }
 
 }

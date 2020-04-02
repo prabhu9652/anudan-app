@@ -302,7 +302,8 @@ export class PreviewComponent implements OnInit {
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: title
+      data: {title:title},
+      panelClass: 'center-class'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1560,5 +1561,9 @@ getCleanText(section:Section): string{
 
     getFormattedGrantAmount(amount: number):string{
         return inf.format(amount,2);
+    }
+
+    copyGrant(grantId: number){
+        this.grantComponent.copyGrant(grantId);
     }
 }

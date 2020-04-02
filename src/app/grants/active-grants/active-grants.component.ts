@@ -73,6 +73,7 @@ export class ActiveGrantsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appComponent.subMenu = {name:'Active Grants',action:'ag'};
     const user = JSON.parse(localStorage.getItem('USER'));
     this.appComponent.loggedInUser = user;
     console.log(this.appComponent.loggedInUser.permissions);
@@ -224,7 +225,8 @@ export class ActiveGrantsComponent implements OnInit {
 
   deleteGrant(grant: Grant){
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-          data: "Are you sure you want to delete this grant?"
+          data: {title:"Are you sure you want to delete this grant?"},
+          panelClass: 'center-class'
         });
 
         dialogRef.afterClosed().subscribe(result => {
