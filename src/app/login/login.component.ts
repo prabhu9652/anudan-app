@@ -159,10 +159,10 @@ export class LoginComponent implements OnInit {
           this.appComponent.loggedInUser = this.user;
         console.log(this.user);
 
-        if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
+        if (this.user.organization.type === 'GRANTEE' || this.user.organization.type === 'GRANTER') {
           this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         } else {
-          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
+          this.router.navigate(['/admin/tenants'], { queryParams: { g: this.parameters.g,r: this.parameters.r, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
         }
       },
       error => {

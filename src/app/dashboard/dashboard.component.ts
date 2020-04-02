@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
 
     this.appComponent.subMenu = {name:''};
-    if(this.parameters.status && this.parameters.status==='n'){
+    if(this.parameters.status && this.parameters.status==='n' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
 
     const dialogRef = this.dialog.open(WelcomePopupComponent, {
           data: this.appComponent.loggedInUser.firstName,
@@ -75,9 +75,9 @@ export class DashboardComponent implements OnInit {
               }
          });
 
-    }else if(this.parameters.status && this.parameters.status==='e'){
+    }else if(this.parameters.status && this.parameters.status==='e' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
         this.fetchReportOrGrant();
-    }else{
+    } else{
         const user = JSON.parse(localStorage.getItem('USER'));
         this.appComponent.loggedInUser = user;
         this.fetchDashboard(user.id);
