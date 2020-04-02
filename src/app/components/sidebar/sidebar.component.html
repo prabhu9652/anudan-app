@@ -42,7 +42,7 @@
                     </mat-expansion-panel>
 
 
-                <mat-expansion-panel #grants id="grants" *ngIf="menuItem.title === 'Grants'" [expanded]="appComponent.subMenu.name==='Draft Grants' || appComponent.subMenu.name==='Active Grants' || appComponent.subMenu.name==='Closed Grants'">
+                <mat-expansion-panel #grants id="grants" *ngIf="menuItem.title === 'Grants'" [expanded]="appComponent.subMenu.name==='In-progress Grants' || appComponent.subMenu.name==='Active Grants' || appComponent.subMenu.name==='Closed Grants'">
                     <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                         <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                             <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Grants
