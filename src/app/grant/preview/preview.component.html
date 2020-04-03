@@ -151,7 +151,7 @@
                                         <div class="col-sm-12 col-lg-12 mb-3">
                                             <span  style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
                                             <ul>
-                                            <li *ngFor="let doc of getDocumentName(attribute.fieldValue)" style="list-style-type:none;">
+                                            <li *ngFor="let doc of attribute.attachments" style="list-style-type:none;">
 
                                                 <p class="m-0"  style="font-family:Roboto;font-size:16px;"><b>
                                                     <ng-container *ngIf="doc.type === 'pdf'">
@@ -208,7 +208,7 @@
 
                                     <ng-container *ngIf="attribute.fieldType==='document'">
                                         <div class="col-sm-12 col-lg-12 mb-3">
-                                            <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
+                                            <ng-container *ngFor="let doc of attribute.attachments">
                                                 <a (click)="downloadAttachment(currentGrant.id,doc.id,doc.name,doc.type)">
                                                 <span class="ml-3">
                                                     <ng-container *ngIf="doc.type === 'pdf'">

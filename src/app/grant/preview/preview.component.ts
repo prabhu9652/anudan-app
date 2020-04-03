@@ -79,6 +79,7 @@ export class PreviewComponent implements OnInit {
   action: string;
   logoUrl:string;
   tenantUsers: User[];
+  docsUpdated = false;
   grantWorkflowStatuses:WorkflowStatus[];
   exportAsConfig: ExportAsConfig = {
       type: 'pdf', // the type you want to download
@@ -230,6 +231,10 @@ export class PreviewComponent implements OnInit {
   }
 
   getDocumentName(val: string): any[] {
+    if(this.docsUpdated){
+        return;
+    }
+    this.docsUpdated = true;
     let obj;
     if(val!==""){
         obj = JSON.parse(val);
