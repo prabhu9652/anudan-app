@@ -30,6 +30,15 @@ export class SettingsComponent implements OnInit {
 
     this.http.get(url,httpOptions).subscribe((settings:AppSetting[]) => {
         this.appSettings = settings;
+        for(let setting of this.appSettings){
+            if(setting.scheduledTaskConfiguration){
+                if(setting.scheduledTaskConfiguration.configuration){
+                    if(setting.scheduledTaskConfiguration.configuration.afterNoOfHours){
+                       setting.scheduledTaskConfiguration.configuration.afterNoOfDays = setting.scheduledTaskConfiguration.configuration.afterNoOfHours/(24*60);
+                    }
+                }
+            }
+        }
     });
 
   }
@@ -50,6 +59,12 @@ export class SettingsComponent implements OnInit {
         setting = savedSetting;
     });
 
+  }
+
+  reCalculateDays(setting:AppSetting,ev: Event){
+    if(ev){
+        setting.scheduledTaskConfiguration.configuration.afterNoOfHours = Number(ev)*24*60;
+    }
   }
 
 

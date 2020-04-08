@@ -1,6 +1,7 @@
 export class ReportDueConfiguration{
     daysBefore: number;
     afterNoOfHours: number;
+    afterNoOfDays: number;
 }
 export class ScheduledTaskConfiguration{
     message: string;
