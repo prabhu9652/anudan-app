@@ -25,6 +25,7 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import {SettingsComponent} from '../../admin/settings/settings.component';
 import {UpcomingReportsComponent} from '../../reports/upcoming-reports/upcoming-reports.component';
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
 import { ApprovedReportsComponent } from '../../reports/approved-reports/approved-reports.component';
@@ -106,5 +107,6 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'notifications', component: NotificationsComponent},
   {path: 'upgrade', component: UpgradeComponent},
   {path: 'workflow-management', component: WorkflowManagementComponent},
-  {path: 'admin/tenants', component: TenantsComponent}
+  {path: 'admin/tenants', component: TenantsComponent},
+  {path: 'admin/settings', component: SettingsComponent}
 ];

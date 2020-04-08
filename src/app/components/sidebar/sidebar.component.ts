@@ -63,7 +63,8 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
 ];
 
 export const PLATFORM_ROUTES: RouteInfo[] = [
-    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '',divide:false }
+    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '',divide:false },
+    { path: '/admin/settings', title: 'Settings',  icon: 'grant.svg', class: '',divide:false }
 ];
 
 

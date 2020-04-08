@@ -69,6 +69,7 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import {SettingsComponent} from '../../admin/settings/settings.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcoming-reports.component';
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
@@ -155,6 +156,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         ReportsComponent,
         DisbursementsComponent,
         TenantsComponent,
+        SettingsComponent,
         UpcomingReportsComponent,
         SubmittedReportsComponent,
         ApprovedReportsComponent,

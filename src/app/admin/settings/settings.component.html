@@ -1,0 +1,28 @@
+<div class="main-content">
+    <h3>Application Settings</h3>
+    <table width="100%" border="1" cellpadding="2px" cellspacing="2px" style="background:#fff;">
+        <tr *ngFor="let setting of appSettings">
+            <ng-container *ngIf="setting.configurable">
+            <td align="left" width="30%">
+                <h4>{{setting.key}} | {{setting.type}}</h4>
+                <p>{{setting.configName}}</p>
+                <p><small>{{setting.description}}</small></p>
+            </td>
+            <td align="left">
+                <mat-form-field *ngIf="setting.configName!=='DUE_REPORTS_REMINDER_SETTINGS' && setting.configName!=='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
+                    <input matInput class="anu-input" [(ngModel)]="setting.configValue">
+                </mat-form-field>
+                <mat-form-field *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS' || setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
+                    <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.time" placeholder="Time to run task:">
+                </mat-form-field>
+                <mat-form-field>
+                    <input *ngIf="setting.scheduledTaskConfiguration.configuration.daysBefore" matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.daysBefore" placeholder="Number of days before end date to send reminder:">
+                    <input *ngIf="setting.scheduledTaskConfiguration.configuration.afterNoOfHours" matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfHours" placeholder="No of minutes in no-action state:">
+                </mat-form-field>
+            </td>
+            <td><a class="btn btn-sm btn-green" (click)="saveSetting(setting)">Save</a></td>
+            </ng-container>
+        </tr>
+    </table>
+
+</div>
