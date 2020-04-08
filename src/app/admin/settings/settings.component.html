@@ -3,8 +3,9 @@
     <table width="100%" border="1" cellpadding="2px" cellspacing="2px" style="background:#fff;">
         <tr *ngFor="let setting of appSettings">
             <ng-container *ngIf="setting.configurable">
-            <td align="left" width="30%">
-                <h4>{{setting.key}} | {{setting.type}}</h4>
+            <td align="left" width="30%" valign="top">
+                <p class="badge badge-light" *ngIf="setting.type==='app'">System setting</p>
+                <p class="badge badge-success" *ngIf="setting.type==='org'">Custom setting</p>
                 <p>{{setting.configName}}</p>
                 <p><small>{{setting.description}}</small></p>
             </td>
