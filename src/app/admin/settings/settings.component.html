@@ -16,10 +16,18 @@
                 <mat-form-field *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS' || setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
                     <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.time" placeholder="Time to run task:">
                 </mat-form-field>
-                <mat-form-field>
-                    <input *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS'"  matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.daysBefore" placeholder="Number of days before end date to send reminder:">
-                    <input *ngIf="setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'"  matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfDays" (ngModelChange)="reCalculateDays(setting,$event)" placeholder="No of days without action reminder:">
-                </mat-form-field>
+
+                    <ng-container *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS'">
+                        <mat-label>Number of days before end date to send reminder:</mat-label>
+                        <ng-container *ngFor="let db of setting.scheduledTaskConfiguration.configuration.daysBefore,let i = index">
+                            <mat-form-field>
+                                <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.daysBefore[i]">
+                            </mat-form-field>
+                        </ng-container>
+                    </ng-container>
+                    <mat-form-field *ngIf="setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
+                        <input   matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfDays" (ngModelChange)="reCalculateDays(setting,$event)" placeholder="No of days without action reminder:">
+                    </mat-form-field>
             </td>
             <td><a class="btn btn-sm btn-green" (click)="saveSetting(setting)">Save</a></td>
             </ng-container>

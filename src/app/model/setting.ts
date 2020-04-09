@@ -1,5 +1,5 @@
 export class ReportDueConfiguration{
-    daysBefore: number;
+    daysBefore: number[];
     afterNoOfHours: number;
     afterNoOfDays: number;
 }
