@@ -3,6 +3,7 @@ import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/
 import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
 import { User} from './model/user';
 import { Report} from './model/report';
+import { Release} from './model/release';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant,TemplateLibrary} from "./model/dahsboard";
@@ -18,7 +19,6 @@ import { environment } from '../environments/environment';
 import { SwUpdate } from '@angular/service-worker';
 import { first,tap,switchMap } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
-import release from './release.json';
 
 
 @Component({
@@ -117,12 +117,15 @@ export class AppComponent implements AfterViewChecked{
 
   ngOnInit() {
 
-    this.releaseVersion = release.version;
 
     if ('serviceWorker' in navigator && environment.production){
         navigator.serviceWorker.register('/ngsw-worker.js')
         console.log('Registered as service worker');
     }
+
+    this.httpClient.get("/api/public/release").subscribe((release:Release) =>{
+        this.releaseVersion = release.version;
+    });
 
     this.getTenantCode();
 
