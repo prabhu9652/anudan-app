@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { SwUpdate } from '@angular/service-worker';
 import { first,tap,switchMap } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
+import release from './release.json';
 
 
 @Component({
@@ -60,7 +61,8 @@ export class AppComponent implements AfterViewChecked{
   tenantUsers:User[];
   reportWorkflowStatuses: WorkflowStatus[];
   grantWorkflowStatuses: WorkflowStatus[];
-  reportTransitions: WorkflowTransition[]
+  reportTransitions: WorkflowTransition[];
+  releaseVersion: string;
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -114,6 +116,8 @@ export class AppComponent implements AfterViewChecked{
   }
 
   ngOnInit() {
+
+    this.releaseVersion = release.version;
 
     if ('serviceWorker' in navigator && environment.production){
         navigator.serviceWorker.register('/ngsw-worker.js')

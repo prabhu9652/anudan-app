@@ -14,7 +14,6 @@ import {ToastrService} from 'ngx-toastr';
 import {Notifications} from '../model/dahsboard'
 import {interval} from 'rxjs';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -54,7 +53,6 @@ export class LoginComponent implements OnInit {
               this.activatedRoute.queryParams.subscribe(params => {
                   this.parameters = params;
               });
-
   }
 
   signInWithGoogle(): void {

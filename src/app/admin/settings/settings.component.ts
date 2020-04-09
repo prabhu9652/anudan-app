@@ -14,7 +14,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private appComp: AppComponent
+    public appComp: AppComponent
   ) {}
 
   ngOnInit() {

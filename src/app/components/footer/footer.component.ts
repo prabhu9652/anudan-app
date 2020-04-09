@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {AppComponent} from'../../app.component'
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -8,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
   test : Date = new Date();
   
-  constructor() { }
+  constructor(
+    public appComp: AppComponent
+  ) { }
 
   ngOnInit() {
   }
