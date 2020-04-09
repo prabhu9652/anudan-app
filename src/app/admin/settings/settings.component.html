@@ -1,15 +1,15 @@
 <div class="main-content">
-    <h3>Application Settings</h3>
-    <table width="100%" border="1" cellpadding="2px" cellspacing="2px" style="background:#fff;">
-        <tr *ngFor="let setting of appSettings">
-            <ng-container *ngIf="setting.configurable">
-            <td align="left" width="30%" valign="top">
-                <p class="badge badge-light" *ngIf="setting.type==='app'">System setting</p>
-                <p class="badge badge-success" *ngIf="setting.type==='org'">Custom setting</p>
-                <p>{{setting.configName}}</p>
-                <p><small>{{setting.description}}</small></p>
-            </td>
-            <td align="left">
+    <h3 class="text-center" *ngIf="this.appComp.loggedInUser.organization.organizationType==='PLATFORM'">Application Configurations</h3>
+    <div>
+        <ng-container class="row grants-section p-3 mx-3" *ngFor="let setting of appSettings">
+            <div *ngIf="setting.configurable" class="row grants-section p-3 mx-3">
+            <div class="col-3" align="left" width="30%" valign="top">
+                <small class="badge badge-light" *ngIf="setting.type==='app'">System Configuration</small>
+                <small class="badge badge-success" *ngIf="setting.type==='org'">Custom Configuration</small>
+
+                <div [innerHTML]="setting.description" class="pt-4"></div>
+            </div>
+            <div class="col-7" align="left">
                 <mat-form-field *ngIf="setting.configName!=='DUE_REPORTS_REMINDER_SETTINGS' && setting.configName!=='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
                     <input matInput class="anu-input" [(ngModel)]="setting.configValue">
                 </mat-form-field>
@@ -18,20 +18,25 @@
                 </mat-form-field>
 
                     <ng-container *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS'">
-                        <mat-label>Number of days before end date to send reminder:</mat-label>
-                        <ng-container *ngFor="let db of setting.scheduledTaskConfiguration.configuration.daysBefore,let i = index">
-                            <mat-form-field>
-                                <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.daysBefore[i]">
-                            </mat-form-field>
-                        </ng-container>
+                        <mat-label>Number of days before Report Due Date to send reminder:</mat-label>
+                        <table>
+                            <tr>
+                                <td *ngFor="let db of setting.scheduledTaskConfiguration.configuration.daysBefore,let i = index">
+                                    <mat-form-field>
+                                        <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.daysBefore[i]" [placeholder]="'Reminder '+ (i+1)">
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+
                     </ng-container>
                     <mat-form-field *ngIf="setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
                         <input   matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfDays" (ngModelChange)="reCalculateDays(setting,$event)" placeholder="No of days without action reminder:">
                     </mat-form-field>
-            </td>
-            <td><a class="btn btn-sm btn-green" (click)="saveSetting(setting)">Save</a></td>
-            </ng-container>
-        </tr>
-    </table>
+            </div>
+            <div class="col-2"><a class="btn btn-sm btn-green" (click)="saveSetting(setting)">Save</a></div>
+            </div>
+        </ng-container>
+    </div>
 
 </div>
