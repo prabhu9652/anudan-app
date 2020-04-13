@@ -1564,11 +1564,25 @@ getCleanText(section:Section): string{
         return amtInWords;
     }
 
-    getFormattedGrantAmount(amount: number):string{
-        return inf.format(amount,2);
+    getFormattedCurrency(amount: number):string{
+        return inf.format(!amount?0:amount,2);
     }
 
     copyGrant(grantId: number){
         this.grantComponent.copyGrant(grantId);
+    }
+
+    getTotals(idx:number,fieldTableValue:TableData[]):string{
+        let total = 0;
+        for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        return '₹ ' + String(inf.format(total,2));
     }
 }

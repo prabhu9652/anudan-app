@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-4 mb-2">
                     <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grant Amount:</span>
-                    <div class="ml-0 mb-3" style="display: flex; align-items: center;"><img src="./assets/img/rupee.png" style="width:12px;"><b>{{getFormattedGrantAmount(currentGrant.amount)}}</b></div>
+                    <div class="ml-0 mb-3" style="display: flex; align-items: center;"><img src="./assets/img/rupee.png" style="width:12px;"><b>{{getFormattedCurrency(currentGrant.amount)}}</b></div>
 
                 </div>
                 <div class="col-8 mb-2">
@@ -187,6 +187,44 @@
                                         </div>
 
                                     </ng-container>
+                                    <div class="col-sm-12 col-lg-12 mb-3" *ngIf="attribute.fieldType=='disbursement'">
+                                        <span  style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                                        <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
+                                            <tr>
+                                                <td align="center" valign="middle" width="15%" style="padding:5px;font-size: 16px;font-family:Roboto;">
+                                                   <b>Installment #</b>
+                                                </td>
+                                                <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
+
+                                                    <td class="pl-2" style="padding:5px;font-size: 16px;font-family:Roboto;" align="center">
+                                                        <b>{{column.name}}</b>
+                                                    </td>
+
+                                                </ng-container>
+                                            </tr>
+                                            <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
+                                                <tr>
+                                                    <td style="padding:5px;font-size: 16px;font-family:Roboto;">
+                                                        {{row.name}}
+                                                    </td>
+                                                        <ng-container *ngFor="let column of row.columns,let j = index">
+                                                            <td align="right" *ngIf="j===1 || j===2" style="min-width:150px;padding:5px;font-size: 16px;font-family:Roboto;" >
+                                                                    <ng-container *ngIf="column.dataType==='currency'">₹ {{getFormattedCurrency(column.value)}}</ng-container>
+                                                            </td>
+                                                            <td *ngIf="j!==1 && j!==2" style="padding:5px;font-size: 16px;font-family:Roboto;" >
+                                                                <ng-container>{{column.value}}</ng-container>
+                                                            </td>
+                                                        </ng-container>
+                                                </tr>
+                                            </ng-container>
+                                            <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f4f4f4;">
+                                                <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Totals:</b></td>
+                                                <td align="right" style="padding:5px;font-size: 16px;font-family:Roboto;" *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
+                                                    <b *ngIf="column.dataType==='currency'">{{getTotals(j,attribute.fieldTableValue)}}</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
 
                                 </ng-container>
                             </div>

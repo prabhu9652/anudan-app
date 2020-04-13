@@ -36,6 +36,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { saveAs } from 'file-saver';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -107,6 +108,11 @@ export class SectionsComponent implements OnInit, AfterViewChecked {
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('downloadSelected') downloadSelected: ElementRef;
+  @ViewChild('committedAmount') committedAmount: ElementRef;
+  @ViewChild('amountFormatted') amountFormatted: ElementRef;
+  @ViewChild('otherSourcesAmount') otherSourcesAmount: ElementRef;
+  @ViewChild('otherSourcesAmountFormatted') otherSourcesAmountFormatted: ElementRef;
+  @ViewChild('dataColumns') dataColumns: ElementRef;
 
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
@@ -1283,6 +1289,27 @@ ngOnDestroy(){
 
         attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
       }
+    }else if(ev.toString()==='disbursement'){
+        if(attr.fieldValue.trim() === ''){
+          attr.fieldTableValue = [];
+          const data = new TableData();
+          data.name = "";
+          data.header="";
+          data.columns = [];
+
+          const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
+          for(let i=0; i< 5; i++){
+            const col = new ColumnData();
+            col.name = colHeaders[i];
+            col.value = '';
+            if(i===1 || i===2){
+                col.dataType='currency';
+            }
+            data.columns.push(col);
+          }
+
+          attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+        }
     }
 
     const httpOptions = {
@@ -1340,6 +1367,18 @@ ngOnDestroy(){
        attr.fieldTableValue.push(row);
   }
 
+  addDisbursementRow(attr: Attribute){
+     const row = new TableData();
+     row.name = String(Number(attr.fieldTableValue[attr.fieldTableValue.length-1].name)+1);
+     row.header = attr.fieldTableValue[0].header;
+     row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+     for(let i=0; i<row.columns.length;i++){
+      row.columns[i].value = '';
+     }
+
+     attr.fieldTableValue.push(row);
+  }
+
   deleteRow(sectionId, attributeId,rowIndex){
   console.log(sectionId + ' ' + attributeId + ' ' + rowIndex);
   for(let section of this.currentGrant.grantDetails.sections){
@@ -1353,6 +1392,35 @@ ngOnDestroy(){
         }
     }
   }
+  }
+
+  deleteDisbursementRow(sectionId, attributeId,rowIndex){
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: {title:'Delete row?'},
+          panelClass: 'center-class'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            for(let section of this.currentGrant.grantDetails.sections){
+              if(section.id === sectionId){
+                  for(let attrib of section.attributes){
+                      if(attrib.id == attributeId){
+                          console.log(attrib.fieldTableValue);
+                          const tableData = attrib.fieldTableValue;
+                          tableData.splice(rowIndex,1);
+                          for(let i=0; i<tableData.length; i++){
+                            tableData[i].name = String(i+1);
+                          }
+                      }
+                  }
+              }
+            }
+          } else{
+            dialogRef.close()
+          }
+         });
+
   }
 
   deleteColumn(sectionId, attributeId,colIndex){
@@ -1924,4 +1992,68 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
   showWorkflowAssigments(){
       this.adminComp.showWorkflowAssigments();
   }
+
+    getFormattedCurrency(amount: string):string{
+        return inf.format(Number(amount),2);
+    }
+
+    showAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('label_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#data_'+id);
+        inputElem[0].style.visibility='visible';
+    }
+
+    showFormattedAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('data_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#label_'+id);
+        inputElem[0].style.visibility='visible';
+    }
+
+    showOtherSourcesAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('label_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#data_'+id);
+        this.otherSourcesAmount.nativeElement.style.visibility='visible';
+    }
+
+    showFormattedOtherSourcesAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        this.otherSourcesAmountFormatted.nativeElement.style.visibility='visible';
+    }
+
+    getTotals(idx:number,fieldTableValue:TableData[]):string{
+        let total = 0;
+        for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        return String('₹ ' + inf.format(total,2));
+    }
+
+    getCommittedGrantTotals(idx:number):string{
+        let total = 0;
+        if(idx!==1){
+            return "";
+        }
+
+        return String('₹ ' + inf.format(this.currentGrant.amount,2));
+    }
+
+    checkAbilityToAddDisbursements():boolean{
+        for(let sec of this.currentGrant.grantDetails.sections){
+            for(let attr of sec.attributes){
+                if(attr.fieldType==='disbursement'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

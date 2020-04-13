@@ -414,6 +414,7 @@ export class ColumnData{
   id: number;
   name: string;
   value: string;
+  dataType:string;
 }
 
 export class TableData {
