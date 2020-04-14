@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {AppComponent} from '../../app.component';
-import {AppSetting} from '../../model/setting'
+import {AppSetting,ReportDueConfiguration} from '../../model/setting'
 
 @Component({
   selector: 'app-settings',
@@ -34,7 +34,11 @@ export class SettingsComponent implements OnInit {
             if(setting.scheduledTaskConfiguration){
                 if(setting.scheduledTaskConfiguration.configuration){
                     if(setting.scheduledTaskConfiguration.configuration.afterNoOfHours){
-                       setting.scheduledTaskConfiguration.configuration.afterNoOfDays = setting.scheduledTaskConfiguration.configuration.afterNoOfHours/(24*60);
+                       setting.scheduledTaskConfiguration.configuration.afterNoOfDays = [];
+                       for(let i=0 ; i<setting.scheduledTaskConfiguration.configuration.afterNoOfHours.length; i++){
+                        setting.scheduledTaskConfiguration.configuration.afterNoOfDays.push(setting.scheduledTaskConfiguration.configuration.afterNoOfHours[i]/(24*60));
+                       }
+
                     }
                 }
             }
@@ -61,9 +65,9 @@ export class SettingsComponent implements OnInit {
 
   }
 
-  reCalculateDays(setting:AppSetting,ev: Event){
+  reCalculateDays(configuration:ReportDueConfiguration,index:number,ev: Event){
     if(ev){
-        setting.scheduledTaskConfiguration.configuration.afterNoOfHours = Number(ev)*24*60;
+        configuration.afterNoOfHours[index] = Number(ev)*24*60;
     }
   }
 

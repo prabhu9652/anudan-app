@@ -30,9 +30,19 @@
                         </table>
 
                     </ng-container>
-                    <mat-form-field *ngIf="setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
-                        <input   matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfDays" (ngModelChange)="reCalculateDays(setting,$event)" placeholder="No of days without action reminder:">
-                    </mat-form-field>
+                    <ng-container *ngIf="setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
+                        <mat-label>Number of days after which to send no action reminders:</mat-label>
+                        <table>
+                            <tr>
+                                <td *ngFor="let ad of setting.scheduledTaskConfiguration.configuration.afterNoOfDays, let i=index">
+                                    <mat-form-field>
+                                    <input   matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.configuration.afterNoOfDays[i]" (ngModelChange)="reCalculateDays(setting.scheduledTaskConfiguration.configuration,i,$event)" [placeholder]="'Reminder '+ (i+1)">
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </ng-container>
             </div>
             <div class="col-2"><a class="btn btn-sm btn-green" (click)="saveSetting(setting)">Save</a></div>
             </div>
