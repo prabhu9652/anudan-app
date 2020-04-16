@@ -63,7 +63,6 @@
                     {{attribute.fieldName}}
                     <div id="attribute_{{attribute.id}}" class="mt-1" [innerHtml]="getTabularData(attribute.id,attribute.fieldValue)"></div>
                   </div>
-
                 </ng-container>
                 <mat-nav-list>
                   <ng-container *ngIf="attribute.fieldType==='document'">
@@ -148,6 +147,19 @@
                           <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
                           <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
                         </div>
+
+                        <div class="col-sm-8 col-lg-8" *ngIf="attribute.fieldType==='disbursement'">
+                          <mat-form-field *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
+
+                            <input  id="field_{{attribute.id}}" [(ngModel)]="attribute.fieldName"  class="anu-input"
+                                    [ngModelOptions]="{standAlone:true}"
+
+                                    matInput placeholder="Title">
+                          </mat-form-field>
+                          <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Title:</label>
+                          <p class="anu-input" *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage" style="background:#F0F1F0 !important;">{{attribute.fieldName}}</p>
+                        </div>
+
                         <div class="col-sm-4 col-lg-8" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && !currentReport.forGranteeUse) && attribute.canEdit">
                           <mat-form-field>
                             <input [(ngModel)]="attribute.fieldName"  class="anu-input"
@@ -190,6 +202,7 @@
                               <mat-option value="kpi">Measurement/KPI</mat-option>
                               <mat-option value="table">Tablular</mat-option>
                               <mat-option value="document">Document</mat-option>
+                              <mat-option value="disbursement">Disbursement</mat-option>
                               <!--mat-op
                               <!--mat-op
                               <!--mat-option value="document">Document</mat-option-->
@@ -292,6 +305,108 @@
                             <span *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)" (click)="addRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                           </div></div>
 
+                        </div>
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='disbursement'">
+                            <div id="tableArea" class="row" style="padding-left:15px;padding-right:15px;">
+                              <table id="tablePlaceholderX" width="100%">
+                                <tr style="background: #f9f9f9">
+                                  <td align="center" valign="middle" width="10%" style="border: 1px solid #e4e4e4;">
+                                    <label class="m-0"><span>Planned Installment #</span></label>
+                                  </td>
+                                  <ng-container *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns, let i = index">
+                                    <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
+                                      <label class="m-0 text-center p-2" style="font-weight:400;font-size:14px;">{{column.name}}</label>
+                                    </td>
+                                  </ng-container>
+                                </tr>
+                                <ng-container *ngFor="let row of getGrantDisbursementAttribute().fieldTableValue, let i = index">
+                                  <tr>
+                                    <td width="10%">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;"><b>{{row.name}}</b></p>
+                                    </td>
+                                    <ng-container *ngFor="let column of row.columns,let j = index">
+                                      <td [width]="column.name==='Notes'?'20%':'12%'">
+                                          <p *ngIf="!column.dataType" class="anu-input m-0" style="background:#f4f4f4 !important;">{{column.value}}</p>
+                                          <p *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                      </td>
+                                    </ng-container>
+                                  </tr>
+                                </ng-container>
+                                <tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                                  <td class="py-2" align="center" style="position: sticky; left: 0; z-index: 1;"><b>GRANT TOTALS:</b></td>
+                                  <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
+                                    <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getTotals(j,getGrantDisbursementAttribute().fieldTableValue)}}</b></p>
+                                  </td>
+                                </tr>
+                                <!--tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                                  <td align="center" style="position: sticky; left: 0; z-index: 1;"><b>Committed Grant Amount:</b></td>
+                                  <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
+                                    <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getCommittedGrantTotals(j)}}</b></p>
+                                  </td>
+                                </tr-->
+                              </table>
+                            </div>
+
+                          <div class="row">
+                            <div style="margin-left:110px;"><i (click)="moveColsRight()" class="fas fa-arrow-alt-circle-left mr-3"></i><i (click)="moveColsLeft()" class="fas fa-arrow-alt-circle-right"></i></div>
+                          </div>
+                          <div id="tableArea" class="row" style="padding-left:15px;padding-right:15px;">
+                            <table #dataColumns id="tablePlaceholder" width="100%">
+                              <tr>
+                                <td align="center" valign="middle" width="10%" style="background: rgb(244,244,244);border: 1px solid #e4e4e4;">
+                                  <label class="m-0"><b>Actual Installment #</b></label>
+                                </td>
+                                <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
+
+                                  <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
+                                    <label class="m-0 text-center p-2" style="font-weight:600;font-size:14px;">{{column.name}}</label>
+                                  </td>
+
+                                </ng-container>
+                              </tr>
+                              <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
+                                <tr>
+                                  <td width="10%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
+
+                                    <mat-icon *ngIf="attribute.fieldTableValue.length>1" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
+                                              aria-hidden="false" style="font-size:18px;top: -16px; position: relative; left: 88%;z-index:1;cursor:pointer;"
+                                              aria-label="Example home icon" inline="false" title="Delete this row">
+                                      delete_outline
+                                    </mat-icon>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length>1">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:-12px;"><b>{{row.name}}</b></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length===1">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0;"><b>{{row.name}}</b></p>
+                                    </ng-container>
+                                  </td>
+                                  <ng-container *ngFor="let column of row.columns,let j = index">
+                                    <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'20%':'12%'">
+                                      <mat-form-field style="margin-top: 10px;" *ngIf="!currentReport.forGranteeUse">
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType" matInput [(ngModel)]="column.value" class="anu-input"
+                                               [ngModelOptions]="{standAlone:true}">
+                                        <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'" (blur)="showFormattedAmount($event)" #committedAmount type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"
+                                               [ngModelOptions]="{standAlone:true}">
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:7px;cursor: text;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <input *ngIf="column.dataType==='currency' && column.name==='Funds from other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
+                                      </mat-form-field>
+                                      <mat-form-field style="margin-top: 10px;" *ngIf="currentReport.forGranteeUse">
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType" matInput [(ngModel)]="column.value" class="anu-input"
+                                               [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
+                                        <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
+                                               [ngModelOptions]="{standAlone:true}">
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from other Sources'" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:7px;cursor: text;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right">
+                                      </mat-form-field>
+                                    </td>
+                                  </ng-container>
+                                </tr>
+                              </ng-container>
+                              <div class="row"><div class="col-12">
+                                <span (click)="addDisbursementRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
+                              </div></div>
+                            </table>
+                          </div>
                         </div>
 
                         <div class="col-sm-4 col-lg-8 text-left" *ngIf="attribute.fieldType==='kpi' && (currentReport.canManage && !currentReport.forGranteeUse)">

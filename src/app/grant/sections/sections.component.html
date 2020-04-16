@@ -285,50 +285,41 @@
                           </div></div>
 
                         </div>
-                        <div class="col-sm-12 col-lg-11 text-left" *ngIf="attribute.fieldType==='disbursement'">
+                        <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='disbursement'">
                           <div class="row"><!--div class="col-12 text-right">
                             <span (click)="addColumn(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a column</span>
                           </div-->
                             <div style="margin-left:115px;"><i (click)="moveColsRight()" class="fas fa-arrow-alt-circle-left mr-3" style="cursor:pointer;"></i><i (click)="moveColsLeft()" class="fas fa-arrow-alt-circle-right" style="cursor:pointer;"></i></div>
                           </div>
-                          <div id="tableArea" class="row flex-row flex-nowrap" style="overflow: hidden;overflow-x: scroll;">
-                            <table #dataColumns id="tablePlaceholder">
+                          <div id="tableArea" class="row" style="padding-left:15px;padding-right:15px;">
+                            <table #dataColumns id="tablePlaceholder" width="100%">
                               <tr>
-                                <td align="center" valign="middle" width="15%" style="min-width:110px;position: sticky; left: 0; z-index: 1;background: rgb(244,244,244);border: 1px solid #e4e4e4;">
-                                  <label class="m-0"><b>Installment #</b></label>
+                                <td align="center" width="15%" valign="middle" style="background: rgb(244,244,244);border: 1px solid #e4e4e4;">
+                                  <label class="m-0"><span>Planned Installment #</span></label>
                                 </td>
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
-
-                                  <td align="center" valign="middle" style="border: 1px solid #e4e4e4;">
-
-                                      <!--mat-icon *ngIf="attribute.fieldTableValue[0].columns.length>1" (click)="confirm(section.id,attribute.id,[],i,'col','Delete column?')"
-                                                aria-hidden="false" style="font-size:18px;position: relative; left: 90%;z-index:0;cursor:pointer;top:3px;"
-                                                aria-label="Example home icon" inline="false" title="Delete this column">
-                                        delete_outline
-                                      </mat-icon-->
-                                    <label class="m-0 text-center p-2" style="font-weight:600;font-size:14px;">{{column.name}}</label>
+                                  <td align="center" [width]="column.name==='Notes'?'':'15%'" valign="middle" style="border: 1px solid #e4e4e4;">
+                                    <label class="m-0 text-center p-2" style="font-weight:400;font-size:14px;">{{column.name}}</label>
                                   </td>
-
                                 </ng-container>
                               </tr>
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
-                                  <td width="20%" style="position: sticky; left: 0; z-index: 1;background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
-
+                                  <td width="15%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
                                       <mat-icon *ngIf="attribute.fieldTableValue.length>1" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
-                                                aria-hidden="false" style="font-size:18px;top: 5px; position: absolute; left: 80%;z-index:1;cursor:pointer;"
+                                                aria-hidden="false" style="font-size:18px;top: -16px; position: relative; left: 88%;z-index:1;cursor:pointer;"
                                                 aria-label="Example home icon" inline="false" title="Delete this row">
                                         delete_outline
                                       </mat-icon>
-                                    <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;"><b>{{row.name}}</b></p>
+                                    <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position: relative;top: -12px;"><span>{{row.name}}</span></p>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns,let j = index">
-                                    <td style="border: 1px solid #e4e4e4;min-width:200px;padding-top:0;">
+                                    <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'':'18%'">
                                       <mat-form-field style="margin-top: 10px;">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}"
                                                (ngModelChange)="checkGrant()">
-                                        <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency'" (blur)="showFormattedAmount($event)" #committedAmount type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"
+                                        <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency'" (blur)="showFormattedAmount($event)" #committedAmount type="number" min="0" max="9999999999" matInput [(ngModel)]="column.value" class="anu-input text-right"
                                                [ngModelOptions]="{standAlone:true}"
                                                (ngModelChange)="checkGrant()">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency'" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:7px;cursor: text;">₹ {{getFormattedCurrency(column.value)}}</p>
@@ -338,15 +329,15 @@
                                 </tr>
                               </ng-container>
                               <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f4f4f4;">
-                                <td align="center" style="position: sticky; left: 0; z-index: 1;"><b>TOTALS:</b></td>
+                                <td align="center" class="py-2"><b>TOTALS:</b></td>
                                 <td *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
                                   <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getTotals(j,attribute.fieldTableValue)}}</b></p>
                                 </td>
                               </tr>
-                              <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f4f4f4;">
-                                <td align="center" style="position: sticky; left: 0; z-index: 1;"><b>Committed Grant Amount:</b></td>
+                              <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f9f9f9;">
+                                <td align="center"><b style="color:#949494;">Committed Grant Amount:</b></td>
                                 <td *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
-                                  <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getCommittedGrantTotals(j)}}</b></p>
+                                  <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b style="color:#949494;">{{getCommittedGrantTotals(j)}}</b></p>
                                 </td>
                               </tr>
                             </table>
@@ -354,7 +345,6 @@
                           <div class="row"><div class="col-12">
                             <span (click)="addDisbursementRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                           </div></div>
-
                         </div>
                         <div class="col-sm-4 col-lg-4 text-left" *ngIf="attribute.fieldType==='kpi'">
                           <mat-form-field>
