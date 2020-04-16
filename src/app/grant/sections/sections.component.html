@@ -306,7 +306,12 @@
                                                 aria-label="Example home icon" inline="false" title="Delete this row">
                                         delete_outline
                                       </mat-icon>
-                                    <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position: relative;top: -12px;"><span>{{row.name}}</span></p>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length>1">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:-12px;"><b>{{row.name}}</b></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length===1">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0;"><b>{{row.name}}</b></p>
+                                    </ng-container>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns,let j = index">
                                     <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'':'18%'">
