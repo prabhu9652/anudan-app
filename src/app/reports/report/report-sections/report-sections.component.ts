@@ -840,4 +840,14 @@ deleteAttachment(attributeId, attachmentId){
     return null;
   }
 
+    checkAbilityToAddDisbursements():boolean{
+        for(let sec of this.currentReport.reportDetails.sections){
+            for(let attr of sec.attributes){
+                if(attr.fieldType==='disbursement'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

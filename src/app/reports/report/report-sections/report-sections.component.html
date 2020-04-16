@@ -202,7 +202,7 @@
                               <mat-option value="kpi">Measurement/KPI</mat-option>
                               <mat-option value="table">Tablular</mat-option>
                               <mat-option value="document">Document</mat-option>
-                              <mat-option value="disbursement">Disbursement</mat-option>
+                              <mat-option value="disbursement" [disabled]="checkAbilityToAddDisbursements()">Disbursement</mat-option>
                               <!--mat-op
                               <!--mat-op
                               <!--mat-option value="document">Document</mat-option-->
