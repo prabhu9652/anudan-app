@@ -402,7 +402,7 @@
                                   </ng-container>
                                 </tr>
                               </ng-container>
-                              <div class="row"><div class="col-12">
+                              <div class="row" *ngIf="!currentReport.forGranteeUse"><div class="col-12">
                                 <span (click)="addDisbursementRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                               </div></div>
                             </table>
