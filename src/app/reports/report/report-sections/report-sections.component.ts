@@ -27,7 +27,21 @@ import * as inf from 'indian-number-format';
   selector: 'app-report-sections',
   templateUrl: './report-sections.component.html',
   styleUrls: ['./report-sections.component.scss'],
-  providers: [SidebarComponent]
+  providers: [SidebarComponent],
+  styles: [`
+       ::ng-deep .dibursements-class .mat-form-field-appearance-legacy .mat-form-field-infix {
+             padding:0 !important;
+       }
+  `,
+  `
+    ::ng-deep .dibursements-class .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+            padding-bottom: 0 !important;
+    }
+  `,`
+   ::ng-deep .dibursements-class .mat-form-field-infix{
+           border-top: 0 !important;
+   }
+  `]
 })
 export class ReportSectionsComponent implements OnInit {
 
@@ -795,8 +809,9 @@ deleteAttachment(attributeId, attachmentId){
                           console.log(attrib.fieldTableValue);
                           const tableData = attrib.fieldTableValue;
                           tableData.splice(rowIndex,1);
-                          for(let i=0; i<tableData.length; i++){
-                            tableData[i].name = String(i+1);
+                          const starCounter = this.currentReport.grant.approvedReportsDisbursements?this.currentReport.grant.approvedReportsDisbursements.length:0;
+                          for(let i=starCounter; i<tableData.length+starCounter; i++){
+                            tableData[i-starCounter].name = String(i+1);
                           }
                       }
                   }

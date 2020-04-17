@@ -2,6 +2,7 @@ import {User} from './user';
 import * as moment from 'moment';
 import _date = moment.unitOfTime._date;
 import {NativeDateAdapter} from '@angular/material';
+import {Report} from './report';
 
 export class Organization {
   id: number;
@@ -263,6 +264,7 @@ export class Grant {
   noteAddedByUser: User;
   securityCode: string;
   canManage: boolean;
+  approvedReportsDisbursements: [TableData[]];
 }
 
 export class GrantSnapshot {
