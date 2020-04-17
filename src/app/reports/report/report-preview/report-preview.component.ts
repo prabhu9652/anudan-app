@@ -433,4 +433,27 @@ export class ReportPreviewComponent implements OnInit {
      }
      return '₹ ' + String(inf.format(total,2));
  }
+
+ getDisbursementTotals(idx:number,fieldTableValue:TableData[]):string{
+         let total = 0;
+         for(let row of fieldTableValue){
+             let i=0;
+             for(let col of row.columns){
+                 if(i===idx){
+                     total+=Number(col.value);
+                 }
+                 i++;
+             }
+         }
+         for(let row of this.currentReport.grant.approvedReportsDisbursements){
+             let i=0;
+             for(let col of row.columns){
+                 if(i===idx){
+                     total+=Number(col.value);
+                 }
+                 i++;
+             }
+         }
+         return String('₹ ' + inf.format(total,2));
+     }
 }

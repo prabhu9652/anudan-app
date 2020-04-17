@@ -264,7 +264,7 @@ export class Grant {
   noteAddedByUser: User;
   securityCode: string;
   canManage: boolean;
-  approvedReportsDisbursements: [TableData[]];
+  approvedReportsDisbursements: TableData[];
 }
 
 export class GrantSnapshot {

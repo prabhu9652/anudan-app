@@ -220,7 +220,7 @@ export class ReportSectionsComponent implements OnInit {
                data.header="";
                data.columns = [];
 
-               const colHeaders = ['Disbursement Date/Period','Actual Disbursement','Funds from other Sources','Notes'];
+               const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
                for(let i=0; i< 5; i++){
                  const col = new ColumnData();
                  col.name = colHeaders[i];
@@ -781,6 +781,29 @@ deleteAttachment(attributeId, attachmentId){
     getTotals(idx:number,fieldTableValue:TableData[]):string{
         let total = 0;
         for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        return String('₹ ' + inf.format(total,2));
+    }
+
+    getDisbursementTotals(idx:number,fieldTableValue:TableData[]):string{
+        let total = 0;
+        for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        for(let row of this.currentReport.grant.approvedReportsDisbursements){
             let i=0;
             for(let col of row.columns){
                 if(i===idx){
