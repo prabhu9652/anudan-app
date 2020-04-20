@@ -231,7 +231,7 @@ export class ReportPreviewComponent implements OnInit {
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
         + this.currentReport.id + '/flow/'
         + this.currentReport.status.id + '/' + toStateId;
-        this.http.post(url, {grant: this.currentReport,note:message}, httpOptions).subscribe((report: Report) => {
+        this.http.post(url, {report: this.currentReport,note:message}, httpOptions).subscribe((report: Report) => {
 
             this.singleReportDataService.changeMessage(report);
 

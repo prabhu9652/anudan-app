@@ -838,6 +838,7 @@ export class PreviewComponent implements OnInit {
         }
     }
 
+
     const statusTransition = this.appComp.appConfig.transitions.filter((transition) => transition.fromStateId===this.currentGrant.grantStatus.id && transition.toStateId===toStateId);
 
     if(statusTransition && statusTransition[0].noteRequired){
@@ -1585,4 +1586,6 @@ getCleanText(section:Section): string{
         }
         return '₹ ' + String(inf.format(total,2));
     }
+
+
 }
