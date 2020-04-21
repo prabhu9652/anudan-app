@@ -5,6 +5,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {GrantComponent} from '../../grant/grant.component';
 import {DashboardComponent} from '../../dashboard/dashboard.component';
+import {SummaryComponent} from '../../dashboard//summary/summary.component';
+import {ProgressSummaryComponent} from '../../dashboard/progress-summary/progress-summary.component';
+import {SummaryCenteredComponent} from '../../dashboard/summary-centered/summary-centered.component';
 import {UserProfileComponent} from '../../user-profile/user-profile.component';
 import {TableListComponent} from '../../table-list/table-list.component';
 import {TypographyComponent} from '../../typography/typography.component';
@@ -36,7 +39,8 @@ import {
     MatTableModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
 } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
@@ -83,7 +87,6 @@ import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
 import { UsersComponent } from '../../admin/users/users.component';
 
-
 @NgModule({
     imports: [
         CommonModule,
@@ -97,6 +100,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         MatSelectModule,
         MatTooltipModule,
         MatMenuModule,
+        MatProgressBarModule,
         MatDatepickerModule,
         MatExpansionModule,
         MatIconModule,
@@ -119,6 +123,9 @@ import { UsersComponent } from '../../admin/users/users.component';
     declarations: [
         GrantComponent,
         DashboardComponent,
+        SummaryComponent,
+        SummaryCenteredComponent,
+        ProgressSummaryComponent,
         GrantsComponent,
         DraftGrantsComponent,
         ActiveGrantsComponent,

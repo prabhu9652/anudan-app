@@ -1,36 +1,47 @@
-<div class="main-content" style="background:#f4f4f4;">
-    <h4 style="display:flex;align-items:center;justify-content:center;"><img src="./assets/img/granticon.svg">Grants</h4>
-    <div class="p-2" style="display:flex;align-items:center;justify-content:center;background:#f4f4f4;">
+<div class="">
+    <div class="container-fluid">
 
-    <mat-card *ngIf="this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'" class="mx-5 mt-1" (click)="viewInProgressGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #f5a956;">
-        <mat-card-header>
-            <mat-card-title>In-progress</mat-card-title>
-        </mat-card-header>
+        <mat-tab-group *ngIf="this.appComponent.loggedInUser.organization.type==='GRANTER'" class="mt-4">
+            <mat-tab label="{{this.appComponent.loggedInUser.organization.name}}">
+                <div class="anu-container text-left mx-0">
+                    <div class="row">
+                        <div class="col-4"><app-summary heading="53" caption="Total Grants issued"></app-summary></div>
+                        <div class="col-4"><app-summary heading="43" caption="Grantees"></app-summary></div>
+                        <div class="col-4"><app-summary heading="43,00,000 Rs." caption="Total Grant Amount"></app-summary></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"><app-summary heading="07" caption="RFPs" disabled="true"></app-summary></div>
+                        <div class="col-4"><app-summary heading="113" caption="Applications" disabled="true"></app-summary></div>
+                        <div class="col-4"><app-summary heading="08" caption="Active users"></app-summary></div>
+                    </div>
+                    <hr>
+                    <div class="row mt-4">
+                        <div class="col-9"><h4 style="font-weight:800;" class="ml-2">Grants Portfolio</h4></div>
+                        <div class="col-3">
+                            <mat-select class="anu-input" value="active">
+                                <mat-option value="active">Active Grants</mat-option>
+                                <mat-option value="closed">Closed Grants</mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <app-summary-centered heading="23" caption="Active Grants" subCaption="2014 - 2020"></app-summary-centered>
+                        </div>
+                        <div class="col-9">
+                            <app-progress-summary heading="Disbursed" caption="Committed" actual="4,00,000" planned="8,00,000" isCurrency="true" percent="60"></app-progress-summary>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="display: block; width: 300px; height: 300px;">
+                                <google-chart [data]="pieChart"></google-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <mat-card-content>
-            <h2>{{grantInProgressCount}}</h2>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card class="mx-5 mt-1" (click)="viewActiveGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #3db349;">
-        <mat-card-header>
-            <mat-card-title>Active</mat-card-title>
-        </mat-card-header>
-
-        <mat-card-content>
-            <h2>{{grantActiveCount}}</h2>
-        </mat-card-content>
-    </mat-card>
-
-
-    <mat-card class="mx-5 mt-1" (click)="viewClosedGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #6b6c6b;">
-        <mat-card-header>
-            <mat-card-title>Closed</mat-card-title>
-        </mat-card-header>
-
-        <mat-card-content>
-            <h2>{{grantClosedCount}}</h2>
-        </mat-card-content>
-    </mat-card>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 </div>

@@ -16,7 +16,6 @@ import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/mater
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
