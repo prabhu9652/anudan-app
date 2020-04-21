@@ -333,8 +333,8 @@
                                     </td>
                                     <ng-container *ngFor="let column of row.columns,let j = index">
                                       <td [width]="column.name==='Notes'?'20%':'12%'">
-                                          <label *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="background:#f4f4f4 !important;">{{column.value}}</label>
-                                          <label *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</label>
+                                          <p *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="background:#f4f4f4 !important;">{{column.value}}</p>
+                                          <p *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
                                       </td>
                                     </ng-container>
                                   </tr>
