@@ -903,9 +903,11 @@ deleteAttachment(attributeId, attachmentId){
 
     checkAbilityToAddDisbursements():boolean{
         for(let sec of this.currentReport.reportDetails.sections){
-            for(let attr of sec.attributes){
-                if(attr.fieldType==='disbursement'){
-                    return true;
+            if(sec.attributes){
+                for(let attr of sec.attributes){
+                    if(attr.fieldType==='disbursement'){
+                        return true;
+                    }
                 }
             }
         }
