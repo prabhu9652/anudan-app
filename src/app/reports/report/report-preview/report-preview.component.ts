@@ -4,7 +4,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import {Report,ReportSectionInfo,ReportWorkflowAssignmentModel,ReportWorkflowAssignment} from '../../../model/report'
 import {ReportNotesComponent} from '../../../components/reportNotes/reportNotes.component';
 import {MatDialog} from '@angular/material';
-import {Section,WorkflowStatus} from '../../../model/dahsboard';
+import {Section,WorkflowStatus,TableData} from '../../../model/dahsboard';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
@@ -231,7 +231,7 @@ export class ReportPreviewComponent implements OnInit {
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
         + this.currentReport.id + '/flow/'
         + this.currentReport.status.id + '/' + toStateId;
-        this.http.post(url, {grant: this.currentReport,note:message}, httpOptions).subscribe((report: Report) => {
+        this.http.post(url, {report: this.currentReport,note:message}, httpOptions).subscribe((report: Report) => {
 
             this.singleReportDataService.changeMessage(report);
 
@@ -414,4 +414,46 @@ export class ReportPreviewComponent implements OnInit {
     getFormattedGrantAmount(amount: number):string{
         return inf.format(amount,2);
     }
+
+
+  getFormattedCurrency(amount: number):string{
+      return inf.format(!amount?0:amount,2);
+  }
+
+ getTotals(idx:number,fieldTableValue:TableData[]):string{
+     let total = 0;
+     for(let row of fieldTableValue){
+         let i=0;
+         for(let col of row.columns){
+             if(i===idx){
+                 total+=Number(col.value);
+             }
+             i++;
+         }
+     }
+     return '₹ ' + String(inf.format(total,2));
+ }
+
+ getDisbursementTotals(idx:number,fieldTableValue:TableData[]):string{
+         let total = 0;
+         for(let row of fieldTableValue){
+             let i=0;
+             for(let col of row.columns){
+                 if(i===idx){
+                     total+=Number(col.value);
+                 }
+                 i++;
+             }
+         }
+         for(let row of this.currentReport.grant.approvedReportsDisbursements){
+             let i=0;
+             for(let col of row.columns){
+                 if(i===idx){
+                     total+=Number(col.value);
+                 }
+                 i++;
+             }
+         }
+         return String('₹ ' + inf.format(total,2));
+     }
 }

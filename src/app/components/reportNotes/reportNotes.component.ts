@@ -106,7 +106,7 @@ const httpOptions = {
                          if(oldSection.attributes){
                             oldAttr = oldSection.attributes.filter((a) => a.id===attr.id)[0];
                          }
-                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || (attr.actualTarget && attr.actualTarget!==oldAttr.actualTarget) || (attr.fieldValue && attr.fieldValue!==oldAttr.fieldValue) || (attr.fieldType && attr.fieldType!==oldAttr.fieldType) || (attr.fieldType && attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldValue!==JSON.stringify(oldAttr.fieldTableValue))) )){
+                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || (attr.actualTarget && attr.actualTarget!==oldAttr.actualTarget) || (attr.fieldValue && attr.fieldValue!==oldAttr.fieldValue) || (attr.fieldType && attr.fieldType!==oldAttr.fieldType) || (attr.fieldType && attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldValue!==JSON.stringify(oldAttr.fieldTableValue)))  || (attr.fieldType && attr.fieldType==='disbursement' && oldAttr.fieldType==='disbursement' && (attr.fieldValue!==JSON.stringify(oldAttr.fieldTableValue))) )){
                             this._getReportDiffSections();
                             const attrDiff = new AttributeDiff();
                             attrDiff.section = section.sectionName;

@@ -109,9 +109,11 @@ export class UpcomingReportsComponent implements OnInit {
       this.reportService.changeMessage(reports);
       this.reportsToSetup = this.reports.filter(a => (new Date(a.endDate).getTime() < reportStartDate.getTime() || (new Date(a.endDate).getTime() >= reportStartDate.getTime() && new Date(a.endDate).getTime()<=reportEndDate.getTime())) && (a.status.internalStatus!=='ACTIVE' && a.status.internalStatus!=='CLOSED' && a.status.internalStatus!=='REVIEW'));
       */
-      for(let i=0; i< reports.length;i++){
-          if(this.grants.filter(g => g.id===reports[i].grant.id).length===0 ){
-              this.grants.push(reports[i].grant);
+      if(reports){
+          for(let i=0; i< reports.length;i++){
+              if(this.grants.filter(g => g.id===reports[i].grant.id).length===0 ){
+                  this.grants.push(reports[i].grant);
+              }
           }
       }
       /*

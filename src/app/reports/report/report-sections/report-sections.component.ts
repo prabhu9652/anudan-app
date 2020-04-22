@@ -2,11 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute, Router, NavigationStart,ActivationEnd,RouterEvent} from '@angular/router';
 import {AppComponent} from '../../../app.component';
 import {Report, ReportFieldInfo, ReportDocInfo, ReportSectionInfo} from '../../../model/report'
-import {Section, TableData, ColumnData, Attribute, TemplateLibrary,AttachmentDownloadRequest,WorkflowStatus} from '../../../model/dahsboard'
+import {Section, TableData, ColumnData, Attribute, TemplateLibrary,AttachmentDownloadRequest,WorkflowStatus,CustomDateAdapter} from '../../../model/dahsboard'
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
+import {DatePipe} from '@angular/common';
 import {FormControl} from '@angular/forms';
 import {interval, Observable, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -15,24 +16,59 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {SidebarComponent} from '../../../components/sidebar/sidebar.component';
 import {SectionEditComponent} from '../../../components/section-edit/section-edit.component';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
+import {MatBottomSheet, MatDatepickerInputEvent, MatDialog,MatDatepicker,DateAdapter,MAT_DATE_FORMATS} from '@angular/material';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
 import {AdminLayoutComponent} from '../../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
+import * as inf from 'indian-number-format';
 
+export const APP_DATE_FORMATS = {
+   parse: {
+      dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
+   },
+   display: {
+      dateInput: 'input',
+      monthYearLabel: {year: 'numeric', month: 'short'},
+      dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+      monthYearA11yLabel: {year: 'numeric', month: 'long'},
+   }
+};
 @Component({
   selector: 'app-report-sections',
   templateUrl: './report-sections.component.html',
   styleUrls: ['./report-sections.component.scss'],
-  providers: [SidebarComponent]
+  providers: [SidebarComponent,{
+       provide: DateAdapter, useClass: CustomDateAdapter
+    },
+    {
+       provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+    }],
+  styles: [`
+       ::ng-deep .dibursements-class .mat-form-field-appearance-legacy .mat-form-field-infix {
+             padding:0 !important;
+       }
+  `,
+  `
+    ::ng-deep .dibursements-class .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+            padding-bottom: 0 !important;
+    }
+  `,`
+   ::ng-deep .dibursements-class .mat-form-field-infix{
+           border-top: 0 !important;
+   }
+  `]
 })
 export class ReportSectionsComponent implements OnInit {
 
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
     @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
     @ViewChild('createSectionModal') createSectionModal: ElementRef;
+    @ViewChild('dataColumns') dataColumns: ElementRef;
+    @ViewChild('otherSourcesAmount') otherSourcesAmount: ElementRef;
+    @ViewChild('otherSourcesAmountFormatted') otherSourcesAmountFormatted: ElementRef;
+    @ViewChild('datePicker') datePicker:MatDatepicker<any>;
 
     action: string;
     currentReport: Report;
@@ -47,6 +83,9 @@ export class ReportSectionsComponent implements OnInit {
     allowScroll = true;
     reportWorkflowStatuses:WorkflowStatus[];
     tenantUsers: User[];
+    selectedDateField:any;
+    selectedColumn:ColumnData;
+
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -57,7 +96,8 @@ export class ReportSectionsComponent implements OnInit {
         private adminComp: AdminLayoutComponent,
         private sidebar: SidebarComponent,
         private dialog: MatDialog,
-        private elem: ElementRef) {
+        private elem: ElementRef,
+        private datepipe: DatePipe) {
 
         this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -195,6 +235,27 @@ export class ReportSectionsComponent implements OnInit {
 
             attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
             }
+        }else if(ev.toString()==='disbursement'){
+             if(attr.fieldValue.trim() === ''){
+               attr.fieldTableValue = [];
+               const data = new TableData();
+               data.name = "";
+               data.header="";
+               data.columns = [];
+
+               const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
+               for(let i=0; i< 5; i++){
+                 const col = new ColumnData();
+                 col.name = colHeaders[i];
+                 col.value = '';
+                 if(i===1 || i===2){
+                     col.dataType='currency';
+                 }
+                 data.columns.push(col);
+               }
+
+               attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+             }
         }
 
         const httpOptions = {
@@ -709,4 +770,166 @@ deleteAttachment(attributeId, attachmentId){
         });
 
     }
+
+    getFormattedCurrency(amount: string):string{
+        return inf.format(Number(amount),2);
+    }
+
+    showAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('label_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#data_'+id);
+        inputElem[0].style.visibility='visible';
+    }
+
+    showFormattedAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('data_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#label_'+id);
+        inputElem[0].style.visibility='visible';
+    }
+
+    showOtherSourcesAmountInput(evt: any){
+        evt.currentTarget.style.visibility='hidden';
+        const id = evt.target.attributes.id.value.replace('label_','');
+        const inputElem = this.dataColumns.nativeElement.querySelectorAll('#data_'+id);
+        this.otherSourcesAmount.nativeElement.style.visibility='visible';
+    }
+
+    showFormattedOtherSourcesAmount(evt:any){
+        evt.currentTarget.style.visibility='hidden';
+        this.otherSourcesAmountFormatted.nativeElement.style.visibility='visible';
+    }
+
+    getTotals(idx:number,fieldTableValue:TableData[]):string{
+        let total = 0;
+        for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        return String('₹ ' + inf.format(total,2));
+    }
+
+    getDisbursementTotals(idx:number,fieldTableValue:TableData[]):string{
+        let total = 0;
+        for(let row of fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        for(let row of this.currentReport.grant.approvedReportsDisbursements){
+            let i=0;
+            for(let col of row.columns){
+                if(i===idx){
+                    total+=Number(col.value);
+                }
+                i++;
+            }
+        }
+        return String('₹ ' + inf.format(total,2));
+    }
+
+
+
+    deleteDisbursementRow(sectionId, attributeId,rowIndex){
+        const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: {title:'Delete row?'},
+          panelClass: 'center-class'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            for(let section of this.currentReport.reportDetails.sections){
+              if(section.id === sectionId){
+                  for(let attrib of section.attributes){
+                      if(attrib.id == attributeId){
+                          console.log(attrib.fieldTableValue);
+                          const tableData = attrib.fieldTableValue;
+                          tableData.splice(rowIndex,1);
+                          const starCounter = this.currentReport.grant.approvedReportsDisbursements?this.currentReport.grant.approvedReportsDisbursements.length:0;
+                          for(let i=starCounter; i<tableData.length+starCounter; i++){
+                            tableData[i-starCounter].name = String(i+1);
+                          }
+                      }
+                  }
+              }
+            }
+          } else{
+            dialogRef.close()
+          }
+         });
+  }
+
+  addDisbursementRow(attr: Attribute){
+     const row = new TableData();
+     row.name = String(Number(attr.fieldTableValue[attr.fieldTableValue.length-1].name)+1);
+     row.header = attr.fieldTableValue[0].header;
+     row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+     for(let i=0; i<row.columns.length;i++){
+      row.columns[i].value = '';
+     }
+
+     attr.fieldTableValue.push(row);
+  }
+
+    getCommittedGrantTotals(idx:number):string{
+        let total = 0;
+        if(idx!==1){
+            return "";
+        }
+
+        return String('₹ ' + inf.format(this.currentReport.grant.amount,2));
+    }
+
+  getGrantDisbursementAttribute():Attribute{
+    for(let section of this.currentReport.grant.grantDetails.sections){
+        for(let attr of section.attributes){
+            if(attr.fieldType==='disbursement'){
+                return attr;
+            }
+        }
+    }
+    return null;
+  }
+
+    checkAbilityToAddDisbursements():boolean{
+        for(let sec of this.currentReport.reportDetails.sections){
+            for(let attr of sec.attributes){
+                if(attr.fieldType==='disbursement'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+openDate(column:ColumnData,ev:MouseEvent){
+     const stDateElem = this.datePicker;
+     this.selectedDateField = ev;
+     this.selectedColumn = column;
+     if(!stDateElem.opened){
+         this.appComp.sectionInModification = true;
+         stDateElem.open();
+     } else{
+         this.appComp.sectionInModification = false;
+         stDateElem.close();
+     }
+  }
+
+ setDate(ev: MatDatepickerInputEvent<any>){
+    const trgt = ev.target;
+    this.selectedDateField.target.value = this.datepipe.transform(trgt.value, 'dd-MMM-yyyy');
+    this.selectedColumn.value = this.selectedDateField.target.value;
+ }
+
 }

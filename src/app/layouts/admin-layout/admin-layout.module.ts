@@ -5,6 +5,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {GrantComponent} from '../../grant/grant.component';
 import {DashboardComponent} from '../../dashboard/dashboard.component';
+import {SummaryComponent} from '../../dashboard//summary/summary.component';
+import {ProgressSummaryComponent} from '../../dashboard/progress-summary/progress-summary.component';
+import {SummaryCenteredComponent} from '../../dashboard/summary-centered/summary-centered.component';
+import {ChartSummaryComponent} from '../../dashboard/chart-summary/chart-summary.component';
 import {UserProfileComponent} from '../../user-profile/user-profile.component';
 import {TableListComponent} from '../../table-list/table-list.component';
 import {TypographyComponent} from '../../typography/typography.component';
@@ -36,7 +40,8 @@ import {
     MatTableModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
 } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
@@ -69,6 +74,7 @@ import {SectionsComponent} from '../../grant/sections/sections.component';
 import {ReportingComponent} from '../../grant/reporting/reporting.component';
 import {PreviewComponent} from '../../grant/preview/preview.component';
 import {TenantsComponent} from '../../admin/tenants/tenants.component';
+import {SettingsComponent} from '../../admin/settings/settings.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { UpcomingReportsComponent } from '../../reports/upcoming-reports/upcoming-reports.component';
 import { SubmittedReportsComponent } from '../../reports/submitted-reports/submitted-reports.component';
@@ -81,7 +87,6 @@ import { ReportPreviewComponent } from '../../reports/report/report-preview/repo
 import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
 import { UsersComponent } from '../../admin/users/users.component';
-
 
 @NgModule({
     imports: [
@@ -96,6 +101,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         MatSelectModule,
         MatTooltipModule,
         MatMenuModule,
+        MatProgressBarModule,
         MatDatepickerModule,
         MatExpansionModule,
         MatIconModule,
@@ -118,6 +124,10 @@ import { UsersComponent } from '../../admin/users/users.component';
     declarations: [
         GrantComponent,
         DashboardComponent,
+        SummaryComponent,
+        SummaryCenteredComponent,
+        ProgressSummaryComponent,
+        ChartSummaryComponent,
         GrantsComponent,
         DraftGrantsComponent,
         ActiveGrantsComponent,
@@ -155,6 +165,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         ReportsComponent,
         DisbursementsComponent,
         TenantsComponent,
+        SettingsComponent,
         UpcomingReportsComponent,
         SubmittedReportsComponent,
         ApprovedReportsComponent,

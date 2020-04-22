@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from '@angular/common/http';
 import {User} from '../model/user';
 import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
@@ -15,7 +15,6 @@ import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -139,7 +138,7 @@ export class DashboardComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-    
+
 
     const dialogRef = this.dialog.open(GrantTemplateDialogComponent, {
       data: ""
@@ -154,7 +153,7 @@ export class DashboardComponent implements OnInit {
         dialogRef.close();
       }
     });
-  
+
   }
 
   fetchReportOrGrant(){

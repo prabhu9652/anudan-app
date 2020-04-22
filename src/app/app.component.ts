@@ -3,6 +3,7 @@ import {HttpClient,HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/
 import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
 import { User} from './model/user';
 import { Report} from './model/report';
+import { Release} from './model/release';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import {AppConfig} from './model/app-config';
 import {WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate,Grant,TemplateLibrary} from "./model/dahsboard";
@@ -60,7 +61,8 @@ export class AppComponent implements AfterViewChecked{
   tenantUsers:User[];
   reportWorkflowStatuses: WorkflowStatus[];
   grantWorkflowStatuses: WorkflowStatus[];
-  reportTransitions: WorkflowTransition[]
+  reportTransitions: WorkflowTransition[];
+  releaseVersion: string;
   public appConfig: AppConfig = {
     appName: '',
     logoUrl: '',
@@ -115,10 +117,15 @@ export class AppComponent implements AfterViewChecked{
 
   ngOnInit() {
 
+
     if ('serviceWorker' in navigator && environment.production){
         navigator.serviceWorker.register('/ngsw-worker.js')
         console.log('Registered as service worker');
     }
+
+    this.httpClient.get("/api/public/release").subscribe((release:Release) =>{
+        this.releaseVersion = release.version;
+    });
 
     this.getTenantCode();
 
