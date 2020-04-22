@@ -625,7 +625,9 @@ export class ReportSectionsComponent implements OnInit {
         return "Tablular";
     } else if(type==="document"){
         return "Document";
-    }
+    } else if(type==="disbursement"){
+          return "Disbursement";
+      }
     return "";
    }
 
@@ -892,9 +894,11 @@ deleteAttachment(attributeId, attachmentId){
 
   getGrantDisbursementAttribute():Attribute{
     for(let section of this.currentReport.grant.grantDetails.sections){
-        for(let attr of section.attributes){
-            if(attr.fieldType==='disbursement'){
-                return attr;
+        if(section.attributes){
+            for(let attr of section.attributes){
+                if(attr.fieldType==='disbursement'){
+                    return attr;
+                }
             }
         }
     }
