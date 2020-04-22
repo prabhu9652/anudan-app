@@ -35,7 +35,6 @@ import {TemplateDialogComponent} from '../../components/template-dialog/template
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import html2canvas from 'html2canvas';
 import html2pdf from 'html2pdf.js';
-import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
@@ -81,13 +80,7 @@ export class PreviewComponent implements OnInit {
   tenantUsers: User[];
   docsUpdated = false;
   grantWorkflowStatuses:WorkflowStatus[];
-  exportAsConfig: ExportAsConfig = {
-      type: 'pdf', // the type you want to download
-      elementId: 'grantSummary', // the id of html/table element
-      options:{
-        margin: [3,1,3,1]
-      }
-  }
+
   public pdfExport: PDFExportComponent;
 
   @ViewChild('editFieldModal') editFieldModal: ElementRef;
@@ -122,7 +115,6 @@ export class PreviewComponent implements OnInit {
       , private datepipe: DatePipe
       , public colors: Colors
       , private sidebar: SidebarComponent
-      , private exportAsService: ExportAsService
       , public grantComponent: GrantComponent
       , private titlecasePipe:TitleCasePipe) {
     this.colors = new Colors();
@@ -1350,60 +1342,6 @@ export class PreviewComponent implements OnInit {
 
     saveAs(filename){
         this.pdf.saveAs(filename);
-    }
-
-    saveAsPdf() {
-    this.exportAsService.save(this.exportAsConfig, 'grantsummar').subscribe(() => {
-          // save started
-        });
-    /* const preview = this.grantSummary.nativeElement;
-    var opt = {
-      margin:       [0.7,0,1,0],
-      filename:     this.currentGrant.name+'.pdf',
-      image:        { type: 'png', quality: 1 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-    var worker = html2pdf().set(opt).from(preview).save(); */
-    /* console.log(preview.innerHTML);
-    html2canvas(preview).then(function(canvas) {
-        var img = canvas.toDataURL("image/png");
-        var imgWidth = 210;
-      var pageHeight = 270;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
-
-      var doc = new jsPDF('p', 'mm');
-      var position = 0;
-
-      doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        doc.addPage();
-        doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      doc.save( 'file.pdf');﻿
-    }); */
-
-/*        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
-
-        const grantSummaryElem = $("html").html();
-
-        const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+"/pdf";
-
-        this.http.post(url, grantSummaryElem, httpOptions).subscribe((data: PdfDocument) => {
-            console.log(data);
-            window.open("data:application/octet-stream;charset=utf-16le;base64,"+data.data);
-        }); */
     }
 
     getTabularData(elemId: number, data: TableData[]){
