@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild, ElementRef, Renderer2, HostListener} from '@angular/core';
+import {Component, Inject, OnInit,AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
 import {WorkflowAssignmentModel} from '../../model/dahsboard';
 import {WorkflowTransition} from '../../model/workflow-transition';
@@ -13,7 +13,7 @@ declare var jsPlumb: any;
   templateUrl: './wfassignment.component.html',
   styleUrls: ['./wfassignment.component.scss']
 })
-export class WfassignmentComponent implements OnInit {
+export class WfassignmentComponent implements OnInit,AfterViewInit {
 
     assignmentData: any;
     transitions: WorkflowTransition[];
@@ -35,8 +35,9 @@ export class WfassignmentComponent implements OnInit {
     this.elemRef = er;
   }
 
-ngOnInit() {
 
+ngOnInit() {
+    window.addEventListener('scroll', this.redrawOnScroll.bind(this),true);
     if(this.data.model.type==='grant'){
         const httpOptions = {
                   headers: new HttpHeaders({
@@ -54,10 +55,16 @@ ngOnInit() {
                 const nodeId = 'state_' + transition.fromStateId;
                 if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
                     const node = this.renderer.createElement('div');
-                    this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus))
+                    this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus));
+                    const stateNode = this.renderer.createElement('div');
+                    this.renderer.addClass(stateNode,'col-3');
+                    this.renderer.addClass(stateNode,'p-0');
                     const nodeStateName = this.renderer.createText(transition._from);
-                    this.renderer.appendChild(node, nodeStateName);
+                    this.renderer.appendChild(stateNode, nodeStateName);
+                    this.renderer.appendChild(node, stateNode);
 
+                    const ownerNode = this.renderer.createElement('div');
+                    this.renderer.addClass(ownerNode,'col-9');
                     const nodeOwner = this.renderer.createElement('select');
                     const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
                     if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
@@ -93,7 +100,8 @@ ngOnInit() {
                     }
 
                     //this.renderer.addClass(nodeOwner,'anu-input');
-                    this.renderer.appendChild(node,nodeOwner);
+                    this.renderer.appendChild(ownerNode,nodeOwner);
+                    this.renderer.appendChild(node,ownerNode);
 
 
 
@@ -308,6 +316,10 @@ ngOnInit() {
 
 }
 
+ngOnDestroy() {
+  window.removeEventListener('scroll', this.scroll, true);
+}
+
 
   ngAfterViewInit(){
     //this.showFlow(this.transitions);
@@ -323,7 +335,7 @@ let posCnt = 0;
     this.jsPlumbInstance.Defaults.Overlays = [];
     for(let transition of transitions){
 
-        if(Number(transition.fromStateId) < Number(transition.toStateId)){
+        if(Number(transition.seqOrder) ===0){
         setTimeout(() => {
             this.jsPlumbInstance.connect({
                     connector:[ "Flowchart"],
@@ -363,8 +375,12 @@ onResize(event) {
     this.jsPlumbInstance.repaintEverything();
 }
 
+@HostListener('window:scroll', ['$event']) getScrollHeight(event) {
+   console.log(window.pageYOffset, event);
+}
+
 redrawOnScroll(){
-    console.log('jhg');
+    this.showFlow(this.transitions);
 }
 
   onNoClick(): void {

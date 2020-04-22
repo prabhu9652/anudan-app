@@ -8,4 +8,5 @@ export class WorkflowTransition {
     _performedby: string;
     roleId: number;
     noteRequired: boolean;
+    seqOrder:number;
 }
