@@ -113,7 +113,6 @@ export class BasicComponent implements OnInit {
   @ViewChild('grantAmount') grantAmount: ElementRef;
   @ViewChild('grantAmountFormatted') grantAmountFormatted: ElementRef;
 
-
   constructor(private grantData: GrantDataService
       , private submissionData: SubmissionDataService
       , private route: ActivatedRoute

@@ -8,6 +8,7 @@ import {DashboardComponent} from '../../dashboard/dashboard.component';
 import {SummaryComponent} from '../../dashboard//summary/summary.component';
 import {ProgressSummaryComponent} from '../../dashboard/progress-summary/progress-summary.component';
 import {SummaryCenteredComponent} from '../../dashboard/summary-centered/summary-centered.component';
+import {ChartSummaryComponent} from '../../dashboard/chart-summary/chart-summary.component';
 import {UserProfileComponent} from '../../user-profile/user-profile.component';
 import {TableListComponent} from '../../table-list/table-list.component';
 import {TypographyComponent} from '../../typography/typography.component';
@@ -126,6 +127,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         SummaryComponent,
         SummaryCenteredComponent,
         ProgressSummaryComponent,
+        ChartSummaryComponent,
         GrantsComponent,
         DraftGrantsComponent,
         ActiveGrantsComponent,

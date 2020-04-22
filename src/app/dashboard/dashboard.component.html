@@ -1,5 +1,40 @@
-<div class="">
-    <div class="container-fluid">
+<div class="main-content" style="background:#f4f4f4;">
+    <h4 style="display:flex;align-items:center;justify-content:center;"><img src="./assets/img/granticon.svg">Grants</h4>
+    <div class="p-2" style="display:flex;align-items:center;justify-content:center;background:#f4f4f4;">
+
+        <mat-card *ngIf="this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE'" class="mx-5 mt-1" (click)="viewInProgressGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #f5a956;">
+            <mat-card-header>
+                <mat-card-title>In-progress</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <h2>{{grantInProgressCount}}</h2>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mx-5 mt-1" (click)="viewActiveGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #3db349;">
+            <mat-card-header>
+                <mat-card-title>Active</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <h2>{{grantActiveCount}}</h2>
+            </mat-card-content>
+        </mat-card>
+
+
+        <mat-card class="mx-5 mt-1" (click)="viewClosedGrants()" style="cursor:pointer;min-width:18vw;border-right:5px solid #6b6c6b;">
+            <mat-card-header>
+                <mat-card-title>Closed</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <h2>{{grantClosedCount}}</h2>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+    <div class="container-fluid" style="display:none;">
 
         <mat-tab-group *ngIf="this.appComponent.loggedInUser.organization.type==='GRANTER'" class="mt-4">
             <mat-tab label="{{this.appComponent.loggedInUser.organization.name}}">
@@ -34,9 +69,23 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <div style="display: block; width: 300px; height: 300px;">
-                                <google-chart [data]="pieChart"></google-chart>
+                            <div class="mt-4" style="border: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="80%">
+                                            <app-chart-summary heading="53" caption="Total Grants issued"></app-chart-summary>
+                                        </td>
+                                        <td width="20%" valign="top" class="pt-4 pr-4">
+                                            <mat-select value="reports" class="anu-input">
+                                                <mat-option value="disbursements">Disbursement</mat-option>
+                                                <mat-option value="reports">Reports</mat-option>
+                                            </mat-select>
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -44,4 +93,3 @@
             </mat-tab>
         </mat-tab-group>
     </div>
-</div>
