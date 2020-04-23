@@ -57,24 +57,27 @@ ngOnInit() {
                     const node = this.renderer.createElement('div');
                     this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus));
                     const stateNode = this.renderer.createElement('div');
-                    this.renderer.addClass(stateNode,'col-3');
+                    this.renderer.addClass(stateNode,'col-6');
                     this.renderer.addClass(stateNode,'p-0');
+                    this.renderer.addClass(stateNode,'text-right');
                     const nodeStateName = this.renderer.createText(transition._from);
                     this.renderer.appendChild(stateNode, nodeStateName);
                     this.renderer.appendChild(node, stateNode);
 
                     const ownerNode = this.renderer.createElement('div');
-                    this.renderer.addClass(ownerNode,'col-9');
+                    this.renderer.addClass(ownerNode,'col-6');
                     const nodeOwner = this.renderer.createElement('select');
+                    this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
                     const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
                     if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
                         this.canManage = false;
                         this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                     }
 
-                    this.renderer.addClass(nodeOwner,'ml-3');
+                    this.renderer.addClass(nodeOwner,'ml-0');
                     this.renderer.addClass(nodeOwner,'px-2');
-                    this.renderer.addClass(nodeOwner,'anu-input');
+                    this.renderer.addClass(nodeOwner,'text-left');
+                    //this.renderer.addClass(nodeOwner,'');
                     const assignment = this.data.model.workflowAssignment.filter((assignment) => assignment.stateId===transition.fromStateId);
                     if(assignment.length>0){
                         this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
@@ -113,6 +116,7 @@ ngOnInit() {
                         this.renderer.addClass(indicator,'fa');
                         this.renderer.addClass(indicator,'fa-arrow-circle-right');
                         this.renderer.addClass(indicator,'status-indicator');
+                        this.renderer.addClass(node,'node-highight');
                         this.renderer.appendChild(node,indicator);
                     }
                     this.renderer.addClass(node,'my-5');
@@ -125,8 +129,13 @@ ngOnInit() {
               if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
                   const node = this.renderer.createElement('div');
                   const nodeStateName = this.renderer.createText(transition._to);
+                  const stateNode = this.renderer.createElement('div');
+                  this.renderer.addClass(stateNode,'col-6');
+                  this.renderer.addClass(stateNode,'p-0');
+                  this.renderer.addClass(stateNode,'text-right');
                   this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
-                  this.renderer.appendChild(node, nodeStateName);
+                  this.renderer.appendChild(stateNode, nodeStateName);
+                  this.renderer.appendChild(node, stateNode);
                   this.renderer.setAttribute(node, 'id', nodeId);
                   this.renderer.addClass(node,'state-node');
                   this.renderer.addClass(node,'my-5');
@@ -135,8 +144,9 @@ ngOnInit() {
                   if(transition.toStateId === this.data.model.grant.grantStatus.id){
                       const indicator = this.renderer.createElement('i');
                       this.renderer.addClass(indicator,'fa');
-                      this.renderer.addClass(indicator,'fa-arrow-circle-right');
+                      this.renderer.addClass(indicator,'fa-arrxow-circle-right');
                       this.renderer.addClass(indicator,'status-indicator');
+                      this.renderer.addClass(node,'node-highight');
                       this.renderer.appendChild(node,indicator);
                   }
               }
@@ -179,22 +189,25 @@ ngOnInit() {
                                const node = this.renderer.createElement('div');
                                this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus))
                                const stateNode = this.renderer.createElement('div');
-                               this.renderer.addClass(stateNode,'col-3');
+                               this.renderer.addClass(stateNode,'col-6');
                                this.renderer.addClass(stateNode,'p-0');
+                               this.renderer.addClass(stateNode,'text-right');
                                const nodeStateName = this.renderer.createText(transition._from);
                                this.renderer.appendChild(stateNode, nodeStateName);
                                this.renderer.appendChild(node, stateNode);
 
                                const ownerNode = this.renderer.createElement('div');
-                               this.renderer.addClass(ownerNode,'col-9');
+                               this.renderer.addClass(ownerNode,'col-6');
                                const nodeOwner = this.renderer.createElement('select');
+                               this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
                                const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
                                if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor || !this.data.model.canManage){
                                    this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                                }
-                               this.renderer.addClass(nodeOwner,'ml-3');
+                               this.renderer.addClass(nodeOwner,'ml-0');
                                this.renderer.addClass(nodeOwner,'px-2');
-                               this.renderer.addClass(nodeOwner,'anu-input');
+                               this.renderer.addClass(nodeOwner,'text-left');
+                               //this.renderer.addClass(nodeOwner,'');
                                const assignment = this.data.model.workflowAssignments.filter((assignment) => assignment.stateId===transition.fromStateId);
                                if(assignment.length>0){
                                    this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
@@ -224,7 +237,7 @@ ngOnInit() {
                                     const nodeInvite = this.renderer.createElement('input');
                                     this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user');
                                     this.renderer.addClass(nodeInvite,'anu-input');
-                                    this.renderer.setAttribute(nodeInvite,'style','width: 80%; text-align: center;');
+                                    this.renderer.setAttribute(nodeInvite,'style','width: 100%; text-align: center;');
                                     this.renderer.setAttribute(nodeInvite,'id','custom_assignment');
                                     this.renderer.appendChild(ownerNode,nodeInvite);
                                     if(this.data.model.granteeUsers){
@@ -272,6 +285,7 @@ ngOnInit() {
                                    this.renderer.addClass(indicator,'fa');
                                    this.renderer.addClass(indicator,'fa-arrow-circle-right');
                                    this.renderer.addClass(indicator,'status-indicator');
+                                   this.renderer.addClass(node,'node-highight');
                                    this.renderer.appendChild(node,indicator);
                                }
                                this.renderer.addClass(node,'my-5');
@@ -284,11 +298,17 @@ ngOnInit() {
                          if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
                              const node = this.renderer.createElement('div');
                              const nodeStateName = this.renderer.createText(transition._to);
+                             const stateNode = this.renderer.createElement('div');
+                             this.renderer.addClass(stateNode,'col-6');
+                             this.renderer.addClass(stateNode,'p-0');
+                             this.renderer.addClass(stateNode,'text-right');
                              this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
-                             this.renderer.appendChild(node, nodeStateName);
+                             this.renderer.appendChild(stateNode, nodeStateName);
+                             this.renderer.appendChild(node, stateNode);
                              this.renderer.setAttribute(node, 'id', nodeId);
                              this.renderer.addClass(node,'state-node');
                              this.renderer.addClass(node,'my-5');
+                             this.renderer.addClass(node,'text-center');
                              this.renderer.appendChild(this.flowContainer.nativeElement,node);
 
                              if(transition.toStateId === this.data.model.report.status.id){
@@ -296,6 +316,7 @@ ngOnInit() {
                                  this.renderer.addClass(indicator,'fa');
                                  this.renderer.addClass(indicator,'fa-arrow-circle-right');
                                  this.renderer.addClass(indicator,'status-indicator');
+                                 this.renderer.addClass(node,'node-highight');
                                  this.renderer.appendChild(node,indicator);
                              }
                          }

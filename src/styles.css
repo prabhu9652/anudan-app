@@ -403,7 +403,7 @@ input:-internal-autofill-selected{
     border: 1px solid #e4e4e4;
     text-align: center;
     margin: 0 auto 25px auto !important;
-    width: 660px !important;
+    width: 550px !important;
     font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
@@ -413,12 +413,16 @@ input:-internal-autofill-selected{
     align-items: center;
 }
 
+.node-highight {
+    border:2px dashed;
+}
+
 .state-highlight{
     box-shadow: 2px 2px 4px #C67171;
 }
 
 .status-indicator{
-    align-self: flex-start;
+
     position: absolute;
     font-size: 18px;
     color: #338136;
