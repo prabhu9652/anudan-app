@@ -861,6 +861,11 @@ export class PreviewComponent implements OnInit {
         this.router.navigate(['grant']);*/
         //this.grantDataService.changeMessage(grant);
         this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+        if(grant.grantStatus.internalStatus==='ACTIVE'){
+            this.appComp.subMenu = {name:'Active Grants',action:'ag'};
+        }else if(grant.grantStatus.internalStatus==='CLOSED'){
+            this.appComp.subMenu = {name:'Closed Grants',action:'cg'};
+        }
 
         if(!grant.grantTemplate.published){
             const dialogRef = this.dialog.open(TemplateDialogComponent, {
