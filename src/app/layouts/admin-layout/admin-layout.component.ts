@@ -495,6 +495,13 @@ manageReport(notification: Notifications, reportId: number) {
       this.singleReportDataService.changeMessage(report);
       this.appComponent.currentView = 'report';
 
+        if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
+            this.appComponent.subMenu = {name:'Upcoming Reports',action:'ur'};
+        } else if(report.status.internalStatus==='REVIEW'){
+            this.appComponent.subMenu = {name:'Submitted Reports',action:'sr'};
+        } else if(report.status.internalStatus==='CLOSED'){
+            this.appComponent.subMenu = {name:'Approved Reports',action:'ar'};
+        }
         if(report.canManage && report.status.internalStatus!='CLOSED'){
             this.appComponent.action = 'report';
             this.router.navigate(['report/report-header']);
