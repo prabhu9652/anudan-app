@@ -235,6 +235,13 @@ export class ReportPreviewComponent implements OnInit {
 
             this.singleReportDataService.changeMessage(report);
 
+                if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
+                    this.appComp.subMenu = {name:'Upcoming Reports',action:'ur'};
+                } else if(report.status.internalStatus==='REVIEW'){
+                    this.appComp.subMenu = {name:'Submitted Reports',action:'sr'};
+                } else if(report.status.internalStatus==='CLOSED'){
+                    this.appComp.subMenu = {name:'Approved Reports',action:'ar'};
+                }
             if(!report.template.published){
                 const dialogRef = this.dialog.open(TemplateDialogComponent, {
                 data: this.currentReport.template.name,
