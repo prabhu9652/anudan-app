@@ -920,6 +920,7 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
                             this.currentGrant = grant;
                             this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                             this.appComp.currentView = 'grant';
+                            this.appComp.subMenu = {name:'In-progress Grants',action:'dg'};
 
                             this.router.navigate(['grant/basic-details']);
                             });

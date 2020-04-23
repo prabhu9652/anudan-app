@@ -450,6 +450,7 @@ export class AdminLayoutComponent implements OnInit {
                 this.appComponent.currentTenant.grants.push(grant);
             }
         }
+
           this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
           this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
           this.appComponent.currentView = 'grant';
@@ -462,8 +463,14 @@ export class AdminLayoutComponent implements OnInit {
               grant.canManage=false;
           }
           if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+              this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
               this.router.navigate(['grant/basic-details']);
           } else{
+              if(grant.grantStatus.internalStatus==='ACTIVE'){
+                this.appComponent.subMenu = {name:'Active Grants',action:'ag'};
+              } else if (grant.grantStatus.internalStatus === 'CLOSED'){
+                this.appComponent.subMenu = {name:'Closed Grants',action:'cg'};
+              }
               this.appComponent.action = 'preview';
               this.router.navigate(['grant/preview']);
           }
