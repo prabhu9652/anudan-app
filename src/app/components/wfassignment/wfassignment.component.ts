@@ -178,9 +178,15 @@ ngOnInit() {
                            if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
                                const node = this.renderer.createElement('div');
                                this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.fromStateId)[0].internalStatus))
+                               const stateNode = this.renderer.createElement('div');
+                               this.renderer.addClass(stateNode,'col-3');
+                               this.renderer.addClass(stateNode,'p-0');
                                const nodeStateName = this.renderer.createText(transition._from);
-                               this.renderer.appendChild(node, nodeStateName);
+                               this.renderer.appendChild(stateNode, nodeStateName);
+                               this.renderer.appendChild(node, stateNode);
 
+                               const ownerNode = this.renderer.createElement('div');
+                               this.renderer.addClass(ownerNode,'col-9');
                                const nodeOwner = this.renderer.createElement('select');
                                const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
                                if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor || !this.data.model.canManage){
@@ -220,7 +226,7 @@ ngOnInit() {
                                     this.renderer.addClass(nodeInvite,'anu-input');
                                     this.renderer.setAttribute(nodeInvite,'style','width: 80%; text-align: center;');
                                     this.renderer.setAttribute(nodeInvite,'id','custom_assignment');
-                                    this.renderer.appendChild(node,nodeInvite);
+                                    this.renderer.appendChild(ownerNode,nodeInvite);
                                     if(this.data.model.granteeUsers){
                                         for(let option of this.data.model.granteeUsers){
                                             const nodeOwnerOptions = this.renderer.createElement('option');
@@ -253,7 +259,8 @@ ngOnInit() {
                                }
 
                                //this.renderer.addClass(nodeOwner,'anu-input');
-                               this.renderer.appendChild(node,nodeOwner);
+                               this.renderer.appendChild(ownerNode,nodeOwner);
+                               this.renderer.appendChild(node,ownerNode);
 
 
 
