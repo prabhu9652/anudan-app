@@ -130,9 +130,9 @@ ngOnInit() {
                   const node = this.renderer.createElement('div');
                   const nodeStateName = this.renderer.createText(transition._to);
                   const stateNode = this.renderer.createElement('div');
-                  this.renderer.addClass(stateNode,'col-6');
+                  this.renderer.addClass(stateNode,'col-12');
                   this.renderer.addClass(stateNode,'p-0');
-                  this.renderer.addClass(stateNode,'text-right');
+                  this.renderer.addClass(stateNode,'text-center');
                   this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
                   this.renderer.appendChild(stateNode, nodeStateName);
                   this.renderer.appendChild(node, stateNode);
@@ -299,9 +299,9 @@ ngOnInit() {
                              const node = this.renderer.createElement('div');
                              const nodeStateName = this.renderer.createText(transition._to);
                              const stateNode = this.renderer.createElement('div');
-                             this.renderer.addClass(stateNode,'col-6');
+                             this.renderer.addClass(stateNode,'col-12');
                              this.renderer.addClass(stateNode,'p-0');
-                             this.renderer.addClass(stateNode,'text-right');
+                             this.renderer.addClass(stateNode,'text-center');
                              this.renderer.addClass(node,this.getColorCodeByStatus(this.data.model.workflowStatuses.filter((status) => status.id===transition.toStateId)[0].internalStatus));
                              this.renderer.appendChild(stateNode, nodeStateName);
                              this.renderer.appendChild(node, stateNode);
@@ -457,6 +457,8 @@ redrawOnScroll(){
         return 'state-draft';
         }else if(status === 'ACTIVE'){
          return'state-active';
+        }else if(status === 'REVIEW'){
+          return'state-review';
         }
         return 'state-closed';
       }

@@ -445,15 +445,19 @@ z-index: 2001;
 }
 
 .state-draft{
-background:#FFF8BC;
+background:#d4d4d4;
 }
 
 .state-active{
-background:#A2E0DB;
+background:#4DC252;
+}
+
+.state-review{
+    background:#ffbf00;
 }
 
 .state-closed{
-background:#DAE3D9;
+background:#d4d4d4;
 }
 
 .attachments-wrapper{
