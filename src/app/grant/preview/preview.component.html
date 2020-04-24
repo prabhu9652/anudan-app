@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-4 mb-2">
                     <span style="color: #929292;font-size: 15px;font-family:Roboto;">Grant Duration:</span>
-                    <div class="ml-0 mb-3"><b>{{currentGrant.duration}}</b></div>
+                    <div class="ml-0 mb-3"><b (change)="trackChange($event)">{{currentGrant.duration}}</b></div>
 
                 </div>
                 <div class="col-4 mb-2">

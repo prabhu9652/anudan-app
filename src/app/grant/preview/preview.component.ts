@@ -856,11 +856,18 @@ export class PreviewComponent implements OnInit {
           + this.currentGrant.id + '/flow/'
           + this.currentGrant.grantStatus.id + '/' + toStateId;
       this.http.post(url, {grant: this.currentGrant,note:message}, httpOptions).subscribe((grant: Grant) => {
-        /*this.loading = false;
 
-        this.router.navigate(['grant']);*/
-        //this.grantDataService.changeMessage(grant);
+
         this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+
+        if(this.currentGrant.startDate && this.currentGrant.endDate){
+          var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+          time = time + 86400001;
+          this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+        }else{
+          this.currentGrant.duration = 'No end date';
+        }
+
         if(grant.grantStatus.internalStatus==='ACTIVE'){
             this.appComp.subMenu = {name:'Active Grants',action:'ag'};
         }else if(grant.grantStatus.internalStatus==='CLOSED'){
@@ -927,6 +934,13 @@ export class PreviewComponent implements OnInit {
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
+        if(this.currentGrant.startDate && this.currentGrant.endDate){
+          var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+          time = time + 86400001;
+          this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+        }else{
+          this.currentGrant.duration = 'No end date';
+        }
 
         if(this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
             this.appComp.currentView = 'grants';
@@ -1530,5 +1544,7 @@ getCleanText(section:Section): string{
         return '₹ ' + String(inf.format(total,2));
     }
 
-
+trackChange(ev:Event){
+    console.log(ev);
+}
 }
