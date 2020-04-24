@@ -158,7 +158,14 @@ export class AdminLayoutComponent implements OnInit {
                                        url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + notifications[i].grantId;
                                        this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
                                            this.grantData.changeMessage(updatedGrant,this.appComponent.loggedInUser.id)
-                                           //this.appComponent.grantRemoteUpdate.next(true);
+
+                                           if(this.currentGrant.startDate && this.currentGrant.endDate){
+                                             var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+                                             time = time + 86400001;
+                                             this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
+                                           }else{
+                                             this.currentGrant.duration = 'No end date';
+                                           }
                                        });
 
                                }
@@ -495,6 +502,13 @@ manageReport(notification: Notifications, reportId: number) {
       this.singleReportDataService.changeMessage(report);
       this.appComponent.currentView = 'report';
 
+        if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
+            this.appComponent.subMenu = {name:'Upcoming Reports',action:'ur'};
+        } else if(report.status.internalStatus==='REVIEW'){
+            this.appComponent.subMenu = {name:'Submitted Reports',action:'sr'};
+        } else if(report.status.internalStatus==='CLOSED'){
+            this.appComponent.subMenu = {name:'Approved Reports',action:'ar'};
+        }
         if(report.canManage && report.status.internalStatus!='CLOSED'){
             this.appComponent.action = 'report';
             this.router.navigate(['report/report-header']);

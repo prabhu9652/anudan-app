@@ -215,7 +215,13 @@ export class DashboardComponent implements OnInit {
               this.appComponent.currentView = 'report';
               this.singleReportDataService.changeMessage(report);
 
-
+               if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
+                    this.appComponent.subMenu = {name:'Upcoming Reports',action:'ur'};
+                } else if(report.status.internalStatus==='REVIEW'){
+                    this.appComponent.subMenu = {name:'Submitted Reports',action:'sr'};
+                } else if(report.status.internalStatus==='CLOSED'){
+                    this.appComponent.subMenu = {name:'Approved Reports',action:'ar'};
+                }
               if(report.canManage ){
                   this.router.navigate(['report/report-header']);
               } else{

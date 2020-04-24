@@ -125,7 +125,7 @@ const httpOptions = {
                          if(oldSection.attributes){
                             oldAttr = oldSection.attributes.filter((a) => a.id===attr.id)[0];
                          }
-                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || attr.fieldValue!==oldAttr.fieldValue || attr.target!==oldAttr.target || attr.fieldType!==oldAttr.fieldType || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldValue !==JSON.stringify(oldAttr.fieldTableValue))) || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldTableValue && JSON.stringify(attr.fieldTableValue) !==JSON.stringify(oldAttr.fieldTableValue))) || attr.frequency!==oldAttr.frequency)){
+                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || (attr.fieldType!=='table' && oldAttr.fieldType!=='table' && attr.fieldValue!==oldAttr.fieldValue) || attr.target!==oldAttr.target || attr.fieldType!==oldAttr.fieldType || (attr.fieldType==='table' && oldAttr.fieldType==='table' && attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && (attr.fieldValue !==JSON.stringify(oldAttr.fieldTableValue))) || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && JSON.stringify(attr.fieldTableValue) !==JSON.stringify(oldAttr.fieldTableValue))) || attr.frequency!==oldAttr.frequency)){
                             this._getGrantDiffSections();
                             const attrDiff = new AttributeDiff();
                             attrDiff.section = section.sectionName;
@@ -242,7 +242,7 @@ const httpOptions = {
     getTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';
                 const tabData = data;
-                html += '<td>&nbsp;</td>';
+                html += '<td>'+(tabData[0].header?tabData[0].header:'')+'</td>';
                 for(let i=0; i< tabData[0].columns.length;i++){
 
 
