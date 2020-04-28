@@ -125,19 +125,20 @@ const httpOptions = {
                          if(oldSection.attributes){
                             oldAttr = oldSection.attributes.filter((a) => a.id===attr.id)[0];
                          }
-                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || (attr.fieldType!=='table' && oldAttr.fieldType!=='table' && attr.fieldValue!==oldAttr.fieldValue) || attr.target!==oldAttr.target || attr.fieldType!==oldAttr.fieldType || (attr.fieldType==='table' && oldAttr.fieldType==='table' && attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && (attr.fieldValue !==JSON.stringify(oldAttr.fieldTableValue))) || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && JSON.stringify(attr.fieldTableValue) !==JSON.stringify(oldAttr.fieldTableValue))) || attr.frequency!==oldAttr.frequency)){
-                            this._getGrantDiffSections();
-                            const attrDiff = new AttributeDiff();
-                            attrDiff.section = section.sectionName;
-                            attrDiff.oldAttribute = oldAttr;
-                            attrDiff.newAttribute = attr;
-                            const sectionDiff = new SectionDiff();
-                            sectionDiff.oldSection = oldSection;
-                            sectionDiff.newSection = section;
-                            sectionDiff.attributesDiffs = [];
-                            sectionDiff.order = section.order
-                            sectionDiff.attributesDiffs.push(attrDiff);
-                            this.grantDiff.sectionDiffs.push(sectionDiff);
+                        if(oldAttr){
+                            if(oldAttr.fieldName!==attr.fieldName){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+
+                            }
+                            if(oldAttr.fieldType!==attr.fieldType){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+
+                            }
+                            if(oldAttr.fieldType===attr.fieldType){
+
+                            }
                         } else if(!oldAttr){
                             this._getGrantDiffSections();
                             const attrDiff = new AttributeDiff();
@@ -407,5 +408,19 @@ getType(type: String){
     } else if (type === 'kpi'){
         return 'Measurement/KPI';
     }
+}
+
+saveDifferences(oldSection,oldAttr,section,attr){
+    const attrDiff = new AttributeDiff();
+    attrDiff.section = section.sectionName;
+    attrDiff.oldAttribute = oldAttr;
+    attrDiff.newAttribute = attr;
+    const sectionDiff = new SectionDiff();
+    sectionDiff.oldSection = oldSection;
+    sectionDiff.newSection = section;
+    sectionDiff.attributesDiffs = [];
+    sectionDiff.order = section.order
+    sectionDiff.attributesDiffs.push(attrDiff);
+    this.grantDiff.sectionDiffs.push(sectionDiff);
 }
 }

@@ -360,7 +360,7 @@
                             <table #dataColumns id="tablePlaceholderX" width="100%">
                               <tr style="background: #f9f9f9">
                                 <td align="center" valign="middle" width="10%" style="border: 1px solid #e4e4e4;">
-                                  <label class="m-0"><span>Actual Installment #</span></label>
+                                  <label class="m-0"><span>#</span></label>
                                 </td>
                                 <ng-container *ngFor="let column of currentReport.grant.approvedReportsDisbursements[0].columns, let i = index">
                                   <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
@@ -480,7 +480,7 @@
                             <table #dataColumns id="tablePlaceholder" width="100%">
                               <tr>
                                 <td align="center" valign="middle" width="10%" style="background: rgb(244,244,244);border: 1px solid #e4e4e4;">
-                                  <label class="m-0">Actual Installment #</label>
+                                  <label class="m-0">#</label>
                                 </td>
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
 
