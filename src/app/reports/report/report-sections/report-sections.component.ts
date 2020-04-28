@@ -774,6 +774,9 @@ deleteAttachment(attributeId, attachmentId){
     }
 
     getFormattedCurrency(amount: string):string{
+        if(!amount || amount===''){
+            return inf.format(Number("0"),2);
+        }
         return inf.format(Number(amount),2);
     }
 

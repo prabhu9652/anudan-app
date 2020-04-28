@@ -522,6 +522,9 @@
                                     <ng-container *ngIf="attribute.fieldTableValue.length===1 && currentReport.forGranteeUse && row.enteredByGrantee">
                                       <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0px;">{{row.name}}</p>
                                     </ng-container>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length===1 && currentReport.forGranteeUse && !row.enteredByGrantee">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0px;">{{row.name}}</p>
+                                    </ng-container>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns,let j = index">
                                     <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'20%':'12%'">
