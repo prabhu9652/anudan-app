@@ -4,6 +4,7 @@ import {Grant, AttachmentTemplates, Doc, Note, GrantNote, Template, GrantDiff,Se
 import {User} from "../../model/user";
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import * as inf from 'indian-number-format';
 
 
 @Component({
@@ -125,19 +126,66 @@ const httpOptions = {
                          if(oldSection.attributes){
                             oldAttr = oldSection.attributes.filter((a) => a.id===attr.id)[0];
                          }
-                        if(oldAttr && (oldAttr.fieldName!==attr.fieldName || (attr.fieldType!=='table' && oldAttr.fieldType!=='table' && attr.fieldValue!==oldAttr.fieldValue) || attr.target!==oldAttr.target || attr.fieldType!==oldAttr.fieldType || (attr.fieldType==='table' && oldAttr.fieldType==='table' && attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && (attr.fieldValue !==JSON.stringify(oldAttr.fieldTableValue))) || (attr.fieldType==='table' && oldAttr.fieldType==='table' && (attr.fieldTableValue && oldAttr.fieldTableValue && oldAttr.fieldTableValue[0].header!==undefined && attr.fieldTableValue[0].header!==undefined && JSON.stringify(attr.fieldTableValue) !==JSON.stringify(oldAttr.fieldTableValue))) || attr.frequency!==oldAttr.frequency)){
-                            this._getGrantDiffSections();
-                            const attrDiff = new AttributeDiff();
-                            attrDiff.section = section.sectionName;
-                            attrDiff.oldAttribute = oldAttr;
-                            attrDiff.newAttribute = attr;
-                            const sectionDiff = new SectionDiff();
-                            sectionDiff.oldSection = oldSection;
-                            sectionDiff.newSection = section;
-                            sectionDiff.attributesDiffs = [];
-                            sectionDiff.order = section.order
-                            sectionDiff.attributesDiffs.push(attrDiff);
-                            this.grantDiff.sectionDiffs.push(sectionDiff);
+                        if(oldAttr){
+                            if(oldAttr.fieldName!==attr.fieldName){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+
+                            }
+                            else if(oldAttr.fieldType!==attr.fieldType){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+
+                            } else
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='multiline' && oldAttr.fieldValue!==attr.fieldValue){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            } else
+
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='kpi' && (oldAttr.target!==attr.target || oldAttr.frequency!==attr.frequency)){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            } else
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table' && (JSON.stringify(oldAttr.fieldTableValue)!==JSON.stringify(attr.fieldTableValue))){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            } else
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='document' && (JSON.stringify(oldAttr.attachments)!==JSON.stringify(attr.attachments))){
+                                this._getGrantDiffSections();
+                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            } else
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='disbursement'){
+
+                                let hasDifferences = false;
+
+                                if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
+                                    hasDifferences = true;
+                                }else{
+                                    for(let i=0; i<oldAttr.fieldTableValue.length;i++){
+                                        if(oldAttr.fieldTableValue[i].enteredByGrantee!==attr.fieldTableValue[i].enteredByGrantee){
+                                            hasDifferences = true;
+                                        }
+                                        if(oldAttr.fieldTableValue[i].columns.length!==attr.fieldTableValue[i].columns.length){
+                                            hasDifferences = true;
+                                        }else{
+                                            for(let j=0;j< oldAttr.fieldTableValue[i].columns.length;j++){
+                                                if(oldAttr.fieldTableValue[i].columns[j].name!==attr.fieldTableValue[i].columns[j].name){
+                                                    hasDifferences = true;
+                                                }
+                                                if(((!oldAttr.fieldTableValue[i].columns[j].value || oldAttr.fieldTableValue[i].columns[j].value===null)?"":oldAttr.fieldTableValue[i].columns[j].value)!==((!attr.fieldTableValue[i].columns[j].value || attr.fieldTableValue[i].columns[j].value===null)?"":attr.fieldTableValue[i].columns[j].value)){
+                                                    hasDifferences = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if(hasDifferences){
+                                    this._getGrantDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }
+
+                            }
                         } else if(!oldAttr){
                             this._getGrantDiffSections();
                             const attrDiff = new AttributeDiff();
@@ -267,6 +315,43 @@ const httpOptions = {
                 //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
                 return html;
               }
+
+    getDisbursementTabularData(data){
+                let html = '<table width="100%" border="1"><tr>';
+                const tabData = data;
+                html += '<td>'+(tabData[0].header?tabData[0].header:'')+'</td>';
+                for(let i=0; i< tabData[0].columns.length;i++){
+
+
+                    //if(tabData[0].columns[i].name.trim() !== ''){
+                      html+='<td>' + tabData[0].columns[i].name + '</td>';
+                    //}
+                }
+                html += '</tr>';
+                for(let i=0; i< tabData.length;i++){
+
+                    html += '<tr><td>' + tabData[i].name + '</td>';
+                    for(let j=0; j < tabData[i].columns.length; j++){
+                      //if(tabData[i].columns[j].name.trim() !== ''){
+                      if(!tabData[i].columns[j].dataType){
+                        html+='<td>' + tabData[i].columns[j].value + '</td>';
+                      }else if(tabData[i].columns[j].dataType==='currency'){
+                        html+='<td class="text-right">₹ ' + inf.format(Number(tabData[i].columns[j].value),2) + '</td>';
+                      }
+
+
+                      //}
+                    }
+                    html += '</tr>';
+                }
+
+                html += '</table>'
+                //document.getElementById('attribute_' + elemId).innerHTML = '';
+                //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+                return html;
+    }
+
+
 getDocumentName(val: string): any[] {
     let obj;
     if(val!==""){
@@ -407,5 +492,19 @@ getType(type: String){
     } else if (type === 'kpi'){
         return 'Measurement/KPI';
     }
+}
+
+saveDifferences(oldSection,oldAttr,section,attr){
+    const attrDiff = new AttributeDiff();
+    attrDiff.section = section.sectionName;
+    attrDiff.oldAttribute = oldAttr;
+    attrDiff.newAttribute = attr;
+    const sectionDiff = new SectionDiff();
+    sectionDiff.oldSection = oldSection;
+    sectionDiff.newSection = section;
+    sectionDiff.attributesDiffs = [];
+    sectionDiff.order = section.order
+    sectionDiff.attributesDiffs.push(attrDiff);
+    this.grantDiff.sectionDiffs.push(sectionDiff);
 }
 }

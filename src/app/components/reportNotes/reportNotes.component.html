@@ -84,7 +84,7 @@
                     </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='table'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
                     </div>
-                    <div *ngIf="attrDiff.newAttribute.fieldType==='disbursement'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
+                    <div *ngIf="attrDiff.newAttribute.fieldType==='disbursement'" class="col-12"  [innerHTML]="getDisbursementTabularData(attrDiff.newAttribute.fieldTableValue)">
                     </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='document'" class="col-12">
                       <ul>
@@ -111,7 +111,7 @@
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
-                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
+                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getDisbursementTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='document'" class="col-12">
                       <ul>
@@ -138,7 +138,7 @@
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
-                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
+                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getDisbursementTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='document'" class="col-12">
                       <ul>

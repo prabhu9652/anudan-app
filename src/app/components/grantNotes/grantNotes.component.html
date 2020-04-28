@@ -90,6 +90,8 @@
                     </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='table'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
                     </div>
+                    <div *ngIf="attrDiff.newAttribute.fieldType==='disbursement'" class="col-12"  [innerHTML]="getDisbursementTabularData(attrDiff.newAttribute.fieldTableValue)">
+                    </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='document'" class="col-12">
                       <ul>
                         <li *ngFor="let doc of getDocumentName(attrDiff.newAttribute.fieldValue)">
@@ -111,6 +113,8 @@
                       <p *ngIf="attrDiff.oldAttribute.frequency==='half-yearly'">Half Yearly</p>
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
+                    </div>
+                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getDisbursementTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='document'" class="col-12">
                       <ul>
@@ -137,6 +141,8 @@
                     </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='table'" class="col-12" [innerHTML]="getTabularData(attrDiff.oldAttribute.fieldTableValue)">
                     </div>
+                    <div *ngIf="attrDiff.oldAttribute.fieldType==='disbursement'" class="col-12" [innerHTML]="getDisbursementTabularData(attrDiff.oldAttribute.fieldTableValue)">
+                    </div>
                     <div *ngIf="attrDiff.oldAttribute.fieldType==='document'" class="col-12">
                       <ul>
                         <li *ngFor="let doc of getDocumentName(attrDiff.oldAttribute.fieldValue)">
@@ -161,6 +167,8 @@
                       <p *ngIf="attrDiff.newAttribute.frequency==='half-yearly'">Half Yearly</p>
                     </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='table'" class="col-12"  [innerHTML]="getTabularData(attrDiff.newAttribute.fieldTableValue)">
+                    </div>
+                    <div *ngIf="attrDiff.newAttribute.fieldType==='disbursement'" class="col-12"  [innerHTML]="getDisbursementTabularData(attrDiff.newAttribute.fieldTableValue)">
                     </div>
                     <div *ngIf="attrDiff.newAttribute.fieldType==='document'" class="col-12">
                       <ul>

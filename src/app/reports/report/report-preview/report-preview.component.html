@@ -135,7 +135,7 @@
                             <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
                                 <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level Goal:</span></td></tr>
-                                <tr><td><b>{{attribute.grantLevelTarget}}</b></td></tr>
+                                <tr><td><b>{{!attribute.grantLevelTarget?'Not Set':attribute.grantLevelTarget}}</b></td></tr>
                               </table>
                               </td>
                             <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
@@ -218,7 +218,7 @@
                       <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
                         <tr>
                           <td align="center" valign="middle" width="15%" style="padding:5px;font-size: 16px;font-family:Roboto;">
-                            <b>Actual Installment #</b>
+                            <b>#</b>
                           </td>
                           <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
 
