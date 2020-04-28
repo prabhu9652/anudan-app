@@ -1325,7 +1325,9 @@ export class BasicComponent implements OnInit {
   //const dtParsed = ev.split('/');
     console.log(ev);
     if(type==='start'){
-      this.currentGrant.startDate=new Date(ev.toString());
+      const std = new Date(ev.toString());
+      this.currentGrant.startDate=std;
+      //this.currentGrant.stDate = std.getFullYear() + '-' + std.getMonth() + '-' + std.getDate();
     }else if(type==='end'){
       this.currentGrant.endDate=new Date(ev.toString());
     }

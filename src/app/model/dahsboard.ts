@@ -423,6 +423,7 @@ export class TableData {
   name: string;
   header:string;
   columns: ColumnData[];
+  enteredByGrantee: boolean;
 }
 
 export class TemplateLibrary{

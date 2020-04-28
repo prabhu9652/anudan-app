@@ -876,6 +876,11 @@ deleteAttachment(attributeId, attachmentId){
      row.name = String(Number(attr.fieldTableValue[attr.fieldTableValue.length-1].name)+1);
      row.header = attr.fieldTableValue[0].header;
      row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+     if(this.appComp.loggedInUser.organization.organizationType==='GRANTEE'){
+        row.enteredByGrantee = true;
+     }if(this.appComp.loggedInUser.organization.organizationType==='GRANTER'){
+        row.enteredByGrantee = false;
+     }
      for(let i=0; i<row.columns.length;i++){
       row.columns[i].value = '';
      }
