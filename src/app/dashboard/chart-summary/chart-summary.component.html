@@ -1,9 +1,19 @@
-<div class="">
+<div *ngIf="display">
     <div class="mt-4 mx-2 px-3 py-3" style="">
         <span *ngIf="disabled" matBadge style="position: absolute;right: 30px;top: 25px;font-size: 10px;">Coming soon</span>
 
-        <div class="" style="display: block; width: 400px; height: 200px;">
-            <canvas #pieChart></canvas>
+        <div class="row">
+            <div class="col-9">
+                <div class="" style="display: block; width: 400px; height: 200px;">
+                    <canvas class="pieChart"></canvas>
+                </div>
+            </div>
+            <div class="col-3">
+                <mat-select [(value)]="selected.name" class="anu-input">
+                    <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
+                </mat-select>
+            </div>
         </div>
+
     </div>
 </div>

@@ -15,6 +15,8 @@ import {GrantComponent} from "../grant/grant.component";
 import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
+import * as inf from 'indian-number-format';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -42,6 +44,15 @@ export class DashboardComponent implements OnInit {
   grantActiveCount:number;
   grantClosedCount:number;
 
+  //Retain this
+  totalGrantsIssued:number=0;
+  totalGrantees:number=0;
+  totalGrantAmount:string='-';
+  totalActiveUsers:number=0;
+  portfolioData:any;
+
+  ///////////
+
   constructor(private http: HttpClient,
               public appComponent: AppComponent,
               private router: Router,
@@ -61,6 +72,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
 
     this.appComponent.subMenu = {name:''};
+    this.getDashboardSummary();
     if(this.parameters.status && this.parameters.status==='n' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
 
     const dialogRef = this.dialog.open(WelcomePopupComponent, {
@@ -244,5 +256,28 @@ export class DashboardComponent implements OnInit {
 
   viewClosedGrants(){
       this.router.navigate(['grants/closed']);
+  }
+
+  getDashboardSummary(){
+    const httpOptions = {
+        headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+    };
+
+    this.appComponent.loggedIn = true;
+
+    let url = '/api/users/' + this.appComponent.loggedInUser.id + '/dashboard/summary';
+
+    this.http.get(url,httpOptions).subscribe((data:any) =>{
+        console.log(data);
+        this.totalGrantsIssued = data.summary.totalGrants;
+        this.totalGrantees = data.summary.grantees;
+        this.totalGrantAmount = '₹' + inf.format(Number(data.summary.totalGrantAmount),2);
+        this.totalActiveUsers = data.summary.activeUsers;
+        this.portfolioData = data.filters;
+    });
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit,Input,ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit,Input,ElementRef, ViewChild,OnChanges, SimpleChanges, SimpleChange,AfterViewChecked} from '@angular/core';
 import {Chart} from 'chart.js';
 import 'chartjs-plugin-datalabels';
 
@@ -7,32 +7,68 @@ import 'chartjs-plugin-datalabels';
   templateUrl: './chart-summary.component.html',
   styleUrls: ['./chart-summary.component.css']
 })
-export class ChartSummaryComponent implements OnInit {
+export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked {
 
      @Input() heading: string;
      @Input() caption: string;
      @Input() disabled: boolean = false;
+     @Input() data: any;
+     @Input() display:boolean = false;
+
 
      ctx: any;
      PieChart: any;
+     pieChart: HTMLCanvasElement;
+     readyToDsplayChart:boolean = false;
+     selected:any;
 
-     @ViewChild('pieChart') pieChart: ElementRef;
-
-    constructor() {
+    constructor(private elRef: ElementRef) {
 
     }
 
     ngOnInit() {
 
-        this.ctx = this.pieChart.nativeElement.getContext('2d');
+    }
 
+    ngAfterViewChecked(){
+        if(this.readyToDsplayChart){
+            this.displayChart();
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        for (let property in changes) {
+            if (property === 'data') {
+                console.log('data changed');
+                if(this.data){
+                    this.display = true;
+                    this.readyToDsplayChart = true;
+                    this.selected = this.data[0];
+                }
+            }
+        }
+    }
+
+    displayChart(){
+
+        this.readyToDsplayChart = false;
+        const elemRef: HTMLElement = this.elRef.nativeElement;
+        this.pieChart = <HTMLCanvasElement> elemRef.getElementsByClassName('pieChart')[0];
+        this.ctx = this.pieChart.getContext('2d');
+        const labels: string[] = [];
+        const data: number[] = [];
+
+        for(let s of this.selected.summary){
+            labels.push(s.name);
+            data.push(s.value);
+        }
         this.PieChart = new Chart(this.ctx, {
             type: 'doughnut',
             data: {
-                labels: ["Approved Reports", "Unapproved Reports", "Due Reports", "Overdue Reports"],
+                labels: labels,
                 datasets: [{
                 label: '# of Votes',
-                data: [20,3 , 2, 5],
+                data: data,
                     backgroundColor: [
                         '#4DC252',
                         '#4D83C2',

@@ -408,7 +408,7 @@ onResize(event) {
 }
 
 redrawOnScroll(){
-    this.showFlow(this.transitions);
+    //this.showFlow(this.transitions);
 }
 
   onNoClick(): void {

@@ -1,4 +1,4 @@
-<div class="">
+<div *ngIf="display">
     <div class="mt-1 mx-2 px-3 py-1" style="">
         <span *ngIf="disabled" matBadge style="position: absolute;right: 30px;top: 25px;font-size: 10px;">Coming soon</span>
         <div class="row">
@@ -10,7 +10,6 @@
             <div class="col-10">
                 <div class="mt-2" style="min-width:200px;font-weight: 800;font-size: 14px;color: #0E100E;">{{actual}}
                     <ng-container *ngIf="caption"> / <small>{{planned}}</small></ng-container>
-                    <ng-container *ngIf="isCurrency"> <small>{{' Rs.'}} </small></ng-container>
                 </div>
             </div>
             <div class="col-2 text-right">
