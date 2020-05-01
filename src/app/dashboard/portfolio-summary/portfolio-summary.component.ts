@@ -41,4 +41,15 @@ export class PortfolioSummaryComponent implements OnInit, OnChanges  {
         }
     }
 
+    doSomething(ev:any){
+        for(let i=0;i<this.data.length;i++){
+            if(this.data[i].name===ev.value){
+                this.display = true;
+                this.selected = this.data[i];
+                this.portfolioData = this.data[i];
+                this.portfolioProgessData = this.data[i];
+                this.portfolioDetailData = this.data[i].details;
+            }
+        }
+    }
 }
