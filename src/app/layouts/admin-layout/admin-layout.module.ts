@@ -5,7 +5,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AdminLayoutRoutes} from './admin-layout.routing';
 import {GrantComponent} from '../../grant/grant.component';
 import {DashboardComponent} from '../../dashboard/dashboard.component';
-import {SummaryComponent} from '../../dashboard//summary/summary.component';
+import {SummaryComponent} from '../../dashboard/summary/summary.component';
+import {PortfolioSummaryComponent} from '../../dashboard/portfolio-summary/portfolio-summary.component';
 import {ProgressSummaryComponent} from '../../dashboard/progress-summary/progress-summary.component';
 import {SummaryCenteredComponent} from '../../dashboard/summary-centered/summary-centered.component';
 import {ChartSummaryComponent} from '../../dashboard/chart-summary/chart-summary.component';
@@ -128,6 +129,7 @@ import { UsersComponent } from '../../admin/users/users.component';
         SummaryCenteredComponent,
         ProgressSummaryComponent,
         ChartSummaryComponent,
+        PortfolioSummaryComponent,
         GrantsComponent,
         DraftGrantsComponent,
         ActiveGrantsComponent,
