@@ -114,10 +114,10 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         for(let s of this.selected.summary){
             labels.push(s.name);
             for(let v of s.values){
-                if(v.name==='Committed'){
+                if(v.name==='Grant Level Commitment'){
                     dataCommitted.push(v.value);
                 }
-                if(v.name==='Disbursed'){
+                if(v.name==='Disbursed for the period'){
                     dataDisbursed.push(v.value);
                 }
             }
@@ -127,11 +127,11 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
             data: {
                 labels: labels,
                 datasets: [{
-                  label: 'Committed',
+                  label: 'Grant Level Commitment',
                   data: dataCommitted,
                   backgroundColor: "#4D83C2"
                 }, {
-                  label: 'Disbursed',
+                  label: 'Disbursed for the period',
                   data: dataDisbursed,
                   backgroundColor: "#39743C"
                 }]
@@ -163,6 +163,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                     }
             }
         });
+        this.BarChart.generateLegend();
     }
 
     doSomething(ev:any){

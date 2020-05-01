@@ -1,7 +1,11 @@
 <div class="">
-    <div class="mt-4 mx-2 px-3 py-3" style="background: #f4f4f4;border-left: 3px solid #4DC252;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+    <div *ngIf="!disabled" class="mt-4 mx-2 px-3 py-3" style="background: #f4f4f4;border-left: 3px solid #4DC252;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+        <div style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo" class="text-center">{{heading}}</div>
+        <div style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;" class="text-center">{{caption}}</div>
+    </div>
+    <div *ngIf="disabled" class="mt-4 mx-2 px-3 py-3" style="background: #f4f4f4;border-left: 3px solid #9d9d9d;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
         <span *ngIf="disabled" matBadge style="position: absolute;right: 30px;top: 25px;font-size: 10px;">Coming soon</span>
-        <div style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;">{{heading}}</div>
-        <div style="min-width:200px;font-weight: 800;color: rgba(14, 16, 14, 0.68);font-size: 12px;">{{caption}}</div>
+        <div style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo" class="text-center">{{heading}}</div>
+        <div style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;" class="text-center">{{caption}}</div>
     </div>
 </div>
