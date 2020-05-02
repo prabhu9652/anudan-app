@@ -586,14 +586,17 @@ showMessages(){
   }
 
   navigateToGrants(sm:any){
+    this.appComponent.showSaving = false;
     this.showAllGrants(this.currentGrant,sm.action);
   }
 
   navigateToReports(sm:any){
+    this.appComponent.showSaving = false;
     this.showAllReports(this.currentReport,sm.action);
   }
 
   goToDashboard(toSave:any,type:string){
+    this.appComponent.showSaving = false;
     if(type==='GRANT'){
         this.showAllGrants(toSave,'db');
     } else if(type==='REPORT'){
