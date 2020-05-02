@@ -141,6 +141,11 @@ this.route.params.subscribe( (p) => {
             this.grantData.currentMessage.subscribe(grant => {
                 this.currentGrant = grant
             });
+
+            if(!this.currentGrant){
+                this.router.navigate(['dashboard']);
+            }
+
             const httpOptions = {
                 headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -148,8 +153,8 @@ this.route.params.subscribe( (p) => {
                 'Authorization': localStorage.getItem('AUTH_TOKEN')
                 })
             };
-            let url = '/api/app/config/grant/'+this.currentGrant.id;
 
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
             this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
                 this.grantWorkflowStatuses = config.grantWorkflowStatuses;
                 this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;

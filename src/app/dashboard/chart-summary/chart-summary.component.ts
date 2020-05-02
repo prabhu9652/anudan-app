@@ -114,10 +114,10 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         for(let s of this.selected.summary){
             labels.push(s.name);
             for(let v of s.values){
-                if(v.name==='Grant Level Commitment'){
+                if(v.name==='Committed'){
                     dataCommitted.push(v.value);
                 }
-                if(v.name==='Disbursed for the period'){
+                if(v.name==='Disbursed'){
                     dataDisbursed.push(v.value);
                 }
             }

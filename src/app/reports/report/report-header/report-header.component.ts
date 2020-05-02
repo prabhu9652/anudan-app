@@ -91,6 +91,10 @@ export class ReportHeaderComponent implements OnInit {
                 this.setDateDuration();
                 console.log(this.currentReport);
             });
+
+            if(!this.currentReport){
+                this.router.navigate(['dashboard']);
+            }
              const httpOptions = {
                 headers: new HttpHeaders({
                 'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild,OnDestroy} from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -22,7 +22,7 @@ import {DatePipe,TitleCasePipe} from '@angular/common';
 import {Colors,Configuration} from '../../model/app-config';
 import {User} from '../../model/user';
 import {SidebarComponent} from '../../components/sidebar/sidebar.component';
-import {interval} from 'rxjs';
+import {interval, Subject} from 'rxjs';
 import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
 import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
 import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
@@ -42,6 +42,8 @@ import { saveAs } from 'file-saver';
 import {GrantComponent} from '../grant.component'
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
+import { Subscription } from 'rxjs/Subscription';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -80,6 +82,8 @@ export class PreviewComponent implements OnInit {
   tenantUsers: User[];
   docsUpdated = false;
   grantWorkflowStatuses:WorkflowStatus[];
+  dialogSubscription: Subscription;
+  private ngUnsubscribe = new Subject();
 
   public pdfExport: PDFExportComponent;
 
@@ -119,7 +123,12 @@ export class PreviewComponent implements OnInit {
       , private titlecasePipe:TitleCasePipe) {
     this.colors = new Colors();
 
-    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+     this.grantData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(grant => this.currentGrant = grant);
+     if(!this.currentGrant){
+        this.router.navigate(['dashboard']);
+     }
+
+
     const httpOptions = {
                 headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -129,7 +138,7 @@ export class PreviewComponent implements OnInit {
             };
             let url = '/api/app/config/grant/'+this.currentGrant.id;
 
-            this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
+             this.http.get(url,httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((config:Configuration) =>{
                 this.grantWorkflowStatuses = config.grantWorkflowStatuses;
                 this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
                 this.tenantUsers = config.tenantUsers;
@@ -141,7 +150,7 @@ export class PreviewComponent implements OnInit {
 
   this.appComp.sectionUpdated = false;
 
-  this.appComp.createNewSection.subscribe((val) =>{
+   this.appComp.createNewSection.pipe(takeUntil(this.ngUnsubscribe)).subscribe((val) =>{
         if(val){
             $('.modal-backdrop').remove();
 
@@ -153,7 +162,7 @@ export class PreviewComponent implements OnInit {
   const tenantCode = localStorage.getItem('X-TENANT-CODE');
   this.logoUrl = "/api/public/images/"+this.currentGrant.grantorOrganization.code+"/logo";
 
-    /*interval(3000).subscribe(t => {
+    /*interval(3000).pipe(takeUntil(this.ngUnsubscribe)).subscribe(t => {
 
       console.log('Came here');
       if (this.editMode) {
@@ -200,7 +209,7 @@ export class PreviewComponent implements OnInit {
     console.log(this.currentGrant);
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
-    this.submissionData.currentMessage.subscribe(submission => this.currentSubmission = submission);
+    //this.submissionData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(submission => this.currentSubmission = submission);
 
     //this.checkGrantPermissions();
     //this.checkCurrentSubmission();
@@ -303,7 +312,7 @@ export class PreviewComponent implements OnInit {
       panelClass: 'center-class'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
         switch (func) {
           case 'field':
@@ -450,7 +459,7 @@ export class PreviewComponent implements OnInit {
 
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
 
-    this.http.put(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
+     this.http.put(url, this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
           if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
               grant.canManage=true;
@@ -517,11 +526,11 @@ export class PreviewComponent implements OnInit {
         + this.currentGrant.id + '/submission/flow/'
         + this.currentSubmission.submissionStatus.id + '/' + toStateId;
 
-    this.http.put(url, this.currentSubmission, httpOptions).subscribe((submission: Submission) => {
+    this.http.put(url, this.currentSubmission, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((submission: Submission) => {
           this.submissionData.changeMessage(submission);
 
           url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
-          this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+          this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((updatedGrant: Grant) => {
             this.grantData.changeMessage(updatedGrant);
             this.editMode = false;
             this.toastr.info('Submission saved with status <b>'
@@ -622,7 +631,7 @@ export class PreviewComponent implements OnInit {
 
       const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
 
-      this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).subscribe((info: SectionInfo) => {
+       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((info: SectionInfo) => {
            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
 
           sectionName.val('');
@@ -855,7 +864,7 @@ export class PreviewComponent implements OnInit {
       let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
           + this.currentGrant.id + '/flow/'
           + this.currentGrant.grantStatus.id + '/' + toStateId;
-      this.http.post(url, {grant: this.currentGrant,note:message}, httpOptions).subscribe((grant: Grant) => {
+       this.http.post(url, {grant: this.currentGrant,note:message}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
 
 
         this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
@@ -880,10 +889,10 @@ export class PreviewComponent implements OnInit {
               panelClass: 'grant-notes-class'
             });
 
-         dialogRef.afterClosed().subscribe(result => {
+          dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
                if (result.result) {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                     this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).subscribe((grant: Grant) => {
+                      this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
                       this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                       this.appComp.selectedTemplate = grant.grantTemplate;
                       this.fetchCurrentGrant();
@@ -891,7 +900,7 @@ export class PreviewComponent implements OnInit {
 
                } else {
                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                  this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).subscribe((grant: Grant) => {
+                   this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
                    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                    this.appComp.selectedTemplate = grant.grantTemplate;
                    dialogRef.close();
@@ -931,7 +940,7 @@ export class PreviewComponent implements OnInit {
     };
     
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
-      this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
+       this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((updatedGrant: Grant) => {
         this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
         if(this.currentGrant.startDate && this.currentGrant.endDate){
@@ -1207,52 +1216,6 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  openBottomSheet(kpiId: number, title: string, templates: Template[], canManage: boolean): void {
-
-    const fileTemplates = new FileTemplates();
-    fileTemplates.kpiId = kpiId;
-    fileTemplates.subTitle = title;
-    fileTemplates.grantId = this.currentGrant.id;
-    fileTemplates.title = 'Template Library';
-    fileTemplates.templates = templates;
-    fileTemplates.canManage = canManage;
-
-    const _bSheet = this._bottomSheet.open(BottomsheetComponent, {
-      hasBackdrop: false,
-      data: fileTemplates
-    });
-
-    _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
-      this.checkGrant();
-    });
-  }
-
-  openBottomSheetForSubmittionAttachments(kpiDataId: number
-      , kpiDataType: string
-      , title: string
-      , attachments: Doc[]
-      , canManage: boolean): void {
-
-    const attachmentTemplates = new AttachmentTemplates();
-    attachmentTemplates.kpiDataId = kpiDataId;
-    attachmentTemplates.kpiDataType = kpiDataType;
-    attachmentTemplates.subTitle = title;
-    attachmentTemplates.grantId = this.currentGrant.id;
-    attachmentTemplates.title = 'KPI Attachments';
-    attachmentTemplates.docs = attachments;
-    attachmentTemplates.canManage = canManage;
-
-    const _bSheet = this._bottomSheet.open(BottomsheetAttachmentsComponent, {
-      hasBackdrop: false,
-      data: attachmentTemplates
-    });
-
-    _bSheet.afterDismissed().subscribe(result => {
-      console.log(this.currentGrant);
-      this.checkGrant();
-    });
-  }
 
   openBottomSheetForGrantNotes(toStateId: number): void {
 
@@ -1262,7 +1225,7 @@ export class PreviewComponent implements OnInit {
       panelClass: 'grant-notes-class'
     });
 
-    _bSheet.afterClosed().subscribe(result => {
+    _bSheet.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if(result.result){
         this.submitAndSaveGrant(toStateId,result.message);
       }
@@ -1409,7 +1372,7 @@ export class PreviewComponent implements OnInit {
               panelClass: 'wf-assignment-class'
             });
 
-            dialogRef.afterClosed().subscribe(result => {
+            dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
               if (result.result) {
                 const ass:WorkflowAssignment[] = [];
                 for(let data of result.data){
@@ -1430,7 +1393,7 @@ export class PreviewComponent implements OnInit {
 
                         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                             + this.currentGrant.id + '/assignment';
-                        this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).subscribe((grant: Grant) => {
+                         this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
                             this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
                             this.currentGrant = grant;
                             this.submitGrant(toStateId);
@@ -1469,7 +1432,7 @@ getCleanText(section:Section): string{
             data: "hello"
         });
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
             if (result.result) {
                 const httpOptions = {
                     headers: new HttpHeaders({
@@ -1481,7 +1444,7 @@ getCleanText(section:Section): string{
 
                 let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                     + this.currentGrant.id + '/invite';
-                this.http.post(url, {grant:this.currentGrant,invites:result.value}, httpOptions).subscribe((grant: Grant) => {
+                 this.http.post(url, {grant:this.currentGrant,invites:result.value}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
 
                 });
             }
@@ -1502,7 +1465,7 @@ getCleanText(section:Section): string{
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
                         + grantId + '/file/'+fileId;
 
-        this.http.get(url,httpOptions).subscribe((data) =>{
+         this.http.get(url,httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) =>{
             saveAs(data,docName+"."+docType);
         });
 
@@ -1544,7 +1507,12 @@ getCleanText(section:Section): string{
         return '₹ ' + String(inf.format(total,2));
     }
 
-trackChange(ev:Event){
-    console.log(ev);
-}
+    trackChange(ev:Event){
+        console.log(ev);
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
 }

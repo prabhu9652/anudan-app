@@ -132,10 +132,11 @@
                                         <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">End Date:</label>
                                         <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.enDate | date:'d-MMM-yyyy'}}</p>
                                     </div>
+
                                     <div class="col-4">
                                         <mat-form-field [floatLabel]="'always'" *ngIf="(currentReport.canManage && !currentReport.forGranteeUse)">
                                             <mat-label>Duration</mat-label>
-                                            <input matInput class="anu-input" style="background:#F0F1F0;" readonly
+                                            <input matInput disabled readonly
                                                    [(ngModel)]="currentReport.duration">
                                         </mat-form-field>
                                         <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Duration</label>
