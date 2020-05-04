@@ -3,17 +3,16 @@
         <nav class="pull-left">
             <ul>
                 <li>
-                    <a href="https://anudan.org">
-                        ANUDAN |
-                    </a>
-                </li>
-                <li>
-                    Open Source Initiatives from Social Alpha
+
+                        <div class="row" class="footerLogo" [style.background-image]="'url('+logoUrl+')'" >
+                                <!--<div class="col"><a href="https://anudan.org"><img src=""></a></div>-->
+                                <div style="margin-left:85px;"> | An Open Source Initiative from Social Alpha</div>
+                        </div>
                 </li>
             </ul>
         </nav>
         <div class="copyright pull-right ml-3">
-            | <small>{{appComp.releaseVersion}}</small>
+            | {{appComp.releaseVersion}}
         </div>
         <div class="copyright pull-right">
             &copy;

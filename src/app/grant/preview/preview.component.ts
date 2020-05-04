@@ -181,7 +181,7 @@ export class PreviewComponent implements OnInit {
       time = time + 86400001;
       this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
     }else{
-      this.currentGrant.duration = 'No end date';
+      this.currentGrant.duration = 'Not set';
     }
 
     for(let section of this.currentGrant.grantDetails.sections){
@@ -1477,7 +1477,7 @@ getCleanText(section:Section): string{
     }
 
     getGrantAmountInWords(amount:number){
-        let amtInWords = '-';
+        let amtInWords = 'Not set';
         if(amount){
             amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);

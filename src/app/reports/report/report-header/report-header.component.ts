@@ -176,7 +176,7 @@ export class ReportHeaderComponent implements OnInit {
             time = time + 86400001;
             this.currentReport.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
         }else{
-            this.currentReport.duration = 'No end date';
+            this.currentReport.duration = 'Not set';
         }
     }
 

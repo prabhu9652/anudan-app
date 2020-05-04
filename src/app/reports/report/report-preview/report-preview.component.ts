@@ -65,6 +65,11 @@ export class ReportPreviewComponent implements OnInit {
             this.setDateDuration();
             console.log(this.currentReport);
         });
+
+        if(!this.currentReport){
+            this.router.navigate(['dashboard']);
+        }
+
          const httpOptions = {
             headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -108,7 +113,7 @@ export class ReportPreviewComponent implements OnInit {
             time = time + 86400001;
             this.currentReport.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
         }else{
-            this.currentReport.duration = 'No end date';
+            this.currentReport.duration = 'Not set';
         }
     }
 

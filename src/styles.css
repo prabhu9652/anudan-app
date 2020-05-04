@@ -761,3 +761,15 @@ kendo-pdf-export {
 .grant-expansion-panel-notifications .mat-expansion-panel-header-title{
     font-weight: normal !important;
 }
+
+.footerLogo{
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+}
+
+.footer .copyright {
+    padding: 5px 0 !important;
+}
