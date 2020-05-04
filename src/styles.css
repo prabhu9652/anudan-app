@@ -614,10 +614,11 @@ background:#d4d4d4;
 .wf-assignment-class{
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
-    height: 100% !important;
+    height: auto !important;
     position: relative !important;
     left: 150px !important;
     overflow: hidden !important;
+    align-self: center;
 }
 
 .grant-template-class{
