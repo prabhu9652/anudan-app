@@ -468,4 +468,8 @@ export class ReportPreviewComponent implements OnInit {
          }
          return String('₹ ' + inf.format(total,2));
      }
+
+     manageGrant(){
+       this.adminComp.manageGrant(null, this.currentReport.grant.id);
+     }
 }
