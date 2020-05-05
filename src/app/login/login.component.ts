@@ -77,6 +77,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  if(this.appComponent.loggedInUser){
+    this.appComponent.logout();
+  }
   this.loginForm.valueChanges.subscribe(data => {
     if(data.emailId===null || data.password===null || data.emailId.trim()==="" || data.password.trim()===""){
     this.reCaptchaResolved = false;

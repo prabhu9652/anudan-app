@@ -22,6 +22,7 @@ export class WfassignmentComponent implements OnInit,AfterViewInit {
     scrollListener;
     canManage: boolean = true;
     @ViewChild("flowContainer") flowContainer: ElementRef;
+    title:string;
 
   constructor(
     public dialogRef: MatDialogRef<WfassignmentComponent>
@@ -39,6 +40,7 @@ export class WfassignmentComponent implements OnInit,AfterViewInit {
 ngOnInit() {
     window.addEventListener('scroll', this.redrawOnScroll.bind(this),true);
     if(this.data.model.type==='grant'){
+        this.title = this.data.model.grant.name;
         const httpOptions = {
                   headers: new HttpHeaders({
                       'Content-Type': 'application/json',
@@ -171,6 +173,7 @@ ngOnInit() {
                this.dialogRef.close(false);
              });
     } else if(this.data.model.type==='report'){
+                   this.title = this.data.model.report.name;
                    const httpOptions = {
                              headers: new HttpHeaders({
                                  'Content-Type': 'application/json',

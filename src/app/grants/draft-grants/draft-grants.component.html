@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="col-4 text-right">
                                         <div class="row w-100 text-right">
-                                            <div class="col-12"><span class="badge badge-dark text-white pull-right">{{grant.grantStatus.displayName}}</span></div>
+                                            <div class="col-12"><span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span></div>
                                             <!--div class="col-12"><small>Assigned to
                                             <ng-container class="col-12" *ngFor="let assignment of grant.currentAssignment">
                                                 <ng-container *ngIf="appComponent.loggedInUser.id===assignment.user.id">me</ng-container>

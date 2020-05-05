@@ -1,5 +1,5 @@
 <div class="row anu-container">
-    <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
+    <div class="col-12 bg-white" style="position:sticky;top:80px;z-index:1040;">
         <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
         <div class="row">
             <h4 class="col-11 text-left my-3 section-header">Grant Header</h4>
@@ -86,8 +86,8 @@
                                <mat-form-field [floatLabel]="'always'">
                                    <mat-label>Grant Duration</mat-label>
                                     <input matInput [(ngModel)]="currentGrant.duration"
-                                           placeholder="Grant duration" readonly="true"
-                                           type="text" autocomplete="off" class="anu-input">
+                                           placeholder="Grant duration" disabled readonly
+                                           type="text" autocomplete="off">
                                 </mat-form-field>
                             </div> 
                         </div>
@@ -97,14 +97,12 @@
                             <mat-label>Grant Amount (₹)</mat-label>
                             <input (blur)="showFormattedGrantAmount($event)" #grantAmount id="grantAmount" matInput [(ngModel)]="currentGrant.amount"  class="anu-input" type="number"
                                    [ngModelOptions]="{standAlone:true}" (ngModelChange)="checkGrant()" placeholder="Enter grant amount" autocomplete="false">
-                            <p #grantAmountFormatted (click)="showGrantAmountInput($event)" class="anu-input w-100" style="position:absolute;top:7px;cursor: text;">{{getFormattedGrantAmount(currentGrant.amount)}}</p>
+                            <p #grantAmountFormatted (click)="showGrantAmountInput($event)" class="anu-input w-100" style="position:absolute;top:7px;cursor: text;" [innerHtml]="getFormattedGrantAmount(currentGrant.amount)"></p>
                         </mat-form-field>
                     </div>
                     <div class="col-9">
-                        <mat-form-field [floatLabel]="'always'">
-                            <mat-label>Grant Amount (In Words)</mat-label>
-                            <input matInput disabled readonly [value]="getGrantAmountInWords(currentGrant.amount)">
-                        </mat-form-field>
+                            <label style="font-weight: 400; font-family: Lato; color: rgba(0,0,0,.54);">Grant Amount (In Words)</label>
+                            <p  disabled readonly [innerHtml]="getGrantAmountInWords(currentGrant.amount)"></p>
                     </div>
                     <!--div class="col-12">
                         <mat-form-field>

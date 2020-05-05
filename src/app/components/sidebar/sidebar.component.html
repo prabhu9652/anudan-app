@@ -1,13 +1,13 @@
 <div class="sidebar-wrapper h-100">
 
     <ul class="nav" *ngIf="appComponent.loggedInUser.organization.type==='GRANTER' || appComponent.loggedInUser.organization.type==='GRANTEE'">
-        <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="min-height:100px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
+        <li *ngIf="isMobileMenu()" class="p-1 nav-item" style="padding-top: 0 !important;min-height:81px;max-height:81px;position: sticky; top: 0; background: #424652; z-index: 1;border-bottom: 1px solid #525560;">
 
 
 
-            <div style="display:flex;align-items:center;">
-                <img [src]="logoUrl" alt="logo" class="nav-link float-left" style="width:40%;">
-                <strong>{{appComponent.loggedInUser.organization.name}}</strong>
+            <div style="display:flex;align-items:center;flex-direction:row;min-height: 80px;max-height: 80px;">
+                <img [src]="logoUrl" alt="logo" class="nav-link float-left" style="max-width:35%;">
+                <strong style="position:absolute:bottom:8px;">{{appComponent.loggedInUser.organization.name}}</strong>
             </div>
 
         </li>

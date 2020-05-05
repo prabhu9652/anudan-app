@@ -127,14 +127,41 @@ const httpOptions = {
                                 this._getReportDiffSections();
                                 this.saveDifferences(oldSection,oldAttr,section,attr);
                             } else
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table' && (JSON.stringify(oldAttr.fieldTableValue)!==JSON.stringify(attr.fieldTableValue))){
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table'){
+                                if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
+                                    this._getReportDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                } else {
+                                    for(let i=0; i<oldAttr.fieldTableValue.length; i++){
+                                        if(oldAttr.fieldTableValue[i].header!==attr.fieldTableValue[i].header || oldAttr.fieldTableValue[i].name!==attr.fieldTableValue[i].name || oldAttr.fieldTableValue[i].columns.length!==attr.fieldTableValue[i].columns.length){
+                                            this._getReportDiffSections();
+                                            this.saveDifferences(oldSection,oldAttr,section,attr);
+                                        } else{
+                                            for(let j=0; j< oldAttr.fieldTableValue[i].columns.length;j++){
+                                                if(oldAttr.fieldTableValue[i].columns[j].name!==attr.fieldTableValue[i].columns[j].name || oldAttr.fieldTableValue[i].columns[j].value!==attr.fieldTableValue[i].columns[j].value){
+                                                    this._getReportDiffSections();
+                                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
-                                this._getReportDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
                             } else
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='document' && (JSON.stringify(oldAttr.attachments)!==JSON.stringify(attr.attachments))){
-                                this._getReportDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='document'){
+                                if(oldAttr.attachments && attr.attachments && oldAttr.attachments.length!==attr.attachments.length){
+                                    this._getReportDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }else if(oldAttr.attachments && attr.attachments && oldAttr.attachments.length===attr.attachments.length){
+                                   for(let i=0; i< oldAttr.attachments.length; i++){
+                                        if(oldAttr.attachments[i].name!==attr.attachments[i].name || oldAttr.attachments[i].type!==attr.attachments[i].type){
+                                            this._getReportDiffSections();
+                                            this.saveDifferences(oldSection,oldAttr,section,attr);
+                                            break;
+                                        }
+                                   }
+                                }
+
                             } else
                             if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='disbursement'){
 
@@ -146,14 +173,14 @@ const httpOptions = {
                                     for(let i=0; i<oldAttr.fieldTableValue.length;i++){
                                         if(oldAttr.fieldTableValue[i].enteredByGrantee!==attr.fieldTableValue[i].enteredByGrantee){
                                             hasDifferences = true;
-                                        }
+                                        }else
                                         if(oldAttr.fieldTableValue[i].columns.length!==attr.fieldTableValue[i].columns.length){
                                             hasDifferences = true;
                                         }else{
                                             for(let j=0;j< oldAttr.fieldTableValue[i].columns.length;j++){
                                                 if(oldAttr.fieldTableValue[i].columns[j].name!==attr.fieldTableValue[i].columns[j].name){
                                                     hasDifferences = true;
-                                                }
+                                                }else
                                                 if(((!oldAttr.fieldTableValue[i].columns[j].value || oldAttr.fieldTableValue[i].columns[j].value===null)?"":oldAttr.fieldTableValue[i].columns[j].value)!==((!attr.fieldTableValue[i].columns[j].value || attr.fieldTableValue[i].columns[j].value===null)?"":attr.fieldTableValue[i].columns[j].value)){
                                                     hasDifferences = true;
                                                 }
@@ -269,33 +296,33 @@ const httpOptions = {
 
         } */
     getTabularData(data){
-                let html = '<table width="100%" border="1"><tr>';
-                const tabData = data;
-                html += '<td>&nbsp;</td>';
-                for(let i=0; i< tabData[0].columns.length;i++){
+                    let html = '<table width="100%" border="1"><tr>';
+                    const tabData = data;
+                    html += '<td>'+(tabData[0].header?tabData[0].header:'')+'</td>';
+                    for(let i=0; i< tabData[0].columns.length;i++){
 
 
-                    //if(tabData[0].columns[i].name.trim() !== ''){
-                      html+='<td>' + tabData[0].columns[i].name + '</td>';
-                    //}
-                }
-                html += '</tr>';
-                for(let i=0; i< tabData.length;i++){
-
-                    html += '<tr><td>' + tabData[i].name + '</td>';
-                    for(let j=0; j < tabData[i].columns.length; j++){
-                      //if(tabData[i].columns[j].name.trim() !== ''){
-                        html+='<td>' + tabData[i].columns[j].value + '</td>';
-                      //}
+                        //if(tabData[0].columns[i].name.trim() !== ''){
+                          html+='<td>' + String(tabData[0].columns[i].name.trim()===''?'&nbsp;':tabData[0].columns[i].name) + '</td>';
+                        //}
                     }
                     html += '</tr>';
-                }
+                    for(let i=0; i< tabData.length;i++){
 
-                html += '</table>'
-                //document.getElementById('attribute_' + elemId).innerHTML = '';
-                //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
-                return html;
-              }
+                        html += '<tr><td>' + tabData[i].name + '</td>';
+                        for(let j=0; j < tabData[i].columns.length; j++){
+                          //if(tabData[i].columns[j].name.trim() !== ''){
+                            html+='<td>' + String(tabData[i].columns[j].value.trim()===''?'&nbsp;':tabData[i].columns[j].value) + '</td>';
+                          //}
+                        }
+                        html += '</tr>';
+                    }
+
+                    html += '</table>'
+                    //document.getElementById('attribute_' + elemId).innerHTML = '';
+                    //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+                    return html;
+    }
 getDocumentName(val: string): any[] {
     let obj;
     if(val!==undefined && val!==""){

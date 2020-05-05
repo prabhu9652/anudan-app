@@ -275,7 +275,7 @@ interval(10000).subscribe(t => {
     this.currentView = 'grants';
     // localStorage.removeItem('X-TENANT-CODE');
     this.loggedIn = false;
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   goToHome() {

@@ -59,8 +59,19 @@ export const APP_DATE_FORMATS = {
       },
       {
          provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-      }, SectionsComponent,TitleCasePipe]
+      }, SectionsComponent,TitleCasePipe],
+        styles: [`
+              ::ng-deep .amountPlaceholder {
+                        color: #9c9c9c !important;
+                        font-stretch: 100%;
+                        -webkit-font-smoothing: antialiased !important;
+                        font-weight: 400 !important;
+                        font-family: Lato !important;
+                        line-height: 23.1px !important;
+              }
+            `]
 })
+
 export class BasicComponent implements OnInit {
 
   
@@ -1317,7 +1328,7 @@ export class BasicComponent implements OnInit {
       time = time + 86400001;
       this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
     }else{
-      this.currentGrant.duration = 'No end date';
+      this.currentGrant.duration = 'Not set';
     }
   }
 
@@ -1346,7 +1357,7 @@ export class BasicComponent implements OnInit {
     newOrg.id = 0 - Math.round(Math.random() * 1000000000);
     newOrg.organizationType = 'GRANTEE';
     newOrg.type = 'GRANTEE';
-    newOrg.name = 'Create Grantee organization as "' + value + '"';
+    newOrg.name = 'Add a new Organisation: "' + value + '"';
     //this.currentGrant.organization = newOrg;
     selectedOrg.push(newOrg);
 
@@ -1358,8 +1369,8 @@ export class BasicComponent implements OnInit {
   displayFn = org => {
   
   if(org){
-      if(org.name.startsWith('Create Grantee organization as ')){
-        org.name = org.name.replace('Create Grantee organization as ','');
+      if(org.name.startsWith('Add a new Organisation: ')){
+        org.name = org.name.replace('Add a new Organisation: ','');
         org.name = org.name.replace('"','');
         org.name = org.name.replace('"','');
       }
@@ -1434,7 +1445,7 @@ setTimeout() {
     }
 
     getGrantAmountInWords(amount:number){
-        let amtInWords = '-';
+        let amtInWords = '<span class="amountPlaceholder">Not set</span>';
         if(amount){
             amtInWords = indianCurrencyInWords(amount.toString().replace(/[^0-9.]/g, '')).replace("Rupees","").replace("Paisa","");
             return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
@@ -1443,7 +1454,10 @@ setTimeout() {
     }
 
     getFormattedGrantAmount(amount: number):string{
-        return inf.format(amount,2);
+        if(amount){
+            return inf.format(amount,2);
+        }
+        return "<div class='amountPlaceholder'>Enter grant amount</div>";
     }
 
 

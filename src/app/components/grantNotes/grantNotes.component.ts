@@ -146,13 +146,41 @@ const httpOptions = {
                                 this._getGrantDiffSections();
                                 this.saveDifferences(oldSection,oldAttr,section,attr);
                             } else
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table' && (JSON.stringify(oldAttr.fieldTableValue)!==JSON.stringify(attr.fieldTableValue))){
-                                this._getGrantDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table'){
+                                if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
+                                    this._getGrantDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                } else {
+                                    for(let i=0; i<oldAttr.fieldTableValue.length; i++){
+                                        if(oldAttr.fieldTableValue[i].header!==attr.fieldTableValue[i].header || oldAttr.fieldTableValue[i].name!==attr.fieldTableValue[i].name || oldAttr.fieldTableValue[i].columns.length!==attr.fieldTableValue[i].columns.length){
+                                            this._getGrantDiffSections();
+                                            this.saveDifferences(oldSection,oldAttr,section,attr);
+                                        } else{
+                                            for(let j=0; j< oldAttr.fieldTableValue[i].columns.length;j++){
+                                                if(oldAttr.fieldTableValue[i].columns[j].name!==attr.fieldTableValue[i].columns[j].name || oldAttr.fieldTableValue[i].columns[j].value!==attr.fieldTableValue[i].columns[j].value){
+                                                    this._getGrantDiffSections();
+                                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                             } else
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='document' && (JSON.stringify(oldAttr.attachments)!==JSON.stringify(attr.attachments))){
-                                this._getGrantDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='document'){
+                                if(oldAttr.attachments && attr.attachments && oldAttr.attachments.length!==attr.attachments.length){
+                                    this._getGrantDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }else if(oldAttr.attachments && attr.attachments && oldAttr.attachments.length===attr.attachments.length){
+                                   for(let i=0; i< oldAttr.attachments.length; i++){
+                                        if(oldAttr.attachments[i].name!==attr.attachments[i].name || oldAttr.attachments[i].type!==attr.attachments[i].type){
+                                            this._getGrantDiffSections();
+                                            this.saveDifferences(oldSection,oldAttr,section,attr);
+                                            break;
+                                        }
+                                   }
+                                }
+
                             } else
                             if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='disbursement'){
 
@@ -295,7 +323,7 @@ const httpOptions = {
 
 
                     //if(tabData[0].columns[i].name.trim() !== ''){
-                      html+='<td>' + tabData[0].columns[i].name + '</td>';
+                      html+='<td>' + String(tabData[0].columns[i].name.trim()===''?'&nbsp;':tabData[0].columns[i].name) + '</td>';
                     //}
                 }
                 html += '</tr>';
@@ -304,7 +332,7 @@ const httpOptions = {
                     html += '<tr><td>' + tabData[i].name + '</td>';
                     for(let j=0; j < tabData[i].columns.length; j++){
                       //if(tabData[i].columns[j].name.trim() !== ''){
-                        html+='<td>' + tabData[i].columns[j].value + '</td>';
+                        html+='<td>' + String(tabData[i].columns[j].value.trim()===''?'&nbsp;':tabData[i].columns[j].value) + '</td>';
                       //}
                     }
                     html += '</tr>';
@@ -314,7 +342,7 @@ const httpOptions = {
                 //document.getElementById('attribute_' + elemId).innerHTML = '';
                 //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
                 return html;
-              }
+    }
 
     getDisbursementTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';

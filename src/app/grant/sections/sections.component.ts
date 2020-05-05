@@ -141,6 +141,11 @@ this.route.params.subscribe( (p) => {
             this.grantData.currentMessage.subscribe(grant => {
                 this.currentGrant = grant
             });
+
+            if(!this.currentGrant){
+                this.router.navigate(['dashboard']);
+            }
+
             const httpOptions = {
                 headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -148,8 +153,8 @@ this.route.params.subscribe( (p) => {
                 'Authorization': localStorage.getItem('AUTH_TOKEN')
                 })
             };
-            let url = '/api/app/config/grant/'+this.currentGrant.id;
 
+            let url = '/api/app/config/grant/'+this.currentGrant.id;
             this.http.get(url,httpOptions).subscribe((config:Configuration) =>{
                 this.grantWorkflowStatuses = config.grantWorkflowStatuses;
                 this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
@@ -1270,77 +1275,91 @@ ngOnDestroy(){
   selectionClosed(){
     console.log('Closed');
   }
-  handleTypeChange(ev: Event, attr: Attribute,sec:Section){
-    attr.fieldValue = '';
-    if(ev.toString()==='table'){
-      if(attr.fieldValue.trim() === ''){
-        attr.fieldTableValue = [];
-        const data = new TableData();
-        data.name = "";
-        data.header="";
-        data.columns = [];
-
-        for(let i=0; i< 5; i++){
-          const col = new ColumnData();
-          col.name = "";
-          col.value = '';
-          data.columns.push(col);
-        }
-
-        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-      }
-    }else if(ev.toString()==='disbursement'){
-        if(attr.fieldValue.trim() === ''){
-          attr.fieldTableValue = [];
-          const data = new TableData();
-          data.name = "";
-          data.header="";
-          data.columns = [];
-
-          const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
-          for(let i=0; i< 5; i++){
-            const col = new ColumnData();
-            col.name = colHeaders[i];
-            col.value = '';
-            if(i===1 || i===2){
-                col.dataType='currency';
-            }
-            data.columns.push(col);
-          }
-
-          attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-        }
-    }
-
-    const httpOptions = {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-            'Authorization': localStorage.getItem('AUTH_TOKEN')
-          })
-        };
-
-        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-            + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
-        this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
-            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
-        this.appComp.sectionInModification = false;
-        this.appComp.selectedTemplate = info.grant.grantTemplate;
-        this.newField = 'field_' + info.stringAttributeId;
-        },error => {
-                 const errorMsg = error as HttpErrorResponse;
-                 console.log(error);
-                 const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                 const config: Partial<IndividualConfig> = x;
-                 if(errorMsg.error.message==='Token Expired'){
-                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                  setTimeout( () => { this.appComp.logout(); }, 4000 );
-                 } else {
-                  this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
-                 }
 
 
-               });
+  handleTypeChange(ev, attr: Attribute,sec:Section){
+  const dialogRef = this.dialog.open(FieldDialogComponent, {
+                    data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
+                    panelClass: 'center-class'
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                      if(result){
+                            attr.fieldType = ev;
+                      }
+
+                      attr.fieldValue = '';
+                      if(ev.toString()==='table'){
+                        if(attr.fieldValue.trim() === ''){
+                          attr.fieldTableValue = [];
+                          const data = new TableData();
+                          data.name = "";
+                          data.header="";
+                          data.columns = [];
+
+                          for(let i=0; i< 5; i++){
+                            const col = new ColumnData();
+                            col.name = "";
+                            col.value = '';
+                            data.columns.push(col);
+                          }
+
+                          attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                        }
+                      }else if(ev.toString()==='disbursement'){
+                          if(attr.fieldValue.trim() === ''){
+                            attr.fieldTableValue = [];
+                            const data = new TableData();
+                            data.name = "";
+                            data.header="";
+                            data.columns = [];
+
+                            const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
+                            for(let i=0; i< 5; i++){
+                              const col = new ColumnData();
+                              col.name = colHeaders[i];
+                              col.value = '';
+                              if(i===1 || i===2){
+                                  col.dataType='currency';
+                              }
+                              data.columns.push(col);
+                            }
+
+                            attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                          }
+                      }
+
+                      const httpOptions = {
+                            headers: new HttpHeaders({
+                              'Content-Type': 'application/json',
+                              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                              'Authorization': localStorage.getItem('AUTH_TOKEN')
+                            })
+                          };
+
+                          let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                              + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
+                          this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
+                              this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
+                          this.appComp.sectionInModification = false;
+                          this.appComp.selectedTemplate = info.grant.grantTemplate;
+                          this.newField = 'field_' + info.stringAttributeId;
+                          },error => {
+                                   const errorMsg = error as HttpErrorResponse;
+                                   console.log(error);
+                                   const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                   const config: Partial<IndividualConfig> = x;
+                                   if(errorMsg.error.message==='Token Expired'){
+                                    this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                    setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                   } else {
+                                    this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
+                                   }
+
+
+                                 });
+
+                       });
   }
 
   addColumn(attr: Attribute){

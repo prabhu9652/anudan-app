@@ -48,9 +48,10 @@ import {BottomsheetNotesComponent} from "../components/bottomsheetNotes/bottomsh
 import {interval,Subject} from "rxjs";
 import {Report, ReportTemplate} from '../model/report'
 import {ReportDataService} from '../report.data.service'
+import {AddnlreportsDialogComponent} from '../components/addnlreports-dialog/addnlreports-dialog.component';
+import {AdminLayoutComponent} from '../layouts/admin-layout/admin-layout.component'
 
 declare var $: any;
-
 
 @Component({
     selector: 'app-grant',
@@ -109,7 +110,8 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
         , private elem: ElementRef
         , private datepipe: DatePipe
         , public colors: Colors
-        , private reportService: ReportDataService) {
+        , private reportService: ReportDataService
+        , public adminComp: AdminLayoutComponent) {
         this.colors = new Colors();
     }
 
@@ -1213,22 +1215,19 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
   }
 
 
-  public showActiveReports(){
-      console.log(this);
-      const httpOptions = {
-          headers: new HttpHeaders({
-              'Content-Type': 'application/json',
-              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-              'Authorization': localStorage.getItem('AUTH_TOKEN')
-          })};
+  public showActiveReports(grant: Grant,reports: Report[]){
 
-      const user = JSON.parse(localStorage.getItem('USER'));
-      const url = '/api/user/' + user.id + '/report/';
-      this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
-          reports.sort((a,b) => a.endDate>b.endDate?1:-1);
-          this.reportService.changeMessage(reports);
-          this.approvedReports = this.reports.filter(a => a.status.internalStatus=='CLOSED');
+      let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
+                  data: {report:null,grant:grant,grants:[grant],futureReports:reports,single:true},
+                  panelClass: 'addnl-report-class'
+              });
 
-      });
+              dialogRef1.afterClosed().subscribe(result => {
+                  if(result && result.result){
+                       this.adminComp.manageReport(null,result.selectedReport.id);
+                  }else{
+                      //this.otherReportsClicked = false;
+                  }
+              });
   }
 }

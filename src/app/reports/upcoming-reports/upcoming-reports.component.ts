@@ -196,7 +196,7 @@ export class UpcomingReportsComponent implements OnInit {
     viewAddnlReports(reportId:number,grantId: number){
         this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
-            data: {report:reportId,grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup},
+            data: {report:reportId,grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup,single:false},
             panelClass: 'addnl-report-class'
         });
 

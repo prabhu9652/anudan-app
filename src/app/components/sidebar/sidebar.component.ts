@@ -131,6 +131,10 @@ export class SidebarComponent implements OnInit {
   private elRef: ElementRef,
   private dialog: MatDialog,
   private http: HttpClient) {
+  if(!this.appComponent.loggedInUser){
+    this.appComponent.logout();
+  }
+
   this.canManageOrg = this.appComponent.loggedInUser.userRoles.filter((ur) => ur.role.name==='Admin').length > 0;
   }
 

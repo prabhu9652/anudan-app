@@ -1,6 +1,6 @@
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, NO_ERRORS_SCHEMA, LOCALE_ID} from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA, LOCALE_ID,ErrorHandler} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
@@ -43,6 +43,16 @@ import {Colors} from './model/app-config';
 import { ExportAsModule } from 'ngx-export-as';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { NgxSpinnerModule } from "ngx-spinner";
+
+export class AnudanErrorHandler implements ErrorHandler {
+    constructor() {}
+    handleError(error: Error) {
+        if (Error) {
+            console.log(error);
+        }else console.log("hello");
+        }
+}
+
 
 const config = new AuthServiceConfig([
   {
@@ -128,7 +138,8 @@ export function provideConfig() {
       MatTooltipModule,
       DatePipe,
       Colors,
-      MatMenuModule
+      MatMenuModule,
+      {provide: ErrorHandler, useClass: AnudanErrorHandler}
   ],
   entryComponents:[WfassignmentComponent,GranthistoryComponent,NotificationspopupComponent,MessagingComponent],
   schemas: [NO_ERRORS_SCHEMA],

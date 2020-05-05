@@ -1,5 +1,5 @@
 <div class="row anu-container">
-    <div class="col-12 bg-white" style="position:sticky;top:67px;z-index:1040;">
+    <div class="col-12 bg-white" style="position:sticky;top:80px;z-index:1040;">
         <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
         <div class="row">
             <h4 class="col-11 text-left my-3 section-header" style="display:flex;align-items:center">
@@ -19,7 +19,7 @@
                     <button mat-menu-item (click)="showWFAssigments()"><mat-icon class="ml-1">assignment</mat-icon>Assignments</button>
                     <hr *ngIf="currentGrant.grantStatus.internalStatus==='ACTIVE' && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'">
                     <button *ngIf="currentGrant.grantStatus.internalStatus==='ACTIVE' && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="inviteGrantee()"><mat-icon class="ml-1">mail</mat-icon>Invite Grantee</button>
-                    <button mat-menu-item *ngIf="(currentGrant.grantStatus.internalStatus==='ACTIVE' || currentGrant.grantStatus.internalStatus==='CLOSED') && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" (click)="showActiveReports()" disabled><img class="ml-2 mr-3" style="width:20px;height:20px;" src="./assets/img/rp.svg">View Reports</button>
+                    <button mat-menu-item *ngIf="(currentGrant.grantStatus.internalStatus==='ACTIVE' || currentGrant.grantStatus.internalStatus==='CLOSED') && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" (click)="showActiveReports(currentGrant)" [disabled]="!hasApprovedReports"><img class="ml-2 mr-3" style="width:20px;height:20px;" src="./assets/img/rp.svg">View Approved Reports</button>
                     <button mat-menu-item *ngIf="(currentGrant.grantStatus.internalStatus==='ACTIVE' || currentGrant.grantStatus.internalStatus==='CLOSED') && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" (click)="copyGrant(currentGrant.id)" ><img class="ml-2 mr-3" style="width:20px;height:20px;" src="./assets/img/dp.svg">Make a similar Grant</button>
                 </mat-menu>
             </div>
@@ -46,7 +46,7 @@
                                     <h4 class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
                                 </div>
                                 <div class="col-12 text-left">
-                                    <span data-html2canvas-ignore class="badge badge-dark text-white pt-1" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
+                                    <span data-html2canvas-ignore  [class]="'badge text-white state-' + currentGrant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
                                 </div>
                             </div>
 

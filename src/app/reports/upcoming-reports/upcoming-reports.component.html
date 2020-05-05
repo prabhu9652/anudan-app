@@ -25,16 +25,18 @@
                                         &nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                     </p>
                                     </div>
-                                    <div class="col-12" style="display:flex;align-items:center;">
-                                        <p class="text-header text-left mr-3 my-0" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
+                                    <div class="col-10" style="display:flex;align-items:center;">
+                                        <p class="text-header text-left mr-3" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}} | </p>
                                         <ng-container *ngIf="report.futureReportsCount" class="col-2">
-                                           <small><a (click)="viewAddnlReports(report.id,report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.futureReportsCount}})</a></small>
+                                           <p><small><a (click)="viewAddnlReports(report.id,report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.futureReportsCount}})</a></small></p>
                                         </ng-container>
                                         <ng-container *ngIf="!report.futureReportsCount" class="col-2">
-                                            <small class="ml-3"><a> Additional reports not available</a></small>
+                                            <p><small class="ml-3"><a> Additional reports not available</a></small></p>
                                         </ng-container>
                                     </div>
-
+                                    <div class="col-2">
+                                        <span [class]="'badge pull-right state-' + report.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{report.status.displayName}}</span>
+                                    </div>
 
                                     <div class="col-12 p-3" style="background:#f1f1f1">
                                         <div class="row mb-0">
@@ -99,8 +101,11 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                                 </p>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-10">
                                     <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>
+                                </div>
+                                <div class="col-2">
+                                    <span [class]="'badge pull-right state-' + report.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{report.status.displayName}}</span>
                                 </div>
 
                                 <div class="col-12 p-3" style="background:#f1f1f1">

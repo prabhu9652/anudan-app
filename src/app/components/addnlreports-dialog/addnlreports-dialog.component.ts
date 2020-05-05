@@ -16,7 +16,7 @@ export class AddnlreportsDialogComponent implements OnInit {
     grants: Grant[];
     futureReports: Report[];
     selectedReports: Report[];
-
+    singleGrant:boolean;
 
   constructor(public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
       , @Inject(MAT_DIALOG_DATA) public data: AdditionReportsModel
@@ -26,11 +26,17 @@ export class AddnlreportsDialogComponent implements OnInit {
     this.reportId = data.report;
     this.grants = data.grants;
     this.futureReports = data.futureReports;
+    this.singleGrant = data.single;
+
     //this.selectedReports = this.futureReports.filter(r => r.grant.id===this.grantId);
   }
 
   ngOnInit() {
-    this.getReportsForSelectedGrant(this.reportId,this.grantId);
+    if(!this.futureReports){
+        this.getReportsForSelectedGrant(this.reportId,this.grantId);
+    }else{
+        this.selectedReports = this.futureReports;
+    }
   }
 
 
