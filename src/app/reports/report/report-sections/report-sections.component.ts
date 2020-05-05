@@ -70,6 +70,7 @@ export class ReportSectionsComponent implements OnInit {
     @ViewChild('otherSourcesAmountFormatted') otherSourcesAmountFormatted: ElementRef;
     @ViewChild('datePicker') datePicker:MatDatepicker<any>;
 
+
     action: string;
     currentReport: Report;
     langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
@@ -220,72 +221,87 @@ export class ReportSectionsComponent implements OnInit {
         this.newField = null;
     }
 
-    handleTypeChange(ev: Event, attr: Attribute,sec:Section){
-        attr.fieldValue = '';
-        if(ev.toString()==='table'){
-            if(attr.fieldValue.trim() === ''){
-                attr.fieldTableValue = [];
-                const data = new TableData();
-                data.name = "";
-                data.columns = [];
 
-            for(let i=0; i< 5; i++){
-                const col = new ColumnData();
-                col.name = "";
-                col.value = '';
-                data.columns.push(col);
-            }
+    handleTypeChange(ev,attr: Attribute,sec:Section){
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+                  data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
+                  panelClass: 'center-class'
+                });
 
-            attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-            }
-        }else if(ev.toString()==='disbursement'){
-             if(attr.fieldValue.trim() === ''){
-               attr.fieldTableValue = [];
-               const data = new TableData();
-               data.name = "";
-               data.header="";
-               data.columns = [];
+                dialogRef.afterClosed().subscribe(result => {
+                    if(result){
+                        attr.fieldType = ev;
 
-               const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
-               for(let i=0; i< 5; i++){
-                 const col = new ColumnData();
-                 col.name = colHeaders[i];
-                 col.value = '';
-                 if(i===1 || i===2){
-                     col.dataType='currency';
-                 }
-                 data.columns.push(col);
-               }
+                    }
 
-               attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-             }
-        }
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-            'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
+                    attr.fieldValue = '';
+                    if(ev.toString()==='table'){
+                        if(attr.fieldValue.trim() === ''){
+                            attr.fieldTableValue = [];
+                            const data = new TableData();
+                            data.name = "";
+                            data.columns = [];
 
-        let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
-        + this.currentReport.id + '/section/'+sec.id+'/field/'+attr.id;
-        this.http.put<ReportFieldInfo>(url, {'report':this.currentReport,'attr':attr}, httpOptions).subscribe((info: ReportFieldInfo) => {
-            this.singleReportDataService.changeMessage(info.report);
-            this.newField = 'field_' + info.stringAttributeId;
-            },error => {
-                const errorMsg = error as HttpErrorResponse;
-                console.log(error);
-                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                const config: Partial<IndividualConfig> = x;
-                if(errorMsg.error.message==='Token Expired'){
-                    this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                    setTimeout( () => { this.appComp.logout(); }, 4000 );
-                } else {
-                    this.toastr.error(errorMsg.error.message,"22 We encountered an error", config);
-                }
-        });
+                        for(let i=0; i< 5; i++){
+                            const col = new ColumnData();
+                            col.name = "";
+                            col.value = '';
+                            data.columns.push(col);
+                        }
+
+                        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                        }
+                    }else if(ev.toString()==='disbursement'){
+                         if(attr.fieldValue.trim() === ''){
+                           attr.fieldTableValue = [];
+                           const data = new TableData();
+                           data.name = "";
+                           data.header="";
+                           data.columns = [];
+
+                           const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
+                           for(let i=0; i< 5; i++){
+                             const col = new ColumnData();
+                             col.name = colHeaders[i];
+                             col.value = '';
+                             if(i===1 || i===2){
+                                 col.dataType='currency';
+                             }
+                             data.columns.push(col);
+                           }
+
+                           attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                         }
+                    }
+
+                    const httpOptions = {
+                        headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                        'Authorization': localStorage.getItem('AUTH_TOKEN')
+                        })
+                    };
+
+                    let url = '/api/user/' + this.appComp.loggedInUser.id + '/report/'
+                    + this.currentReport.id + '/section/'+sec.id+'/field/'+attr.id;
+                    this.http.put<ReportFieldInfo>(url, {'report':this.currentReport,'attr':attr}, httpOptions).subscribe((info: ReportFieldInfo) => {
+                        this.singleReportDataService.changeMessage(info.report);
+                        this.newField = 'field_' + info.stringAttributeId;
+                        },error => {
+                            const errorMsg = error as HttpErrorResponse;
+                            console.log(error);
+                            const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                            const config: Partial<IndividualConfig> = x;
+                            if(errorMsg.error.message==='Token Expired'){
+                                this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                setTimeout( () => { this.appComp.logout(); }, 4000 );
+                            } else {
+                                this.toastr.error(errorMsg.error.message,"22 We encountered an error", config);
+                            }
+                    });
+                    });
+
     }
 
     private _filter(value: any): TemplateLibrary[] {
@@ -949,4 +965,11 @@ openDate(column:ColumnData,ev:MouseEvent){
     this.selectedColumn.value = this.selectedDateField.target.value;
  }
 
+     manageGrant(){
+       this.adminComp.manageGrant(null, this.currentReport.grant.id);
+     }
+
+    manageTypeChange(attr: string){
+        console.log(attr);
+    }
 }

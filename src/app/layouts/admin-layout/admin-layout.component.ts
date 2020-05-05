@@ -14,7 +14,6 @@ import {DataService} from '../../data.service';
 import {GrantUpdateService} from '../../grant.update.service';
 import {Grant, Notifications,WorkflowAssignmentModel,WorkflowAssignment} from '../../model/dahsboard';
 import {Report,ReportWorkflowAssignmentModel, ReportWorkflowAssignment} from '../../model/report';
-import {GrantComponent} from '../../grant/grant.component';
 import {AppComponent} from '../../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {interval} from 'rxjs';
@@ -29,7 +28,6 @@ import {SingleReportDataService} from '../../single.report.data.service'
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrls: ['./admin-layout.component.scss'],
-  providers: [GrantComponent],
   styles: [`
     ::ng-deep .notifications-panel > .mat-expansion-panel-content > .mat-expansion-panel-body{
         background:#f5f9ff !important;
@@ -61,7 +59,6 @@ export class AdminLayoutComponent implements OnInit {
     , private grantUpdateService: GrantUpdateService
     , private http: HttpClient
     , private toastr:ToastrService
-    , grantComponent: GrantComponent
     , private dialog: MatDialog
     , private singleReportDataService: SingleReportDataService) {
     
@@ -258,7 +255,6 @@ export class AdminLayoutComponent implements OnInit {
     if(this.currentGrant !== null && this.currentGrant.name !== undefined){
       this.grantToUpdate = JSON.parse(JSON.stringify(this.currentGrant));
       this.grantToUpdate.id = this.currentGrantId;
-      //this.grantComponent.saveGrant(this.currentGrant);
     }
 
     const orgType = this.appComponent.loggedInUser.organization.organizationType;

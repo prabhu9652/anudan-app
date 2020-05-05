@@ -11,6 +11,7 @@ import {
   Submission,
   SubmissionStatus, Template,TableData, TemplateLibrary,WorkflowStatus, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
 } from '../../model/dahsboard';
+import {Report} from '../../model/report';
 import {GrantDataService} from '../../grant.data.service';
 import {SubmissionDataService} from '../../submission.data.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -84,6 +85,8 @@ export class PreviewComponent implements OnInit {
   grantWorkflowStatuses:WorkflowStatus[];
   dialogSubscription: Subscription;
   private ngUnsubscribe = new Subject();
+  approvedReports: Report[];
+  hasApprovedReports: boolean
 
   public pdfExport: PDFExportComponent;
 
@@ -128,7 +131,6 @@ export class PreviewComponent implements OnInit {
         this.router.navigate(['dashboard']);
      }
 
-
     const httpOptions = {
                 headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -144,6 +146,8 @@ export class PreviewComponent implements OnInit {
                 this.tenantUsers = config.tenantUsers;
                 this.appComp.tenantUsers = config.tenantUsers;
             });
+
+     this.getApprovedReports();
   }
 
   ngOnInit() {
@@ -1472,8 +1476,8 @@ getCleanText(section:Section): string{
     }
 
 
-    showActiveReports(){
-        this.grantComponent.showActiveReports();
+    showActiveReports(grant: Grant){
+        this.grantComponent.showActiveReports(grant,this.approvedReports);
     }
 
     getGrantAmountInWords(amount:number){
@@ -1514,5 +1518,27 @@ getCleanText(section:Section): string{
     ngOnDestroy() {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+    }
+
+
+    public getApprovedReports(){
+        console.log(this);
+        const httpOptions = {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })};
+
+        const user = JSON.parse(localStorage.getItem('USER'));
+        const url = '/api/user/' + user.id + '/report/'+this.currentGrant.id+'/approved';
+        this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
+          reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+
+          this.approvedReports = reports.filter(a => a.status.internalStatus=='CLOSED');
+          if(this.approvedReports && this.approvedReports.length>0){
+            this.hasApprovedReports = true;
+          }
+        });
     }
 }

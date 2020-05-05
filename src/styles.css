@@ -614,11 +614,13 @@ background:#d4d4d4;
 .wf-assignment-class{
     min-width: calc(100% - 300px) !important;
     max-width: calc(100% - 300px) !important;
-    height: auto !important;
     position: relative !important;
     left: 150px !important;
     overflow: hidden !important;
     align-self: center;
+    top: 62px;
+    height: 100% !important;
+    max-height: calc(100% - 35px);
 }
 
 .grant-template-class{
@@ -755,7 +757,7 @@ kendo-pdf-export {
     position: relative !important;
     left: 150px !important;
     overflow: scroll !important;
-    top: 53px;
+    top: 62px;
     max-height: calc(100% - 35px);
 }
 

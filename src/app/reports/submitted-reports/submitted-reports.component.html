@@ -19,10 +19,12 @@
                     &nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
                   </p>
                   </div>
-                  <div class="col-12">
+                  <div class="col-10">
                     <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>
                   </div>
-
+                  <div class="col-2">
+                    <span [class]="'badge pull-right state-' + report.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{report.status.displayName}}</span>
+                  </div>
                   <div class="col-12 p-3" style="background:#f1f1f1">
                     <div class="row mb-0">
                       <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>

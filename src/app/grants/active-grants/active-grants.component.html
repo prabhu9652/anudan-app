@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <span class="badge badge-dark text-white pull-right mr-5">{{grant.grantStatus.displayName}}</span>
+                                        <span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
                                     </div>
                                 </div>
 

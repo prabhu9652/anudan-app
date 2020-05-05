@@ -281,4 +281,8 @@ export class ReportHeaderComponent implements OnInit {
     getFormattedGrantAmount(amount: number):string{
         return inf.format(amount,2);
     }
+
+     manageGrant(){
+       this.adminComp.manageGrant(null, this.currentReport.grant.id);
+     }
 }
