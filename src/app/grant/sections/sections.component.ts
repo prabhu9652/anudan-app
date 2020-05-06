@@ -1324,12 +1324,12 @@ ngOnDestroy(){
                           if(attr.fieldValue.trim() === ''){
                             attr.fieldTableValue = [];
                             const data = new TableData();
-                            data.name = "";
+                            data.name = "1";
                             data.header="";
                             data.columns = [];
 
                             const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
-                            for(let i=0; i< 5; i++){
+                            for(let i=0; i< 4; i++){
                               const col = new ColumnData();
                               col.name = colHeaders[i];
                               col.value = '';

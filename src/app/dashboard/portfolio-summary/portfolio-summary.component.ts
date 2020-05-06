@@ -32,10 +32,12 @@ export class PortfolioSummaryComponent implements OnInit, OnChanges  {
                 console.log('data changed');
                 if(this.data){
                     this.display = true;
-                    this.selected = this.data[0];
-                    this.portfolioData = this.data[0];
-                    this.portfolioProgessData = this.data[0];
-                    this.portfolioDetailData = this.data[0].details;
+                    if(this.data[0]){
+                        this.selected = this.data[0];
+                        this.portfolioData = this.data[0];
+                        this.portfolioProgessData = this.data[0];
+                        this.portfolioDetailData = this.data[0].details;
+                    }
                 }
             }
         }
