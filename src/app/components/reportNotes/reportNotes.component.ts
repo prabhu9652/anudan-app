@@ -123,9 +123,23 @@ const httpOptions = {
                                 this.saveDifferences(oldSection,oldAttr,section,attr);
                             } else
 
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='kpi' && ((((!oldAttr.target || oldAttr.target===null)?"":oldAttr.target)!==((!attr.target || attr.target==null)?"":attr.target)) || (((!oldAttr.actualTarget || oldAttr.actualTarget===null)?"":oldAttr.actualTarget)!==((!attr.actualTarget || attr.actualTarget==null)?"":attr.actualTarget)) || (((!oldAttr.frequency || oldAttr.frequency===null)?"":oldAttr.frequency)!==((!attr.frequency || attr.frequency==null)?"":attr.frequency)))){
-                                this._getReportDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='kpi'){
+                                const ot = (oldAttr.target===undefined || oldAttr.target===null)?null:oldAttr.target;
+                                const nt = (attr.target===undefined || attr.target===null)?null:attr.target;
+                                const of = (oldAttr.frequency===undefined || oldAttr.frequency===null)?null:oldAttr.frequency;
+                                const nf = (attr.frequency===undefined || attr.frequency===null)?null:attr.frequency;
+                                const oat = (oldAttr.actualTarget===undefined || oldAttr.actualTarget===null)?null:oldAttr.actualTarget;
+                                const nat = (attr.actualTarget===undefined || attr.actualTarget===null)?null:attr.actualTarget;
+                                if(ot!==nt){
+                                    this._getReportDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }else if(of!==nf){
+                                     this._getReportDiffSections();
+                                     this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }else if(oat!==nat){
+                                      this._getReportDiffSections();
+                                      this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }
                             } else
                             if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table'){
                                 if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){

@@ -22,7 +22,7 @@
 
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
                                           (click)="manageGrant(grant)">
-                                    <div class="col-8 text-left">
+                                    <div class="col-10 text-left">
                                         
                                         <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
                                         <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
@@ -38,7 +38,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
                                     </div>
                                 </div>

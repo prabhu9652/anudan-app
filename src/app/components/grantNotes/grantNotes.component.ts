@@ -142,9 +142,20 @@ const httpOptions = {
                                 this.saveDifferences(oldSection,oldAttr,section,attr);
                             } else
 
-                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='kpi' && (oldAttr.target!==attr.target || oldAttr.frequency!==attr.frequency)){
-                                this._getGrantDiffSections();
-                                this.saveDifferences(oldSection,oldAttr,section,attr);
+                            if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='kpi'){
+                                const ot = (oldAttr.target===undefined || oldAttr.target===null)?null:oldAttr.target;
+                                const nt = (attr.target===undefined || attr.target===null)?null:attr.target;
+                                const of = (oldAttr.frequency===undefined || oldAttr.frequency===null)?null:oldAttr.frequency;
+                                const nf = (attr.frequency===undefined || attr.frequency===null)?null:attr.frequency;
+                                if(ot!==nt){
+                                    this._getGrantDiffSections();
+                                    this.saveDifferences(oldSection,oldAttr,section,attr);
+                                }else if(of!==nf){
+                                     this._getGrantDiffSections();
+                                     this.saveDifferences(oldSection,oldAttr,section,attr);
+                                 }
+
+
                             } else
                             if(oldAttr.fieldType===attr.fieldType && oldAttr.fieldType==='table'){
                                 if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
