@@ -36,6 +36,8 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { saveAs } from 'file-saver';
 import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
 import {User} from '../../model/user';
+import {MatSelectChange} from '@angular/material/select';
+
 import * as inf from 'indian-number-format';
 
 
@@ -1278,6 +1280,7 @@ ngOnDestroy(){
 
 
   handleTypeChange(ev, attr: Attribute,sec:Section){
+
   const dialogRef = this.dialog.open(FieldDialogComponent, {
                     data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
                     panelClass: 'center-class'
@@ -1286,9 +1289,20 @@ ngOnDestroy(){
                   dialogRef.afterClosed().subscribe(result => {
                       if(result){
                             attr.fieldType = ev;
+                            attr.fieldValue = '';
+                            if(attr.fieldTableValue){
+                                attr.fieldTableValue = null;
+                            }
+                            if(attr.target){
+                                attr.target=null;
+                            }
+                            if(attr.frequency){
+                                attr.frequency=null;
+                            }
+                      }else{
                       }
 
-                      attr.fieldValue = '';
+                      //attr.fieldValue = '';
                       if(ev.toString()==='table'){
                         if(attr.fieldValue.trim() === ''){
                           attr.fieldTableValue = [];
@@ -2076,6 +2090,13 @@ add(attribute: Attribute,event: MatChipInputEvent): void {
                 }
             }
         }
+        return false;
+    }
+
+    manageChange(ev):boolean{
+
+        ev.preventDefault();
+        ev.stopPropagation();
         return false;
     }
 

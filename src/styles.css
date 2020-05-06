@@ -761,6 +761,14 @@ kendo-pdf-export {
     max-height: calc(100% - 35px);
 }
 
+.addnl-report-class .mat-form-field-label-wrapper{
+    left: 0 !important;
+}
+
+.addnl-report-class .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    width: 100% !important;
+}
+
 .grant-expansion-panel-notifications .mat-expansion-panel-header-title{
     font-weight: normal !important;
 }

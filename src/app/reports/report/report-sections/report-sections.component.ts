@@ -229,13 +229,20 @@ export class ReportSectionsComponent implements OnInit {
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
-                    if(result){
-                        attr.fieldType = ev;
-
-                    }
-
-
-                    attr.fieldValue = '';
+                   if(result){
+                           attr.fieldType = ev;
+                           attr.fieldValue = '';
+                           if(attr.fieldTableValue){
+                               attr.fieldTableValue = null;
+                           }
+                           if(attr.target){
+                               attr.target=null;
+                           }
+                           if(attr.frequency){
+                               attr.frequency=null;
+                           }
+                   }else{
+                   }
                     if(ev.toString()==='table'){
                         if(attr.fieldValue.trim() === ''){
                             attr.fieldTableValue = [];
