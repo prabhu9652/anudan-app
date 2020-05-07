@@ -71,7 +71,6 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
             data: {
                 labels: labels,
                 datasets: [{
-                label: '# of Votes',
                 data: data,
                     backgroundColor: [
                         '#4DC252',
@@ -95,6 +94,13 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                             color: 'white',
                             font: {
                                 weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                if(Number(value)>0){
+                                    return value;
+                                }else{
+                                    return '';
+                                }
                             }
                         }
                     }
@@ -110,15 +116,20 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         const labels: string[] = [];
         const dataCommitted: any[] = [];
         const dataDisbursed: any[] = [];
+        let maxTick = 0;
 
         for(let s of this.selected.summary){
             labels.push(s.name);
+
             for(let v of s.values){
                 if(v.name==='Committed'){
                     dataCommitted.push(v.value);
                 }
                 if(v.name==='Disbursed'){
                     dataDisbursed.push(v.value);
+                }
+                if(Number(v.value)>maxTick){
+                    maxTick = Number(v.value);
                 }
             }
         }
@@ -147,17 +158,33 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                     },
                     plugins:{
                         datalabels:{
-                            color: 'white',
+                            color: 'black',
                             font: {
                                 weight: 'bold'
-                            }
+                            },
+                            anchor:'end',
+                            align:'top',
+                            offset:10
                         }
                     },
                     scales:{
-                        yAxes:[{
+                        yAxes:[
+                            {
                             scaleLabel: {
                                    display: true,
-                                   labelString: "Amount in Lakhs",
+                                   labelString: "In Lakhs (₹)",
+                            },
+                            ticks:{
+                                    min: 0,
+                                    max: (Math.ceil(maxTick/50)*50)+500,
+                                    stepSize: 500
+                            }
+                        }],
+                        xAxes:[
+                            {
+                            scaleLabel: {
+                                   display: true,
+                                   labelString: "Financial Periods",
                             }
                         }]
                     }
@@ -165,6 +192,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         });
         this.BarChart.generateLegend();
     }
+
 
     doSomething(ev:any){
         for(let i=0;i<this.data.length;i++){
