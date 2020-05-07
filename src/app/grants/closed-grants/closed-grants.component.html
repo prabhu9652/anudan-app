@@ -23,8 +23,9 @@
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsClosed; let i = index"
                                           (click)="manageGrant(grant)">
                                     <div class="col-10 text-left">
-                                        
-                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+
+                                        <p *ngIf="!grant.referenceNo"style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p *ngIf="grant.referenceNo"style="font-size: 18px;"><b>{{grant.referenceNo}}</b> | <b>{{grant.name}}</b></p>
                                         <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
                                         <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
                                         <div class="row">

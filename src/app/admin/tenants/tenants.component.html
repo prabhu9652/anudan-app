@@ -12,4 +12,8 @@
         <input #tenantLogo type="file" placeholder="Select tenant logo" accept="image/jpeg,image/jpg,image/png,image/gif">
         <button (click)="createTenant()">Send Invite</button>
     </div>
+
+    <hr>
+    <input [(ngModel)]="tenant">
+    <button (click)="encryptPassword();">Encrypt Passwords for Tenant</button>
 </div>

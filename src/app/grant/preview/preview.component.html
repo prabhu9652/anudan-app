@@ -43,8 +43,8 @@
                         <div class="col-9 text-left pl-3" style="display: flex;align-items: center;">
                             <div class="row">
                                 <div class="col-12">
-                                    <p *ngIf="currentGrant.referenceNo" class="mb-0">Ref. No.: {{currentGrant.referenceNo}}</p>
-                                    <h4 class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                                    <h4 *ngIf="!currentGrant.referenceNo" class="m-0" type="text" autocomplete="off"><b>{{currentGrant.name}}</b></h4>
+                                    <h4 *ngIf="currentGrant.referenceNo" class="m-0" type="text" autocomplete="off"><b>{{currentGrant.referenceNo}}</b> | <b>{{currentGrant.name}}</b></h4>
                                 </div>
                                 <div class="col-12 text-left">
                                     <span data-html2canvas-ignore  [class]="'badge text-white state-' + currentGrant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>
