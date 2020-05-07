@@ -1,0 +1,2127 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Anudan documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Anudan documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>KpisubmissionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/kpisubmission/kpisubmission.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-kpisubmission</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./kpisubmission.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./kpisubmission.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_contains">_contains</a>
+                            </li>
+                            <li>
+                                <a href="#actions">actions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#appComp">appComp</a>
+                            </li>
+                            <li>
+                                <a href="#currentSubmission">currentSubmission</a>
+                            </li>
+                            <li>
+                                <a href="#documentKpisToSubmit">documentKpisToSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#hasAttachments">hasAttachments</a>
+                            </li>
+                            <li>
+                                <a href="#loading">loading</a>
+                            </li>
+                            <li>
+                                <a href="#qualitativeKpisToSubmit">qualitativeKpisToSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#quantitativeKpisToSubmit">quantitativeKpisToSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#submissionNotesModal">submissionNotesModal</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addNote">addNote</a>
+                            </li>
+                            <li>
+                                <a href="#docChangeListener">docChangeListener</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#readThis">readThis</a>
+                            </li>
+                            <li>
+                                <a href="#removeItem">removeItem</a>
+                            </li>
+                            <li>
+                                <a href="#saveNote">saveNote</a>
+                            </li>
+                            <li>
+                                <a href="#submitKpis">submitKpis</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, submissionDataService: <a href="../injectables/SubmissionDataService.html">SubmissionDataService</a>, grantDataService: <a href="../injectables/GrantDataService.html">GrantDataService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, elem: <a href="https://angular.io/api/core/ElementRef" target="_blank">ElementRef</a>, appComp: <a href="../components/AppComponent.html">AppComponent</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>submissionDataService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SubmissionDataService.html" target="_self" >SubmissionDataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>grantDataService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GrantDataService.html" target="_self" >GrantDataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>elem</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>appComp</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addNote"></a>
+                    <span class="name">
+                        <b>
+                            addNote
+                        </b>
+                        <a href="#addNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addNote(evnt, selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, placeholder: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, user: <a href="../classes/User.html">User</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="392"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:392</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>evnt</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>placeholder</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../classes/User.html" target="_self" >User</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="docChangeListener"></a>
+                    <span class="name">
+                        <b>
+                            docChangeListener
+                        </b>
+                        <a href="#docChangeListener"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>docChangeListener($event, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, forKPIAttachments: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="288"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:288</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>$event</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>forKPIAttachments</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readThis"></a>
+                    <span class="name">
+                        <b>
+                            readThis
+                        </b>
+                        <a href="#readThis"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>readThis(inputValue: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, forKPIAttachments: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="294"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:294</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>inputValue</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>forKPIAttachments</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeItem"></a>
+                    <span class="name">
+                        <b>
+                            removeItem
+                        </b>
+                        <a href="#removeItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>removeItem(entry: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="419"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:419</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>entry</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveNote"></a>
+                    <span class="name">
+                        <b>
+                            saveNote
+                        </b>
+                        <a href="#saveNote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveNote(modal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, placeholder: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="365"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:365</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>modal</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>placeholder</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitKpis"></a>
+                    <span class="name">
+                        <b>
+                            submitKpis
+                        </b>
+                        <a href="#submitKpis"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submitKpis(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>, toStateId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:185</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>toStateId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="_contains"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            _contains</b>
+                            <a href="#_contains"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="424" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:424</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="actions"></a>
+                        <span class="name">
+                            <b>
+                            actions</b>
+                            <a href="#actions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Action.html" target="_self" >Array&lt;Action&gt;</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="appComp"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            appComp</b>
+                            <a href="#appComp"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentSubmission"></a>
+                        <span class="name">
+                            <b>
+                            currentSubmission</b>
+                            <a href="#currentSubmission"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Submission.html" target="_self" >Submission</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:25</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="documentKpisToSubmit"></a>
+                        <span class="name">
+                            <b>
+                            documentKpisToSubmit</b>
+                            <a href="#documentKpisToSubmit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Array&lt;any&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="hasAttachments"></a>
+                        <span class="name">
+                            <b>
+                            hasAttachments</b>
+                            <a href="#hasAttachments"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="loading"></a>
+                        <span class="name">
+                            <b>
+                            loading</b>
+                            <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="qualitativeKpisToSubmit"></a>
+                        <span class="name">
+                            <b>
+                            qualitativeKpisToSubmit</b>
+                            <a href="#qualitativeKpisToSubmit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Array&lt;any&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="quantitativeKpisToSubmit"></a>
+                        <span class="name">
+                            <b>
+                            quantitativeKpisToSubmit</b>
+                            <a href="#quantitativeKpisToSubmit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Array&lt;any&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="submissionNotesModal"></a>
+                        <span class="name">
+                            <b>
+                            submissionNotesModal</b>
+                            <a href="#submissionNotesModal"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;submissionNotesModal&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/kpisubmission/kpisubmission.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {AfterViewInit, Component, OnInit, ViewChild} from &#x27;@angular/core&#x27;;
+import {GrantDataService} from &#x27;../grant.data.service&#x27;;
+import {Grant, Note, Submission, Tenants} from &#x27;../model/dahsboard&#x27;;
+import {Router} from &#x27;@angular/router&#x27;;
+import {HttpClient, HttpHeaders} from &#x27;@angular/common/http&#x27;;
+import {ElementRef} from &#x27;@angular/core&#x27;;
+import {KpiSubmissionData, SubmissionData, UploadFile} from &#x27;../model/KpiSubmissionData&#x27;;
+import {SubmissionDataService} from &#x27;../submission.data.service&#x27;;
+import {Action} from &#x27;../model/action&#x27;;
+import {AppComponent} from &#x27;../app.component&#x27;;
+import {Filedata} from &#x27;../model/filedata&#x27;;
+import {User} from &#x27;../model/user&#x27;;
+import * as moment from &#x27;moment&#x27;;
+import _date &#x3D; moment.unitOfTime._date;
+
+declare var $: any;
+
+@Component({
+  selector: &#x27;app-kpisubmission&#x27;,
+  templateUrl: &#x27;./kpisubmission.component.html&#x27;,
+  styleUrls: [&#x27;./kpisubmission.component.scss&#x27;]
+})
+
+export class KpisubmissionComponent implements OnInit {
+  currentSubmission: Submission;
+  quantitativeKpisToSubmit: Array&lt;any&gt; &#x3D; [];
+  qualitativeKpisToSubmit: Array&lt;any&gt; &#x3D; [];
+  documentKpisToSubmit: Array&lt;any&gt; &#x3D; [];
+  actions: Array&lt;Action&gt; &#x3D; [];
+  loading &#x3D; false;
+  hasAttachments &#x3D; false;
+
+  @ViewChild(&#x27;submissionNotesModal&#x27;) submissionNotesModal: ElementRef;
+
+
+  constructor(private http: HttpClient,
+              private submissionDataService: SubmissionDataService,
+              private grantDataService: GrantDataService,
+              private router: Router,
+              private elem: ElementRef,
+              public appComp: AppComponent) {
+  }
+
+  ngOnInit(): void {
+    this.submissionDataService.currentMessage.subscribe(submission &#x3D;&gt; this.currentSubmission &#x3D; submission);
+
+
+    if (this.currentSubmission.flowAuthorities) {
+      for (const fa of this.currentSubmission.flowAuthorities) {
+        if (!this._contains(this.actions, fa.action)) {
+          const a &#x3D; new Action();
+          a.toStateId &#x3D; fa.toStateId;
+          a.name &#x3D; fa.action;
+          a.noteRequired &#x3D; fa.noteRequired;
+          if (!this.actions.some(e &#x3D;&gt; e.name &#x3D;&#x3D;&#x3D; a.name)) {
+            this.actions.push(a);
+          }
+        }
+      }
+
+      for (const quantKpi of this.currentSubmission.quantitiaveKpisubmissions) {
+        const kpiData &#x3D; {
+          &#x27;kpiDataId&#x27;: quantKpi.id,
+          &#x27;kpiType&#x27;: quantKpi.grantKpi.kpiType,
+          &#x27;kpiDataTitle&#x27;: quantKpi.grantKpi.title,
+          &#x27;kpiDataGoal&#x27;: quantKpi.goal,
+          &#x27;kpiDataActuals&#x27;: quantKpi.actuals,
+          &#x27;kpiDataNote&#x27;: quantKpi.note,
+          &#x27;kpiDataNotes&#x27;: quantKpi.notesHistory,
+          &#x27;kpiDataFiles&#x27;: quantKpi.submissionDocs
+        };
+        this.quantitativeKpisToSubmit.push(kpiData);
+      }
+
+      for (const qualKpi of this.currentSubmission.qualitativeKpiSubmissions) {
+        const kpiData &#x3D; {
+          &#x27;kpiDataId&#x27;: qualKpi.id,
+          &#x27;kpiType&#x27;: qualKpi.grantKpi.kpiType,
+          &#x27;kpiDataTitle&#x27;: qualKpi.grantKpi.title,
+          &#x27;kpiDataGoal&#x27;: qualKpi.goal,
+          &#x27;kpiDataActuals&#x27;: qualKpi.actuals,
+          &#x27;kpiDataNote&#x27;: qualKpi.note,
+          &#x27;kpiDataNotes&#x27;: qualKpi.notesHistory,
+          &#x27;kpiDataFiles&#x27;: qualKpi.submissionDocs
+        };
+        this.qualitativeKpisToSubmit.push(kpiData);
+      }
+
+      for (const docKpi of this.currentSubmission.documentKpiSubmissions) {
+        const kpiData &#x3D; {
+          &#x27;kpiDataId&#x27;: docKpi.id,
+          &#x27;kpiDataGrantKpiId&#x27;: docKpi.grantKpi.id,
+          &#x27;kpiType&#x27;: docKpi.grantKpi.kpiType,
+          &#x27;kpiDataTitle&#x27;: docKpi.grantKpi.title,
+          &#x27;kpiDataGoal&#x27;: docKpi.goal,
+          &#x27;kpiDataActuals&#x27;: docKpi.actuals,
+          &#x27;kpiDocType&#x27;: docKpi.type,
+          &#x27;kpiDataNote&#x27;: docKpi.note,
+          &#x27;kpiDataNotes&#x27;: docKpi.notesHistory,
+          &#x27;kpiFiles&#x27;: docKpi.submissionDocs,
+          &#x27;templates&#x27;: docKpi.grantKpi.templates
+        };
+        this.documentKpisToSubmit.push(kpiData);
+      }
+    }
+
+    $(&#x27;#notesModal&#x27;).on(&#x27;show.bs.modal&#x27;, function (event) {
+      const triggerElem &#x3D; $(event.relatedTarget);
+      const noteId &#x3D; triggerElem.attr(&#x27;data-whatever&#x27;);
+      const noteValHolderElem &#x3D; $(&#x27;.note_history_&#x27; + noteId);
+      const newnoteValHolderElem &#x3D; $(&#x27;#note_&#x27; + noteId).children();
+      const idSplice &#x3D; noteId.split(&#x27;_&#x27;);
+
+      const modal &#x3D; $(this);
+      console.log(&#x27;&gt;&gt;&gt;&gt;&gt;&gt;&#x27; + noteValHolderElem);
+      $(&#x27;#chatPlaceHolder&#x27;).empty();
+      for (const noteMsg of noteValHolderElem) {
+        const tempNoteMsg &#x3D; $(noteMsg).clone();
+        $(tempNoteMsg).removeClass(&#x27;note_history_&#x27; + noteId);
+        $(&#x27;#chatPlaceHolder&#x27;).append($(tempNoteMsg));
+      }
+      for (const noteMsg of newnoteValHolderElem) {
+        $(&#x27;#chatPlaceHolder&#x27;).append(&#x27;&lt;p class&#x3D;&quot;mr-0 mb-0 text-right&quot;&gt;&lt;b&gt;Me&lt;/b&gt;&lt;span class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt;&#x27;
+            + new Date().toLocaleDateString()
+            + &#x27;&lt;/small&gt;&lt;/span&gt;&lt;/p&gt; &lt;div class&#x3D;&quot;text-right mx-1 mt-0 mb-1 pt-0 px-2 chat-text&quot;&gt;&lt;span&gt; &#x27;
+            + $(noteMsg).html() + &#x27; &lt;/span&gt;&lt;/div&gt;&#x27;);
+      }
+      modal.find(&#x27;#noteId&#x27;).attr(&#x27;data-value&#x27;, noteId);
+    });
+
+    $(&#x27;#notesModal&#x27;).on(&#x27;shown.bs.modal&#x27;, function (event) {
+      $(&#x27;.holder&#x27;).animate({scrollTop: $(&#x27;#chatPlaceHolder&#x27;).height()}, 0);
+    });
+
+    /*$(&#x27;#submissionNotesModal&#x27;).on(&#x27;show.bs.modal&#x27;, function (event) {
+      const modal &#x3D; $(this);
+      const triggerElem &#x3D; $(event.relatedTarget);
+      const noteId &#x3D; triggerElem.data(&#x27;whatever&#x27;);
+      modal.find(&#x27;#submissionNoteId&#x27;).attr(&#x27;data-value&#x27;, noteId);
+    });*/
+
+    $(&#x27;#attachmentsModal&#x27;).on(&#x27;show.bs.modal&#x27;, function (event) {
+      const elId &#x3D;  $(event.relatedTarget).data(&#x27;whatever&#x27;);
+      $(&#x27;#attachmentId&#x27;).val(elId);
+      $(&#x27;#attachmentsPlaceHolder&#x27;).empty();
+
+      const fileElems &#x3D; $(&#x27;#kpi_doc_placeholder_&#x27; + elId).children();
+      for (let cn &#x3D; 0; cn &lt; fileElems.length; cn++) {
+        let extIcon &#x3D; &#x27;fa-file-image text-primary&#x27;;
+        switch ($(fileElems[cn]).attr(&#x27;id&#x27;).substr($(fileElems[cn]).attr(&#x27;id&#x27;).lastIndexOf(&#x27;.&#x27;) + 1)) {
+          case &#x27;pdf&#x27;:
+            extIcon &#x3D; &#x27;fa-file-pdf text-danger&#x27;;
+            break;
+          case &#x27;doc&#x27;:
+            extIcon &#x3D; &#x27;fa-file-word text-primary&#x27;;
+            break;
+          case &#x27;docx&#x27;:
+            extIcon &#x3D; &#x27;fa-file-word text-primary&#x27;;
+            break;
+          case &#x27;xls&#x27;:
+            extIcon &#x3D; &#x27;fa-file-excel text-success&#x27;;
+            break;
+          case &#x27;xlsx&#x27;:
+            extIcon &#x3D; &#x27;fa-file-excel text-success&#x27;;
+            break;
+        }
+
+        $(&#x27;#attachmentsPlaceHolder&#x27;).append(&#x27;&lt;div class&#x3D;&quot; container row&quot;&gt;&#x27;
+            + &#x27;&lt;div name&#x3D;&quot;fileName&quot; class&#x3D;&quot;col-sm-11 col-lg-11 text-left&quot; id&#x3D;&quot;&#x27;
+            + $(fileElems[cn]).attr(&#x27;id&#x27;) + &#x27;&quot;&gt;&#x27;
+            + &#x27;&lt;i class&#x3D;&quot;fa &#x27; + extIcon + &#x27; mr-1&quot;&gt;&lt;/i&gt; &#x27;
+            + $(fileElems[cn]).attr(&#x27;id&#x27;) + &#x27;&lt;/div&gt;&lt;div class&#x3D;&quot;col-sm-1 col-lg-1&quot;&gt;&lt;i class&#x3D;&quot;fa fa-minus text-primary ml-2&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;&#x27;);
+      }
+
+      $(this).find(&#x27;#fileSelector&#x27;).val(&#x27;&#x27;);
+
+    });
+
+    $(&#x27;.removeNoteItem&#x27;).on(&#x27;click&#x27;, function (event) {
+      console.log(event);
+    });
+  }
+
+
+  submitKpis(event: Event, toStateId: number) {
+    const btn &#x3D; event.srcElement;
+    const noteRequired &#x3D; $(btn).attr(&#x27;data-value&#x27;);
+    console.log(&#x27;##########&#x27; + noteRequired);
+    if (noteRequired &#x3D;&#x3D;&#x3D; &#x27;true&#x27;) {
+      const submissionModal &#x3D; this.submissionNotesModal.nativeElement;
+      const el &#x3D; $(submissionModal).find(&#x27;#submissionNoteId&#x27;);
+      $(el).attr(&#x27;data-value&#x27;, $(btn) .data(&#x27;whatever&#x27;));
+      $(submissionModal).modal(&#x27;show&#x27;);
+      return;
+    }
+    $(btn).append(&#x27;&lt;i id&#x3D;&quot;spinnerIcon&quot; *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;fa fa-spinner fa-spin&quot; &gt;&lt;/i&gt;&#x27;);
+    this.loading &#x3D; true;
+    const user &#x3D; JSON.parse(localStorage.getItem(&#x27;USER&#x27;));
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+        &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;),
+        &#x27;Authorization&#x27;: localStorage.getItem(&#x27;AUTH_TOKEN&#x27;)
+      })
+    };
+
+
+    const elements &#x3D; this.elem.nativeElement.querySelectorAll(&#x27;[id^&#x3D;&quot;data_id_&quot;]&#x27;);
+    const kpiSubmissionData: Array&lt;KpiSubmissionData&gt; &#x3D; [];
+    const submissionData &#x3D; new SubmissionData();
+
+    for (const e of elements) {
+      const idComponents &#x3D; e.id.split(&#x27;_&#x27;);
+      const kpiData &#x3D; new KpiSubmissionData();
+      kpiData.submissionId &#x3D; Number(idComponents[2]);
+      kpiData.type &#x3D; idComponents[3];
+      kpiData.kpiDataId &#x3D; Number(idComponents[4]);
+
+      const noteElemId &#x3D; e.id.replace(&#x27;data_id&#x27;, &#x27;#note&#x27;);
+      const noteElem &#x3D; this.elem.nativeElement.querySelector(noteElemId);
+      kpiData.notes &#x3D; new Array();
+      for (const el of $(noteElem).children()) {
+        kpiData.notes.push($(el).html());
+      }
+
+
+      if (idComponents[3] &#x3D;&#x3D;&#x3D; &#x27;DOCUMENT&#x27;) {
+        const docElemId &#x3D; e.id.replace(&#x27;data_id&#x27;, &#x27;#doc_id&#x27;);
+        const docElem &#x3D; this.elem.nativeElement.querySelector(docElemId);
+        const fileElemId &#x3D; e.id.replace(&#x27;data_id&#x27;, &#x27;#doc_placeholder&#x27;);
+        const fileElem &#x3D; this.elem.nativeElement.querySelector(fileElemId);
+        const fileElementsList &#x3D; $(fileElem).children(&#x27;[name&#x3D;&quot;fileName&quot;]&#x27;);
+        kpiData.files &#x3D; new Array&lt;UploadFile&gt;();
+        for (let el &#x3D; 0; el &lt; fileElementsList.length; el++) {
+          const file &#x3D; new UploadFile();
+          file.fileName &#x3D; $(fileElementsList[el]).attr(&#x27;id&#x27;);
+          file.fileType &#x3D; file.fileName.substr(file.fileName.lastIndexOf(&#x27;.&#x27;) + 1);
+          const msg &#x3D; $(fileElementsList[el]).children(&#x27;div&#x27;).html();
+          file.value &#x3D; msg.substr(msg.indexOf(&#x27;,&#x27;) + 1);
+          kpiData.files.push(file);
+        }
+      } else {
+        kpiData.value &#x3D; e.value;
+        const fileElemId &#x3D; e.id.replace(&#x27;data_id&#x27;, &#x27;#kpi_doc_placeholder&#x27;);
+        const fileElem &#x3D; this.elem.nativeElement.querySelector(fileElemId);
+        const fileElementsList &#x3D; $(fileElem).children(&#x27;[name&#x3D;&quot;fileName&quot;]&#x27;);
+        kpiData.files &#x3D; new Array&lt;UploadFile&gt;();
+        for (let el &#x3D; 0; el &lt; fileElementsList.length; el++) {
+          const file &#x3D; new UploadFile();
+          file.fileName &#x3D; $(fileElementsList[el]).attr(&#x27;id&#x27;);
+          file.fileType &#x3D; file.fileName.substr(file.fileName.lastIndexOf(&#x27;.&#x27;) + 1);
+          const msg &#x3D; $(fileElementsList[el]).children(&#x27;div&#x27;).html();
+          file.value &#x3D; msg.substr(msg.indexOf(&#x27;,&#x27;) + 1);
+          kpiData.files.push(file);
+        }
+      }
+
+      kpiData.toStatusId &#x3D; Number(toStateId);
+      kpiSubmissionData.push(kpiData);
+    }
+
+    submissionData.id &#x3D; this.currentSubmission.id;
+    const submissionNotesToSave &#x3D; $(this.elem.nativeElement.querySelector(&#x27;#submissionNotes_&#x27; + submissionData.id)).children(&#x27;[id^&#x3D;&quot;note_item_&quot;]&#x27;);
+    const submissionNotes: Array&lt;string&gt; &#x3D; [];
+    for (let i &#x3D; 0; i &lt;  submissionNotesToSave.length; i++) {
+      console.log(&#x27;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&#x27; + $(submissionNotesToSave[i]).find(&#x27;div &gt; span&#x27;).html());
+      submissionNotes.push($(submissionNotesToSave[i]).find(&#x27;div &gt; span&#x27;).html());
+    }
+    submissionData.notes &#x3D; submissionNotes;
+    submissionData.kpiSubmissionData &#x3D; kpiSubmissionData;
+
+
+    let url &#x3D; &#x27;/api/user/&#x27; + user.id + &#x27;/grant/kpi&#x27;;
+    this.http.put(url, submissionData, httpOptions).subscribe((grant: Grant) &#x3D;&gt; {
+      /*this.loading &#x3D; false;
+      this.grantDataService.changeMessage(grant);
+      this.router.navigate([&#x27;grant&#x27;]);*/
+
+      url &#x3D; &#x27;/api/user/&#x27; + user.id + &#x27;/grant/&#x27; + this.currentSubmission.grant.id;
+      this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) &#x3D;&gt; {
+        this.loading &#x3D; false;
+        this.grantDataService.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
+        this.router.navigate([&#x27;grant&#x27;]);
+      });
+    });
+  }
+
+  docChangeListener($event, type: string, forKPIAttachments: boolean): void {
+    this.loading &#x3D; true;
+    this.readThis($event, type, forKPIAttachments);
+    this.hasAttachments &#x3D; true;
+  }
+
+  readThis(inputValue: any, type: string, forKPIAttachments: boolean): void {
+    if (inputValue.target.files.length &lt;&#x3D; 0) {
+      return;
+    } else {
+      for (const file of inputValue.target.files) {
+        this.loading &#x3D; true;
+        const myReader: FileReader &#x3D; new FileReader();
+        let docTitleElemId &#x3D; &#x27;#&#x27; + type + &#x27;_&#x27;;
+        if (forKPIAttachments) {
+          docTitleElemId &#x3D; docTitleElemId + $(&#x27;#attachmentId&#x27;).val();
+        } else {
+          docTitleElemId &#x3D; docTitleElemId + inputValue.target.id.replace(&#x27;data_id_&#x27;, &#x27;&#x27;);
+        }
+
+        myReader.onloadstart &#x3D; () &#x3D;&gt; {
+          // spinnerElem.classList.add(&#x27;fa&#x27;, &#x27;fa-spinner&#x27;, &#x27;fa-spin&#x27;);
+          this.loading &#x3D; true;
+        };
+        myReader.constructor(this.loading);
+
+        myReader.onloadend &#x3D; () &#x3D;&gt; {
+          this.loading &#x3D; false;
+          const thisFile &#x3D; new Filedata();
+          thisFile.name &#x3D; file.name;
+          thisFile.data &#x3D; myReader.result.toString();
+          let extIcon &#x3D; &#x27;fa-file-image text-primary&#x27;;
+          switch (thisFile.name.substr(thisFile.name.lastIndexOf(&#x27;.&#x27;) + 1)) {
+            case &#x27;pdf&#x27;:
+              extIcon &#x3D; &#x27;fa-file-pdf text-danger&#x27;;
+              break;
+            case &#x27;doc&#x27;:
+              extIcon &#x3D; &#x27;fa-file-word text-primary&#x27;;
+              break;
+            case &#x27;docx&#x27;:
+              extIcon &#x3D; &#x27;fa-file-word text-primary&#x27;;
+              break;
+            case &#x27;xls&#x27;:
+              extIcon &#x3D; &#x27;fa-file-excel text-success&#x27;;
+              break;
+            case &#x27;xlsx&#x27;:
+              extIcon &#x3D; &#x27;fa-file-excel text-success&#x27;;
+              break;
+          }
+
+
+          if (forKPIAttachments) {
+            $(&#x27;#doc_icon_&#x27; + $(&#x27;#attachmentId&#x27;).val()).addClass(&#x27;text-primary&#x27;);
+            $(&#x27;#attachmentsPlaceHolder&#x27;).append(&#x27;&lt;div class&#x3D;&quot; container row&quot;&gt;&#x27;
+                + &#x27;&lt;div name&#x3D;&quot;fileName&quot; class&#x3D;&quot;col-sm-11 col-lg-11 text-left&quot; id&#x3D;&quot;&#x27;
+                + thisFile.name + &#x27;&quot;&gt;&#x27;
+                + &#x27;&lt;i class&#x3D;&quot;fa &#x27; + extIcon + &#x27; mr-1&quot;&gt;&lt;/i&gt; &#x27;
+                + thisFile.name + &#x27;&lt;/div&gt;&lt;div class&#x3D;&quot;col-sm-1 col-lg-1&quot;&gt;&lt;i class&#x3D;&quot;fa fa-minus text-primary ml-2&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;&#x27;);
+
+            $(docTitleElemId).append(&#x27;&lt;div name&#x3D;&quot;fileName&quot; class&#x3D;&quot;col-sm-10 col-lg-10&quot; id&#x3D;&quot;&#x27;
+                + thisFile.name + &#x27;&quot;&gt;&lt;div style&#x3D;&quot;visibility: hidden;height: 0;&quot;&gt;&#x27; +
+                thisFile.data + &#x27;&lt;/div&gt;&lt;/div&gt;&#x27;);
+          } else {
+            $(docTitleElemId).append(&#x27;&lt;div name&#x3D;&quot;fileName&quot; class&#x3D;&quot;col-sm-10 col-lg-10&quot; id&#x3D;&quot;&#x27; + thisFile.name +
+                &#x27;&quot;&gt;&lt;i class&#x3D;&quot;fa &#x27; + extIcon + &#x27; mr-1&quot;&gt;&lt;/i&gt; &#x27; +
+                thisFile.name + &#x27;&lt;div style&#x3D;&quot;visibility: hidden;height: 0;&quot;&gt;&#x27; +
+                thisFile.data + &#x27;&lt;/div&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;col-sm-2 col-lg-2&quot;&gt;&lt;i class&#x3D;&quot;fa fa-minus text-primary ml-2&quot;&gt;&lt;/i&gt;&lt;/div&gt;&#x27;);
+          }
+
+        };
+        myReader.readAsDataURL(file);
+
+      }
+    }
+
+  }
+
+  saveNote(modal: string, selector: string, placeholder: string) {
+    const idHolder &#x3D; this.elem.nativeElement.querySelector(&#x27;#&#x27; + selector);
+    // const messageElem &#x3D; this.elem.nativeElement.querySelector(&#x27;#message-text&#x27;);
+    const noteEntriesHolder &#x3D; this.elem.nativeElement.querySelector(&#x27;#&#x27; + placeholder + &#x27;_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;));
+    const msgEntries &#x3D; $(idHolder).children();
+
+    // noteEntriesHolder.value &#x3D; messageElem.value;
+    const iconElem &#x3D; this.elem.nativeElement.querySelector(&#x27;#icon_&#x27; + idHolder.value);
+    for (const singleEntry of msgEntries) {
+      $(noteEntriesHolder).append(singleEntry);
+    }
+    /*if (messageElem.value.trim().length &gt; 0) {
+      iconElem.classList.add(&#x27;text-primary&#x27;);
+    } else {
+      iconElem.classList.remove(&#x27;text-primary&#x27;);
+    }*/
+    $(&#x27;#&#x27; + modal).modal(&#x27;hide&#x27;);
+    if (placeholder &#x3D;&#x3D;&#x3D; &#x27;submissionNote&#x27; &amp;&amp; $(&#x27;#submissionBtn_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;)).attr(&#x27;data-value&#x27;) &#x3D;&#x3D;&#x3D; &#x27;false&#x27;) {
+      /*const submissionNotes &#x3D; $(idHolder).children();
+      for (let i &#x3D; 0; i &lt; submissionNotes.length; i++) {
+        $(&#x27;#submissionNote_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;)).append(submissionNotes[i]);
+      }*/
+
+      $(&#x27;#submissionBtn&#x27; + $(idHolder).attr(&#x27;data-value&#x27;)).click();
+    }
+  }
+
+  addNote(evnt, selector: string, placeholder: string, user: User) {
+    if (evnt.key &#x3D;&#x3D;&#x3D; &#x27;Enter&#x27;) {
+
+      const idHolder &#x3D; this.elem.nativeElement.querySelector(&#x27;#&#x27; + selector);
+      const strNote &#x3D; &#x27;&lt;div id&#x3D;&quot;note_item_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;)
+          + &#x27;_entry&quot;&gt;&lt;p class&#x3D;&quot;mr-0 mb-0 text-right&quot;&gt;&lt;b class&#x3D;&quot;bg-secondary p-1 rounded text-white&quot;&gt;Me&lt;/b&gt;&lt;span class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; &#x27;
+          + new Date().toLocaleDateString() + &#x27;&lt;/small&gt;&lt;/span&gt;&lt;/p&gt;&#x27;
+          + &#x27;&lt;div class&#x3D;&quot; text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;/i&gt;&lt;span&gt;&#x27;
+          + evnt.target.value
+          + &#x27;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&#x27;;
+
+      $(idHolder).append(strNote);
+
+      $(&#x27;#&#x27; + placeholder).append(strNote);
+      evnt.target.value &#x3D; &#x27;&#x27;;
+      $(&#x27;.holder&#x27;).animate({scrollTop: $(&#x27;#chatPlaceHolder&#x27;).height()}, 1000);
+      console.log($(idHolder).attr(&#x27;data-value&#x27;));
+      $(&#x27;#icon_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;)).addClass(&#x27;text-primary&#x27;);
+      if (selector &#x3D;&#x3D;&#x3D; &#x27;submissionNoteId&#x27;) {
+        const submitBtn &#x3D; $(&#x27;[name&#x3D;&quot;submissionBtn_&#x27; + $(idHolder).attr(&#x27;data-value&#x27;) + &#x27;&quot;]&#x27;);
+        for (let i &#x3D; 0; i &lt; submitBtn.length; i++) {
+          submitBtn.attr(&#x27;data-value&#x27;, false);
+        }
+      }
+    }
+  }
+
+  removeItem(entry: string) {
+    $(&#x27;#&#x27; + entry).remove();
+    $(&#x27;#&#x27; + entry + &#x27;_entry&#x27;).remove();
+  }
+
+  private _contains &#x3D; (a, obj) &#x3D;&gt; {
+    for (let i &#x3D; 0; i &lt; a.length; i++) {
+      if (a[i].action &#x3D;&#x3D;&#x3D; obj) {
+        return true;
+      }
+    }
+    return false;
+  };
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container-fluid text-left mt-5 pt-5 pl-2 pr-2 pb-2&quot;&gt;
+  &lt;h5&gt;{{currentSubmission.grant.name}}&lt;/h5&gt;
+  &lt;div *ngIf&#x3D;&quot;quantitativeKpisToSubmit || qualitativeKpisToSubmit || documentKpisToSubmit&quot;&gt;
+    &lt;a class&#x3D;&quot;btn btn-sm btn-outline-secondary&quot; (click)&#x3D;&quot;appComp.goToHome()&quot;&gt;&lt;i
+        class&#x3D;&quot;fa fa-home mr-2&quot;&gt;&lt;/i&gt;Home&lt;/a&gt;
+    &lt;a class&#x3D;&quot;btn btn-sm btn-outline-dark&quot; (click)&#x3D;&quot;appComp.goToGrantSummary()&quot;&gt;&lt;i
+        class&#x3D;&quot;fa fa-files-o mr-2&quot;&gt;&lt;/i&gt;Grant Summary&lt;/a&gt;
+
+    &lt;div *ngFor&#x3D;&quot;let act of actions&quot; class&#x3D;&quot;btn-group&quot;&gt;
+      &lt;button name&#x3D;&quot;submissionBtn_{{currentSubmission.id}}&quot; class&#x3D;&quot;btn btn-sm btn-primary&quot;
+              [attr.data-value]&#x3D;&quot;act.noteRequired&quot; [attr.data-whatever]&#x3D;&quot;currentSubmission.id&quot;
+              (click)&#x3D;&quot;submitKpis($event, act.toStateId)&quot;&gt;{{act.name}}&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;accordion&quot; id&#x3D;&quot;notesAccordian&quot;&gt;
+      &lt;div data-toggle&#x3D;&quot;collapse&quot; data-target&#x3D;&quot;#messages&quot; class&#x3D;&quot;nav-link&quot;&gt;
+        &lt;i class&#x3D;&quot;fa fa-gamepad text-rose mr-3&quot;&gt;&lt;/i&gt;Notes
+      &lt;/div&gt;
+      &lt;div id&#x3D;&quot;messages&quot; class&#x3D;&quot;collapse&quot; data-parent&#x3D;&quot;#notesAccordian&quot;&gt;
+        &lt;div id&#x3D;&quot;submissionNotes_{{currentSubmission.id}}&quot;&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let historricalSubmissionNote of currentSubmission.submissionNotes&quot;&gt;
+            &lt;span&gt;&lt;b&gt;{{historricalSubmissionNote.postedBy.lastName}}
+              , {{historricalSubmissionNote.postedBy.lastName}}&lt;/b&gt;&lt;/span&gt;
+            &lt;span class&#x3D;&quot;ml-2&quot;&gt;{{historricalSubmissionNote.postedOn | date : &#x27;medium&#x27;}}&lt;/span&gt;
+            &lt;p&gt;{{historricalSubmissionNote.message}}&lt;/p&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;hr&gt;
+
+    &lt;h4 class&#x3D;&quot;text-center&quot;&gt;Reporting for {{currentSubmission.title}}&lt;/h4&gt;
+    &lt;div class&#x3D;&quot;row bg-dark text-white mx-2 py-2 mb-2&quot;&gt;
+      &lt;div class&#x3D;&quot;col-sm-6 col-lg-6&quot;&gt;&lt;b&gt;KPI&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2 text-center&quot;&gt;&lt;b&gt;Goal/Target&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2 text-center&quot;&gt;&lt;b&gt;Achieved&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2&quot;&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;row mx-2&quot; *ngFor&#x3D;&quot;let kpiData of quantitativeKpisToSubmit&quot;&gt;
+      &lt;div class&#x3D;&quot;col-sm-6 col-lg-6&quot;&gt;&lt;b&gt;{{kpiData.kpiDataTitle}}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2 text-center&quot;&gt;{{kpiData.kpiDataGoal}}&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2 text-center&quot;&gt;
+        &lt;input *ngIf&#x3D;&quot;currentSubmission.actionAuthorities.permissions.includes(&#x27;MANAGE&#x27;)&quot;
+               id&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+               value&#x3D;&quot;{{kpiData.kpiDataActuals}}&quot; class&#x3D;&quot;form-control text-center&quot;&gt;
+        &lt;input *ngIf&#x3D;&quot;currentSubmission.actionAuthorities.permissions.includes(&#x27;VIEW&#x27;)&quot;
+               id&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+               value&#x3D;&quot;{{kpiData.kpiDataActuals}}&quot; class&#x3D;&quot;form-control text-center&quot; readonly&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2&quot;&gt;
+        &lt;a data-toggle&#x3D;&quot;modal&quot; data-target&#x3D;&quot;#notesModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;kpiData.kpiDataNotes.length &gt; 0&quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o text-primary&quot;&gt;&lt;/i&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;kpiData.kpiDataNotes.length &#x3D;&#x3D;&#x3D;0 &quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o&quot;&gt;&lt;/i&gt;
+        &lt;/a&gt;
+        &lt;i id&#x3D;&quot;doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+           *ngIf&#x3D;&quot;kpiData.kpiDataFiles.length &#x3D;&#x3D;&#x3D; 0&quot; data-toggle&#x3D;&quot;modal&quot;
+           data-target&#x3D;&quot;#attachmentsModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;
+           class&#x3D;&quot;fa fa-paperclip ml-2&quot; title&#x3D;&quot;Attachments&quot;&gt;&lt;/i&gt;
+        &lt;i id&#x3D;&quot;doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+           *ngIf&#x3D;&quot;kpiData.kpiDataFiles.length &gt; 0&quot; data-toggle&#x3D;&quot;modal&quot;
+           data-target&#x3D;&quot;#attachmentsModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;
+           class&#x3D;&quot;fa fa-paperclip ml-2 text-primary&quot; title&#x3D;&quot;Attachments&quot;&gt;&lt;/i&gt;
+        &lt;div class&#x3D;&quot;row invisible h-0&quot;
+             id&#x3D;&quot;kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let kpiFile of kpiData.kpiDataFiles&quot;&gt;
+            &lt;div class&#x3D;&quot;col-sm-10 col-lg-10&quot; id&#x3D;&quot;{{kpiFile.fileName}}&quot;&gt;&lt;/div&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+        &lt;div id&#x3D;&quot;note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;invisible h-0&quot;&gt;
+        &lt;/div&gt;
+        &lt;ng-container *ngFor&#x3D;&quot;let note of kpiData.kpiDataNotes&quot;&gt;
+          &lt;div class&#x3D;&quot;invisible h-0&quot;&gt;
+            &lt;div
+                class&#x3D;&quot;note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id &#x3D;&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-right&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-secondary p-1 rounded text-white&quot;&gt;Me&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id !&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-left&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-primary p-1 rounded text-white&quot;&gt;{{note.postedBy.firstName + &#x27; &#x27;
+                + note.postedBy.lastName}}&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-container&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;row mx-2&quot; *ngFor&#x3D;&quot;let kpiData of qualitativeKpisToSubmit&quot;&gt;
+      &lt;div class&#x3D;&quot;col-sm-12 col-lg-12&quot;&gt;&lt;b&gt;{{kpiData.kpiDataTitle}}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-10 col-lg-10&quot;&gt;
+          &lt;textarea *ngIf&#x3D;&quot;currentSubmission.actionAuthorities.permissions.includes(&#x27;MANAGE&#x27;)&quot;
+                    id&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+                    class&#x3D;&quot;form-control w-100&quot;&gt;{{kpiData.kpiDataActuals}}&lt;/textarea&gt;
+        &lt;textarea *ngIf&#x3D;&quot;currentSubmission.actionAuthorities.permissions.includes(&#x27;VIEW&#x27;)&quot;
+                  id&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+                  class&#x3D;&quot;form-control w-100&quot; readonly&gt;{{kpiData.kpiDataActuals}}&lt;/textarea&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2&quot;&gt;
+        &lt;a data-toggle&#x3D;&quot;modal&quot; data-target&#x3D;&quot;#notesModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;kpiData.kpiDataNote&quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o text-primary&quot;&gt;&lt;/i&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;!kpiData.kpiDataNote&quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o&quot;&gt;&lt;/i&gt;
+        &lt;/a&gt;
+        &lt;i data-toggle&#x3D;&quot;modal&quot; data-target&#x3D;&quot;#attachmentsModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;
+           class&#x3D;&quot;fa fa-paperclip ml-2&quot; title&#x3D;&quot;Attachments&quot;&gt;&lt;/i&gt;
+        &lt;div class&#x3D;&quot;row&quot;
+             id&#x3D;&quot;kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let kpiFile of kpiData.kpiDataFiles&quot;&gt;
+            &lt;div name&#x3D;&quot;fileName&quot; class&#x3D;&quot;col-sm-10 col-lg-10&quot; id&#x3D;&quot;{{kpiFile.fileName}}&quot;&gt;&lt;/div&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+        &lt;div id&#x3D;&quot;note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;invisible h-0&quot;&gt;
+        &lt;/div&gt;
+        &lt;ng-container *ngFor&#x3D;&quot;let note of kpiData.kpiDataNotes&quot;&gt;
+          &lt;div class&#x3D;&quot;invisible h-0&quot;&gt;
+            &lt;div
+                class&#x3D;&quot;note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id &#x3D;&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-right&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-secondary p-1 rounded text-white&quot;&gt;Me&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id !&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-left&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-primary p-1 rounded text-white&quot;&gt;{{note.postedBy.firstName + &#x27; &#x27;
+                + note.postedBy.lastName}}&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-container&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;row mx-2&quot; *ngFor&#x3D;&quot;let kpiData of documentKpisToSubmit&quot;&gt;
+      &lt;div class&#x3D;&quot;col-sm-12 col-lg-12&quot;&gt;&lt;b&gt;{{kpiData.kpiDataTitle}}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-12 col-lg-12&quot;&gt;
+        &lt;i class&#x3D;&quot;fa fa-download&quot;&gt;&lt;/i&gt;Templates for Download
+        &lt;table&gt;
+          &lt;tr&gt;
+
+            &lt;ng-container *ngFor&#x3D;&quot;let template of kpiData.templates&quot;&gt;
+              &lt;td&gt;
+                &lt;a href&#x3D;&quot;/api/app/{{template.location}}{{template.id}}&quot; title&#x3D;&quot;{{template.name}}&quot; class&#x3D;&quot;mr-2&quot;&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;pdf&#x27;&quot; class&#x3D;&quot;fa fa-file-pdf-o text-rose&quot;&gt;&lt;/i&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;jpg&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;jpeg&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;png&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;doc&#x27;&quot; class&#x3D;&quot;fa fa-file&quot;&gt;&lt;/i&gt;
+                  &lt;i *ngIf&#x3D;&quot;template.fileType&#x3D;&#x3D;&#x3D;&#x27;xls&#x27;&quot; class&#x3D;&quot;fa fa-file-excel-o text-success&quot;&gt;&lt;/i&gt;
+
+                {{template.name}}
+                &lt;/a&gt;
+              &lt;/td&gt;
+            &lt;/ng-container&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-3 col-lg-3&quot;&gt;
+        &lt;div&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let doc of kpiData.kpiFiles&quot;&gt;
+            &lt;a target&#x3D;&quot;_blank&quot;
+               href&#x3D;&quot;/api/submission/{{currentSubmission.id}}/kpi/{{kpiData.kpiDataGrantKpiId}}/file/{{doc.id}}&quot;&gt;
+              {{doc.fileName}}
+              &lt;i *ngIf&#x3D;&quot;doc.fileType&#x3D;&#x3D;&#x3D;&#x27;pdf&#x27;&quot;
+                 class&#x3D;&quot;fa fa-file-pdf-o text-rose&quot;&gt;&lt;/i&gt;
+              &lt;i *ngIf&#x3D;&quot;doc.fileType&#x3D;&#x3D;&#x3D;&#x27;jpg&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+              &lt;i *ngIf&#x3D;&quot;doc.fileType&#x3D;&#x3D;&#x3D;&#x27;jpeg&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+              &lt;i *ngIf&#x3D;&quot;doc.fileType&#x3D;&#x3D;&#x3D;&#x27;png&#x27;&quot; class&#x3D;&quot;fa fa-file-image-o&quot;&gt;&lt;/i&gt;
+              &lt;i *ngIf&#x3D;&quot;doc.fileType&#x3D;&#x3D;&#x3D;&#x27;doc&#x27;&quot; class&#x3D;&quot;fa fa-file&quot;&gt;&lt;/i&gt;
+            &lt;/a&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+        &lt;label
+            *ngIf&#x3D;&quot;kpiData.kpiDataActuals &amp;&amp; currentSubmission.actionAuthorities.permissions.includes(&#x27;MANAGE&#x27;)&quot;
+            for&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;Upload
+          new files&lt;/label&gt;
+        &lt;label class&#x3D;&quot;btn btn-sm btn-secondary text-white&quot;
+               *ngIf&#x3D;&quot;!kpiData.kpiDataActuals &amp;&amp; currentSubmission.actionAuthorities.permissions.includes(&#x27;MANAGE&#x27;)&quot;
+               for&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;Upload
+          files&lt;i id&#x3D;&quot;spinnerIcon&quot; *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;fa fa-spinner fa-spin&quot;&gt;&lt;/i&gt;&lt;/label&gt;
+        &lt;input style&#x3D;&quot;visibility: hidden&quot;
+               id&#x3D;&quot;data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+               type&#x3D;&quot;file&quot; (change)&#x3D;&quot;docChangeListener($event,&#x27;doc_placeholder&#x27;, false)&quot;
+               [multiple]&#x3D;&quot;true&quot;&gt;
+        &lt;input type&#x3D;&quot;hidden&quot;
+               id&#x3D;&quot;doc_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+        &lt;input type&#x3D;&quot;hidden&quot;
+               id&#x3D;&quot;file_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;col-sm-7 col-lg-7&quot;&gt;
+        &lt;div class&#x3D;&quot;row&quot;
+             id&#x3D;&quot;doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-sm-2 col-lg-2&quot;&gt;
+        &lt;a data-toggle&#x3D;&quot;modal&quot; data-target&#x3D;&quot;#notesModal&quot;
+           [attr.data-whatever]&#x3D;&quot;currentSubmission.id+&#x27;_&#x27;+kpiData.kpiType+&#x27;_&#x27;+kpiData.kpiDataId&quot;&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;kpiData.kpiDataNote&quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o text-primary&quot;&gt;&lt;/i&gt;
+          &lt;i title&#x3D;&quot;Notes&quot; *ngIf&#x3D;&quot;!kpiData.kpiDataNote&quot;
+             id&#x3D;&quot;icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;fa fa-newspaper-o&quot;&gt;&lt;/i&gt;
+        &lt;/a&gt;
+        &lt;div id&#x3D;&quot;note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;
+             class&#x3D;&quot;invisible h-0&quot;&gt;
+        &lt;/div&gt;
+        &lt;ng-container *ngFor&#x3D;&quot;let note of kpiData.kpiDataNotes&quot;&gt;
+          &lt;div class&#x3D;&quot;invisible h-0&quot;&gt;
+            &lt;div
+                class&#x3D;&quot;note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}&quot;&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id &#x3D;&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-right&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-secondary p-1 rounded text-white&quot;&gt;Me&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;note.postedBy.id !&#x3D;&#x3D; appComp.loggedInUser.id&quot;&gt;
+                &lt;p class&#x3D;&quot;mr-0 mb-0 text-left&quot;&gt;&lt;b
+                    class&#x3D;&quot;bg-primary p-1 rounded text-white&quot;&gt;{{note.postedBy.firstName + &#x27; &#x27;
+                + note.postedBy.lastName}}&lt;/b&gt;&lt;span
+                    class&#x3D;&quot;text-light&quot;&gt;&lt;small&gt; {{note.postedOn | date:&#x27;dd/MM/yyyy&#x27; }}&lt;/small&gt;&lt;/span&gt;
+                &lt;/p&gt;
+                &lt;div class&#x3D;&quot; text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text&quot;&gt;&lt;span&gt;
+          {{note.message}}
+          &lt;/span&gt;&lt;/div&gt;
+              &lt;/ng-container&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-container&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;modal fade&quot; id&#x3D;&quot;notesModal&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;
+     aria-labelledby&#x3D;&quot;exampleModalLabel&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+  &lt;div id&#x3D;&quot;noteId&quot; type&#x3D;&quot;hidden&quot; style&#x3D;&quot;height: 0px;&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;exampleModalLabel&quot;&gt;Add a note&lt;/h5&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;
+          &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;div class&#x3D;&quot;holder&quot;&gt;
+            &lt;div id&#x3D;&quot;chatPlaceHolder&quot;&gt;
+
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;input class&#x3D;&quot;form-control&quot; id&#x3D;&quot;message-text&quot;
+               (keypress)&#x3D;&quot;addNote($event,&#x27;noteId&#x27;, &#x27;chatPlaceHolder&#x27;, appComp.loggedInUser)&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link&quot; data-dismiss&#x3D;&quot;modal&quot;&gt;Close&lt;/button&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot;
+                (click)&#x3D;&quot;saveNote(&#x27;notesModal&#x27;,&#x27;noteId&#x27;,&#x27;note&#x27;)&quot;&gt;Save
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;modal fade&quot; id&#x3D;&quot;attachmentsModal&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;
+     aria-labelledby&#x3D;&quot;exampleModalLabel&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+
+  &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;input id&#x3D;&quot;attachmentId&quot; type&#x3D;&quot;hidden&quot; style&#x3D;&quot;height: 0px;&quot;&gt;
+        &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;exampleModalLabel&quot;&gt;Manage Attachments&lt;/h5&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;
+          &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;div class&#x3D;&quot;holder&quot;&gt;
+            &lt;div id&#x3D;&quot;attachmentsPlaceHolder&quot;&gt;
+
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link&quot; data-dismiss&#x3D;&quot;modal&quot;&gt;Close&lt;/button&gt;
+        &lt;label for&#x3D;&quot;fileSelector&quot; class&#x3D;&quot;btn btn-sm btn-success&quot;&gt;Click to select files &lt;i
+            id&#x3D;&quot;spinnerIcon&quot; *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;fa fa-spinner fa-spin&quot;&gt;&lt;/i&gt;&lt;/label&gt;
+        &lt;input id&#x3D;&quot;fileSelector&quot; class&#x3D;&quot;form-control&quot; style&#x3D;&quot;visibility: hidden;&quot; type&#x3D;&quot;file&quot;
+               (change)&#x3D;&quot;docChangeListener($event,&#x27;kpi_doc_placeholder&#x27;, true)&quot; [multiple]&#x3D;&quot;true&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div #submissionNotesModal class&#x3D;&quot;modal fade&quot; id&#x3D;&quot;submissionNotesModal&quot; tabindex&#x3D;&quot;-1&quot; role&#x3D;&quot;dialog&quot;
+     aria-labelledby&#x3D;&quot;exampleModalLabel&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+  &lt;div id&#x3D;&quot;submissionNoteId&quot; type&#x3D;&quot;hidden&quot; style&#x3D;&quot;height: 0px;&quot; data-value&#x3D;&quot;test&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;modal-dialog&quot; role&#x3D;&quot;document&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+      &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+        &lt;h5 class&#x3D;&quot;modal-title&quot; id&#x3D;&quot;exampleModalLabel&quot;&gt;Add a note for this submission&lt;/h5&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;close&quot; data-dismiss&#x3D;&quot;modal&quot; aria-label&#x3D;&quot;Close&quot;&gt;
+          &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group&quot;&gt;
+          &lt;div class&#x3D;&quot;holder&quot;&gt;
+            &lt;div id&#x3D;&quot;submissionChatPlaceHolder&quot;&gt;
+
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+        &lt;input class&#x3D;&quot;form-control&quot; id&#x3D;&quot;message-text&quot;
+               (keypress)&#x3D;&quot;addNote($event,&#x27;submissionNoteId&#x27;, &#x27;submissionChatPlaceHolder&#x27;, appComp.loggedInUser)&quot;&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link&quot; data-dismiss&#x3D;&quot;modal&quot;&gt;Close&lt;/button&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-primary&quot;
+                (click)&#x3D;&quot;saveNote(&#x27;submissionNotesModal&#x27;,&#x27;submissionNoteId&#x27;,&#x27;submissionNotes&#x27;)&quot;&gt;Save
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./kpisubmission.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="container-fluid text-left mt-5 pt-5 pl-2 pr-2 pb-2">  <h5>{{currentSubmission.grant.name}}</h5>  <div *ngIf="quantitativeKpisToSubmit || qualitativeKpisToSubmit || documentKpisToSubmit">    <a class="btn btn-sm btn-outline-secondary" (click)="appComp.goToHome()"><i        class="fa fa-home mr-2"></i>Home</a>    <a class="btn btn-sm btn-outline-dark" (click)="appComp.goToGrantSummary()"><i        class="fa fa-files-o mr-2"></i>Grant Summary</a>    <div *ngFor="let act of actions" class="btn-group">      <button name="submissionBtn_{{currentSubmission.id}}" class="btn btn-sm btn-primary"              [attr.data-value]="act.noteRequired" [attr.data-whatever]="currentSubmission.id"              (click)="submitKpis($event, act.toStateId)">{{act.name}}</button>    </div>    <div class="accordion" id="notesAccordian">      <div data-toggle="collapse" data-target="#messages" class="nav-link">        <i class="fa fa-gamepad text-rose mr-3"></i>Notes      </div>      <div id="messages" class="collapse" data-parent="#notesAccordian">        <div id="submissionNotes_{{currentSubmission.id}}">          <ng-container *ngFor="let historricalSubmissionNote of currentSubmission.submissionNotes">            <span><b>{{historricalSubmissionNote.postedBy.lastName}}              , {{historricalSubmissionNote.postedBy.lastName}}</b></span>            <span class="ml-2">{{historricalSubmissionNote.postedOn | date : \'medium\'}}</span>            <p>{{historricalSubmissionNote.message}}</p>          </ng-container>        </div>      </div>    </div>    <hr>    <h4 class="text-center">Reporting for {{currentSubmission.title}}</h4>    <div class="row bg-dark text-white mx-2 py-2 mb-2">      <div class="col-sm-6 col-lg-6"><b>KPI</b></div>      <div class="col-sm-2 col-lg-2 text-center"><b>Goal/Target</b></div>      <div class="col-sm-2 col-lg-2 text-center"><b>Achieved</b></div>      <div class="col-sm-2 col-lg-2"><b></b></div>    </div>    <div class="row mx-2" *ngFor="let kpiData of quantitativeKpisToSubmit">      <div class="col-sm-6 col-lg-6"><b>{{kpiData.kpiDataTitle}}</b></div>      <div class="col-sm-2 col-lg-2 text-center">{{kpiData.kpiDataGoal}}</div>      <div class="col-sm-2 col-lg-2 text-center">        <input *ngIf="currentSubmission.actionAuthorities.permissions.includes(\'MANAGE\')"               id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"               value="{{kpiData.kpiDataActuals}}" class="form-control text-center">        <input *ngIf="currentSubmission.actionAuthorities.permissions.includes(\'VIEW\')"               id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"               value="{{kpiData.kpiDataActuals}}" class="form-control text-center" readonly>      </div>      <div class="col-sm-2 col-lg-2">        <a data-toggle="modal" data-target="#notesModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId">          <i title="Notes" *ngIf="kpiData.kpiDataNotes.length > 0"             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o text-primary"></i>          <i title="Notes" *ngIf="kpiData.kpiDataNotes.length ===0 "             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o"></i>        </a>        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"           *ngIf="kpiData.kpiDataFiles.length === 0" data-toggle="modal"           data-target="#attachmentsModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId"           class="fa fa-paperclip ml-2" title="Attachments"></i>        <i id="doc_icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"           *ngIf="kpiData.kpiDataFiles.length > 0" data-toggle="modal"           data-target="#attachmentsModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId"           class="fa fa-paperclip ml-2 text-primary" title="Attachments"></i>        <div class="row invisible h-0"             id="kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">          <ng-container *ngFor="let kpiFile of kpiData.kpiDataFiles">            <div class="col-sm-10 col-lg-10" id="{{kpiFile.fileName}}"></div>          </ng-container>        </div>        <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="invisible h-0">        </div>        <ng-container *ngFor="let note of kpiData.kpiDataNotes">          <div class="invisible h-0">            <div                class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">              <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-right"><b                    class="bg-secondary p-1 rounded text-white">Me</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>              <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-left"><b                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + \' \'                + note.postedBy.lastName}}</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>            </div>          </div>        </ng-container>      </div>    </div>    <div class="row mx-2" *ngFor="let kpiData of qualitativeKpisToSubmit">      <div class="col-sm-12 col-lg-12"><b>{{kpiData.kpiDataTitle}}</b></div>      <div class="col-sm-10 col-lg-10">          <textarea *ngIf="currentSubmission.actionAuthorities.permissions.includes(\'MANAGE\')"                    id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"                    class="form-control w-100">{{kpiData.kpiDataActuals}}</textarea>        <textarea *ngIf="currentSubmission.actionAuthorities.permissions.includes(\'VIEW\')"                  id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"                  class="form-control w-100" readonly>{{kpiData.kpiDataActuals}}</textarea>      </div>      <div class="col-sm-2 col-lg-2">        <a data-toggle="modal" data-target="#notesModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId">          <i title="Notes" *ngIf="kpiData.kpiDataNote"             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o text-primary"></i>          <i title="Notes" *ngIf="!kpiData.kpiDataNote"             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o"></i>        </a>        <i data-toggle="modal" data-target="#attachmentsModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId"           class="fa fa-paperclip ml-2" title="Attachments"></i>        <div class="row"             id="kpi_doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">          <ng-container *ngFor="let kpiFile of kpiData.kpiDataFiles">            <div name="fileName" class="col-sm-10 col-lg-10" id="{{kpiFile.fileName}}"></div>          </ng-container>        </div>        <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="invisible h-0">        </div>        <ng-container *ngFor="let note of kpiData.kpiDataNotes">          <div class="invisible h-0">            <div                class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">              <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-right"><b                    class="bg-secondary p-1 rounded text-white">Me</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>              <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-left"><b                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + \' \'                + note.postedBy.lastName}}</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>            </div>          </div>        </ng-container>      </div>    </div>    <div class="row mx-2" *ngFor="let kpiData of documentKpisToSubmit">      <div class="col-sm-12 col-lg-12"><b>{{kpiData.kpiDataTitle}}</b></div>      <div class="col-sm-12 col-lg-12">        <i class="fa fa-download"></i>Templates for Download        <table>          <tr>            <ng-container *ngFor="let template of kpiData.templates">              <td>                <a href="/api/app/{{template.location}}{{template.id}}" title="{{template.name}}" class="mr-2">                  <i *ngIf="template.fileType===\'pdf\'" class="fa fa-file-pdf-o text-rose"></i>                  <i *ngIf="template.fileType===\'jpg\'" class="fa fa-file-image-o"></i>                  <i *ngIf="template.fileType===\'jpeg\'" class="fa fa-file-image-o"></i>                  <i *ngIf="template.fileType===\'png\'" class="fa fa-file-image-o"></i>                  <i *ngIf="template.fileType===\'doc\'" class="fa fa-file"></i>                  <i *ngIf="template.fileType===\'xls\'" class="fa fa-file-excel-o text-success"></i>                {{template.name}}                </a>              </td>            </ng-container>          </tr>        </table>      </div>      <div class="col-sm-3 col-lg-3">        <div>          <ng-container *ngFor="let doc of kpiData.kpiFiles">            <a target="_blank"               href="/api/submission/{{currentSubmission.id}}/kpi/{{kpiData.kpiDataGrantKpiId}}/file/{{doc.id}}">              {{doc.fileName}}              <i *ngIf="doc.fileType===\'pdf\'"                 class="fa fa-file-pdf-o text-rose"></i>              <i *ngIf="doc.fileType===\'jpg\'" class="fa fa-file-image-o"></i>              <i *ngIf="doc.fileType===\'jpeg\'" class="fa fa-file-image-o"></i>              <i *ngIf="doc.fileType===\'png\'" class="fa fa-file-image-o"></i>              <i *ngIf="doc.fileType===\'doc\'" class="fa fa-file"></i>            </a>          </ng-container>        </div>        <label            *ngIf="kpiData.kpiDataActuals && currentSubmission.actionAuthorities.permissions.includes(\'MANAGE\')"            for="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">Upload          new files</label>        <label class="btn btn-sm btn-secondary text-white"               *ngIf="!kpiData.kpiDataActuals && currentSubmission.actionAuthorities.permissions.includes(\'MANAGE\')"               for="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">Upload          files<i id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>        <input style="visibility: hidden"               id="data_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"               type="file" (change)="docChangeListener($event,\'doc_placeholder\', false)"               [multiple]="true">        <input type="hidden"               id="doc_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">        <input type="hidden"               id="file_id_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">      </div>      <div class="col-sm-7 col-lg-7">        <div class="row"             id="doc_placeholder_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">        </div>      </div>      <div class="col-sm-2 col-lg-2">        <a data-toggle="modal" data-target="#notesModal"           [attr.data-whatever]="currentSubmission.id+\'_\'+kpiData.kpiType+\'_\'+kpiData.kpiDataId">          <i title="Notes" *ngIf="kpiData.kpiDataNote"             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o text-primary"></i>          <i title="Notes" *ngIf="!kpiData.kpiDataNote"             id="icon_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="fa fa-newspaper-o"></i>        </a>        <div id="note_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}"             class="invisible h-0">        </div>        <ng-container *ngFor="let note of kpiData.kpiDataNotes">          <div class="invisible h-0">            <div                class="note_history_{{currentSubmission.id}}_{{kpiData.kpiType}}_{{kpiData.kpiDataId}}">              <ng-container *ngIf="note.postedBy.id === appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-right"><b                    class="bg-secondary p-1 rounded text-white">Me</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-right mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>              <ng-container *ngIf="note.postedBy.id !== appComp.loggedInUser.id">                <p class="mr-0 mb-0 text-left"><b                    class="bg-primary p-1 rounded text-white">{{note.postedBy.firstName + \' \'                + note.postedBy.lastName}}</b><span                    class="text-light"><small> {{note.postedOn | date:\'dd/MM/yyyy\' }}</small></span>                </p>                <div class=" text-left mx-1 mt-0 mb-1 pt-0  px-2 chat-text"><span>          {{note.message}}          </span></div>              </ng-container>            </div>          </div>        </ng-container>      </div>    </div>  </div></div><div class="modal fade" id="notesModal" tabindex="-1" role="dialog"     aria-labelledby="exampleModalLabel" aria-hidden="true">  <div id="noteId" type="hidden" style="height: 0px;"></div>  <div class="modal-dialog" role="document">    <div class="modal-content">      <div class="modal-header">        <h5 class="modal-title" id="exampleModalLabel">Add a note</h5>        <button type="button" class="close" data-dismiss="modal" aria-label="Close">          <span aria-hidden="true">&times;</span>        </button>      </div>      <div class="modal-body">        <div class="form-group">          <div class="holder">            <div id="chatPlaceHolder">            </div>          </div>        </div>      </div>      <div class="modal-footer">        <input class="form-control" id="message-text"               (keypress)="addNote($event,\'noteId\', \'chatPlaceHolder\', appComp.loggedInUser)">        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>        <button type="button" class="btn btn-primary"                (click)="saveNote(\'notesModal\',\'noteId\',\'note\')">Save        </button>      </div>    </div>  </div></div><div class="modal fade" id="attachmentsModal" tabindex="-1" role="dialog"     aria-labelledby="exampleModalLabel" aria-hidden="true">  <div class="modal-dialog" role="document">    <div class="modal-content">      <div class="modal-header">        <input id="attachmentId" type="hidden" style="height: 0px;">        <h5 class="modal-title" id="exampleModalLabel">Manage Attachments</h5>        <button type="button" class="close" data-dismiss="modal" aria-label="Close">          <span aria-hidden="true">&times;</span>        </button>      </div>      <div class="modal-body">        <div class="form-group">          <div class="holder">            <div id="attachmentsPlaceHolder">            </div>          </div>        </div>      </div>      <div class="modal-footer">        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>        <label for="fileSelector" class="btn btn-sm btn-success">Click to select files <i            id="spinnerIcon" *ngIf="loading" class="fa fa-spinner fa-spin"></i></label>        <input id="fileSelector" class="form-control" style="visibility: hidden;" type="file"               (change)="docChangeListener($event,\'kpi_doc_placeholder\', true)" [multiple]="true">      </div>    </div>  </div></div><div #submissionNotesModal class="modal fade" id="submissionNotesModal" tabindex="-1" role="dialog"     aria-labelledby="exampleModalLabel" aria-hidden="true">  <div id="submissionNoteId" type="hidden" style="height: 0px;" data-value="test"></div>  <div class="modal-dialog" role="document">    <div class="modal-content">      <div class="modal-header">        <h5 class="modal-title" id="exampleModalLabel">Add a note for this submission</h5>        <button type="button" class="close" data-dismiss="modal" aria-label="Close">          <span aria-hidden="true">&times;</span>        </button>      </div>      <div class="modal-body">        <div class="form-group">          <div class="holder">            <div id="submissionChatPlaceHolder">            </div>          </div>        </div>      </div>      <div class="modal-footer">        <input class="form-control" id="message-text"               (keypress)="addNote($event,\'submissionNoteId\', \'submissionChatPlaceHolder\', appComp.loggedInUser)">        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>        <button type="button" class="btn btn-primary"                (click)="saveNote(\'submissionNotesModal\',\'submissionNoteId\',\'submissionNotes\')">Save        </button>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'ActiveGrantsComponent', 'selector': 'app-active-grants'},{'name': 'AddnlreportsDialogComponent', 'selector': 'app-addnlreports-dialog'},{'name': 'AdminLayoutComponent', 'selector': 'app-admin-layout'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ApplicationsComponent', 'selector': 'applications-dashboard'},{'name': 'ApprovedReportsComponent', 'selector': 'app-approved-reports'},{'name': 'BasicComponent', 'selector': 'app-basic'},{'name': 'BottomsheetAttachmentsComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'BottomsheetComponent', 'selector': 'app-bottomsheet'},{'name': 'BottomsheetNotesComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'ChartSummaryComponent', 'selector': 'app-chart-summary'},{'name': 'ClosedGrantsComponent', 'selector': 'app-closed-grants'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'organization-details-dashboard'},{'name': 'DisbursementsComponent', 'selector': 'disbursements-dashboard'},{'name': 'DraftGrantsComponent', 'selector': 'app-draft-grants'},{'name': 'EditorComponent', 'selector': 'app-editor'},{'name': 'FieldDialogComponent', 'selector': 'app-field-dialog'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GrantComponent', 'selector': 'app-grant'},{'name': 'GranthistoryComponent', 'selector': 'app-granthistory-dialog'},{'name': 'GrantNotesComponent', 'selector': 'app-grantnotes'},{'name': 'GrantsComponent', 'selector': 'app-dashboard'},{'name': 'GrantSelectionDialogComponent', 'selector': 'app-grant-selection-dialog'},{'name': 'GrantTemplateDialogComponent', 'selector': 'app-grant-template-dialog'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'IconsComponent', 'selector': 'app-icons'},{'name': 'InviteDialogComponent', 'selector': 'app-invite-dialog'},{'name': 'KpisubmissionComponent', 'selector': 'app-kpisubmission'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MapsComponent', 'selector': 'app-maps'},{'name': 'MessagingComponent', 'selector': 'app-messaging'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationspopupComponent', 'selector': 'app-notificationspopup-dialog'},{'name': 'OrgadminComponent', 'selector': 'organization-admin-dashboard'},{'name': 'OrganizationComponent', 'selector': 'organization-dashboard'},{'name': 'PortfolioSummaryComponent', 'selector': 'app-portfolio-summary'},{'name': 'PreviewComponent', 'selector': 'app-preview'},{'name': 'ProgressSummaryComponent', 'selector': 'app-progress-summary'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ReportComponent', 'selector': 'app-report'},{'name': 'ReportHeaderComponent', 'selector': 'app-report-header'},{'name': 'ReportingComponent', 'selector': 'app-reporting'},{'name': 'ReportNotesComponent', 'selector': 'app-reportnotes'},{'name': 'ReportPreviewComponent', 'selector': 'app-report-preview'},{'name': 'ReportsComponent', 'selector': 'reports-dashboard'},{'name': 'ReportSectionsComponent', 'selector': 'app-report-sections'},{'name': 'ReportTemplateDialogComponent', 'selector': 'app-report-template-dialog'},{'name': 'RfpsComponent', 'selector': 'rfps-dashboard'},{'name': 'RolesComponent', 'selector': 'app-roles'},{'name': 'SectionEditComponent', 'selector': 'app-section-edit'},{'name': 'SectionsComponent', 'selector': 'app-sections'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SubmittedReportsComponent', 'selector': 'app-submitted-reports'},{'name': 'SummaryCenteredComponent', 'selector': 'app-summary-centered'},{'name': 'SummaryComponent', 'selector': 'app-summary'},{'name': 'TableListComponent', 'selector': 'app-table-list'},{'name': 'TemplateDialogComponent', 'selector': 'app-template-dialog'},{'name': 'TemplatesComponent', 'selector': 'app-templates'},{'name': 'TenantsComponent', 'selector': 'app-tenants'},{'name': 'TypographyComponent', 'selector': 'app-typography'},{'name': 'UpcomingReportsComponent', 'selector': 'app-upcoming-reports'},{'name': 'UpgradeComponent', 'selector': 'app-upgrade'},{'name': 'UserProfileComponent', 'selector': 'app-user-profile'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'WelcomeComponent', 'selector': 'app-welcome'},{'name': 'WelcomePopupComponent', 'selector': 'app-welcome-popup'},{'name': 'WfassignmentComponent', 'selector': 'app-wfassignment-dialog'},{'name': 'WorkflowManagementComponent', 'selector': 'app-workflow-management'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'KpisubmissionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'KpisubmissionComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

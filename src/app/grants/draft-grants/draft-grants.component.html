@@ -23,7 +23,7 @@
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
                                     
 
-                                    <div class="col-8 text-left" (click)="manageGrant(grant)">
+                                    <div class="col-10 text-left" (click)="manageGrant(grant)">
                                         
                                         <p class="text-header">{{grant.name}}</p>
                                         <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
@@ -39,7 +39,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 text-right">
+                                    <div class="col-2 text-right">
                                         <div class="row w-100 text-right">
                                             <div class="col-12"><span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span></div>
                                             <!--div class="col-12"><small>Assigned to
@@ -48,13 +48,14 @@
                                                 <ng-container *ngIf="appComponent.loggedInUser.id!==assignment.user.id">{{assignment.user.firstName}} {{assignment.user.lastName}}</ng-container>
                                             </ng-container>
                                             </small></div-->
+                                            <div class="col-12 h-100" style="display: flex; align-items: center;">
+                                                <button *ngIf="grant.canManage && grant.grantStatus.internalStatus==='DRAFT'"
+                                                        class="btn btn-sm btn-red px-1 mt-5"
+                                                        (click)="deleteGrant(grant)">Delete Grant
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-12 h-100" style="display: flex; align-items: center; justify-content: flex-end;">
-                                        <button *ngIf="grant.canManage && grant.grantStatus.internalStatus==='DRAFT'"
-                                                class="btn btn-sm btn-red"
-                                                (click)="deleteGrant(grant)">Delete Grant
-                                        </button>
-                                        </div>
+
                                     </div>
                                 </div>
                     </div>

@@ -190,7 +190,7 @@
                         <div class="col-sm-4 col-lg-4 text-left">
                           <mat-form-field>
                             <mat-label>Field Type:</mat-label>
-                            <mat-select (ngModelChange)="handleTypeChange($event,attribute,section)" [ngModel]="attribute.fieldType"  class="anu-input"
+                            <mat-select (selectionChange)="handleTypeChange($event,attribute,section)" [ngModel]="attribute.fieldType"  class="anu-input"
                                         [ngModelOptions]="{standAlone:true}">
                               <mat-option value="multiline">Descriptive</mat-option>
                               <mat-option value="kpi">Measurement/KPI</mat-option>

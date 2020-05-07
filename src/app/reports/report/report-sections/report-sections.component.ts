@@ -229,51 +229,57 @@ export class ReportSectionsComponent implements OnInit {
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
-                    if(result){
-                        attr.fieldType = ev;
-
-                    }
-
-
-                    attr.fieldValue = '';
-                    if(ev.toString()==='table'){
-                        if(attr.fieldValue.trim() === ''){
-                            attr.fieldTableValue = [];
-                            const data = new TableData();
-                            data.name = "";
-                            data.columns = [];
-
-                        for(let i=0; i< 5; i++){
-                            const col = new ColumnData();
-                            col.name = "";
-                            col.value = '';
-                            data.columns.push(col);
-                        }
-
-                        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-                        }
-                    }else if(ev.toString()==='disbursement'){
-                         if(attr.fieldValue.trim() === ''){
-                           attr.fieldTableValue = [];
-                           const data = new TableData();
-                           data.name = "";
-                           data.header="";
-                           data.columns = [];
-
-                           const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
-                           for(let i=0; i< 5; i++){
-                             const col = new ColumnData();
-                             col.name = colHeaders[i];
-                             col.value = '';
-                             if(i===1 || i===2){
-                                 col.dataType='currency';
-                             }
-                             data.columns.push(col);
+                   if(result){
+                           attr.fieldType = ev.source.value;
+                           attr.fieldValue = '';
+                           if(attr.fieldTableValue){
+                               attr.fieldTableValue = null;
+                           }
+                           if(attr.target){
+                               attr.target=null;
+                           }
+                           if(attr.frequency){
+                               attr.frequency=null;
                            }
 
-                           attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-                         }
-                    }
+                        if(ev.source.value.toString()==='table'){
+                            if(attr.fieldValue.trim() === ''){
+                                attr.fieldTableValue = [];
+                                const data = new TableData();
+                                data.name = "";
+                                data.columns = [];
+
+                            for(let i=0; i< 5; i++){
+                                const col = new ColumnData();
+                                col.name = "";
+                                col.value = '';
+                                data.columns.push(col);
+                            }
+
+                            attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                            }
+                        }else if(ev.source.value.toString()==='disbursement'){
+                             if(attr.fieldValue.trim() === ''){
+                               attr.fieldTableValue = [];
+                               const data = new TableData();
+                               data.name = "";
+                               data.header="";
+                               data.columns = [];
+
+                               const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
+                               for(let i=0; i< 5; i++){
+                                 const col = new ColumnData();
+                                 col.name = colHeaders[i];
+                                 col.value = '';
+                                 if(i===1 || i===2){
+                                     col.dataType='currency';
+                                 }
+                                 data.columns.push(col);
+                               }
+
+                               attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                             }
+                        }
 
                     const httpOptions = {
                         headers: new HttpHeaders({
@@ -300,7 +306,12 @@ export class ReportSectionsComponent implements OnInit {
                                 this.toastr.error(errorMsg.error.message,"22 We encountered an error", config);
                             }
                     });
-                    });
+                   }else{
+                        ev.source.value = attr.fieldType;
+                        return;
+                   }
+
+                });
 
     }
 

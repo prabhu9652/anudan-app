@@ -1,0 +1,1653 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Anudan documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Anudan documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>RegistrationComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/registration/registration.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-registration</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./registration.component.sass</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./registration.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#appComponent">appComponent</a>
+                            </li>
+                            <li>
+                                <a href="#confirmPasswordElem">confirmPasswordElem</a>
+                            </li>
+                            <li>
+                                <a href="#currentEmail">currentEmail</a>
+                            </li>
+                            <li>
+                                <a href="#emailIdElem">emailIdElem</a>
+                            </li>
+                            <li>
+                                <a href="#firstNameElem">firstNameElem</a>
+                            </li>
+                            <li>
+                                <a href="#lastNameElem">lastNameElem</a>
+                            </li>
+                            <li>
+                                <a href="#logoURL">logoURL</a>
+                            </li>
+                            <li>
+                                <a href="#orgName">orgName</a>
+                            </li>
+                            <li>
+                                <a href="#parameters">parameters</a>
+                            </li>
+                            <li>
+                                <a href="#passwordElem">passwordElem</a>
+                            </li>
+                            <li>
+                                <a href="#provider">provider</a>
+                            </li>
+                            <li>
+                                <a href="#recaptchaToken">recaptchaToken</a>
+                            </li>
+                            <li>
+                                <a href="#socialUser">socialUser</a>
+                            </li>
+                            <li>
+                                <a href="#user">user</a>
+                            </li>
+                            <li>
+                                <a href="#userOrg">userOrg</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#checkIfUserIsRegistered">checkIfUserIsRegistered</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit">onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#registerUser">registerUser</a>
+                            </li>
+                            <li>
+                                <a href="#resolved">resolved</a>
+                            </li>
+                            <li>
+                                <a href="#signup">signup</a>
+                            </li>
+                            <li>
+                                <a href="#signUpWithGoogle">signUpWithGoogle</a>
+                            </li>
+                            <li>
+                                <a href="#submit">submit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(activatedRoute: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, appComponent: <a href="../components/AppComponent.html">AppComponent</a>, authService: AuthService, toastr: ToastrService, dialog: MatDialog)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/registration/registration.component.ts:36</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>activatedRoute</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>appComponent</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                    <code>AuthService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toastr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ToastrService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkIfUserIsRegistered"></a>
+                    <span class="name">
+                        <b>
+                            checkIfUserIsRegistered
+                        </b>
+                        <a href="#checkIfUserIsRegistered"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkIfUserIsRegistered(emailId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, objectToCheck: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="207"
+                            class="link-to-prism">src/app/registration/registration.component.ts:207</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>emailId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>objectToCheck</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/app/registration/registration.component.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <b>
+                            onSubmit
+                        </b>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/app/registration/registration.component.ts:73</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerUser"></a>
+                    <span class="name">
+                        <b>
+                            registerUser
+                        </b>
+                        <a href="#registerUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>registerUser(user: <a href="../classes/RegistrationCredentials.html">RegistrationCredentials</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="95"
+                            class="link-to-prism">src/app/registration/registration.component.ts:95</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+                                    <td>
+                                                <code><a href="../classes/RegistrationCredentials.html" target="_self" >RegistrationCredentials</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resolved"></a>
+                    <span class="name">
+                        <b>
+                            resolved
+                        </b>
+                        <a href="#resolved"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resolved(evt)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="203"
+                            class="link-to-prism">src/app/registration/registration.component.ts:203</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>evt</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="signup"></a>
+                    <span class="name">
+                        <b>
+                            signup
+                        </b>
+                        <a href="#signup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>signup()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="199"
+                            class="link-to-prism">src/app/registration/registration.component.ts:199</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="signUpWithGoogle"></a>
+                    <span class="name">
+                        <b>
+                            signUpWithGoogle
+                        </b>
+                        <a href="#signUpWithGoogle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>signUpWithGoogle()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="175"
+                            class="link-to-prism">src/app/registration/registration.component.ts:175</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submit"></a>
+                    <span class="name">
+                        <b>
+                            submit
+                        </b>
+                        <a href="#submit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/registration/registration.component.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="appComponent"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            appComponent</b>
+                            <a href="#appComponent"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/registration/registration.component.ts:38</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="confirmPasswordElem"></a>
+                        <span class="name">
+                            <b>
+                            confirmPasswordElem</b>
+                            <a href="#confirmPasswordElem"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;confirmPassword&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/registration/registration.component.ts:36</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentEmail"></a>
+                        <span class="name">
+                            <b>
+                            currentEmail</b>
+                            <a href="#currentEmail"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/registration/registration.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="emailIdElem"></a>
+                        <span class="name">
+                            <b>
+                            emailIdElem</b>
+                            <a href="#emailIdElem"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;emailId&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/registration/registration.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="firstNameElem"></a>
+                        <span class="name">
+                            <b>
+                            firstNameElem</b>
+                            <a href="#firstNameElem"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;firstName&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/registration/registration.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lastNameElem"></a>
+                        <span class="name">
+                            <b>
+                            lastNameElem</b>
+                            <a href="#lastNameElem"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;lastName&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/registration/registration.component.ts:34</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="logoURL"></a>
+                        <span class="name">
+                            <b>
+                            logoURL</b>
+                            <a href="#logoURL"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/registration/registration.component.ts:25</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="orgName"></a>
+                        <span class="name">
+                            <b>
+                            orgName</b>
+                            <a href="#orgName"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/registration/registration.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="parameters"></a>
+                        <span class="name">
+                            <b>
+                            parameters</b>
+                            <a href="#parameters"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/registration/registration.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="passwordElem"></a>
+                        <span class="name">
+                            <b>
+                            passwordElem</b>
+                            <a href="#passwordElem"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;password&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/registration/registration.component.ts:35</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="provider"></a>
+                        <span class="name">
+                            <b>
+                            provider</b>
+                            <a href="#provider"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/registration/registration.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="recaptchaToken"></a>
+                        <span class="name">
+                            <b>
+                            recaptchaToken</b>
+                            <a href="#recaptchaToken"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/registration/registration.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="socialUser"></a>
+                        <span class="name">
+                            <b>
+                            socialUser</b>
+                            <a href="#socialUser"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >SocialUser</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/registration/registration.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="user"></a>
+                        <span class="name">
+                            <b>
+                            user</b>
+                            <a href="#user"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >User</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/registration/registration.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="userOrg"></a>
+                        <span class="name">
+                            <b>
+                            userOrg</b>
+                            <a href="#userOrg"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/registration/registration.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ViewChild, ElementRef } from &#x27;@angular/core&#x27;;
+import {FormControl, FormGroup, Validators, ReactiveFormsModule} from &#x27;@angular/forms&#x27;;
+import { HttpClient, HttpHeaders,HttpResponse,HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import {Router, ActivatedRoute, ParamMap} from &#x27;@angular/router&#x27;;
+import {User} from &#x27;../model/user&#x27;;
+import {RegistrationCredentials} from &#x27;../model/registration-credentials&#x27;;
+import {AppComponent} from &#x27;../app.component&#x27;;
+import {AuthService, GoogleLoginProvider, SocialUser} from &#x27;ng-social-login-module&#x27;;
+import {AccessCredentials} from &#x27;../model/access-credentials&#x27;;
+import {register} from &#x27;ts-node&#x27;;
+import {ToastrService} from &#x27;ngx-toastr&#x27;;
+import {MessagingComponent} from &#x27;../components/messaging/messaging.component&#x27;;
+import {MatDialog} from &#x27;@angular/material&#x27;;
+
+
+@Component({
+  selector: &#x27;app-registration&#x27;,
+  templateUrl: &#x27;./registration.component.html&#x27;,
+  styleUrls: [&#x27;./registration.component.sass&#x27;]
+})
+export class RegistrationComponent implements OnInit {
+
+  provider: string;
+  socialUser: SocialUser;
+  logoURL:string;
+  orgName:string;
+  parameters: any;
+  currentEmail:string&#x3D;&#x27;&#x27;;
+  userOrg:string&#x3D;&#x27;&#x27;;
+  recaptchaToken:string;
+  user: User;
+  @ViewChild(&quot;emailId&quot;) emailIdElem: ElementRef;
+  @ViewChild(&quot;firstName&quot;) firstNameElem: ElementRef;
+  @ViewChild(&quot;lastName&quot;) lastNameElem: ElementRef;
+  @ViewChild(&quot;password&quot;) passwordElem: ElementRef;
+  @ViewChild(&quot;confirmPassword&quot;) confirmPasswordElem: ElementRef;
+
+  constructor(private activatedRoute: ActivatedRoute,private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService,private toastr: ToastrService,private dialog: MatDialog) {
+    this.activatedRoute.queryParams.subscribe(params &#x3D;&gt; {
+        this.parameters &#x3D; params;
+    });
+  }
+
+  ngOnInit() {
+    const tenantCode &#x3D; localStorage.getItem(&#x27;X-TENANT-CODE&#x27;);
+    this.logoURL &#x3D; &quot;/api/public/images/&quot;+tenantCode+&quot;/logo&quot;;
+
+      const url &#x3D; &#x27;/api/public/tenant/&#x27; + tenantCode;
+      this.http.get(url,{responseType: &#x27;text&#x27;}).subscribe((orgName) &#x3D;&gt; {
+         localStorage.setItem(&#x27;ORG-NAME&#x27;,orgName);
+         this.orgName &#x3D; localStorage.getItem(&#x27;ORG-NAME&#x27;);
+      },error &#x3D;&gt;{
+      });
+
+    if(this.parameters.email){
+      this.currentEmail&#x3D;this.parameters.email;
+      this.currentEmail &#x3D; this.currentEmail.replace(/ /g,&quot;+&quot;);
+    }
+    if(this.parameters.org){
+      this.userOrg&#x3D;this.parameters.org;
+    }
+
+    if(this.currentEmail){
+        if(this.parameters.type&#x3D;&#x3D;&#x3D;&#x27;grant&#x27;){
+            this.checkIfUserIsRegistered(this.currentEmail,this.parameters.g,this.parameters.type);
+        } else if(this.parameters.type&#x3D;&#x3D;&#x3D;&#x27;report&#x27;){
+            this.checkIfUserIsRegistered(this.currentEmail,this.parameters.r,this.parameters.type);
+        }
+    }
+
+  }
+
+  onSubmit() {
+  // TODO: Use EventEmitter with form value
+    //console.warn(this.granteeRegisteationForm.value);
+    this.submit();
+  }
+
+  submit() {
+    const user &#x3D;  new RegistrationCredentials();
+     user.emailId &#x3D; this.emailIdElem.nativeElement.value;
+      user.password &#x3D; this.passwordElem.nativeElement.value;
+      user.firstName &#x3D; this.firstNameElem.nativeElement.value;
+      user.lastName &#x3D; this.lastNameElem.nativeElement.value;
+      user.organizationName &#x3D; this.userOrg;
+      user.username &#x3D; this.emailIdElem.nativeElement.value;
+      user.role &#x3D; &#x27;USER&#x27;;
+      user.organization &#x3D; null;
+
+
+    this.registerUser(user);
+  }
+
+
+  registerUser(user: RegistrationCredentials) {
+
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;:  &#x27;application/json&#x27;,
+        &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;)
+      })
+    };
+
+    //const form &#x3D; this.granteeRegisteationForm.value;
+
+    const url &#x3D; &#x27;/api/users/&#x27;;
+    this.http.post&lt;User&gt;(url, user, httpOptions).subscribe( (response: User) &#x3D;&gt; {
+
+    const user2Login: AccessCredentials &#x3D; {
+      username: response.emailId,
+      password: user.password,
+      provider: &#x27;ANUDAN&#x27;,
+      role: &#x27;user&#x27;,
+      recaptchaToken: this.recaptchaToken
+    };
+    const httpOptions &#x3D; {
+          headers: new HttpHeaders({
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+            &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;) &#x3D;&#x3D;&#x3D; &#x27;undefined&#x27; ? &#x27;ANUDAN&#x27; : localStorage.getItem(&#x27;X-TENANT-CODE&#x27;)
+          }),
+          observe: &#x27;response&#x27; as &#x27;body&#x27;
+        };
+
+        let url &#x3D; &#x27;/api/authenticate&#x27;;
+
+        this.http.post&lt;HttpResponse&lt;User&gt;&gt;(url, user2Login, httpOptions).subscribe(resp &#x3D;&gt; {
+
+            const keys &#x3D; resp.headers.keys();
+            // console.log(keys);
+            this.user &#x3D; resp.body;
+
+
+            localStorage.setItem(&#x27;AUTH_TOKEN&#x27;, resp.headers.get(&#x27;Authorization&#x27;));
+
+            this.user.permissions &#x3D; new Array();
+            for (const userRole of this.user.userRoles) {
+              if (userRole.role.permissions) {
+                for (const perm of userRole.role.permissions) {
+                  this.user.permissions.push(perm.permission);
+                }
+              }
+            }
+              localStorage.setItem(&#x27;USER&#x27;, &#x27;&#x27; + JSON.stringify(this.user));
+              this.appComponent.loggedInUser &#x3D; this.user;
+            console.log(this.user);
+
+            if (!this.user.organization || this.user.organization.type &#x3D;&#x3D;&#x3D; &#x27;GRANTEE&#x27;) {
+              this.router.navigate([&#x27;/dashboard&#x27;], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:&#x27;n&#x27; } });
+            } else {
+              this.router.navigate([&#x27;/dashboard&#x27;], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:&#x27;n&#x27; } });
+            }
+          },
+          error &#x3D;&gt; {
+
+            const errorMsg &#x3D; error as HttpErrorResponse;
+            console.log(error);
+            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+              enableHtml: true
+            });
+          });
+      // ocalStorage.setItem(&#x27;AUTH_TOKEN&#x27;, resp.headers.get(&#x27;Authorization&#x27;));
+      /*localStorage.setItem(&#x27;USER&#x27;, JSON.stringify(response));
+      this.appComponent.loggedIn &#x3D; true;
+      this.appComponent.loggedInUser &#x3D; response;
+      localStorage.setItem(&#x27;AUTH_TOKEN&#x27;, resp.headers.get(&#x27;Authorization&#x27;));
+
+      *//*if(this.parameters){
+        this.router.navigate([&#x27;welcome&#x27;], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type } });
+      }else{*//*
+        this.router.navigate([&#x27;dashboard&#x27;], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:&#x27;n&#x27; } });*/
+        /*}*/
+    });
+  }
+
+  signUpWithGoogle(): void {
+
+    this.provider &#x3D; GoogleLoginProvider.PROVIDER_ID;
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((userData) &#x3D;&gt; {
+      this.socialUser &#x3D; userData;
+      const user: RegistrationCredentials &#x3D; {
+        emailId : this.socialUser.email,
+        password : this.passwordElem.nativeElement.value,
+        confirmPassword : this.confirmPasswordElem.nativeElement.value,
+        firstName: this.socialUser.name,
+        lastName: &#x27;&#x27;,
+        organizationName: this.userOrg,
+        username: this.socialUser.email,
+        role: &#x27;USER&#x27;,
+        organization: null
+      };
+      this.registerUser(user);
+    });
+    /*this.authService.authState.subscribe((socialUser) &#x3D;&gt; {
+      console.log(socialUser);
+      t
+    });*/
+  }
+
+  signup(){
+  }
+
+
+  resolved(evt){
+    this.recaptchaToken &#x3D; evt;
+  }
+
+  checkIfUserIsRegistered(emailId:string,objectToCheck:string,type:string){
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;:  &#x27;application/json&#x27;,
+        &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;)
+      })
+    };
+
+        //const form &#x3D; this.granteeRegisteationForm.value;
+
+        const url &#x3D; &#x27;/api/users/check&#x27;;
+        this.http.post&lt;boolean&gt;(url, {email:emailId, object:objectToCheck,type}, httpOptions).subscribe( (response: boolean) &#x3D;&gt; {
+            if(response){
+                const dialogRef &#x3D; this.dialog.open(MessagingComponent, {
+                          data: &quot;Looks like you&#x27;ve registered earlier on Anudan. Please sign in.&quot;
+                        });
+
+                dialogRef.afterClosed().subscribe(result &#x3D;&gt; {
+                    this.router.navigate([&#x27;login&#x27;]);
+                });
+
+            }
+        });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- &lt;div class&#x3D;&quot;row align-items-center&quot;&gt; --&gt;
+
+
+&lt;div class&#x3D;&quot;row m-0 h-100&quot; style&#x3D;&quot;background:#F1F1F4;&quot;&gt;
+  &lt;div class&#x3D;&quot;col-12&quot; style&#x3D;&quot;height: 90px; background: #424652; display: flex; align-items: center;&quot;&gt;
+    &lt;img [src]&#x3D;&quot;logoURL&quot; alt&#x3D;&quot;logo&quot; class&#x3D;&quot;img-fluid&quot; style&#x3D;&quot;width: 50px; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;&quot;&gt;
+    &lt;span style&#x3D;&quot;line-height: 0.9em;height:52px; color:#fff; margin-left:10px;margin-left: 10px;font-weight: 400;font-size: 25px;text-align: left;&quot;&gt;{{orgName}}
+      &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;col-lg-7 col-md-12&quot;&gt;
+    &lt;img src&#x3D;&quot;./assets/img/landing.svg&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;col-lg-5 col-md-12&quot;&gt;
+    &lt;div style&#x3D;&quot;display:flex;align-items:center;justify-content:center;&quot;&gt;
+
+      &lt;div class&#x3D;&quot;card-body mx-lg-5 my-lg-5 bg-white&quot;&gt;
+
+          &lt;!-- &lt;label for&#x3D;&quot;emailId&quot;&gt;Email Id&lt;/label&gt; --&gt;
+          &lt;div class&#x3D;&quot;my-2&quot;&gt;
+            &lt;input #emailId required type&#x3D;&quot;text&quot; class&#x3D;&quot;anu-input mb-3 w-100&quot; id&#x3D;&quot;emailId&quot;
+                   placeholder&#x3D;&quot;Email Id&quot; [value]&#x3D;&quot;currentEmail&quot;&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;row&quot;&gt;
+            &lt;div class&#x3D;&quot;col-6 my-2&quot;&gt;
+              &lt;input #firstName required type&#x3D;&quot;text&quot; class&#x3D;&quot;anu-input mb-3&quot; id&#x3D;&quot;firstName&quot;
+                     placeholder&#x3D;&quot;First Name&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-6 my-2&quot;&gt;
+              &lt;input #lastName required type&#x3D;&quot;text&quot; class&#x3D;&quot;anu-input mb-3&quot; id&#x3D;&quot;lastName&quot;
+                     placeholder&#x3D;&quot;Last Name&quot;&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;!-- &lt;label for&#x3D;&quot;password&quot;&gt;Password&lt;/label&gt; --&gt;
+          &lt;div class&#x3D;&quot;input-group input-group-alternative form-group-email&quot;&gt;
+            &lt;input #password type&#x3D;&quot;password&quot; class&#x3D;&quot;anu-input mb-3 w-100&quot; id&#x3D;&quot;password&quot;
+                   placeholder&#x3D;&quot;Password&quot;&gt;
+
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;input-group input-group-alternative form-group-email&quot;&gt;
+            &lt;input #confirmPassword type&#x3D;&quot;password&quot; class&#x3D;&quot;anu-input mb-4 w-100&quot; id&#x3D;&quot;confirmPassword&quot;
+                   placeholder&#x3D;&quot;Confirm Password&quot;&gt;
+
+          &lt;/div&gt;
+          &lt;re-captcha (resolved)&#x3D;&quot;resolved($event)&quot; type&#x3D;&quot;image&quot; siteKey&#x3D;&quot;6Lf5a8MUAAAAAKqjna6CP8EZ0kFHs3F261hT29oq&quot;&gt;&lt;/re-captcha&gt;
+          &lt;button class&#x3D;&quot;btn btn-sm btn-green&quot; type&#x3D;&quot;submit&quot; (click)&#x3D;&quot;submit()&quot;&gt;Register
+          &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;text-center f-12&quot;&gt;
+      &lt;div class&#x3D;&quot;w-100&quot;&gt;Seeking Grants?&lt;a class&#x3D;&quot;ml-2 text-green&quot; (click)&#x3D;&quot;signup()&quot;&gt;Sign up!&lt;/a&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;text-center f-12&quot;&gt;
+      &lt;div class&#x3D;&quot;w-100&quot;&gt;v1.0.0 build 176&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+    &lt;div class&#x3D;&quot;text-center f-12&quot;&gt;
+        &lt;div class&#x3D;&quot;w-100&quot;&gt;&lt;p style&#x3D;&quot;color:#7d7d7d;font-size: 16px;&quot;&gt;&lt;small class&#x3D;&quot;ml-4&quot;&gt;Powered by Social Alpha &lt;img src&#x3D;&quot;./assets/img/avatar.png&quot; alt&#x3D;&quot;logo&quot; class&#x3D;&quot;img-fluid&quot; style&#x3D;&quot;width: 32px; padding: 5px; margin: 5px 0px; border-radius: 2px;&quot;&gt;&lt;/small&gt;&lt;/p&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./registration.component.sass</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- <div class="row align-items-center"> --><div class="row m-0 h-100" style="background:#F1F1F4;">  <div class="col-12" style="height: 90px; background: #424652; display: flex; align-items: center;">    <img [src]="logoURL" alt="logo" class="img-fluid" style="width: 50px; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;">    <span style="line-height: 0.9em;height:52px; color:#fff; margin-left:10px;margin-left: 10px;font-weight: 400;font-size: 25px;text-align: left;">{{orgName}}      </span>  </div>  <div class="col-lg-7 col-md-12">    <img src="./assets/img/landing.svg">  </div>  <div class="col-lg-5 col-md-12">    <div style="display:flex;align-items:center;justify-content:center;">      <div class="card-body mx-lg-5 my-lg-5 bg-white">          <!-- <label for="emailId">Email Id</label> -->          <div class="my-2">            <input #emailId required type="text" class="anu-input mb-3 w-100" id="emailId"                   placeholder="Email Id" [value]="currentEmail">          </div>          <div class="row">            <div class="col-6 my-2">              <input #firstName required type="text" class="anu-input mb-3" id="firstName"                     placeholder="First Name">            </div>            <div class="col-6 my-2">              <input #lastName required type="text" class="anu-input mb-3" id="lastName"                     placeholder="Last Name">            </div>          </div>          <!-- <label for="password">Password</label> -->          <div class="input-group input-group-alternative form-group-email">            <input #password type="password" class="anu-input mb-3 w-100" id="password"                   placeholder="Password">          </div>          <div class="input-group input-group-alternative form-group-email">            <input #confirmPassword type="password" class="anu-input mb-4 w-100" id="confirmPassword"                   placeholder="Confirm Password">          </div>          <re-captcha (resolved)="resolved($event)" type="image" siteKey="6Lf5a8MUAAAAAKqjna6CP8EZ0kFHs3F261hT29oq"></re-captcha>          <button class="btn btn-sm btn-green" type="submit" (click)="submit()">Register          </button>      </div>    </div>    <div class="text-center f-12">      <div class="w-100">Seeking Grants?<a class="ml-2 text-green" (click)="signup()">Sign up!</a></div>    </div>    <div class="text-center f-12">      <div class="w-100">v1.0.0 build 176</div>    </div>  </div>    <div class="text-center f-12">        <div class="w-100"><p style="color:#7d7d7d;font-size: 16px;"><small class="ml-4">Powered by Social Alpha <img src="./assets/img/avatar.png" alt="logo" class="img-fluid" style="width: 32px; padding: 5px; margin: 5px 0px; border-radius: 2px;"></small></p></div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'ActiveGrantsComponent', 'selector': 'app-active-grants'},{'name': 'AddnlreportsDialogComponent', 'selector': 'app-addnlreports-dialog'},{'name': 'AdminLayoutComponent', 'selector': 'app-admin-layout'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ApplicationsComponent', 'selector': 'applications-dashboard'},{'name': 'ApprovedReportsComponent', 'selector': 'app-approved-reports'},{'name': 'BasicComponent', 'selector': 'app-basic'},{'name': 'BottomsheetAttachmentsComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'BottomsheetComponent', 'selector': 'app-bottomsheet'},{'name': 'BottomsheetNotesComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'ChartSummaryComponent', 'selector': 'app-chart-summary'},{'name': 'ClosedGrantsComponent', 'selector': 'app-closed-grants'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'organization-details-dashboard'},{'name': 'DisbursementsComponent', 'selector': 'disbursements-dashboard'},{'name': 'DraftGrantsComponent', 'selector': 'app-draft-grants'},{'name': 'EditorComponent', 'selector': 'app-editor'},{'name': 'FieldDialogComponent', 'selector': 'app-field-dialog'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GrantComponent', 'selector': 'app-grant'},{'name': 'GranthistoryComponent', 'selector': 'app-granthistory-dialog'},{'name': 'GrantNotesComponent', 'selector': 'app-grantnotes'},{'name': 'GrantsComponent', 'selector': 'app-dashboard'},{'name': 'GrantSelectionDialogComponent', 'selector': 'app-grant-selection-dialog'},{'name': 'GrantTemplateDialogComponent', 'selector': 'app-grant-template-dialog'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'IconsComponent', 'selector': 'app-icons'},{'name': 'InviteDialogComponent', 'selector': 'app-invite-dialog'},{'name': 'KpisubmissionComponent', 'selector': 'app-kpisubmission'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MapsComponent', 'selector': 'app-maps'},{'name': 'MessagingComponent', 'selector': 'app-messaging'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationspopupComponent', 'selector': 'app-notificationspopup-dialog'},{'name': 'OrgadminComponent', 'selector': 'organization-admin-dashboard'},{'name': 'OrganizationComponent', 'selector': 'organization-dashboard'},{'name': 'PortfolioSummaryComponent', 'selector': 'app-portfolio-summary'},{'name': 'PreviewComponent', 'selector': 'app-preview'},{'name': 'ProgressSummaryComponent', 'selector': 'app-progress-summary'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ReportComponent', 'selector': 'app-report'},{'name': 'ReportHeaderComponent', 'selector': 'app-report-header'},{'name': 'ReportingComponent', 'selector': 'app-reporting'},{'name': 'ReportNotesComponent', 'selector': 'app-reportnotes'},{'name': 'ReportPreviewComponent', 'selector': 'app-report-preview'},{'name': 'ReportsComponent', 'selector': 'reports-dashboard'},{'name': 'ReportSectionsComponent', 'selector': 'app-report-sections'},{'name': 'ReportTemplateDialogComponent', 'selector': 'app-report-template-dialog'},{'name': 'RfpsComponent', 'selector': 'rfps-dashboard'},{'name': 'RolesComponent', 'selector': 'app-roles'},{'name': 'SectionEditComponent', 'selector': 'app-section-edit'},{'name': 'SectionsComponent', 'selector': 'app-sections'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SubmittedReportsComponent', 'selector': 'app-submitted-reports'},{'name': 'SummaryCenteredComponent', 'selector': 'app-summary-centered'},{'name': 'SummaryComponent', 'selector': 'app-summary'},{'name': 'TableListComponent', 'selector': 'app-table-list'},{'name': 'TemplateDialogComponent', 'selector': 'app-template-dialog'},{'name': 'TemplatesComponent', 'selector': 'app-templates'},{'name': 'TenantsComponent', 'selector': 'app-tenants'},{'name': 'TypographyComponent', 'selector': 'app-typography'},{'name': 'UpcomingReportsComponent', 'selector': 'app-upcoming-reports'},{'name': 'UpgradeComponent', 'selector': 'app-upgrade'},{'name': 'UserProfileComponent', 'selector': 'app-user-profile'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'WelcomeComponent', 'selector': 'app-welcome'},{'name': 'WelcomePopupComponent', 'selector': 'app-welcome-popup'},{'name': 'WfassignmentComponent', 'selector': 'app-wfassignment-dialog'},{'name': 'WorkflowManagementComponent', 'selector': 'app-workflow-management'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'RegistrationComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RegistrationComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

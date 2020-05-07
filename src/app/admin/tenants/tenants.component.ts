@@ -9,6 +9,8 @@ import {AppComponent} from '../../app.component';
 })
 export class TenantsComponent implements OnInit {
 
+    tenant: string;
+
     @ViewChild("tenantName") tenantNameElem: ElementRef;
     @ViewChild("tenantAdmin") tenantAdminElem: ElementRef;
     @ViewChild("tenantSlug") tenantSlugElem: ElementRef;
@@ -44,5 +46,20 @@ export class TenantsComponent implements OnInit {
             this.http.post(endpoint,formData, httpOptions).subscribe((data) => {
                 console.log(data);
             });
+    }
+
+    encryptPassword(){
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+              'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        let url = '/api/admin/'+this.appComp.loggedInUser.id+'/encryptpasswords/'+this.tenant;
+
+        this.http.post(url,{},httpOptions).subscribe(() => {
+            alert('Passwords Encrypted');
+        });
     }
 }

@@ -1,0 +1,1786 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Anudan documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Anudan documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>UpcomingReportsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/reports/upcoming-reports/upcoming-reports.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../classes/Report.html" target="_self" >ReportComponent</a></code>
+                                <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-upcoming-reports</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./upcoming-reports.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./upcoming-reports.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addnlReports">addnlReports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#appComp">appComp</a>
+                            </li>
+                            <li>
+                                <a href="#futureReportsToSetup">futureReportsToSetup</a>
+                            </li>
+                            <li>
+                                <a href="#grants">grants</a>
+                            </li>
+                            <li>
+                                <a href="#otherReportsClicked">otherReportsClicked</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#reportComponent">reportComponent</a>
+                            </li>
+                            <li>
+                                <a href="#reportEndDate">reportEndDate</a>
+                            </li>
+                            <li>
+                                <a href="#reports">reports</a>
+                            </li>
+                            <li>
+                                <a href="#reportsReadyToSubmit">reportsReadyToSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#reportStartDate">reportStartDate</a>
+                            </li>
+                            <li>
+                                <a href="#reportsToSetup">reportsToSetup</a>
+                            </li>
+                            <li>
+                                <a href="#subscribers">subscribers</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getFormattedGrantAmount">getFormattedGrantAmount</a>
+                            </li>
+                            <li>
+                                <a href="#getGrantAmountInWords">getGrantAmountInWords</a>
+                            </li>
+                            <li>
+                                <a href="#getReports">getReports</a>
+                            </li>
+                            <li>
+                                <a href="#highlight">highlight</a>
+                            </li>
+                            <li>
+                                <a href="#manageReport">manageReport</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#processReports">processReports</a>
+                            </li>
+                            <li>
+                                <a href="#selectReportTemplate">selectReportTemplate</a>
+                            </li>
+                            <li>
+                                <a href="#viewAddnlReports">viewAddnlReports</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(reportService: <a href="../injectables/ReportDataService.html">ReportDataService</a>, singleReportService: <a href="../injectables/SingleReportDataService.html">SingleReportDataService</a>, http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, appComp: <a href="../components/AppComponent.html">AppComponent</a>, dialog: MatDialog, reportComponent: <a href="../classes/Report.html">ReportComponent</a>, titlecasePipe: <a href="https://angular.io/api/common/TitleCasePipe" target="_blank">TitleCasePipe</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:35</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>reportService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ReportDataService.html" target="_self" >ReportDataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>singleReportService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/SingleReportDataService.html" target="_self" >SingleReportDataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>appComp</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>reportComponent</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/Report.html" target="_self" >ReportComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>titlecasePipe</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/TitleCasePipe" target="_blank" >TitleCasePipe</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFormattedGrantAmount"></a>
+                    <span class="name">
+                        <b>
+                            getFormattedGrantAmount
+                        </b>
+                        <a href="#getFormattedGrantAmount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFormattedGrantAmount(amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="231"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:231</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getGrantAmountInWords"></a>
+                    <span class="name">
+                        <b>
+                            getGrantAmountInWords
+                        </b>
+                        <a href="#getGrantAmountInWords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getGrantAmountInWords(amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="213"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:213</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getReports"></a>
+                    <span class="name">
+                        <b>
+                            getReports
+                        </b>
+                        <a href="#getReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getReports()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:62</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="highlight"></a>
+                    <span class="name">
+                        <b>
+                            highlight
+                        </b>
+                        <a href="#highlight"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>highlight(ev: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>, state: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="222"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:222</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ev</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>state</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="manageReport"></a>
+                    <span class="name">
+                        <b>
+                            manageReport
+                        </b>
+                        <a href="#manageReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>manageReport(report: <a href="../classes/Report.html">Report</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>report</td>
+                                    <td>
+                                                <code><a href="../classes/Report.html" target="_self" >Report</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:48</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processReports"></a>
+                    <span class="name">
+                        <b>
+                            processReports
+                        </b>
+                        <a href="#processReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>processReports(reports: <a href="../classes/Report.html">Report[]</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:98</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>reports</td>
+                                    <td>
+                                                <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectReportTemplate"></a>
+                    <span class="name">
+                        <b>
+                            selectReportTemplate
+                        </b>
+                        <a href="#selectReportTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectReportTemplate()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="149"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:149</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="viewAddnlReports"></a>
+                    <span class="name">
+                        <b>
+                            viewAddnlReports
+                        </b>
+                        <a href="#viewAddnlReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>viewAddnlReports(reportId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, grantId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:196</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>reportId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>grantId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="addnlReports"></a>
+                        <span class="name">
+                            <b>
+                            addnlReports</b>
+                            <a href="#addnlReports"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="appComp"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            appComp</b>
+                            <a href="#appComp"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../components/AppComponent.html" target="_self" >AppComponent</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="futureReportsToSetup"></a>
+                        <span class="name">
+                            <b>
+                            futureReportsToSetup</b>
+                            <a href="#futureReportsToSetup"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="grants"></a>
+                        <span class="name">
+                            <b>
+                            grants</b>
+                            <a href="#grants"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Grant.html" target="_self" >Grant[]</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:34</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="otherReportsClicked"></a>
+                        <span class="name">
+                            <b>
+                            otherReportsClicked</b>
+                            <a href="#otherReportsClicked"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:35</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reportComponent"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            reportComponent</b>
+                            <a href="#reportComponent"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >ReportComponent</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reportEndDate"></a>
+                        <span class="name">
+                            <b>
+                            reportEndDate</b>
+                            <a href="#reportEndDate"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reports"></a>
+                        <span class="name">
+                            <b>
+                            reports</b>
+                            <a href="#reports"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reportsReadyToSubmit"></a>
+                        <span class="name">
+                            <b>
+                            reportsReadyToSubmit</b>
+                            <a href="#reportsReadyToSubmit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reportStartDate"></a>
+                        <span class="name">
+                            <b>
+                            reportStartDate</b>
+                            <a href="#reportStartDate"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reportsToSetup"></a>
+                        <span class="name">
+                            <b>
+                            reportsToSetup</b>
+                            <a href="#reportsToSetup"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../classes/Report.html" target="_self" >Report[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="subscribers"></a>
+                        <span class="name">
+                            <b>
+                            subscribers</b>
+                            <a href="#subscribers"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/reports/upcoming-reports/upcoming-reports.component.ts:33</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import {ReportDataService} from &#x27;../../report.data.service&#x27;
+import {SingleReportDataService} from &#x27;../../single.report.data.service&#x27;
+import {Report, ReportTemplate} from &#x27;../../model/report&#x27;
+import {Grant} from &#x27;../../model/dahsboard&#x27;;
+import {AppComponent} from &#x27;../../app.component&#x27;;
+import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from &#x27;@angular/common/http&#x27;;
+import {Router, ActivatedRoute, ParamMap} from &#x27;@angular/router&#x27;;
+import {MatDialog} from &#x27;@angular/material&#x27;;
+import {ReportTemplateDialogComponent} from &#x27;../../components/report-template-dialog/report-template-dialog.component&#x27;;
+import {GrantSelectionDialogComponent} from &#x27;../../components/grant-selection-dialog/grant-selection-dialog.component&#x27;;
+import {AddnlreportsDialogComponent} from &#x27;../../components/addnlreports-dialog/addnlreports-dialog.component&#x27;;
+import {ReportComponent} from &#x27;../report/report.component&#x27;;
+import {TitleCasePipe} from &#x27;@angular/common&#x27;;
+import * as indianCurrencyInWords from &#x27;indian-currency-in-words&#x27;;
+import * as inf from &#x27;indian-number-format&#x27;;
+
+
+@Component({
+  selector: &#x27;app-upcoming-reports&#x27;,
+  templateUrl: &#x27;./upcoming-reports.component.html&#x27;,
+  styleUrls: [&#x27;./upcoming-reports.component.scss&#x27;],
+  providers: [ReportComponent,TitleCasePipe]
+})
+export class UpcomingReportsComponent implements OnInit {
+    reports: Report[];
+    reportStartDate: Date;
+    reportEndDate: Date;
+    reportsToSetup: Report[];
+    reportsReadyToSubmit: Report[];
+    addnlReports: Report[];
+    futureReportsToSetup: Report[];
+    subscribers: any &#x3D; {};
+    grants: Grant[] &#x3D; [];
+    otherReportsClicked: boolean &#x3D; false;
+
+    constructor(
+        private reportService: ReportDataService,
+        private singleReportService: SingleReportDataService,
+        private http: HttpClient,
+        private router: Router,
+        public appComp: AppComponent,
+        private dialog: MatDialog,
+        public reportComponent: ReportComponent,
+        private titlecasePipe: TitleCasePipe){
+        }
+
+  ngOnInit() {
+    this.appComp.subMenu &#x3D; {name:&#x27;Upcoming Reports&#x27;,action:&#x27;ur&#x27;};
+    this.reportService.currentMessage.subscribe(r &#x3D;&gt; {
+        this.reports &#x3D; r;
+     });
+
+     /*if(!this.reports){
+        this.getReports();
+     }else{
+        this.processReports(this.reports);
+     }*/
+     this.getReports();
+  }
+
+  getReports(){
+
+    const queryParams1 &#x3D; new HttpParams().set(&#x27;q&#x27;, &#x27;upcoming&#x27;);
+    const httpOptions1 &#x3D; {
+        headers: new HttpHeaders({
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+            &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;),
+            &#x27;Authorization&#x27;: localStorage.getItem(&#x27;AUTH_TOKEN&#x27;)
+        }),
+        params: queryParams1
+        };
+
+
+    const user &#x3D; JSON.parse(localStorage.getItem(&#x27;USER&#x27;));
+    const url &#x3D; &#x27;/api/user/&#x27; + user.id + &#x27;/report/&#x27;;
+    this.http.get&lt;Report[]&gt;(url, httpOptions1).subscribe((reports: Report[]) &#x3D;&gt; {
+        //this.processReports(reports);
+        this.reportsToSetup &#x3D; reports;
+        this.processReports(reports);
+    });
+
+    const queryParams2 &#x3D; new HttpParams().set(&#x27;q&#x27;, &#x27;upcoming-due&#x27;);
+    const httpOptions2 &#x3D; {
+        headers: new HttpHeaders({
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+            &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;),
+            &#x27;Authorization&#x27;: localStorage.getItem(&#x27;AUTH_TOKEN&#x27;)
+        }),
+        params: queryParams2
+     };
+    this.http.get&lt;Report[]&gt;(url, httpOptions2).subscribe((reports: Report[]) &#x3D;&gt; {
+        //this.processReports(reports);
+        this.reportsReadyToSubmit &#x3D; reports;
+    });
+  }
+
+  processReports(reports: Report[]){
+      /*reports.sort((a,b) &#x3D;&gt; a.endDate&gt;b.endDate?1:-1);
+      let reportStartDate &#x3D; new Date();
+      let reportEndDate &#x3D; new Date();
+      reportEndDate.setDate(reportEndDate.getDate()+30);
+      reportStartDate.setHours(0);
+      reportStartDate.setMinutes(0);
+      reportStartDate.setSeconds(0);
+      reportEndDate.setHours(23);
+      reportEndDate.setMinutes(59);
+      reportEndDate.setSeconds(59);
+      this.reportService.changeMessage(reports);
+      this.reportsToSetup &#x3D; this.reports.filter(a &#x3D;&gt; (new Date(a.endDate).getTime() &lt; reportStartDate.getTime() || (new Date(a.endDate).getTime() &gt;&#x3D; reportStartDate.getTime() &amp;&amp; new Date(a.endDate).getTime()&lt;&#x3D;reportEndDate.getTime())) &amp;&amp; (a.status.internalStatus!&#x3D;&#x3D;&#x27;ACTIVE&#x27; &amp;&amp; a.status.internalStatus!&#x3D;&#x3D;&#x27;CLOSED&#x27; &amp;&amp; a.status.internalStatus!&#x3D;&#x3D;&#x27;REVIEW&#x27;));
+      */
+      if(reports){
+          for(let i&#x3D;0; i&lt; reports.length;i++){
+              if(this.grants.filter(g &#x3D;&gt; g.id&#x3D;&#x3D;&#x3D;reports[i].grant.id).length&#x3D;&#x3D;&#x3D;0 ){
+                  this.grants.push(reports[i].grant);
+              }
+          }
+      }
+      /*
+      this.reportsReadyToSubmit &#x3D; this.reports.filter(a &#x3D;&gt; (new Date(a.endDate).getTime() &lt; reportStartDate.getTime() || (new Date(a.endDate).getTime() &gt;&#x3D; reportStartDate.getTime() &amp;&amp; new Date(a.endDate).getTime()&lt;&#x3D;reportEndDate.getTime())) &amp;&amp; (a.status.internalStatus&#x3D;&#x3D;&#x3D;&#x27;ACTIVE&#x27;));
+      this.futureReportsToSetup &#x3D; this.reports.filter(a &#x3D;&gt; new Date(a.endDate).getTime() &gt; reportEndDate.getTime() &amp;&amp; (a.status.internalStatus!&#x3D;&#x3D;&#x27;ACTIVE&#x27; &amp;&amp; a.status.internalStatus!&#x3D;&#x3D;&#x27;CLOSED&#x27; &amp;&amp; a.status.internalStatus!&#x3D;&#x3D;&#x27;REVIEW&#x27;));
+
+      if(this.reportsToSetup &amp;&amp; this.reportsToSetup.length&gt;0){
+          for(let i&#x3D;0; i&lt;this.reportsToSetup.length; i++){
+              const linkedReports &#x3D; this.futureReportsToSetup.filter(r &#x3D;&gt; r.grant.id&#x3D;&#x3D;&#x3D;this.reportsToSetup[i].grant.id);
+              if(linkedReports &amp;&amp; linkedReports.length&gt;0){
+                  this.reportsToSetup[i].linkedReports &#x3D; linkedReports.length;
+              }
+          }
+      }
+      console.log(this.reportStartDate + &quot;    &quot; + this.reportEndDate);
+      */
+  }
+  manageReport(report:Report){
+    if(this.otherReportsClicked){
+        return;
+    }
+    this.appComp.currentView &#x3D; &#x27;report&#x27;;
+    this.singleReportService.changeMessage(report);
+    if(report.canManage &amp;&amp; report.status.internalStatus!&#x3D;&#x27;CLOSED&#x27;){
+        this.appComp.action &#x3D; &#x27;report&#x27;;
+        this.router.navigate([&#x27;report/report-header&#x27;]);
+    } else{
+        this.appComp.action &#x3D; &#x27;report&#x27;;
+        this.router.navigate([&#x27;report/report-preview&#x27;]);
+    }
+  }
+
+    selectReportTemplate(){
+
+        const httpOptions &#x3D; {
+            headers: new HttpHeaders({
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+            &#x27;X-TENANT-CODE&#x27;: localStorage.getItem(&#x27;X-TENANT-CODE&#x27;),
+            &#x27;Authorization&#x27;: localStorage.getItem(&#x27;AUTH_TOKEN&#x27;)
+            })
+        };
+
+        const user &#x3D; JSON.parse(localStorage.getItem(&#x27;USER&#x27;));
+        let url &#x3D; &#x27;/api/user/&#x27; + user.id + &#x27;/report/templates&#x27;;
+        this.http.get&lt;ReportTemplate[]&gt;(url, httpOptions).subscribe((templates: ReportTemplate[]) &#x3D;&gt; {
+                let dialogRef &#x3D; this.dialog.open(ReportTemplateDialogComponent, {
+                data: templates,
+                panelClass: &#x27;grant-template-class&#x27;
+            });
+
+            dialogRef.afterClosed().subscribe(result &#x3D;&gt; {
+                if (result.result) {
+                    const template &#x3D; result.selectedTemplate;
+
+                    url &#x3D; &#x27;/api/user/&#x27; + user.id + &#x27;/grant/active&#x27;;
+                    this.http.get&lt;Grant[]&gt;(url,httpOptions).subscribe((activeGrants:Grant[]) &#x3D;&gt; {
+                        let dialogRef1 &#x3D; this.dialog.open(GrantSelectionDialogComponent, {
+                            data: activeGrants,
+                            panelClass: &#x27;grant-template-class&#x27;
+                        });
+
+                        dialogRef1.afterClosed().subscribe(result &#x3D;&gt; {
+                            if(result.result){
+                                this.reportComponent.createReport(template,result.selectedGrant);
+                                this.appComp.selectedReportTemplate &#x3D; result.selectedTemplate;
+                            }
+                        });
+                    });
+
+
+
+
+                } else {
+                    dialogRef.close();
+                }
+            });
+        });
+    }
+
+    viewAddnlReports(reportId:number,grantId: number){
+        this.otherReportsClicked &#x3D; true
+        let dialogRef1 &#x3D; this.dialog.open(AddnlreportsDialogComponent, {
+            data: {report:reportId,grant:grantId,grants:this.grants,futureReports:this.futureReportsToSetup,single:false},
+            panelClass: &#x27;addnl-report-class&#x27;
+        });
+
+        dialogRef1.afterClosed().subscribe(result &#x3D;&gt; {
+            if(result &amp;&amp; result.result){
+                this.otherReportsClicked &#x3D; false;
+                this.manageReport(result.selectedReport);
+            }else{
+                this.otherReportsClicked &#x3D; false;
+            }
+        });
+    }
+
+    getGrantAmountInWords(amount:number){
+        let amtInWords &#x3D; &#x27;-&#x27;;
+        if(amount){
+            amtInWords &#x3D; indianCurrencyInWords(amount).replace(&quot;Rupees&quot;,&quot;&quot;).replace(&quot;Paisa&quot;,&quot;&quot;);
+            return &#x27;Rs. &#x27; + this.titlecasePipe.transform(amtInWords);
+        }
+        return amtInWords;
+    }
+
+    highlight(ev: Event, state:boolean){
+        const target &#x3D; ev.target as HTMLElement;
+        if(state){
+            target.style.fontWeight&#x3D;&#x27;bold&#x27;;
+        }else{
+            target.style.fontWeight&#x3D;&#x27;normal&#x27;;
+        }
+    }
+
+    getFormattedGrantAmount(amount: number):string{
+        return inf.format(amount,2);
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;main-content&quot;&gt;
+    &lt;div class&#x3D;&quot;container-fluid&quot;&gt;
+        &lt;div class&#x3D;&quot;anu-container&quot; style&#x3D;&quot;padding:40px;&quot;&gt;
+            &lt;button *ngIf&#x3D;&quot;appComp.loggedInUser.organization.organizationType&#x3D;&#x3D;&#x3D;&#x27;GRANTER&#x27;&quot; class&#x3D;&quot;btn btn-sm btn-green&quot; style&#x3D;&quot;position: absolute;right: 94px;z-index:2;&quot; (click)&#x3D;&quot;selectReportTemplate()&quot;&gt;Create Ad Hoc Report&lt;/button&gt;
+
+            &lt;div class&#x3D;&quot;row&quot;&gt;
+                &lt;div class&#x3D;&quot;col-12&quot;&gt;
+                    &lt;mat-tab-group&gt;
+                        &lt;mat-tab *ngIf&#x3D;&quot;appComp.loggedInUser.organization.organizationType&#x3D;&#x3D;&#x3D;&#x27;GRANTER&#x27;&quot; label&#x3D;&quot;Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})&quot;&gt;
+
+                            &lt;div *ngIf&#x3D;&quot;!reportsToSetup&quot;&gt;
+                                &lt;img src&#x3D;&quot;./assets/img/loader.gif&quot; style&#x3D;&quot;width:10%;&quot;&gt;
+                                &lt;p style&#x3D;&quot;color: black&quot; &gt; Loading upcoming reports... &lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div *ngIf&#x3D;&quot;reportsToSetup &amp;&amp; reportsToSetup.length&#x3D;&#x3D;&#x3D;0&quot;&gt;
+                                &lt;p style&#x3D;&quot;color: black&quot; &gt; No reports found &lt;/p&gt;
+                            &lt;/div&gt;
+                                &lt;div class&#x3D;&quot;row w-100 p-3 mb-2 mx-0 grants-section&quot;
+                                     style&#x3D;&quot;border-bottom:1px solid #d4d4d4 ;cursor: pointer;&quot;
+                                     *ngFor&#x3D;&quot;let report of reportsToSetup; let i &#x3D; index&quot; (click)&#x3D;&quot;manageReport(report)&quot;&gt;
+                                    &lt;div class&#x3D;&quot;col-12 mb-1&quot;&gt;&lt;p class&#x3D;&quot;text-subheader text-left mb-0&quot;&gt;
+                                        Grant Name: &lt;b&gt;{{report.grant.name}}&lt;/b&gt; &amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;
+                                        Grantee Organization: &lt;b&gt;{{report.grant.organization?report.grant.organization.name:&#x27;&#x27;}}&lt;/b&gt;&lt;br&gt;
+                                        Grant Amount: &lt;img src&#x3D;&quot;./assets/img/rupee.png&quot; style&#x3D;&quot;width:9px;&quot;&gt;&lt;b&gt;{{getFormattedGrantAmount(report.grant.amount)}} &lt;/b&gt;
+                                        &amp;nbsp;&amp;nbsp;&lt;span&gt;{{getGrantAmountInWords(report.grant.amount)}}&lt;/span&gt;
+                                    &lt;/p&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class&#x3D;&quot;col-10&quot; style&#x3D;&quot;display:flex;align-items:center;&quot;&gt;
+                                        &lt;p class&#x3D;&quot;text-header text-left mr-3&quot; (click)&#x3D;&quot;manageReport(report)&quot;&gt;{{report.name}} | {{report.dueDate | date:&#x27;dd-MMM-yyyy&#x27;}} | &lt;/p&gt;
+                                        &lt;ng-container *ngIf&#x3D;&quot;report.futureReportsCount&quot; class&#x3D;&quot;col-2&quot;&gt;
+                                           &lt;p&gt;&lt;small&gt;&lt;a (click)&#x3D;&quot;viewAddnlReports(report.id,report.grant.id)&quot; class&#x3D;&quot;text-blue&quot; (mouseenter)&#x3D;&quot;highlight($event,true)&quot; (mouseleave)&#x3D;&quot;highlight($event,false)&quot;&gt; See other due reports ({{report.futureReportsCount}})&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+                                        &lt;/ng-container&gt;
+                                        &lt;ng-container *ngIf&#x3D;&quot;!report.futureReportsCount&quot; class&#x3D;&quot;col-2&quot;&gt;
+                                            &lt;p&gt;&lt;small class&#x3D;&quot;ml-3&quot;&gt;&lt;a&gt; Additional reports not available&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+                                        &lt;/ng-container&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class&#x3D;&quot;col-2&quot;&gt;
+                                        &lt;span [class]&#x3D;&quot;&#x27;badge pull-right state-&#x27; + report.status.internalStatus.toLowerCase()&quot; style&#x3D;&quot;color:#000 !important;&quot;&gt;{{report.status.displayName}}&lt;/span&gt;
+                                    &lt;/div&gt;
+
+                                    &lt;div class&#x3D;&quot;col-12 p-3&quot; style&#x3D;&quot;background:#f1f1f1&quot;&gt;
+                                        &lt;div class&#x3D;&quot;row mb-0&quot;&gt;
+                                            &lt;div class&#x3D;&quot;col-2&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Report Type:&lt;/p&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class&#x3D;&quot;col-7&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Reporting Time
+                                                Frame:&lt;/p&gt;&lt;/div&gt;
+                                            &lt;div class&#x3D;&quot;col-3&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Submission Due
+                                                Date&lt;/p&gt;&lt;/div&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class&#x3D;&quot;row&quot;&gt;
+                                            &lt;div class&#x3D;&quot;col-2&quot;&gt;&lt;p class&#x3D;&quot; text-left text-bold-highlight my-0&quot;&gt;
+                                                {{report.type&#x3D;&#x3D;&#x3D;&#x27;adhoc&#x27;?&#x27;Ad hoc&#x27;:report.type}}&lt;/p&gt;&lt;/div&gt;
+                                            &lt;div class&#x3D;&quot;col-7&quot;&gt;
+                                                &lt;div class&#x3D;&quot;row&quot;&gt;
+                                                    &lt;div&gt;
+                                                        &lt;p class&#x3D;&quot;text-bold-highlight my-0&quot;&gt;
+                                                            &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mr-1&quot;&gt;calendar_today
+                                                            &lt;/mat-icon&gt;
+                                                            {{report.startDate |
+                                                            date:&#x27;dd-MMM-yyyy&#x27;}}
+                                                        &lt;/p&gt;
+                                                    &lt;/div&gt;
+                                                    &lt;div&gt;
+                                                        &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mx-3 my-0&quot;&gt;arrow_forward
+                                                        &lt;/mat-icon&gt;
+                                                    &lt;/div&gt;
+                                                    &lt;div&gt;
+                                                        &lt;p class&#x3D;&quot;text-bold-highlight my-0&quot;&gt;
+                                                            &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mr-1&quot;&gt;calendar_today
+                                                            &lt;/mat-icon&gt;
+                                                            {{report.endDate |
+                                                            date:&#x27;dd-MMM-yyyy&#x27;}}
+                                                        &lt;/p&gt;
+                                                    &lt;/div&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class&#x3D;&quot;col-3&quot;&gt;&lt;p class&#x3D;&quot;text-left text-bold-highlight my-0&quot;&gt;
+                                                {{report.dueDate | date:&#x27;dd-MMM-yyyy&#x27;}}&lt;/p&gt;&lt;/div&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class&#x3D;&quot;col-12 text-right&quot;&gt;
+                                        &lt;a (click)&#x3D;&quot;manageReport(report)&quot;&gt;Review to publish&lt;/a&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+
+                        &lt;/mat-tab&gt;
+                        &lt;mat-tab label&#x3D;&quot;Submissions Due ({{reportsReadyToSubmit?reportsReadyToSubmit.length:0}})&quot;&gt;
+                            &lt;div *ngIf&#x3D;&quot;!reportsReadyToSubmit&quot;&gt;
+                                &lt;img src&#x3D;&quot;./assets/img/loader.gif&quot; style&#x3D;&quot;width:10%;&quot;&gt;
+                                &lt;p style&#x3D;&quot;color: black&quot; &gt; Loading ready to submit reports... &lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div *ngIf&#x3D;&quot;reportsReadyToSubmit &amp;&amp; reportsReadyToSubmit.length&#x3D;&#x3D;&#x3D;0&quot;&gt;
+                                &lt;p style&#x3D;&quot;color: black&quot; &gt; No reports found &lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;div class&#x3D;&quot;row w-100 p-3 mb-2 mx-0 grants-section&quot;
+                                 style&#x3D;&quot;border-bottom:1px solid #d4d4d4 ;cursor: pointer;&quot;
+                                 *ngFor&#x3D;&quot;let report of reportsReadyToSubmit; let i &#x3D; index&quot; (click)&#x3D;&quot;manageReport(report)&quot;&gt;
+                                &lt;div class&#x3D;&quot;col-12 mb-1&quot;&gt;&lt;p class&#x3D;&quot;text-subheader text-left mb-0&quot;&gt;Grant Name: &lt;b&gt;{{report.grant.name}}&lt;/b&gt; &amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;
+                                    Grantee Organization: &lt;b&gt;{{report.grant.organization?report.grant.organization.name:&#x27;&#x27;}}&lt;/b&gt;&lt;br&gt;
+                                    Grant Amount: &lt;img src&#x3D;&quot;./assets/img/rupee.png&quot; style&#x3D;&quot;width:9px;&quot;&gt;&lt;b&gt;{{getFormattedGrantAmount(report.grant.amount)}} &lt;/b&gt;
+                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span&gt;{{getGrantAmountInWords(report.grant.amount)}}&lt;/span&gt;
+                                &lt;/p&gt;
+                                &lt;/div&gt;
+                                &lt;div class&#x3D;&quot;col-10&quot;&gt;
+                                    &lt;p class&#x3D;&quot;text-header text-left&quot;&gt;{{report.name}} | {{report.dueDate | date:&#x27;dd-MMM-yyyy&#x27;}}&lt;/p&gt;
+                                &lt;/div&gt;
+                                &lt;div class&#x3D;&quot;col-2&quot;&gt;
+                                    &lt;span [class]&#x3D;&quot;&#x27;badge pull-right state-&#x27; + report.status.internalStatus.toLowerCase()&quot; style&#x3D;&quot;color:#000 !important;&quot;&gt;{{report.status.displayName}}&lt;/span&gt;
+                                &lt;/div&gt;
+
+                                &lt;div class&#x3D;&quot;col-12 p-3&quot; style&#x3D;&quot;background:#f1f1f1&quot;&gt;
+                                    &lt;div class&#x3D;&quot;row mb-0&quot;&gt;
+                                        &lt;div class&#x3D;&quot;col-2&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Report Type:&lt;/p&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class&#x3D;&quot;col-7&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Reporting Time
+                                            Frame:&lt;/p&gt;&lt;/div&gt;
+                                        &lt;div class&#x3D;&quot;col-3&quot;&gt;&lt;p class&#x3D;&quot;mb-0 text-subheader text-left&quot;&gt;Submission Due
+                                            Date&lt;/p&gt;&lt;/div&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class&#x3D;&quot;row&quot;&gt;
+                                        &lt;div class&#x3D;&quot;col-2&quot;&gt;&lt;p class&#x3D;&quot; text-left text-bold-highlight my-0&quot;&gt;
+                                            {{report.type&#x3D;&#x3D;&#x3D;&#x27;adhoc&#x27;?&#x27;Ad hoc&#x27;:report.type}}&lt;/p&gt;&lt;/div&gt;
+                                        &lt;div class&#x3D;&quot;col-7&quot;&gt;
+                                            &lt;div class&#x3D;&quot;row&quot;&gt;
+                                                &lt;div&gt;
+                                                    &lt;p class&#x3D;&quot;text-bold-highlight my-0&quot;&gt;
+                                                        &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mr-1&quot;&gt;calendar_today
+                                                        &lt;/mat-icon&gt;
+                                                        {{report.startDate |
+                                                        date:&#x27;dd-MMM-yyyy&#x27;}}
+                                                    &lt;/p&gt;
+                                                &lt;/div&gt;
+                                                &lt;div&gt;
+                                                    &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mx-3 my-0&quot;&gt;arrow_forward
+                                                    &lt;/mat-icon&gt;
+                                                &lt;/div&gt;
+                                                &lt;div&gt;
+                                                    &lt;p class&#x3D;&quot;text-bold-highlight my-0&quot;&gt;
+                                                        &lt;mat-icon [inline]&#x3D;&quot;true&quot; class&#x3D;&quot;mr-1&quot;&gt;calendar_today
+                                                        &lt;/mat-icon&gt;
+                                                        {{report.endDate |
+                                                        date:&#x27;dd-MMM-yyyy&#x27;}}
+                                                    &lt;/p&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class&#x3D;&quot;col-3&quot;&gt;&lt;p class&#x3D;&quot;text-left text-bold-highlight my-0&quot;&gt;
+                                            {{report.dueDate | date:&#x27;dd-MMM-yyyy&#x27;}}&lt;/p&gt;&lt;/div&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/mat-tab&gt;
+                    &lt;/mat-tab-group&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./upcoming-reports.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="main-content">    <div class="container-fluid">        <div class="anu-container" style="padding:40px;">            <button *ngIf="appComp.loggedInUser.organization.organizationType===\'GRANTER\'" class="btn btn-sm btn-green" style="position: absolute;right: 94px;z-index:2;" (click)="selectReportTemplate()">Create Ad Hoc Report</button>            <div class="row">                <div class="col-12">                    <mat-tab-group>                        <mat-tab *ngIf="appComp.loggedInUser.organization.organizationType===\'GRANTER\'" label="Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})">                            <div *ngIf="!reportsToSetup">                                <img src="./assets/img/loader.gif" style="width:10%;">                                <p style="color: black" > Loading upcoming reports... </p>                            </div>                            <div *ngIf="reportsToSetup && reportsToSetup.length===0">                                <p style="color: black" > No reports found </p>                            </div>                                <div class="row w-100 p-3 mb-2 mx-0 grants-section"                                     style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"                                     *ngFor="let report of reportsToSetup; let i = index" (click)="manageReport(report)">                                    <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">                                        Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;                                        Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:\'\'}}</b><br>                                        Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>                                        &nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>                                    </p>                                    </div>                                    <div class="col-10" style="display:flex;align-items:center;">                                        <p class="text-header text-left mr-3" (click)="manageReport(report)">{{report.name}} | {{report.dueDate | date:\'dd-MMM-yyyy\'}} | </p>                                        <ng-container *ngIf="report.futureReportsCount" class="col-2">                                           <p><small><a (click)="viewAddnlReports(report.id,report.grant.id)" class="text-blue" (mouseenter)="highlight($event,true)" (mouseleave)="highlight($event,false)"> See other due reports ({{report.futureReportsCount}})</a></small></p>                                        </ng-container>                                        <ng-container *ngIf="!report.futureReportsCount" class="col-2">                                            <p><small class="ml-3"><a> Additional reports not available</a></small></p>                                        </ng-container>                                    </div>                                    <div class="col-2">                                        <span [class]="\'badge pull-right state-\' + report.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{report.status.displayName}}</span>                                    </div>                                    <div class="col-12 p-3" style="background:#f1f1f1">                                        <div class="row mb-0">                                            <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>                                            </div>                                            <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time                                                Frame:</p></div>                                            <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due                                                Date</p></div>                                        </div>                                        <div class="row">                                            <div class="col-2"><p class=" text-left text-bold-highlight my-0">                                                {{report.type===\'adhoc\'?\'Ad hoc\':report.type}}</p></div>                                            <div class="col-7">                                                <div class="row">                                                    <div>                                                        <p class="text-bold-highlight my-0">                                                            <mat-icon [inline]="true" class="mr-1">calendar_today                                                            </mat-icon>                                                            {{report.startDate |                                                            date:\'dd-MMM-yyyy\'}}                                                        </p>                                                    </div>                                                    <div>                                                        <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward                                                        </mat-icon>                                                    </div>                                                    <div>                                                        <p class="text-bold-highlight my-0">                                                            <mat-icon [inline]="true" class="mr-1">calendar_today                                                            </mat-icon>                                                            {{report.endDate |                                                            date:\'dd-MMM-yyyy\'}}                                                        </p>                                                    </div>                                                </div>                                            </div>                                            <div class="col-3"><p class="text-left text-bold-highlight my-0">                                                {{report.dueDate | date:\'dd-MMM-yyyy\'}}</p></div>                                        </div>                                    </div>                                    <div class="col-12 text-right">                                        <a (click)="manageReport(report)">Review to publish</a>                                    </div>                                </div>                        </mat-tab>                        <mat-tab label="Submissions Due ({{reportsReadyToSubmit?reportsReadyToSubmit.length:0}})">                            <div *ngIf="!reportsReadyToSubmit">                                <img src="./assets/img/loader.gif" style="width:10%;">                                <p style="color: black" > Loading ready to submit reports... </p>                            </div>                            <div *ngIf="reportsReadyToSubmit && reportsReadyToSubmit.length===0">                                <p style="color: black" > No reports found </p>                            </div>                            <div class="row w-100 p-3 mb-2 mx-0 grants-section"                                 style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"                                 *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">                                <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">Grant Name: <b>{{report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;                                    Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:\'\'}}</b><br>                                    Grant Amount: <img src="./assets/img/rupee.png" style="width:9px;"><b>{{getFormattedGrantAmount(report.grant.amount)}} </b>                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>                                </p>                                </div>                                <div class="col-10">                                    <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:\'dd-MMM-yyyy\'}}</p>                                </div>                                <div class="col-2">                                    <span [class]="\'badge pull-right state-\' + report.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{report.status.displayName}}</span>                                </div>                                <div class="col-12 p-3" style="background:#f1f1f1">                                    <div class="row mb-0">                                        <div class="col-2"><p class="mb-0 text-subheader text-left">Report Type:</p>                                        </div>                                        <div class="col-7"><p class="mb-0 text-subheader text-left">Reporting Time                                            Frame:</p></div>                                        <div class="col-3"><p class="mb-0 text-subheader text-left">Submission Due                                            Date</p></div>                                    </div>                                    <div class="row">                                        <div class="col-2"><p class=" text-left text-bold-highlight my-0">                                            {{report.type===\'adhoc\'?\'Ad hoc\':report.type}}</p></div>                                        <div class="col-7">                                            <div class="row">                                                <div>                                                    <p class="text-bold-highlight my-0">                                                        <mat-icon [inline]="true" class="mr-1">calendar_today                                                        </mat-icon>                                                        {{report.startDate |                                                        date:\'dd-MMM-yyyy\'}}                                                    </p>                                                </div>                                                <div>                                                    <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward                                                    </mat-icon>                                                </div>                                                <div>                                                    <p class="text-bold-highlight my-0">                                                        <mat-icon [inline]="true" class="mr-1">calendar_today                                                        </mat-icon>                                                        {{report.endDate |                                                        date:\'dd-MMM-yyyy\'}}                                                    </p>                                                </div>                                            </div>                                        </div>                                        <div class="col-3"><p class="text-left text-bold-highlight my-0">                                            {{report.dueDate | date:\'dd-MMM-yyyy\'}}</p></div>                                    </div>                                </div>                            </div>                        </mat-tab>                    </mat-tab-group>                </div>            </div>        </div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'ActiveGrantsComponent', 'selector': 'app-active-grants'},{'name': 'AddnlreportsDialogComponent', 'selector': 'app-addnlreports-dialog'},{'name': 'AdminLayoutComponent', 'selector': 'app-admin-layout'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ApplicationsComponent', 'selector': 'applications-dashboard'},{'name': 'ApprovedReportsComponent', 'selector': 'app-approved-reports'},{'name': 'BasicComponent', 'selector': 'app-basic'},{'name': 'BottomsheetAttachmentsComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'BottomsheetComponent', 'selector': 'app-bottomsheet'},{'name': 'BottomsheetNotesComponent', 'selector': 'app-bottomsheetattachments'},{'name': 'ChartSummaryComponent', 'selector': 'app-chart-summary'},{'name': 'ClosedGrantsComponent', 'selector': 'app-closed-grants'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailsComponent', 'selector': 'organization-details-dashboard'},{'name': 'DisbursementsComponent', 'selector': 'disbursements-dashboard'},{'name': 'DraftGrantsComponent', 'selector': 'app-draft-grants'},{'name': 'EditorComponent', 'selector': 'app-editor'},{'name': 'FieldDialogComponent', 'selector': 'app-field-dialog'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GrantComponent', 'selector': 'app-grant'},{'name': 'GranthistoryComponent', 'selector': 'app-granthistory-dialog'},{'name': 'GrantNotesComponent', 'selector': 'app-grantnotes'},{'name': 'GrantsComponent', 'selector': 'app-dashboard'},{'name': 'GrantSelectionDialogComponent', 'selector': 'app-grant-selection-dialog'},{'name': 'GrantTemplateDialogComponent', 'selector': 'app-grant-template-dialog'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'IconsComponent', 'selector': 'app-icons'},{'name': 'InviteDialogComponent', 'selector': 'app-invite-dialog'},{'name': 'KpisubmissionComponent', 'selector': 'app-kpisubmission'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MapsComponent', 'selector': 'app-maps'},{'name': 'MessagingComponent', 'selector': 'app-messaging'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationspopupComponent', 'selector': 'app-notificationspopup-dialog'},{'name': 'OrgadminComponent', 'selector': 'organization-admin-dashboard'},{'name': 'OrganizationComponent', 'selector': 'organization-dashboard'},{'name': 'PortfolioSummaryComponent', 'selector': 'app-portfolio-summary'},{'name': 'PreviewComponent', 'selector': 'app-preview'},{'name': 'ProgressSummaryComponent', 'selector': 'app-progress-summary'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ReportComponent', 'selector': 'app-report'},{'name': 'ReportHeaderComponent', 'selector': 'app-report-header'},{'name': 'ReportingComponent', 'selector': 'app-reporting'},{'name': 'ReportNotesComponent', 'selector': 'app-reportnotes'},{'name': 'ReportPreviewComponent', 'selector': 'app-report-preview'},{'name': 'ReportsComponent', 'selector': 'reports-dashboard'},{'name': 'ReportSectionsComponent', 'selector': 'app-report-sections'},{'name': 'ReportTemplateDialogComponent', 'selector': 'app-report-template-dialog'},{'name': 'RfpsComponent', 'selector': 'rfps-dashboard'},{'name': 'RolesComponent', 'selector': 'app-roles'},{'name': 'SectionEditComponent', 'selector': 'app-section-edit'},{'name': 'SectionsComponent', 'selector': 'app-sections'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SubmittedReportsComponent', 'selector': 'app-submitted-reports'},{'name': 'SummaryCenteredComponent', 'selector': 'app-summary-centered'},{'name': 'SummaryComponent', 'selector': 'app-summary'},{'name': 'TableListComponent', 'selector': 'app-table-list'},{'name': 'TemplateDialogComponent', 'selector': 'app-template-dialog'},{'name': 'TemplatesComponent', 'selector': 'app-templates'},{'name': 'TenantsComponent', 'selector': 'app-tenants'},{'name': 'TypographyComponent', 'selector': 'app-typography'},{'name': 'UpcomingReportsComponent', 'selector': 'app-upcoming-reports'},{'name': 'UpgradeComponent', 'selector': 'app-upgrade'},{'name': 'UserProfileComponent', 'selector': 'app-user-profile'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'WelcomeComponent', 'selector': 'app-welcome'},{'name': 'WelcomePopupComponent', 'selector': 'app-welcome-popup'},{'name': 'WfassignmentComponent', 'selector': 'app-wfassignment-dialog'},{'name': 'WorkflowManagementComponent', 'selector': 'app-workflow-management'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'UpcomingReportsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'UpcomingReportsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

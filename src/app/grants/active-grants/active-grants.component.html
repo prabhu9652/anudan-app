@@ -26,9 +26,10 @@
                                           (click)="manageGrant(grant)">
                                    
 
-                                    <div class="col-8 text-left">
+                                    <div class="col-10 text-left">
                                         
-                                        <p style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p *ngIf="!grant.referenceNo"style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                        <p *ngIf="grant.referenceNo"style="font-size: 18px;"><b>{{grant.referenceNo}}</b> | <b>{{grant.name}}</b></p>
                                         <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
                                         <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
                                         <div class="row">
@@ -42,7 +43,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
                                     </div>
                                 </div>

@@ -5,7 +5,7 @@
             <div style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;">{{name}}</div>
         </div>
         <div class="col-3">
-            <mat-select class="anu-input" [value]="selected.name" (selectionChange)="doSomething($event)">
+            <mat-select *ngIf="selected" class="anu-input" [value]="selected.name" (selectionChange)="doSomething($event)">
                 <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
             </mat-select>
         </div>

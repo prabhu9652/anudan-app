@@ -265,6 +265,7 @@ export class Grant {
   securityCode: string;
   canManage: boolean;
   approvedReportsDisbursements: TableData[];
+  referenceNo: string;
 }
 
 export class GrantSnapshot {
