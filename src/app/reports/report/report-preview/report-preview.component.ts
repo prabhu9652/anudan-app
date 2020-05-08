@@ -44,7 +44,8 @@ export class ReportPreviewComponent implements OnInit {
     humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
     logoUrl: string;
     reportWorkflowStatuses:WorkflowStatus[];
-    tenantUsers: User[]
+    tenantUsers: User[];
+    wfDisabled: boolean = false;
 
     @ViewChild('pdf') pdf;
     @ViewChild('createSectionModal') createSectionModal: ElementRef;
@@ -139,6 +140,7 @@ export class ReportPreviewComponent implements OnInit {
 
         if(statusTransition && statusTransition[0].noteRequired){
             this.openBottomSheetForReportNotes(toStateId);
+            this.wfDisabled = true;
             return;
         }
     }
@@ -154,6 +156,8 @@ export class ReportPreviewComponent implements OnInit {
         _bSheet.afterClosed().subscribe(result => {
           if(result.result){
             this.submitAndSaveReport(toStateId,result.message);
+          }else{
+            this.wfDisabled = false;
           }
         });
       }
@@ -224,6 +228,8 @@ export class ReportPreviewComponent implements OnInit {
         if(!message){
             message='';
         }
+
+        this.wfDisabled = true;
         const httpOptions = {
             headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -239,7 +245,7 @@ export class ReportPreviewComponent implements OnInit {
         this.http.post(url, {report: this.currentReport,note:message}, httpOptions).subscribe((report: Report) => {
 
             this.singleReportDataService.changeMessage(report);
-
+            this.wfDisabled = false;
                 if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
                     this.appComp.subMenu = {name:'Upcoming Reports',action:'ur'};
                 } else if(report.status.internalStatus==='REVIEW'){
