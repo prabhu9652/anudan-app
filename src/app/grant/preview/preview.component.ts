@@ -86,7 +86,8 @@ export class PreviewComponent implements OnInit {
   dialogSubscription: Subscription;
   private ngUnsubscribe = new Subject();
   approvedReports: Report[];
-  hasApprovedReports: boolean
+  hasApprovedReports: boolean;
+  wfDisabled: boolean = false;
 
   public pdfExport: PDFExportComponent;
 
@@ -848,11 +849,13 @@ export class PreviewComponent implements OnInit {
 
     if(statusTransition && statusTransition[0].noteRequired){
         this.openBottomSheetForGrantNotes(toStateId);
+        this.wfDisabled = true;
     }
   }
 
   submitAndSaveGrant(toStateId:number, message:String){
 
+  this.wfDisabled = true;
   if(!message){
     message='';
   }
@@ -872,7 +875,7 @@ export class PreviewComponent implements OnInit {
 
 
         this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-
+        this.wfDisabled = false;
         if(this.currentGrant.startDate && this.currentGrant.endDate){
           var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
           time = time + 86400001;
@@ -1232,6 +1235,8 @@ export class PreviewComponent implements OnInit {
     _bSheet.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if(result.result){
         this.submitAndSaveGrant(toStateId,result.message);
+      }else{
+        this.wfDisabled = false;
       }
     });
   }

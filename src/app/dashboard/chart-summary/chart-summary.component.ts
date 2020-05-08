@@ -116,7 +116,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         const dataCommitted: any[] = [];
         const dataDisbursed: any[] = [];
         const dataCommittedCounts: any[] = [];
-        const dataDisbursedCounts: any[] = [[]];
+        const dataDisbursedCounts: any[] = [];
 
         let maxTick = 0;
 
@@ -125,11 +125,11 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
 
             for(let v of s.values){
                 if(v.name==='Committed'){
-                    dataCommitted.push([v.value,v.count]);
+                    dataCommitted.push(v.value);
                     dataCommittedCounts.push(v.count);
                 }
                 if(v.name==='Disbursed'){
-                    dataDisbursed.push([v.value,v.count]);
+                    dataDisbursed.push(v.value);
                     dataDisbursedCounts.push(v.count);
                 }
                 if(Number(v.value)>maxTick){
@@ -155,7 +155,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                        align:'top',
                        offset:10,
                        formatter: function(value, context) {
-                        return value[1];
+                        return value;
                        }
                    }
                 }, {
@@ -171,7 +171,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                        align:'top',
                        offset:15,
                        formatter: function(value, context) {
-                        return value[1];
+                        return value;
                        }
                   }
                 }]
