@@ -1,6 +1,6 @@
 import {Component, OnInit,Input,ElementRef, ViewChild,OnChanges, SimpleChanges, SimpleChange,AfterViewChecked} from '@angular/core';
 import {Chart} from 'chart.js';
-import 'chartjs-plugin-datalabels';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-chart-summary',
@@ -29,7 +29,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
     }
 
     ngOnInit() {
-
+        Chart.plugins.unregister(ChartDataLabels);
     }
 
     ngAfterViewChecked(){
@@ -67,12 +67,25 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
             data.push(s.value);
         }
         this.PieChart = new Chart(this.ctx, {
+            plugins: [ChartDataLabels],
             type: 'doughnut',
             data: {
                 labels: labels,
                 datasets: [{
-                label: '# of Votes',
-                data: data,
+                    datalabels:{
+                        color: 'white',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: function(value, context) {
+                            if(Number(value)>0){
+                                return value;
+                            }else{
+                                return '';
+                            }
+                        }
+                    },
+                    data: data,
                     backgroundColor: [
                         '#4DC252',
                         '#4D83C2',
@@ -89,14 +102,6 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                     },
                     tooltips:{
                         enabled: false
-                    },
-                    plugins:{
-                        datalabels:{
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
                     }
             }
         });
@@ -110,30 +115,65 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         const labels: string[] = [];
         const dataCommitted: any[] = [];
         const dataDisbursed: any[] = [];
+        const dataCommittedCounts: any[] = [];
+        const dataDisbursedCounts: any[] = [[]];
+
+        let maxTick = 0;
 
         for(let s of this.selected.summary){
             labels.push(s.name);
+
             for(let v of s.values){
                 if(v.name==='Committed'){
-                    dataCommitted.push(v.value);
+                    dataCommitted.push([v.value,v.count]);
+                    dataCommittedCounts.push(v.count);
                 }
                 if(v.name==='Disbursed'){
-                    dataDisbursed.push(v.value);
+                    dataDisbursed.push([v.value,v.count]);
+                    dataDisbursedCounts.push(v.count);
+                }
+                if(Number(v.value)>maxTick){
+                    maxTick = Number(v.value);
                 }
             }
         }
         this.BarChart = new Chart(this.ctx, {
+            plugins: [ChartDataLabels],
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
                   label: 'Grant Level Commitment',
                   data: dataCommitted,
-                  backgroundColor: "#4D83C2"
+                  backgroundColor: "#4D83C2",
+                  datalabels:{
+                       color: 'black',
+                       font: {
+                           weight: 'bold'
+                       },
+                       anchor:'end',
+                       align:'top',
+                       offset:10,
+                       formatter: function(value, context) {
+                        return value[1];
+                       }
+                   }
                 }, {
                   label: 'Disbursed for the period',
                   data: dataDisbursed,
-                  backgroundColor: "#39743C"
+                  backgroundColor: "#39743C",
+                  datalabels:{
+                       color: 'black',
+                       font: {
+                           weight: 'bold'
+                       },
+                       anchor:'end',
+                       align:'top',
+                       offset:15,
+                       formatter: function(value, context) {
+                        return value[1];
+                       }
+                  }
                 }]
               },
             options: {
@@ -145,19 +185,24 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
                     tooltips:{
                         enabled: false
                     },
-                    plugins:{
-                        datalabels:{
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    },
                     scales:{
-                        yAxes:[{
+                        yAxes:[
+                            {
                             scaleLabel: {
                                    display: true,
-                                   labelString: "Amount in Lakhs",
+                                   labelString: "In Lakhs (₹)",
+                            },
+                            ticks:{
+                                    min: 0,
+                                    max: (Math.ceil(maxTick/50)*50)+500,
+                                    stepSize: 500
+                            }
+                        }],
+                        xAxes:[
+                            {
+                            scaleLabel: {
+                                   display: true,
+                                   labelString: "Financial Periods",
                             }
                         }]
                     }
@@ -165,6 +210,7 @@ export class ChartSummaryComponent implements OnInit,OnChanges,AfterViewChecked 
         });
         this.BarChart.generateLegend();
     }
+
 
     doSomething(ev:any){
         for(let i=0;i<this.data.length;i++){
