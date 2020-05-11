@@ -784,3 +784,7 @@ kendo-pdf-export {
 .footer .copyright {
     padding: 5px 0 !important;
 }
+
+.width-10{
+    width: 10%;
+}

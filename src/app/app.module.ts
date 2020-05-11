@@ -17,6 +17,8 @@ import {MapsComponent} from './maps/maps.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
+import {PasswordResetComponent} from './password-reset/password-reset.component';
+import {ChangePasswordComponent} from './change-password/change-password.component';
 import {MessagingComponent} from './components/messaging/messaging.component';
 import {HomeComponent} from './home/home.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
@@ -75,6 +77,8 @@ export function provideConfig() {
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
+    PasswordResetComponent,
+    ChangePasswordComponent,
     HomeComponent,
     WelcomeComponent,
     KpisubmissionComponent,
