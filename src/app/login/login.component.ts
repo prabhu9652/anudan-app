@@ -208,4 +208,9 @@ export class LoginComponent implements OnInit {
         let isValid = !isWhitespace;
         return isValid ? null : { 'whitespace': true }
     }
+
+    requestPasswordReset(){
+        this.router.navigate(['/passwordreset'], { queryParams: { mail: this.loginForm.get('emailId').value} });
+    }
+
 }

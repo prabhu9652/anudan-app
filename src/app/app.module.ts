@@ -17,6 +17,8 @@ import {MapsComponent} from './maps/maps.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import {UpgradeComponent} from './upgrade/upgrade.component';
 import {LoginComponent} from './login/login.component';
+import {PasswordResetComponent} from './password-reset/password-reset.component';
+import {ChangePasswordComponent} from './change-password/change-password.component';
 import {MessagingComponent} from './components/messaging/messaging.component';
 import {HomeComponent} from './home/home.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
@@ -57,7 +59,7 @@ export class AnudanErrorHandler implements ErrorHandler {
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider('788882936832-lr47bt54r71ldb866e63gklpgi1cjujd.apps.googleusercontent.com')
+    provider: new GoogleLoginProvider('671926612888-d9f3pqqmirp56sf6b5ott27eb1ebdrd3.apps.googleusercontent.com')
   },
   {
     id: LinkedinLoginProvider.PROVIDER_ID,
@@ -75,6 +77,8 @@ export function provideConfig() {
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
+    PasswordResetComponent,
+    ChangePasswordComponent,
     HomeComponent,
     WelcomeComponent,
     KpisubmissionComponent,

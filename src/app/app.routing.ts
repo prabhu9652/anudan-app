@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { HomeComponent } from './home/home.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { KpisubmissionComponent } from './kpisubmission/kpisubmission.component';
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'welcome', component: WelcomeComponent},
   {path: '', redirectTo:'home',pathMatch:'full'},
+  {path:'passwordreset',component:PasswordResetComponent},
+  {path:'setnewpassword',component:ChangePasswordComponent},
   {
     path: '',
     component: AdminLayoutComponent,
