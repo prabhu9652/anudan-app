@@ -16,7 +16,14 @@ import {MatDialog} from '@angular/material';
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.sass']
+  styleUrls: ['./change-password.component.sass'],
+  styles:[`
+         ::ng-deep .mat-tooltip  {
+             white-space: pre-line    !important;
+             text-align: left;
+             font-size: 12px;
+         }
+  `]
 })
 export class ChangePasswordComponent implements OnInit {
 
@@ -38,10 +45,11 @@ export class ChangePasswordComponent implements OnInit {
   passwordsMatch:boolean=false;
   hasError:boolean=false;
   errorMessage:String;
+  org:string;
 
   changePasswordForm = new FormGroup({
-    pwd1: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
-    pwd2: new FormControl('',[Validators.required, this.noWhitespaceValidator]),
+    pwd1: new FormControl('', [Validators.required,Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/), this.noWhitespaceValidator]),
+    pwd2: new FormControl('',[Validators.required,Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/), this.noWhitespaceValidator]),
   });
 
 
@@ -64,8 +72,9 @@ export class ChangePasswordComponent implements OnInit {
 
     if(this.parameters.email && this.parameters.key){
       this.currentEmail = this.parameters.email;
+      this.currentEmail = this.currentEmail.replace(/ /g,"+");
       this.key = this.parameters.key;
-      this.orgName = this.parameters.org;
+      this.org = this.parameters.org;
     }
 
     this.changePasswordForm.valueChanges.subscribe(data => {
@@ -108,11 +117,11 @@ export class ChangePasswordComponent implements OnInit {
     const pwd1 = this.changePasswordForm.get('pwd1').value;
     const pwd2 = this.changePasswordForm.get('pwd2').value;
     let url = '/api/users/set-password';
-    this.http.post<User>(url,{pwd1:pwd1,pwd2:pwd2,key:this.key,email:this.currentEmail,org:this.orgName}, httpOptions).subscribe( (result: User) => {
+    this.http.post<User>(url,{pwd1:pwd1,pwd2:pwd2,key:this.key,email:this.currentEmail,org:this.org}, httpOptions).subscribe( (result: User) => {
         this.sentStatus = 'sent';
-        this.sentEmailStatusMessage = "Your password has been reset successfully.<br>Signing in now.<img src='./assets/img/loader.gif' class='width-10'>";
+        this.sentEmailStatusMessage = "Your password has been reset successfully.";
 
-        const user2Login: AccessCredentials = {
+        /*const user2Login: AccessCredentials = {
               username: result.emailId,
               password: pwd1,
               provider: 'ANUDAN',
@@ -163,7 +172,7 @@ export class ChangePasswordComponent implements OnInit {
                     this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
                       enableHtml: true
                     });
-                  });
+                  });*/
     }, error =>{
         const errorMsg = error as HttpErrorResponse;
         this.hasError = true;

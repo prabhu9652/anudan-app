@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {ErrorMessage} from '../model/error-message';
 import {AppComponent} from '../app.component';
 import {ToastrService,IndividualConfig} from 'ngx-toastr';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 
 declare var $: any;
 
@@ -22,7 +23,7 @@ declare var $: any;
 export class UserProfileComponent implements OnInit {
 
   user: User;
-  constructor(private http: HttpClient, private elem: ElementRef, private appComp: AppComponent,private toastr: ToastrService) {}
+  constructor(private http: HttpClient, private elem: ElementRef,private router: Router, private appComp: AppComponent,private toastr: ToastrService) {}
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('USER'));
@@ -50,6 +51,11 @@ export class UserProfileComponent implements OnInit {
       alert('Your new and repeat passwords do not match');
       return;
     }
+    const pattern: RegExp = /(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/;
+    if(!pattern.test(newPwdElem.value) || !pattern.test(repeatPwdElem.value)){
+        alert('Your new and repeat passwords do not match the allowed pattern');
+        return;
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -73,6 +79,7 @@ export class UserProfileComponent implements OnInit {
           newPwdElem.value='';
           repeatPwdElem.value='';
           $(changePwdModalElem).modal('hide');
+          this.appComp.logout();
         },error => {
                                       const errorMsg = error as HttpErrorResponse;
                                       console.log(error);

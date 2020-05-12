@@ -147,7 +147,7 @@ export class RegistrationComponent implements OnInit {
             if (!this.user.organization || this.user.organization.type === 'GRANTEE') {
               this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'n' } });
             } else {
-              this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'n' } });
+              this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:this.parameters.status } });
             }
           },
           error => {

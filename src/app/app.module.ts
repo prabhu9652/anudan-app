@@ -59,7 +59,7 @@ export class AnudanErrorHandler implements ErrorHandler {
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider('788882936832-lr47bt54r71ldb866e63gklpgi1cjujd.apps.googleusercontent.com')
+    provider: new GoogleLoginProvider('671926612888-d9f3pqqmirp56sf6b5ott27eb1ebdrd3.apps.googleusercontent.com')
   },
   {
     id: LinkedinLoginProvider.PROVIDER_ID,

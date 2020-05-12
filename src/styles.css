@@ -313,7 +313,7 @@ input:-internal-autofill-selected{
 .btn-red{
     background-color: #fff !important;
     border: 1px solid #D84830;
-    color: #D84830 !important;
+    color: #0E100E !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -323,7 +323,7 @@ input:-internal-autofill-selected{
 .btn-green{
     background-color: transparent !important;
     border: 1px solid #39743C !important;
-    color: #39743C !important;
+    color: #0E100E !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -337,7 +337,7 @@ input:-internal-autofill-selected{
 .btn-blue{
     background-color: transparent !important;
     border: 1px solid #3f51b5 !important;
-    color: #3f51b5 !important;
+    color: #0E100E !important;
     display: flex;
     align-items: center;
     justify-content: center;

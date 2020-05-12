@@ -102,7 +102,11 @@ export class PasswordResetComponent implements OnInit {
     const url = '/api/users/forgot/'+email;
     this.http.get(url, httpOptions).subscribe( (result:any) => {
         this.sentStatus = 'sent';
-        this.sentEmailStatusMessage = result.message;
+        if(result.status==='registered'){
+            this.sentEmailStatusMessage = result.message;
+        }else if(result.status==='unregistered'){
+            this.router.navigate(['/registration'], { queryParams: {email: email,org:result.org,type:'join',status:result.status } });
+        }
     },error =>{
         const errorMsg = error as HttpErrorResponse;
         this.hasError = true;
