@@ -4,10 +4,9 @@
 <div mat-dialog-content>
 	<div>
 	<mat-card *ngFor="let grant of grants" value="{{grant.id}}" style="background:#E5E5E5;max-width:none;" class="mb-3">
-		<mat-card-title style="font-size:14px;">{{grant.name}}
+		<mat-card-title style="font-size:14px;">{{(grant.referenceNo?grant.referenceNo+' | ':'') + grant.name}}
 			<mat-checkbox class="template-checkbox float-right" [checked]="grant.id===selected" (change)="setSelectedGrant(grant.id,$event)"></mat-checkbox>
 		</mat-card-title>
-		<mat-card-content style="background:#fff;padding:10px;">Hello</mat-card-content>
 	</mat-card>
 	</div>
 </div>
