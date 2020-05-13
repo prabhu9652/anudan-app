@@ -4,8 +4,11 @@
 
         <div class="row">
             <div class="col-9">
-                <div *ngIf="selected.name==='Reports'" style="display: block; width: 400px; height: 200px;">
-                    <canvas  class="pieChart"></canvas>
+                <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; width: 400px; height: 200px;">
+                    <canvas class="pieChart1"></canvas>
+                </div>
+                <div *ngIf="selected.name==='Reports' && portfolioType==='Closed Grants'" style="display: block; width: 400px; height: 200px;">
+                    <canvas class="pieChart2"></canvas>
                 </div>
                 <div *ngIf="selected.name==='Disbursements'" style="display: block; width: 600px; height: 300px;">
                     <canvas  class="barChart"></canvas>

@@ -16,6 +16,7 @@ export class PortfolioSummaryComponent implements OnInit, OnChanges  {
      portfolioData:any;
      portfolioProgessData:any;
      portfolioDetailData:any;
+     portfolioType:any;
 
 
     constructor() {
@@ -36,6 +37,7 @@ export class PortfolioSummaryComponent implements OnInit, OnChanges  {
                         this.selected = this.data[0];
                         this.portfolioData = this.data[0];
                         this.portfolioProgessData = this.data[0];
+                        this.portfolioType = this.data[0].name;
                         this.portfolioDetailData = this.data[0].details;
                     }
                 }
@@ -50,6 +52,7 @@ export class PortfolioSummaryComponent implements OnInit, OnChanges  {
                 this.selected = this.data[i];
                 this.portfolioData = this.data[i];
                 this.portfolioProgessData = this.data[i];
+                this.portfolioType = this.data[i].name;
                 this.portfolioDetailData = this.data[i].details;
             }
         }
