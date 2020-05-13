@@ -314,6 +314,7 @@
                         </div>
                         <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType==='disbursement'">
                             <div id="tableArea" class="row" style="padding-left:15px;padding-right:15px;">
+                              <ng-container *ngIf="getGrantDisbursementAttribute()">
                               <table id="tablePlaceholderX" width="100%">
                                 <tr style="background: #f9f9f9">
                                   <td align="center" valign="middle" width="10%" style="border: 1px solid #e4e4e4;">
@@ -351,6 +352,7 @@
                                   </td>
                                 </tr-->
                               </table>
+                              </ng-container>
                             </div>
 
                           <!--APPROVED DISBURSEMENT-->
@@ -442,6 +444,7 @@
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
+                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee" (click)="openDate(column,$event)" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
                                         <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'  && !row.enteredByGrantee" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                 [ngModelOptions]="{standAlone:true}">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources' && !row.enteredByGrantee" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
@@ -557,6 +560,8 @@
                                                [ngModelOptions]="{standAlone:true}">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
+                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee" (click)="openDate(column,$event)" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
+
                                         <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
@@ -571,7 +576,7 @@
                               <div class="row"><div class="col-12">
                                 <span (click)="addDisbursementRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                               </div></div>
-                              <tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                              <tr *ngIf="getGrantDisbursementAttribute() && getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
                                 <td class="py-2" align="center" style="position: sticky; left: 0; z-index: 1;"><p  class="w-100" style="font-weight:600;">TOTALS:</p></td>
                                 <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
                                   <label class="text-right pr-3 my-0 w-100" *ngIf="column.dataType==='currency'"><b>{{getDisbursementTotals(j,attribute.fieldTableValue)}}</b></label>
