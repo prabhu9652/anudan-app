@@ -267,10 +267,13 @@ export class ReportSectionsComponent implements OnInit {
                                data.columns = [];
 
                                const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
-                               for(let i=0; i< 5; i++){
+                               for(let i=0; i< 4; i++){
                                  const col = new ColumnData();
                                  col.name = colHeaders[i];
                                  col.value = '';
+                                 if(i===0){
+                                    col.dataType='date';
+                                 }
                                  if(i===1 || i===2){
                                      col.dataType='currency';
                                  }

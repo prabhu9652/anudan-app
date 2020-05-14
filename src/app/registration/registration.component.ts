@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder,FormControl, FormGroup, Validators, ReactiveFormsModule,AbstractControl} from '@angular/forms';
 import { HttpClient, HttpHeaders,HttpResponse,HttpErrorResponse } from '@angular/common/http';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {User} from '../model/user';
@@ -16,7 +16,14 @@ import {MatDialog} from '@angular/material';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.sass']
+  styleUrls: ['./registration.component.sass'],
+  styles:[`
+       ::ng-deep .mat-tooltip  {
+           white-space: pre-line    !important;
+           text-align: left;
+           font-size: 12px;
+       }
+  `]
 })
 export class RegistrationComponent implements OnInit {
 
@@ -29,13 +36,26 @@ export class RegistrationComponent implements OnInit {
   userOrg:string='';
   recaptchaToken:string;
   user: User;
+  reCaptchaResolved:boolean=false;
+  sentStatus='notsent';
+  registrationStatusMessage;
+
+ registrationForm = this.fb.group({
+      emailId: new FormControl('', Validators.email),
+      pwd1: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)]),
+      pwd2: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+    }, { validator: this.passwordsMatch });
+
+
   @ViewChild("emailId") emailIdElem: ElementRef;
   @ViewChild("firstName") firstNameElem: ElementRef;
   @ViewChild("lastName") lastNameElem: ElementRef;
   @ViewChild("password") passwordElem: ElementRef;
   @ViewChild("confirmPassword") confirmPasswordElem: ElementRef;
 
-  constructor(private activatedRoute: ActivatedRoute,private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService,private toastr: ToastrService,private dialog: MatDialog) {
+  constructor(private activatedRoute: ActivatedRoute,private fb: FormBuilder,private http: HttpClient, private router: Router, public appComponent: AppComponent, private authService: AuthService,private toastr: ToastrService,private dialog: MatDialog) {
     this.activatedRoute.queryParams.subscribe(params => {
         this.parameters = params;
     });
@@ -52,9 +72,22 @@ export class RegistrationComponent implements OnInit {
       },error =>{
       });
 
+    this.registrationForm.valueChanges.subscribe(data => {
+        if(data.emailId===null || data.pwd1===null || data.firstName===null || data.lastName===null || data.pwd2===null || data.emailId.trim()==="" || data.pwd1.trim()==="" || data.firstName.trim()==="" || data.lastName.trim()==="" || data.pwd2.trim()===""){
+        this.reCaptchaResolved = false;
+        }
+      });
+
     if(this.parameters.email){
       this.currentEmail=this.parameters.email;
       this.currentEmail = this.currentEmail.replace(/ /g,"+");
+      this.registrationForm.setValue({
+        emailId:this.currentEmail,
+        pwd1:'',
+        pwd2:'',
+        firstName:'',
+        lastName:''
+        });
     }
     if(this.parameters.org){
       this.userOrg=this.parameters.org;
@@ -77,13 +110,14 @@ export class RegistrationComponent implements OnInit {
   }
 
   submit() {
+    this.sentStatus = 'sending';
     const user =  new RegistrationCredentials();
-     user.emailId = this.emailIdElem.nativeElement.value;
-      user.password = this.passwordElem.nativeElement.value;
-      user.firstName = this.firstNameElem.nativeElement.value;
-      user.lastName = this.lastNameElem.nativeElement.value;
+     user.emailId = this.registrationForm.get('emailId').value;
+      user.password = this.registrationForm.get('pwd1').value;
+      user.firstName = this.registrationForm.get('firstName').value;
+      user.lastName = this.registrationForm.get('lastName').value;
       user.organizationName = this.userOrg;
-      user.username = this.emailIdElem.nativeElement.value;
+      user.username = user.emailId;
       user.role = 'USER';
       user.organization = null;
 
@@ -106,7 +140,10 @@ export class RegistrationComponent implements OnInit {
     const url = '/api/users/';
     this.http.post<User>(url, user, httpOptions).subscribe( (response: User) => {
 
-    const user2Login: AccessCredentials = {
+        this.sentStatus = 'sent';
+        this.registrationStatusMessage = "Congratulations! Registration was successful."
+
+    /*const user2Login: AccessCredentials = {
       username: response.emailId,
       password: user.password,
       provider: 'ANUDAN',
@@ -157,7 +194,7 @@ export class RegistrationComponent implements OnInit {
             this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
               enableHtml: true
             });
-          });
+          });*/
       // ocalStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
       /*localStorage.setItem('USER', JSON.stringify(response));
       this.appComponent.loggedIn = true;
@@ -202,6 +239,11 @@ export class RegistrationComponent implements OnInit {
 
   resolved(evt){
     this.recaptchaToken = evt;
+        if(evt!=null){
+            this.reCaptchaResolved = true;
+        }else{
+            this.reCaptchaResolved = false;
+        }
   }
 
   checkIfUserIsRegistered(emailId:string,objectToCheck:string,type:string){
@@ -228,4 +270,31 @@ export class RegistrationComponent implements OnInit {
             }
         });
   }
+
+
+  validate(){
+    console.log('validate');
+  }
+
+    public noWhitespaceValidator(control: FormControl) {
+        let isWhitespace = (control.value || '').trim().length === 0;
+        let isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true }
+    }
+
+    public passwordsMatch(control: AbstractControl){
+        let pwd1 = control.get('pwd1').value;
+        let pwd2 = control.get('pwd2').value;
+        if ((pwd1.trim()==='' && pwd2.trim()==='') || (pwd1 !== pwd2)) {
+          control.get('pwd1').setErrors({ ConfirmPassword: true });
+        }
+        else {
+          control.get('pwd1').setErrors(null);
+          return null;
+        }
+    }
+
+    goBackToLogin(){
+        this.router.navigate(['/login']);
+    }
 }
