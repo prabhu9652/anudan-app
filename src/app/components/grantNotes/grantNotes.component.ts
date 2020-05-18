@@ -201,9 +201,9 @@ const httpOptions = {
                                     hasDifferences = true;
                                 }else{
                                     for(let i=0; i<oldAttr.fieldTableValue.length;i++){
-                                        if(oldAttr.fieldTableValue[i].enteredByGrantee!==attr.fieldTableValue[i].enteredByGrantee){
+                                        /*if(oldAttr.fieldTableValue[i].enteredByGrantee!==attr.fieldTableValue[i].enteredByGrantee){
                                             hasDifferences = true;
-                                        }
+                                        }*/
                                         if(oldAttr.fieldTableValue[i].columns.length!==attr.fieldTableValue[i].columns.length){
                                             hasDifferences = true;
                                         }else{

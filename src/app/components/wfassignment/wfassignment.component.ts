@@ -71,7 +71,7 @@ ngOnInit() {
                     const nodeOwner = this.renderer.createElement('select');
                     this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
                     const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
-                    if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
+                    if((currentUserAssignment.length>0 && !currentUserAssignment[0].anchor) || currentUserAssignment.length===0){
                         this.canManage = false;
                         this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                     }
@@ -204,8 +204,9 @@ ngOnInit() {
                                const nodeOwner = this.renderer.createElement('select');
                                this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
                                const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignmentId===Number(JSON.parse(localStorage.getItem('USER')).id));
-                               if(currentUserAssignment.length>0 && !currentUserAssignment[0].anchor){
-                                   this.renderer.setAttribute(nodeOwner,'disabled','disabled');
+                               if((currentUserAssignment.length>0 && !currentUserAssignment[0].anchor) || currentUserAssignment.length===0){
+                                    this.canManage = false;
+                                    this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                                }
                                this.renderer.addClass(nodeOwner,'ml-0');
                                this.renderer.addClass(nodeOwner,'px-2');
@@ -236,7 +237,7 @@ ngOnInit() {
 
                                    }
                                }else{
-                               if(this.data.model.canManage){
+                               if(this.canManage){
                                     const nodeInvite = this.renderer.createElement('input');
                                     this.renderer.setAttribute(nodeInvite,'placeholder','Invite a grantee organization user');
                                     this.renderer.addClass(nodeInvite,'anu-input');
