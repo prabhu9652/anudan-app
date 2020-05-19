@@ -7,7 +7,7 @@
 
             <div style="display:flex;align-items:center;flex-direction:row;min-height: 80px;max-height: 80px;">
                 <img [src]="logoUrl" alt="logo" class="nav-link float-left" style="max-width:35%;">
-                <strong style="position:absolute:bottom:8px;">{{appComponent.loggedInUser.organization.name}}</strong>
+                <strong style="position:absolute;bottom:8px;">{{appComponent.loggedInUser.organization.name}}</strong>
             </div>
 
         </li>
@@ -15,7 +15,7 @@
 
         <ng-container *ngIf="appComponent.currentView === 'dashboard' || appComponent.currentView === 'grants' || appComponent.currentView === 'organization' || appComponent.currentView === 'rfps' || appComponent.currentView === 'applications' || appComponent.currentView === 'user-profile' || appComponent.currentView === 'upcoming'">
             <ng-container *ngFor="let menuItem of menuItems">
-                    <li (click)="manageMenutItemsDisplay($event)" routerLinkActive="active" *ngIf="menuItem.title !=='Organization' && menuItem.title !=='Reports' && menuItem.title !=='Grants'"
+                    <li (click)="manageMenutItemsDisplay($event)" routerLinkActive="active" *ngIf="menuItem.title !=='Disbursements' && menuItem.title !=='Organization' && menuItem.title !=='Reports' && menuItem.title !=='Grants'"
                         class="{{menuItem.class}} nav-item text-left">
                         <a class="nav-link" [routerLink]="[menuItem.path]">
                             <!--<i class="material-icons">{{menuItem.icon}}</i>-->
@@ -61,6 +61,7 @@
                     </li>
                 </mat-expansion-panel>
 
+
                     <mat-expansion-panel #reports id="reports" *ngIf="menuItem.title === 'Reports'" [expanded]="appComponent.subMenu.name==='Upcoming Reports' || appComponent.subMenu.name==='Submitted Reports' || appComponent.subMenu.name==='Approved Reports'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
@@ -75,6 +76,21 @@
                             </a>
                         </li>
                     </mat-expansion-panel>
+
+                    <!--mat-expansion-panel #disbursements id="disbursements" *ngIf="menuItem.title === 'Disbursements'" [expanded]="appComponent.subMenu.name==='In-progress Disbursements' || appComponent.subMenu.name==='Approved Disbursements' || appComponent.subMenu.name==='Closed Disbursements'">
+                        <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
+                            <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
+                                <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Disbursements
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <li routerLinkActive="active" *ngFor="let disbursementMenuItem of disbursementSubMenuItems"
+                            class="{{disbursementMenuItem.class}} nav-item text-left" (click)="manageMenutItemsDisplay($event)">
+                            <a class="nav-link py-0" [routerLink]="[disbursementMenuItem.path]">
+                                <i class="material-icons" style="font-size:18px;">remove</i>
+                                <p>{{disbursementMenuItem.title}}</p>
+                            </a>
+                        </li>
+                    </mat-expansion-panel-->
             </ng-container>
         </ng-container>
          

@@ -32,8 +32,7 @@ import { ApprovedReportsComponent } from '../../reports/approved-reports/approve
 import { ReportHeaderComponent } from '../../reports/report/report-header/report-header.component';
 import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
 import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
-
-
+import {InprogressDisbursementsComponent} from '../../disbursements/inprogress-disbursements/inprogress-disbursements.component';
 export const AdminLayoutRoutes: Routes = [
   // {
   //   path: '',
@@ -98,6 +97,7 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'report/report-header', component: ReportHeaderComponent},
   {path: 'report/section/:action', component: ReportSectionsComponent},
   {path: 'report/report-preview', component: ReportPreviewComponent},
+  {path: 'disbursements/in-progress',component:InprogressDisbursementsComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

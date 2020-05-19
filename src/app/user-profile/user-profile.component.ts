@@ -51,7 +51,7 @@ export class UserProfileComponent implements OnInit {
       alert('Your new and repeat passwords do not match');
       return;
     }
-    const pattern: RegExp = /(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/;
+    const pattern: RegExp = /(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%].*).{8,}/;
     if(!pattern.test(newPwdElem.value) || !pattern.test(repeatPwdElem.value)){
         alert('Your new and repeat passwords do not match the allowed pattern');
         return;
