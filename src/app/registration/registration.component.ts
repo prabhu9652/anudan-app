@@ -39,11 +39,12 @@ export class RegistrationComponent implements OnInit {
   reCaptchaResolved:boolean=false;
   sentStatus='notsent';
   registrationStatusMessage;
+  passwordsMatch:boolean=false;
 
  registrationForm = this.fb.group({
       emailId: new FormControl('', Validators.email),
-      pwd1: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)]),
-      pwd2: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)]),
+      pwd1: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%&].*).{8,}/)]),
+      pwd2: new FormControl('', [Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%].*).{8,}/)]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
     }, { validator: this.passwordsMatch });
@@ -73,10 +74,18 @@ export class RegistrationComponent implements OnInit {
       });
 
     this.registrationForm.valueChanges.subscribe(data => {
-        if(data.emailId===null || data.pwd1===null || data.firstName===null || data.lastName===null || data.pwd2===null || data.emailId.trim()==="" || data.pwd1.trim()==="" || data.firstName.trim()==="" || data.lastName.trim()==="" || data.pwd2.trim()===""){
-        this.reCaptchaResolved = false;
-        }
-      });
+        if(data.emailId===null || data.firstName===null || data.lastName===null || data.emailId.trim()==="" || data.firstName.trim()==="" || data.lastName.trim()==="" || data.pwd1===null || data.pwd1.trim()==="" || data.pwd2===null || data.pwd2.trim()===""){
+          this.reCaptchaResolved = false;
+          this.passwordsMatch = false;
+      }else{
+          if(data.pwd1===data.pwd2){
+              this.passwordsMatch = true;
+          }else{
+              this.passwordsMatch = false;
+              this.reCaptchaResolved = false;
+          }
+      }
+    });
 
     if(this.parameters.email){
       this.currentEmail=this.parameters.email;
@@ -282,17 +291,6 @@ export class RegistrationComponent implements OnInit {
         return isValid ? null : { 'whitespace': true }
     }
 
-    public passwordsMatch(control: AbstractControl){
-        let pwd1 = control.get('pwd1').value;
-        let pwd2 = control.get('pwd2').value;
-        if ((pwd1.trim()==='' && pwd2.trim()==='') || (pwd1 !== pwd2)) {
-          control.get('pwd1').setErrors({ ConfirmPassword: true });
-        }
-        else {
-          control.get('pwd1').setErrors(null);
-          return null;
-        }
-    }
 
     goBackToLogin(){
         this.router.navigate(['/login']);
