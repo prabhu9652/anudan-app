@@ -26,6 +26,7 @@ export const ROUTES: RouteInfo[] = [
   { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '',divide:false },
   { path: '/grants', title: 'Grants',  icon: 'grant.svg', class: '',divide:false },
   { path: '/reports', title: 'Reports',  icon: 'report.svg', class: '',divide:false },
+  { path: '/disbursements', title: 'Disbursements',  icon: 'grant.svg', class: '',divide:false },
   /*{ path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '',divide:false },*/
   { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '',divide:true }
   /*,
@@ -60,6 +61,12 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
     { path: '/grants/draft', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
     { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '',divide:false },
     { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
+];
+
+export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
+  { path: '/disbursements/in-progress', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursements/approved', title: 'Approved',  icon: 'view_agenda', class: '',divide:false },
+  { path: '/disbursements/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const PLATFORM_ROUTES: RouteInfo[] = [
@@ -98,6 +105,7 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
   grantMenuItems: any[];
   grantSubMenuItems: any[];
+  disbursementSubMenuItems: any[];
   sectionMenuItems: any[];
   reportSectionMenuItems: any[];
   adminMenuItems: any[];
@@ -120,6 +128,7 @@ export class SidebarComponent implements OnInit {
   @ViewChild('organization') organizationElem: MatExpansionPanel;
   @ViewChild('reports') reportsElem: MatExpansionPanel;
   @ViewChild('grants') grantsElem: MatExpansionPanel;
+  @ViewChild('disbursements') disbursementsElem: MatExpansionPanel;
 
 
   constructor(public appComponent: AppComponent,
@@ -179,6 +188,7 @@ drop(event: CdkDragDrop<string[]>) {
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
     this.grantSubMenuItems = GRANT_SUB_ROUTES.filter(menuItem => menuItem);
+    this.disbursementSubMenuItems = DISBURSEMENT_SUB_ROUTES.filter(menuItem => menuItem);
     this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
 
@@ -339,12 +349,20 @@ drop(event: CdkDragDrop<string[]>) {
                this.organizationElem.close();
            }
            this.grantsElem.close();
+           //this.disbursementsElem.close();
        }else if(thisMenu==='grants'){
             if(this.organizationElem){
                 this.organizationElem.close();
             }
            this.reportsElem.close();
-       }
+           //this.disbursementsElem.close();
+       }else if(thisMenu==='disbursements'){
+          if(this.organizationElem){
+              this.organizationElem.close();
+          }
+            this.reportsElem.close();
+            this.grantsElem.close();
+      }
     }
   }
 

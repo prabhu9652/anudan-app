@@ -48,8 +48,8 @@ export class ChangePasswordComponent implements OnInit {
   org:string;
 
   changePasswordForm = new FormGroup({
-    pwd1: new FormControl('', [Validators.required,Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/), this.noWhitespaceValidator]),
-    pwd2: new FormControl('',[Validators.required,Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/), this.noWhitespaceValidator]),
+    pwd1: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%].*).{8,}/), this.noWhitespaceValidator]),
+    pwd2: new FormControl('',[Validators.required,Validators.pattern(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%].*).{8,}/), this.noWhitespaceValidator]),
   });
 
 
@@ -86,6 +86,7 @@ export class ChangePasswordComponent implements OnInit {
                 this.passwordsMatch = true;
             }else{
                 this.passwordsMatch = false;
+                this.reCaptchaResolved = false;
             }
         }
     });

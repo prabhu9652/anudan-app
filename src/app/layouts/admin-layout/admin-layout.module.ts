@@ -88,7 +88,7 @@ import { ReportPreviewComponent } from '../../reports/report/report-preview/repo
 import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
 import { UsersComponent } from '../../admin/users/users.component';
-
+import {InprogressDisbursementsComponent} from '../../disbursements/inprogress-disbursements/inprogress-disbursements.component'
 @NgModule({
     imports: [
         CommonModule,
@@ -178,7 +178,8 @@ import { UsersComponent } from '../../admin/users/users.component';
         ReportPreviewComponent,
         TemplatesComponent,
         RolesComponent,
-        UsersComponent
+        UsersComponent,
+        InprogressDisbursementsComponent
     ],
     entryComponents: [FieldDialogComponent,WelcomePopupComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
