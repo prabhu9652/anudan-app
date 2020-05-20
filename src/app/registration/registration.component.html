@@ -42,7 +42,7 @@
                        placeholder="Confirm Password"  [matTooltipClass]="'tooltip-class'" matTooltip="Password must contain:&#13;- At least one digit,&#13;- One lowercase character,&#13;- One uppercase character,&#13;- One special symbols in the list @#$%, and &#13;- between 6-20 characters" matTooltipPosition="left">
 
               </div>
-              <re-captcha *ngIf="registrationForm.valid" (resolved)="resolved($event)" type="image" siteKey="6LdUFvYUAAAAADIq0DlLpSJgrbuCKtR7H7FcpnFn"></re-captcha>
+              <re-captcha *ngIf="registrationForm.valid && passwordsMatch" (resolved)="resolved($event)" type="image" siteKey="6LdUFvYUAAAAADIq0DlLpSJgrbuCKtR7H7FcpnFn"></re-captcha>
               <button [disabled]="!(registrationForm.valid && reCaptchaResolved)" class="btn anu-btn w-100 mx-0 mt-3" style="position: relative;background: #4DC252 !important;" type="submit" (click)="submit()">Register
               </button>
           </form>
