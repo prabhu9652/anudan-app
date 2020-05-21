@@ -53,6 +53,7 @@ ngOnInit() {
         this.http.get<WorkflowTransition[]>(url, httpOptions).subscribe((transitions: WorkflowTransition[]) => {
               this.transitions = transitions;
 
+              let counter = 1;
               for(let transition of transitions){
                 const nodeId = 'state_' + transition.fromStateId;
                 if(this.elemRef.nativeElement.querySelector('#' + nodeId) === null){
@@ -70,8 +71,10 @@ ngOnInit() {
                     this.renderer.addClass(ownerNode,'col-6');
                     const nodeOwner = this.renderer.createElement('select');
                     this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
-                    const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id);
-                    if((currentUserAssignment.length>0 && !currentUserAssignment[0].anchor) || currentUserAssignment.length===0){
+                    const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id && assignment.stateId===this.data.model.grant.grantStatus.id);
+                    const ownerUser = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments===JSON.parse(localStorage.getItem('USER')).id && assignment.anchor);
+                    if((currentUserAssignment.length>0 || (ownerUser.length>0)) && this.data.model.grant.grantStatus.internalStatus!=='ACTIVE'){
+                    }else{
                         this.canManage = false;
                         this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                     }
@@ -84,8 +87,12 @@ ngOnInit() {
                     if(assignment.length>0){
                         this.renderer.setAttribute(nodeOwner,'value',assignment[0].assignmentUser?String(assignment[0].assignmentUser.id):String(0));
                         this.renderer.setAttribute(nodeOwner,'id','assignment_' + assignment[0].id  + '_' + transition.fromStateId + '_' + this.data.model.grant.id);
+                        this.renderer.setAttribute(nodeOwner,'data-counter',String(counter++));
+                        this.renderer.listen(nodeOwner,'change',(event)=>this.handleSelection(event));
                     }else{
                         this.renderer.setAttribute(nodeOwner,'id','assignment_'+transition.fromStateId+'_'+this.data.model.grant.id);
+                        this.renderer.setAttribute(nodeOwner,'data-counter',String(counter++));
+                        this.renderer.listen(nodeOwner,'change',(event)=>this.handleSelection(event));
                     }
                     const nodeOwnerOptions = this.renderer.createElement('option');
                     this.renderer.setAttribute(nodeOwnerOptions,'value','0');
@@ -203,8 +210,10 @@ ngOnInit() {
                                this.renderer.addClass(ownerNode,'col-6');
                                const nodeOwner = this.renderer.createElement('select');
                                this.renderer.setAttribute(nodeOwner,'style','max-width: 240px;');
-                               const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignmentId===Number(JSON.parse(localStorage.getItem('USER')).id));
-                               if((currentUserAssignment.length>0 && !currentUserAssignment[0].anchor) || currentUserAssignment.length===0){
+                               const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.assignmentId===JSON.parse(localStorage.getItem('USER')).id && assignment.stateId===this.data.model.report.status.id && JSON.parse(localStorage.getItem('USER')).organization.organizationType!=='GRANTEE');
+                               const ownerUser = this.data.model.workflowAssignments.filter((assignment) => assignment.assignmentId===JSON.parse(localStorage.getItem('USER')).id && assignment.anchor);
+                               if(currentUserAssignment.length>0 || (ownerUser.length>0)){
+                               } else{
                                     this.canManage = false;
                                     this.renderer.setAttribute(nodeOwner,'disabled','disabled');
                                }
@@ -347,6 +356,31 @@ ngOnInit() {
                }
 
 }
+    handleSelection(event: any): boolean | void {
+        /*
+       const options = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.children;
+       if(options.length>0){
+        for (var i = 0; i < options.length; i++) {
+            if(event.currentTarget.value===(<HTMLOptionElement>options[i]).value){
+                options[i].parentElement.removeChild(options[i]);
+            }
+        }
+
+        for (var i = 0; i < this.data.model.users.length; i++) {
+            let found:boolean = false;
+            for (var j = 0; j < options.length; j++) {
+                if(this.data.model.users[i].id===(<HTMLOptionElement>options[j]).value){
+                    found=true;
+                }
+            }
+            if(!found && this.data.model.users[i].id!==event.currentTarget.value){
+
+            }
+        }
+
+       }*/
+        
+    }
 
 ngOnDestroy() {
   window.removeEventListener('scroll', this.scroll, true);

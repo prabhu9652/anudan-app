@@ -21,6 +21,8 @@ import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
 import {SingleReportDataService} from '../../single.report.data.service'
+import { Disbursement } from 'app/model/disbursement';
+import { DisbursementDataService } from 'app/disbursement.data.service';
 
 
 
@@ -40,6 +42,7 @@ export class AdminLayoutComponent implements OnInit {
   private lastPoppedUrl: string;
   currentGrant: Grant;
   currentReport: Report;
+  currentDisbursement: Disbursement;
   grantToUpdate: Grant;
   private yScrollStack: number[] = [];
   action: any;
@@ -60,7 +63,8 @@ export class AdminLayoutComponent implements OnInit {
     , private http: HttpClient
     , private toastr:ToastrService
     , private dialog: MatDialog
-    , private singleReportDataService: SingleReportDataService) {
+    , private singleReportDataService: SingleReportDataService
+    , private disbursementService: DisbursementDataService) {
     
   }
 
@@ -71,6 +75,7 @@ export class AdminLayoutComponent implements OnInit {
   });
 
       this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+      this.disbursementService.currentMessage.subscribe(disbursement => this.currentDisbursement = disbursement);
 
       const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
@@ -330,6 +335,7 @@ export class AdminLayoutComponent implements OnInit {
             this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
             this.setDateDuration();
             this.currentGrant = grant;
+            this.manageGrant(null,grant.id);
         },error => {
                          const errorMsg = error as HttpErrorResponse;
                          const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
@@ -391,6 +397,7 @@ export class AdminLayoutComponent implements OnInit {
                               this.singleReportDataService.changeMessage(report);
                               this.currentReport = report;
                               this.setReportDateDuration();
+                              this.manageReport(null,report.id);
                           },error => {
                                            const errorMsg = error as HttpErrorResponse;
                                            const x = {'enableHtml': true,'preventDuplicates': true,'positionClass':'toast-top-full-width','progressBar':true} as Partial<IndividualConfig>;
@@ -505,7 +512,10 @@ manageReport(notification: Notifications, reportId: number) {
         } else if(report.status.internalStatus==='CLOSED'){
             this.appComponent.subMenu = {name:'Approved Reports',action:'ar'};
         }
-        if(report.canManage && report.status.internalStatus!='CLOSED'){
+        if(report.workflowAssignments.filter(wa => wa.assignmentId===this.appComponent.loggedInUser.id).length===0){
+            this.appComponent.currentView = 'upcoming';
+            this.router.navigate(['reports/upcoming']);
+        }else if(report.canManage && report.status.internalStatus!='CLOSED'){
             this.appComponent.action = 'report';
             this.router.navigate(['report/report-header']);
         } else{
@@ -572,6 +582,20 @@ showMessages(){
     }
   }
 
+  showAllDisbursements(disbursement: Disbursement, action: string){
+    this.appComponent.showSaving = false;
+    this.appComponent.currentView = 'upcoming';
+    if(action==='id'){
+        this.router.navigate(['disbursements/in-progress']);
+    } else if(action==='ad'){
+        this.router.navigate(['disbursements/approved']);
+    } else if(action==='cd'){
+        this.router.navigate(['disbursements/closed']);
+    } else if(action==='db'){
+        this.router.navigate(['/dashboard']);
+    }
+  }
+
   showProfile(){
     this.appComponent.currentView = 'user-profile';
     this.router.navigate(['user-profile']);
@@ -591,12 +615,19 @@ showMessages(){
     this.showAllReports(this.currentReport,sm.action);
   }
 
+  navigateToDisbursements(sm:any){
+    this.appComponent.showSaving = false;
+    this.showAllDisbursements(this.currentDisbursement,sm.action);
+  }
+
   goToDashboard(toSave:any,type:string){
     this.appComponent.showSaving = false;
     if(type==='GRANT'){
         this.showAllGrants(toSave,'db');
     } else if(type==='REPORT'){
         this.showAllReports(toSave,'db');
+    } else if(type==='DISBURSEMENT'){
+        this.showAllDisbursements(toSave,'db');
     }
   }
 

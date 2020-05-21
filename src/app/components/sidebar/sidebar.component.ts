@@ -9,6 +9,8 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatDialog,MatExpansionPanel,MatDivider} from '@angular/material';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import { Disbursement } from 'app/model/disbursement';
+import { DisbursementDataService } from 'app/disbursement.data.service';
 
 
 declare const $: any;
@@ -69,6 +71,11 @@ export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
   { path: '/disbursements/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
+export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
+  { path: '/disbursement/approval-request', title: 'Disbursement Approval Request',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursement/preview', title: 'Preview & Submit',  icon: 'grant.svg', class: '',divide:false}
+];
+
 export const PLATFORM_ROUTES: RouteInfo[] = [
     { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '',divide:false },
     { path: '/admin/settings', title: 'Settings',  icon: 'grant.svg', class: '',divide:false }
@@ -112,9 +119,11 @@ export class SidebarComponent implements OnInit {
   platformMenuItems: any[];
   reportMenuItems: any[];
   singleReportMenuItems: any[];
+  singleDisbursementMenuItems: any[];
   orgMenuItems: any[];
   currentGrant: Grant;
   currentReport: Report;
+  currentDisbursement: Disbursement;
   logoUrl: string;
   hasUnreadMessages = false;
   unreadMessages = 0;
@@ -139,7 +148,8 @@ export class SidebarComponent implements OnInit {
   private ref:ChangeDetectorRef,
   private elRef: ElementRef,
   private dialog: MatDialog,
-  private http: HttpClient) {
+  private http: HttpClient,
+  private disbursementDataService:DisbursementDataService) {
   if(!this.appComponent.loggedInUser){
     this.appComponent.logout();
   }
@@ -190,6 +200,7 @@ drop(event: CdkDragDrop<string[]>) {
     this.grantSubMenuItems = GRANT_SUB_ROUTES.filter(menuItem => menuItem);
     this.disbursementSubMenuItems = DISBURSEMENT_SUB_ROUTES.filter(menuItem => menuItem);
     this.singleReportMenuItems = SINGLE_REPORT_ROUTES.filter(menuItem => menuItem);
+    this.singleDisbursementMenuItems = SINGLE_DISBURSEMENT_SUB_ROUTES.filter(menuItem => menuItem);
     this.ref.detectChanges();
 
     this.grantData.currentMessage.subscribe((grant) => {
@@ -200,7 +211,8 @@ drop(event: CdkDragDrop<string[]>) {
     this.singleReportDataService.currentMessage.subscribe((report) => {
           this.currentReport = report;
           this.buildSectionsSideNav(null);
-        });
+    });
+    this.disbursementDataService.currentMessage.subscribe((d) => this.currentDisbursement=d);
 
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
     this.logoUrl = "/api/public/images/"+tenantCode+"/logo";

@@ -50,7 +50,13 @@ export class GranthistoryComponent implements OnInit {
             this.http.get<ReportHistory[]>(url, httpOptions).subscribe((history: ReportHistory[]) => {
                 this.reportHistory = history;
             });
-        }
+        }else if(this.data.type==='disbursement'){
+          const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/disbursement/'+this.data.data.id+'/history/';
+
+          this.http.get<ReportHistory[]>(url, httpOptions).subscribe((history: ReportHistory[]) => {
+              this.reportHistory = history;
+          });
+      }
 
 
   }
