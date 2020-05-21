@@ -26,7 +26,7 @@ export class InprogressDisbursementsComponent implements OnInit {
   };
 
   public constructor(
-    private appComponent: AppComponent,
+    public appComponent: AppComponent,
     private httpClient: HttpClient,
     private dialog: MatDialog,
     private disbursementDataService: DisbursementDataService,
