@@ -1,0 +1,114 @@
+<div class="row anu-container">
+    <div class="col-12 bg-white" style="position:sticky;top:80px;z-index:1040;">
+      <!--<span class="badge badge-dark text-white pull-right mt-2" matBadgeSize="medium">{{currentGrant.grantStatus.displayName}}</span>-->
+      <div class="row">
+        <h4 class="col-11 text-left my-3 section-header">
+          <div *ngIf="currentDisbursement.canManage" style="display:flex;">
+            <div *ngFor="let flow of currentDisbursement.flowPermissions">
+              <button [disabled]="wfDisabled" mat-stroked-button (click)="submitReport(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">{{flow.action}}</button>
+            </div>
+          </div>
+        </h4>
+        <div class="col-1 text-right" style="display: flex;align-items: center;justify-content: flex-start;">
+          
+          <!--mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon-->
+          <!--mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="saveAs('Disbursement-Approval-Request-'+currentDisbursement.grant.name+'.pdf')"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF</button>
+            <button mat-menu-item (click)="showHistory('disbursement',currentDisbursement)"><mat-icon class="ml-1">comment</mat-icon>Notes</button>
+            <button mat-menu-item (click)="showWFAssigments()"><mat-icon class="ml-1">assignment</mat-icon>Assignments</button>
+            <ng-container>
+              <hr>
+              <button mat-menu-item (click)="manageGrant()"><img class="ml-2 mr-3" style="width:20px;height:20px;" src="./assets/img/dp.svg">View Grant</button>
+            </ng-container>
+          </mat-menu-->
+        </div>
+      </div>
+    </div>
+  
+    <div #reportSummary class="col-lg-12">
+      <div #container class="container text-left mt-5 px-5 py-5">
+  
+  
+  
+  
+        <!--MANAGEMENT SECTION-->
+  
+        <kendo-pdf-export #pdf paperSize="A4" forcePageBreak=".page-break" [margin]="{top: '2cm', bottom: '3cm', right: '2cm', left: '2cm'}" [imageResolution]="200" [scale]="0.7" [repeatHeaders]="true">
+          <div class="row w-100" id="reportSummary">
+            <div class="col-11 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
+              <div class="row">
+                <div class="col-3">
+                  <img [src]="logoUrl" alt="logo" class="img-fluid"/>
+                </div>
+                <div class="col-9 text-left pl-3" style="display: flex;align-items: center;">
+                  <div class="row">
+                    <div class="col-12">
+                      <h4 class="m-0" type="text" autocomplete="off"><b>Disbursement Approval Request for {{currentDisbursement.grant.name}}</b></h4>
+                    </div>
+                    <div class="col-12 text-left">
+                      <span data-html2canvas-ignore [class]="'badge state-' + currentDisbursement.status.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentDisbursement.status.displayName}}</span>
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="col-12 mb-2 m-2" style="background:#f9f9f9;">
+              <div class="row">
+                <div class="col-12 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Name:</span>
+                  <div class="ml-0 mb-3"><b>{{(currentDisbursement.grant.referenceNo?currentDisbursement.grant.referenceNo+' | ':'') + currentDisbursement.grant.name}}</b></div>
+                </div>
+                <div class="col-3 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Start Date:</span>
+                  <div class="ml-0 mb-3"><b>{{currentDisbursement.grant.stDate | date:'dd-MMM-yyyy'}}</b></div>
+                </div>
+                <div class="col-3 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant End Date:</span>
+                  <div class="ml-0 mb-3"><b>{{currentDisbursement.grant.enDate | date:'dd-MMM-yyyy'}}</b></div>
+                </div>
+                <div class="col-6 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization:</span>
+                  <div *ngIf="currentDisbursement.grant.organization" class="ml-0 mb-3"><b>{{currentDisbursement.grant.organization.name}}</b></div>
+                </div>
+                <div class="col-4 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization Representative:</span>
+                  <div class="ml-0 mb-3"><b>{{currentDisbursement.grant.representative}}</b></div>
+                </div>
+                <div class="col-7 mb-2">
+                  <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Amount:</span>
+                  <div class="ml-0 mb-3" style="display: flex; align-items: center;"><b><img src="./assets/img/rupee.png" style="width:10px;" class="mr-1">{{getFormattedGrantAmount(currentDisbursement.grant.amount)}}&nbsp;&nbsp;&nbsp;
+                    <small>{{getGrantAmountInWords(currentDisbursement.grant.amount)}}</small></b>
+                  </div>
+                </div>
+  
+  
+              </div>
+            </div>
+            <div class="col-4 mb-2 p-2">
+              <span style="color: #929292;font-size: 13px;font-family:Roboto;">Requested Amount:</span>
+              <div class="ml-0 mb-3"><b><img src="./assets/img/rupee.png" style="width:10px;" class="mr-1">{{getFormattedGrantAmount(currentDisbursement.requestedAmount)}}</b>
+                <br><small>{{getGrantAmountInWords(currentDisbursement.requestedAmount)}}</small>
+            </div>
+  
+            </div>
+            <div class="col-8 mb-2 p-2">
+              <span style="color: #929292;font-size: 13px;font-family:Roboto;">Note:</span>
+              <div class="ml-0 mb-3"><b>{{currentDisbursement.reason}}</b></div>
+  
+            </div>
+          </div>
+          <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+            <div class="pageNum">
+              Page {{ pageNum }} of {{ totalPages }}
+            </div>
+          </ng-template>
+  
+        </kendo-pdf-export>
+      </div>
+  
+  
+    </div>
+  </div>
+  

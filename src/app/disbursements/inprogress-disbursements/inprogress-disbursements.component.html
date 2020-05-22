@@ -2,15 +2,25 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-
+                <button *ngIf="appComponent.loggedInUser.organization.organizationType==='GRANTER'"
+                class="btn btn-sm btn-green float-right"
+                (click)="showOwnedActiveGrants()">Create New Disbursement Request
+                </button>
             </div>
         </div>
+       
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div>
-                    <div>Inprogress Disbursements</div>
+                    <div *ngIf="!disbursements">
+                        <img src="./assets/img/loader.gif" style="width:10%;">
+                        <p style="color: black" > Loading Disbursements... </p>
+                    </div>
+
+                    <div *ngIf="disbursements">
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>        
     </div>
 </div>

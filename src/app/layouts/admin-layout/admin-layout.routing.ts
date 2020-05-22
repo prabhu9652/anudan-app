@@ -33,6 +33,10 @@ import { ReportHeaderComponent } from '../../reports/report/report-header/report
 import { ReportSectionsComponent } from '../../reports/report/report-sections/report-sections.component';
 import { ReportPreviewComponent } from '../../reports/report/report-preview/report-preview.component';
 import {InprogressDisbursementsComponent} from '../../disbursements/inprogress-disbursements/inprogress-disbursements.component';
+import { ApprovedDisbursementsComponent } from 'app/disbursements/approved-disbursements/approved-disbursements.component';
+import { ClosedDisbursementsComponent } from 'app/disbursements/closed-disbursements/closed-disbursements.component';
+import { DisbursementComponent } from 'app/disbursements/disbursement/disbursement.component';
+import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/disbursement-preview/disbursement-preview.component';
 export const AdminLayoutRoutes: Routes = [
   // {
   //   path: '',
@@ -98,6 +102,10 @@ export const AdminLayoutRoutes: Routes = [
   {path: 'report/section/:action', component: ReportSectionsComponent},
   {path: 'report/report-preview', component: ReportPreviewComponent},
   {path: 'disbursements/in-progress',component:InprogressDisbursementsComponent},
+  {path: 'disbursements/approved',component:ApprovedDisbursementsComponent},
+  {path: 'disbursements/closed',component:ClosedDisbursementsComponent},
+  {path: 'disbursement/approval-request',component: DisbursementComponent},
+  {path: 'disbursement/preview', component:DisbursementPreviewComponent},
   {path: 'section', component: GrantComponent},
   {path: 'user-profile', component: UserProfileComponent},
   {path: 'table-list', component: TableListComponent},

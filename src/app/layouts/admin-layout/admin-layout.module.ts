@@ -89,6 +89,10 @@ import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
 import { UsersComponent } from '../../admin/users/users.component';
 import {InprogressDisbursementsComponent} from '../../disbursements/inprogress-disbursements/inprogress-disbursements.component'
+import { ApprovedDisbursementsComponent } from 'app/disbursements/approved-disbursements/approved-disbursements.component';
+import { ClosedDisbursementsComponent } from 'app/disbursements/closed-disbursements/closed-disbursements.component';
+import { DisbursementComponent } from 'app/disbursements/disbursement/disbursement.component';
+import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/disbursement-preview/disbursement-preview.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -179,7 +183,11 @@ import {InprogressDisbursementsComponent} from '../../disbursements/inprogress-d
         TemplatesComponent,
         RolesComponent,
         UsersComponent,
-        InprogressDisbursementsComponent
+        InprogressDisbursementsComponent,
+        ApprovedDisbursementsComponent,
+        ClosedDisbursementsComponent,
+        DisbursementComponent,
+        DisbursementPreviewComponent
     ],
     entryComponents: [FieldDialogComponent,WelcomePopupComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
