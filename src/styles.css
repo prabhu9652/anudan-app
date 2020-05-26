@@ -413,6 +413,15 @@ input:-internal-autofill-selected{
     align-items: center;
 }
 
+.state-node .mat-form-field-wrapper{
+  padding: 0 !important;
+}
+
+.state-node .mat-form-field-infix{
+  border: 0 !important;
+  padding: 0 !important;
+}
+
 .node-highight {
     border:2px dashed;
 }

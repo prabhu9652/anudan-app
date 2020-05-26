@@ -38,6 +38,13 @@ export class WfassignmentComponent implements OnInit,AfterViewInit {
 
 
 ngOnInit() {
+    if(this.data.model.users){
+        this.data.model.users.sort(function(a,b) {return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0);} );
+    }
+    if(this.data.model.granteeUsers){
+        this.data.model.granteeUsers.sort(function(a,b) {return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0);} );
+    }
+
     window.addEventListener('scroll', this.redrawOnScroll.bind(this),true);
     if(this.data.model.type==='grant'){
         this.title = this.data.model.grant.name;

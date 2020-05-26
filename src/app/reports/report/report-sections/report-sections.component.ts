@@ -23,6 +23,7 @@ import { saveAs } from 'file-saver';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import * as inf from 'indian-number-format';
+import { AttributeService } from 'app/attribute-service';
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -98,7 +99,8 @@ export class ReportSectionsComponent implements OnInit {
         private sidebar: SidebarComponent,
         private dialog: MatDialog,
         private elem: ElementRef,
-        private datepipe: DatePipe) {
+        private datepipe: DatePipe,
+        private attributeService:AttributeService) {
 
         this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -223,8 +225,9 @@ export class ReportSectionsComponent implements OnInit {
 
 
     handleTypeChange(ev,attr: Attribute,sec:Section){
-    const hasData:boolean = this._checkIfFieldHasData(attr);
-    if(hasData){
+        const isEmpty = this.attributeService.checkIfEmpty(attr);
+
+    if(!isEmpty){
     const dialogRef = this.dialog.open(FieldDialogComponent, {
                   data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
                   panelClass: 'center-class'

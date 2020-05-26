@@ -6,7 +6,7 @@ import {FooterComponent} from './footer/footer.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {EditorComponent} from './editor/editor.component';
-import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule,MatSelectModule,MatDividerModule} from "@angular/material";
+import {MatProgressSpinnerModule, MatExpansionModule, MatBadgeModule,MatIconModule,MatSelectModule,MatDividerModule, MatAutocompleteModule, MatFormFieldModule} from "@angular/material";
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
@@ -20,7 +20,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         MatIconModule,
         DragDropModule,
         MatSelectModule,
-        MatDividerModule
+        MatDividerModule,
+        MatAutocompleteModule,
+        MatFormFieldModule
     ],
   declarations: [
     FooterComponent,
