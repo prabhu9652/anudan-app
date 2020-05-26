@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router, ActivatedRoute} from '@angular/router';
@@ -13,6 +13,7 @@ import {SocialUser} from 'ng-social-login-module';
 import {ToastrService} from 'ngx-toastr';
 import {Notifications} from '../model/dahsboard'
 import {interval} from 'rxjs';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-login',
@@ -42,6 +43,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
   });
 
+  @ViewChild('reCaptcha') reCaptcha: RecaptchaComponent;
+
   constructor(private http: HttpClient,
               private router: Router,
               public appComponent: AppComponent,
@@ -52,6 +55,15 @@ export class LoginComponent implements OnInit {
               this.host = localStorage.getItem('X-TENANT-CODE');
               this.activatedRoute.queryParams.subscribe(params => {
                   this.parameters = params;
+              });
+              const tenantCode = localStorage.getItem('X-TENANT-CODE');
+              this.logoURL = "/api/public/images/"+tenantCode+"/logo";
+
+              const url = '/api/public/tenant/' + tenantCode;
+              this.http.get(url,{responseType: 'text'}).subscribe((orgName) => {
+                localStorage.setItem('ORG-NAME',orgName);
+                this.orgName = localStorage.getItem('ORG-NAME');
+              },error =>{
               });
   }
 
@@ -87,18 +99,11 @@ export class LoginComponent implements OnInit {
     }
   });
 
-    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    
     if(this.parameters.email){
         this.currentEmail=this.parameters.email;
     }
-    this.logoURL = "/api/public/images/"+tenantCode+"/logo";
-
-    const url = '/api/public/tenant/' + tenantCode;
-    this.http.get(url,{responseType: 'text'}).subscribe((orgName) => {
-       localStorage.setItem('ORG-NAME',orgName);
-       this.orgName = localStorage.getItem('ORG-NAME');
-    },error =>{
-    });
+    
 
   }
 
@@ -178,6 +183,7 @@ export class LoginComponent implements OnInit {
         this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
           enableHtml: true
         });
+        this.reCaptcha.reset();
       });
   }
 
