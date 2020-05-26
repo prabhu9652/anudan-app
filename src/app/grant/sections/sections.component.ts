@@ -39,7 +39,7 @@ import {User} from '../../model/user';
 import {MatSelectChange} from '@angular/material/select';
 
 import * as inf from 'indian-number-format';
-import { AttributeService } from 'app/attribute-service';
+import { AttributeService } from 'app/attribute-validation-service';
 
 
 @Component({

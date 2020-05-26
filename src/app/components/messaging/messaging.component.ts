@@ -11,7 +11,7 @@ export class MessagingComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<MessagingComponent>
       , @Inject(MAT_DIALOG_DATA) public message: string) {
-    this.dialogRef.disableClose = true;
+    this.dialogRef.disableClose = false;
   }
 
   ngOnInit() {

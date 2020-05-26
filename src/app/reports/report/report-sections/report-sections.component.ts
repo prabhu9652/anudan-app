@@ -23,7 +23,7 @@ import { saveAs } from 'file-saver';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import * as inf from 'indian-number-format';
-import { AttributeService } from 'app/attribute-service';
+import { AttributeService } from 'app/attribute-validation-service';
 
 export const APP_DATE_FORMATS = {
    parse: {
