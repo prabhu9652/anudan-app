@@ -45,6 +45,9 @@ import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
 import { Subscription } from 'rxjs/Subscription';
 import { takeUntil } from 'rxjs/operators';
+import { GrantValidationService } from 'app/grant-validation-service';
+import { MessagingComponent } from 'app/components/messaging/messaging.component';
+import { WorkflowValidationService } from 'app/workflow-validation-service';
 
 
 @Component({
@@ -124,7 +127,9 @@ export class PreviewComponent implements OnInit {
       , public colors: Colors
       , private sidebar: SidebarComponent
       , public grantComponent: GrantComponent
-      , private titlecasePipe:TitleCasePipe) {
+      , private titlecasePipe:TitleCasePipe
+      , private grantValidationService: GrantValidationService
+      , private workflowValidationService: WorkflowValidationService) {
     this.colors = new Colors();
 
      this.grantData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(grant => this.currentGrant = grant);
@@ -835,6 +840,14 @@ export class PreviewComponent implements OnInit {
 
 
   submitGrant(toStateId: number) {
+
+    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.grantValidationService.checkIfHeaderHasMissingEntries(this.currentGrant)){
+      const dialogRef = this.dialog.open(MessagingComponent,{
+        data: "Grant has missing header information.",
+        panelClass: 'center-class'
+      });
+      return;
+    }
 
     for(let assignment of this.currentGrant.workflowAssignment){
         const status1 = this.appComp.appConfig.workflowStatuses.filter((status) => status.id===assignment.stateId);

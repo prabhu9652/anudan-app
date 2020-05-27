@@ -39,6 +39,7 @@ import {User} from '../../model/user';
 import {MatSelectChange} from '@angular/material/select';
 
 import * as inf from 'indian-number-format';
+import { AttributeService } from 'app/attribute-validation-service';
 
 
 @Component({
@@ -132,7 +133,8 @@ export class SectionsComponent implements OnInit, AfterViewChecked,AfterViewInit
       , public colors: Colors
       , private sidebar: SidebarComponent
       , private data: DataService
-      , private cdr: ChangeDetectorRef) {
+      , private cdr: ChangeDetectorRef
+      , private attributeService: AttributeService) {
     this.colors = new Colors();
 
 
@@ -1284,101 +1286,110 @@ ngOnDestroy(){
 
   handleTypeChange(ev, attr: Attribute,sec:Section){
 
+  const isEmpty = this.attributeService.checkIfEmpty(attr);
+    if(!isEmpty){
+      const dialogRef = this.dialog.open(FieldDialogComponent, {
+          data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
+          panelClass: 'center-class'
+        });
 
-  const dialogRef = this.dialog.open(FieldDialogComponent, {
-                    data: {title:'You will lose all data for ' + attr.fieldName + ' Are you sure?'},
-                    panelClass: 'center-class'
-                  });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                  this.carryOutChange(attr,ev,sec);
+            }else{
+              ev.source.value = attr.fieldType;
+              return;
+            }
 
-                  dialogRef.afterClosed().subscribe(result => {
-                      if(result){
-                            attr.fieldType = ev.source.value;
-                            attr.fieldValue = '';
-                            if(attr.fieldTableValue){
-                                attr.fieldTableValue = null;
-                            }
-                            if(attr.target){
-                                attr.target=null;
-                            }
-                            if(attr.frequency){
-                                attr.frequency=null;
-                            }
+        });
+    }else{
+      this.carryOutChange(attr,ev,sec);
+    }
+  }
 
-                            if(ev.source.value.toString()==='table'){
-                                if(attr.fieldValue.trim() === ''){
-                                  attr.fieldTableValue = [];
-                                  const data = new TableData();
-                                  data.name = "";
-                                  data.header="";
-                                  data.columns = [];
+  
+  carryOutChange(attr:Attribute,ev,sec){
+    attr.fieldType = ev.source.value;
+                  attr.fieldValue = '';
+                  if(attr.fieldTableValue){
+                      attr.fieldTableValue = null;
+                  }
+                  if(attr.target){
+                      attr.target=null;
+                  }
+                  if(attr.frequency){
+                      attr.frequency=null;
+                  }
 
-                                  for(let i=0; i< 5; i++){
-                                    const col = new ColumnData();
-                                    col.name = "";
-                                    col.value = '';
-                                    data.columns.push(col);
-                                  }
+                  if(ev.source.value.toString()==='table'){
+                      if(attr.fieldValue.trim() === ''){
+                        attr.fieldTableValue = [];
+                        const data = new TableData();
+                        data.name = "";
+                        data.header="";
+                        data.columns = [];
 
-                                  attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-                                }
-                              }else if(ev.source.value.toString()==='disbursement'){
-                                  if(attr.fieldValue.trim() === ''){
-                                    attr.fieldTableValue = [];
-                                    const data = new TableData();
-                                    data.name = "1";
-                                    data.header="";
-                                    data.columns = [];
+                        for(let i=0; i< 5; i++){
+                          const col = new ColumnData();
+                          col.name = "";
+                          col.value = '';
+                          data.columns.push(col);
+                        }
 
-                                    const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
-                                    for(let i=0; i< 4; i++){
-                                      const col = new ColumnData();
-                                      col.name = colHeaders[i];
-                                      col.value = '';
-                                      if(i===1 || i===2){
-                                          col.dataType='currency';
-                                      }
-                                      data.columns.push(col);
-                                    }
-
-                                    attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
-                                  }
-                              }
-
-                              const httpOptions = {
-                                    headers: new HttpHeaders({
-                                      'Content-Type': 'application/json',
-                                      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                                      'Authorization': localStorage.getItem('AUTH_TOKEN')
-                                    })
-                                  };
-
-                                  let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-                                      + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
-                                  this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
-                                      this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
-                                  this.appComp.sectionInModification = false;
-                                  this.appComp.selectedTemplate = info.grant.grantTemplate;
-                                  this.newField = 'field_' + info.stringAttributeId;
-                                  },error => {
-                                           const errorMsg = error as HttpErrorResponse;
-                                           console.log(error);
-                                           const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                           const config: Partial<IndividualConfig> = x;
-                                           if(errorMsg.error.message==='Token Expired'){
-                                            this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                            setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                           } else {
-                                            this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
-                                           }
-
-
-                              });
-                      }else{
-                        ev.source.value = attr.fieldType;
-                        return;
+                        attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
                       }
+                    }else if(ev.source.value.toString()==='disbursement'){
+                        if(attr.fieldValue.trim() === ''){
+                          attr.fieldTableValue = [];
+                          const data = new TableData();
+                          data.name = "1";
+                          data.header="";
+                          data.columns = [];
 
-                  });
+                          const colHeaders = ['Date/Period','Amount','Funds from other Sources','Notes'];
+                          for(let i=0; i< 4; i++){
+                            const col = new ColumnData();
+                            col.name = colHeaders[i];
+                            col.value = '';
+                            if(i===1 || i===2){
+                                col.dataType='currency';
+                            }
+                            data.columns.push(col);
+                          }
+
+                          attr.fieldTableValue.push(JSON.parse(JSON.stringify(data)));
+                        }
+                    }
+
+                    const httpOptions = {
+                          headers: new HttpHeaders({
+                            'Content-Type': 'application/json',
+                            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                            'Authorization': localStorage.getItem('AUTH_TOKEN')
+                          })
+                        };
+
+                        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+                            + this.currentGrant.id + '/section/'+sec.id+'/field/'+attr.id;
+                        this.http.put<FieldInfo>(url, {'grant':this.currentGrant,'attr':attr}, httpOptions).subscribe((info: FieldInfo) => {
+                            this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
+                        this.appComp.sectionInModification = false;
+                        this.appComp.selectedTemplate = info.grant.grantTemplate;
+                        this.newField = 'field_' + info.stringAttributeId;
+                        },error => {
+                                  const errorMsg = error as HttpErrorResponse;
+                                  console.log(error);
+                                  const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
+                                  const config: Partial<IndividualConfig> = x;
+                                  if(errorMsg.error.message==='Token Expired'){
+                                  this.toastr.error("Your session has expired", 'Logging you out now...', config);
+                                  setTimeout( () => { this.appComp.logout(); }, 4000 );
+                                  } else {
+                                  this.toastr.error(errorMsg.error.message,"13 We encountered an error", config);
+                                  }
+
+
+                    });
   }
 
   addColumn(attr: Attribute){

@@ -22,6 +22,9 @@ import { saveAs } from 'file-saver';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
+import { WorkflowValidationService } from 'app/workflow-validation-service';
+import { ReportValidationService } from 'app/report-validation-service';
+import { MessagingComponent } from 'app/components/messaging/messaging.component';
 
 
 
@@ -57,8 +60,10 @@ export class ReportPreviewComponent implements OnInit {
         private toastr: ToastrService,
         private router: Router,
         public adminComp: AdminLayoutComponent,
-        private sidebar: SidebarComponent
-        ,private titlecasePipe: TitleCasePipe
+        private sidebar: SidebarComponent,
+        private titlecasePipe: TitleCasePipe,
+        private workflowValidationService: WorkflowValidationService,
+        private reportValidationService:ReportValidationService
         ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
@@ -119,6 +124,14 @@ export class ReportPreviewComponent implements OnInit {
     }
 
     submitReport(toStateId: number) {
+
+        if((this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus==='ACTIVE' || this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus==='CLOSED') && this.reportValidationService.checkIfHeaderHasMissingEntries(this.currentReport)){
+            const dialogRef = this.dialog.open(MessagingComponent,{
+              data: "Report has missing header information.",
+              panelClass: 'center-class'
+            });
+            return;
+          }
 
         for(let assignment of this.currentReport.workflowAssignments){
             const status1 = this.reportWorkflowStatuses.filter((status) => status.id===assignment.stateId);
