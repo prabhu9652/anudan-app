@@ -40,8 +40,8 @@
                                     <div class="col-12"><span [class]="'badge pull-right state-' + disbursement.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{disbursement.status.displayName}}</span></div>
                                     <div class="col-12 h-100" style="display: flex; align-items: center;">
                                         <button *ngIf="disbursement.canManage && disbursement.status.internalStatus==='DRAFT'"
-                                                class="btn btn-sm btn-red px-1 mt-5"
-                                                (click)="deleteDisbursement(disbursement)">Delete Grant
+                                                class="btn btn-sm btn-red px-1 mt-5 mx-0"
+                                                (click)="deleteDisbursement(disbursement)">Delete Request
                                         </button>
                                     </div>
                                 </div>

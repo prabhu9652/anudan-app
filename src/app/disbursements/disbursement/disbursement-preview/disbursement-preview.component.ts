@@ -47,6 +47,7 @@ export class DisbursementPreviewComponent implements OnInit {
 
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
     if(this.currentDisbursement===undefined || this.currentDisbursement===null){
+      this.appComponent.currentView = 'dashboard';
       this.router.navigate(['dashboard']);
     }
     this.logoUrl = "/api/public/images/"+this.currentDisbursement.grant.grantorOrganization.code+"/logo";

@@ -66,13 +66,13 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
 ];
 
 export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursements/in-progress', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
-  { path: '/disbursements/approved', title: 'Approved',  icon: 'view_agenda', class: '',divide:false },
-  { path: '/disbursements/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/disbursements/in-progress', title: 'Approval In-progress',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursements/approved', title: 'Approvals Active',  icon: 'view_agenda', class: '',divide:false },
+  { path: '/disbursements/closed', title: 'Approvals Closed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursement/approval-request', title: 'Disbursement Approval Request',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursement/approval-request', title: 'Disbursement Request',  icon: 'grant.svg', class: '',divide:false },
   { path: '/disbursement/preview', title: 'Preview & Submit',  icon: 'grant.svg', class: '',divide:false}
 ];
 

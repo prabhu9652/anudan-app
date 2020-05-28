@@ -47,6 +47,9 @@ export class DisbursementComponent implements OnInit {
     this.appComponent.subMenu = {name:'In-progress Disbursements',action:'id'};
 
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
+    if(this.currentDisbursement===undefined || this.currentDisbursement===null){
+      this.router.navigate(['dashboard']);
+    }
   }
   
 

@@ -103,7 +103,7 @@
                     <div class="row mt-4">
                         <div class="col-4">
                             <mat-form-field>
-                                <input #disbursementAmount  (blur)="showFormattedAmount($event)" matInput class="anu-input" placeholder="Disbursement Amount:" [(ngModel)]='currentDisbursement.requestedAmount' type="number"/>
+                                <input #disbursementAmount  (blur)="showFormattedAmount($event)" matInput class="anu-input" placeholder="Requested Amount:" [(ngModel)]='currentDisbursement.requestedAmount' type="number"/>
                                 <p #disbursementAmountFormatted (click)="showAmountInput($event)" class="anu-input w-100" style="position:absolute;top:7px;cursor: text;" [innerHtml]="currencyService.getFormattedAmount(currentDisbursement.requestedAmount)"></p>
                             </mat-form-field>
                             
