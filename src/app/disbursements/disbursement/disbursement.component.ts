@@ -6,6 +6,8 @@ import * as indianCurrencyInWords from 'indian-currency-in-words';
 import { TitleCasePipe } from '@angular/common';
 import * as inf from 'indian-number-format';
 import { Attribute, TableData } from 'app/model/dahsboard';
+import { Router, NavigationStart } from '@angular/router';
+import { CurrencyService } from 'app/currency-service';
 
 
 @Component({
@@ -17,6 +19,7 @@ import { Attribute, TableData } from 'app/model/dahsboard';
 export class DisbursementComponent implements OnInit {
 
   currentDisbursement:Disbursement;
+  subscribers: any = {};
 
   @ViewChild('disbursementAmountFormatted') disbursementAmountFormatted:ElementRef;
   @ViewChild('disbursementAmount') disbursementAmount:ElementRef;
@@ -25,8 +28,19 @@ export class DisbursementComponent implements OnInit {
   constructor(
     private disbursementService: DisbursementDataService,
     private appComponent: AppComponent,
-    private titlecasePipe: TitleCasePipe
-    ){}
+    private titlecasePipe: TitleCasePipe,
+    private router: Router,
+    public currencyService: CurrencyService,
+    ){
+      this.subscribers.name = this.router.events.subscribe((val) => {
+        if(val instanceof NavigationStart && this.currentDisbursement){
+            this.disbursementService.saveDisbursement(this.currentDisbursement)
+            .then(d => {
+              this.disbursementService.changeMessage(d);
+            });
+        }
+      });
+    }
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursement';
@@ -34,20 +48,7 @@ export class DisbursementComponent implements OnInit {
 
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
   }
-
-
-  getGrantAmountInWords(amount:number){
-    let amtInWords = '-';
-    if(amount){
-        amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
-        return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
-    }
-    return amtInWords;
-  }
-
-  getFormattedGrantAmount(amount: number):string{
-    return inf.format(amount,2);
-  }
+  
 
   getGrantDisbursementAttribute():Attribute{
     for(let section of this.currentDisbursement.grant.grantDetails.sections){
@@ -73,15 +74,9 @@ export class DisbursementComponent implements OnInit {
             i++;
         }
     }
-    return String('₹ ' + inf.format(total,2));
+    return this.currencyService.getFormattedAmount(total);
   }
 
-  getFormattedCurrency(amount: string):string{
-    if(!amount || amount===''){
-        return inf.format(Number("0"),2);
-    }
-    return inf.format(Number(amount),2);
-  }
 
   showAmountInput(evt: any){
     evt.currentTarget.style.visibility='hidden';

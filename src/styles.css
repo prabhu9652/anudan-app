@@ -395,6 +395,7 @@ input:-internal-autofill-selected{
 .text-subheader{
     color: rgba(14, 16, 14, 0.68);
     font-size: 12px;
+    font-weight: normal;
 }
 
 .state-node{

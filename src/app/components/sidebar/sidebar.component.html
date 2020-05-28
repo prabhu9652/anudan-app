@@ -77,7 +77,7 @@
                         </li>
                     </mat-expansion-panel>
 
-                    <!--mat-expansion-panel #disbursements id="disbursements" *ngIf="menuItem.title === 'Disbursements'" [expanded]="appComponent.subMenu.name==='In-progress Disbursements' || appComponent.subMenu.name==='Approved Disbursements' || appComponent.subMenu.name==='Closed Disbursements'">
+                    <mat-expansion-panel #disbursements id="disbursements" *ngIf="menuItem.title === 'Disbursements'" [expanded]="appComponent.subMenu.name==='In-progress Disbursements' || appComponent.subMenu.name==='Approved Disbursements' || appComponent.subMenu.name==='Closed Disbursements'">
                         <mat-expansion-panel-header (click)="buildSectionsSideNav($event)" style="padding: 15px;">
                             <mat-panel-title style="display: flex; align-items: center;font-weight:300;" class="menu-sidenav-title">
                                 <img src="./assets/img/{{menuItem.icon}}" class="mr-2">Disbursements
@@ -90,7 +90,7 @@
                                 <p>{{disbursementMenuItem.title}}</p>
                             </a>
                         </li>
-                    </mat-expansion-panel-->
+                    </mat-expansion-panel>
             </ng-container>
         </ng-container>
          

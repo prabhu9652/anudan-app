@@ -7,6 +7,7 @@ import { TitleCasePipe } from '@angular/common';
 import * as inf from 'indian-number-format';
 import { Attribute, TableData } from 'app/model/dahsboard';
 import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.component';
+import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class DisbursementPreviewComponent implements OnInit {
 
   currentDisbursement:Disbursement
   logoUrl: string;
+  subscribers: any = {};
 
   @ViewChild('pdf') pdf;
 
@@ -26,14 +28,27 @@ export class DisbursementPreviewComponent implements OnInit {
     private disbursementService: DisbursementDataService,
     private appComponent: AppComponent,
     private titlecasePipe: TitleCasePipe,
-    private adminComp: AdminLayoutComponent
-    ){}
+    private adminComp: AdminLayoutComponent,
+    private router: Router
+    ){
+      this.subscribers.name = this.router.events.subscribe((val) => {
+        if(val instanceof NavigationStart && this.currentDisbursement){
+          this.disbursementService.saveDisbursement(this.currentDisbursement)
+          .then(d => {
+            this.disbursementService.changeMessage(d);
+          });
+        }
+      });
+    }
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursement';
     this.appComponent.subMenu = {name:'In-progress Disbursements',action:'id'};
 
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
+    if(this.currentDisbursement===undefined || this.currentDisbursement===null){
+      this.router.navigate(['dashboard']);
+    }
     this.logoUrl = "/api/public/images/"+this.currentDisbursement.grant.grantorOrganization.code+"/logo";
 
     console.log(this.currentDisbursement);
