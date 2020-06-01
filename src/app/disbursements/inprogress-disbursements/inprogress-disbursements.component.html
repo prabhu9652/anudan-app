@@ -18,7 +18,7 @@
                     </div>
 
                     <div *ngIf="disbursements && disbursements.length===0">
-                        <h5 class="mt-5">No Disbursement records were found</h5>
+                        <h5 class="mt-5">No Draft/In-progress Approval Requests were found</h5>
                     </div>
                     <div *ngIf="disbursements && disbursements.length>0">
                         <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;" *ngFor="let disbursement of disbursements; let i = index">

@@ -8,6 +8,7 @@ import * as inf from 'indian-number-format';
 import { Attribute, TableData } from 'app/model/dahsboard';
 import { Router, NavigationStart } from '@angular/router';
 import { CurrencyService } from 'app/currency-service';
+import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.component';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class DisbursementComponent implements OnInit {
     private titlecasePipe: TitleCasePipe,
     private router: Router,
     public currencyService: CurrencyService,
+    private adminComp: AdminLayoutComponent
     ){
       this.subscribers.name = this.router.events.subscribe((val) => {
         if(val instanceof NavigationStart && this.currentDisbursement){
@@ -44,8 +46,7 @@ export class DisbursementComponent implements OnInit {
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursement';
-    this.appComponent.subMenu = {name:'In-progress Disbursements',action:'id'};
-
+    
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
     if(this.currentDisbursement===undefined || this.currentDisbursement===null){
       this.router.navigate(['dashboard']);
@@ -89,5 +90,9 @@ export class DisbursementComponent implements OnInit {
   showFormattedAmount(evt:any){
     evt.currentTarget.style.visibility='hidden';
     this.disbursementAmountFormatted.nativeElement.style.visibility='visible';
+  }
+
+  showWorkflowAssigments(){
+    this.adminComp.showWorkflowAssigments();
   }
 }

@@ -34,7 +34,7 @@ export class InprogressDisbursementsComponent implements OnInit {
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursements';
-    
+    this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
     this.fetchInprogressDisbursements();
   }
 

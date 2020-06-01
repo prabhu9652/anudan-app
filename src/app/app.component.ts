@@ -61,6 +61,7 @@ export class AppComponent implements AfterViewChecked{
   tenantUsers:User[];
   reportWorkflowStatuses: WorkflowStatus[];
   grantWorkflowStatuses: WorkflowStatus[];
+  disbursementWorkflowStatuses: WorkflowStatus[];
   reportTransitions: WorkflowTransition[];
   releaseVersion: string;
   public appConfig: AppConfig = {
