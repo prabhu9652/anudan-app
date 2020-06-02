@@ -3,14 +3,15 @@ import { BehaviorSubject } from "rxjs";
 import { Disbursement, DisbursementWorkflowAssignment, DisbursementSnapshot } from "./model/disbursement";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Grant } from "./model/dahsboard";
+import { UserService } from "./user.service";
+import { User } from "./model/user";
 
 @Injectable({
     providedIn:'root'
 })
 export class DisbursementDataService{
     private messageSource = new BehaviorSubject<Disbursement>(null);
-    user = JSON.parse(localStorage.getItem('USER'));
-    url = '/api/user/'+ this.user.id+'/disbursements';
+    url:string = '/api/user/%USERID%/disbursements';
     httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -21,7 +22,7 @@ export class DisbursementDataService{
 
     currentMessage = this.messageSource.asObservable();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, public userService:UserService) { }
 
   changeMessage(message: Disbursement) {
       
@@ -29,8 +30,13 @@ export class DisbursementDataService{
       this.messageSource.next(message);
   }
 
+  private getUrl():string{
+      const user = this.userService.getUser();
+      return this.url.replace('%USERID%',user.id);
+  }
+
   saveDisbursement(currentDisbursement: Disbursement):Promise<Disbursement> {
-    return this.httpClient.post(this.url + "/",currentDisbursement,this.httpOptions)
+    return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.httpOptions)
     .toPromise()
     .then<Disbursement>()
     .catch(err => {
@@ -40,7 +46,7 @@ export class DisbursementDataService{
 
   fetchInprogressDisbursements():Promise<Disbursement[]>{
 
-    return this.httpClient.get(this.url+'/status/DRAFT',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/DRAFT',this.httpOptions)
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -57,7 +63,7 @@ export class DisbursementDataService{
 
   fetchActiveDisbursements():Promise<Disbursement[]>{
 
-    return this.httpClient.get(this.url+'/status/ACTIVE',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/ACTIVE',this.httpOptions)
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -74,7 +80,7 @@ export class DisbursementDataService{
 
   fetchClosedDisbursements():Promise<Disbursement[]>{
 
-    return this.httpClient.get(this.url+'/status/CLOSED',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/CLOSED',this.httpOptions)
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -90,7 +96,7 @@ export class DisbursementDataService{
   }
 
   showOwnedActiveGrants():Promise<Grant[]>{
-    return this.httpClient.get(this.url+'/active-grants',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/active-grants',this.httpOptions)
     .toPromise()
     .then<Grant[]>().catch(err =>{
         return Promise.reject<Grant[]>('Could not retrieve Active grants');
@@ -100,7 +106,7 @@ export class DisbursementDataService{
     createNewDisbursement(selectedGrant:Grant):Promise<Disbursement> {
         
         const disbursement:Disbursement=new Disbursement();
-        return this.httpClient.post<Disbursement>(this.url+'/grant/'+selectedGrant.id, disbursement,this.httpOptions)
+        return this.httpClient.post<Disbursement>(this.getUrl()+'/grant/'+selectedGrant.id, disbursement,this.httpOptions)
         .toPromise()
         .then<Disbursement>()
         .catch(err =>{
@@ -109,7 +115,7 @@ export class DisbursementDataService{
     }
 
     deleteDisbursement(disbursement:Disbursement):Promise<Disbursement[]>{
-        return this.httpClient.delete(this.url+'/'+disbursement.id,this.httpOptions)
+        return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.httpOptions)
         .toPromise()
         .then<Disbursement[]>((d:Disbursement[]) =>{
             if(d && d.length>0){
@@ -125,7 +131,7 @@ export class DisbursementDataService{
     }
 
   setPermission(disbursement:Disbursement):Disbursement{
-      const disb = disbursement.assignments.filter(a => a.owner===this.user.id && a.stateId==disbursement.status.id);
+      const disb = disbursement.assignments.filter(a => a.owner===this.userService.getUser().id && a.stateId==disbursement.status.id);
     if(disb && disb.length > 0 && disbursement.status.internalStatus!=='ACTIVE' && disbursement.status.internalStatus!=='CLOSED'){
         disbursement.canManage=true;
     }else{
@@ -135,7 +141,7 @@ export class DisbursementDataService{
   }
 
   saveAssignments(disbursement:Disbursement,assignment:DisbursementWorkflowAssignment[]):Promise<Disbursement>{
-     return this.httpClient.post(this.url+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.httpOptions)
+     return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.httpOptions)
       .toPromise()
       .then((d:Disbursement) => {
           this.setPermission(d);
@@ -147,7 +153,7 @@ export class DisbursementDataService{
   }
 
   getDisbursement(disbursementId:Number):Promise<Disbursement>{
-      return this.httpClient.get(this.url+'/'+disbursementId,this.httpOptions)
+      return this.httpClient.get(this.getUrl()+'/'+disbursementId,this.httpOptions)
       .toPromise()
       .then((d:Disbursement) =>{
           this.setPermission(d);
@@ -166,7 +172,7 @@ export class DisbursementDataService{
   }
 
   getHistory(disbursement:Disbursement):Promise<DisbursementSnapshot>{
-      return this.httpClient.get(this.url+'/'+disbursement.id+'/changeHistory',this.httpOptions)
+      return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/changeHistory',this.httpOptions)
       .toPromise()
       .then<DisbursementSnapshot>()
       .catch(err => {
@@ -176,7 +182,7 @@ export class DisbursementDataService{
 
   submitDisbursement(disbursement:Disbursement,message:string,fromStateId:number,toStateId:number):Promise<Disbursement>{
     
-    return this.httpClient.post(this.url+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
+    return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
     .toPromise()
     .then( (d:Disbursement) => {
         this.setPermission(d);
