@@ -98,5 +98,9 @@ export class DisbursementComponent implements OnInit {
 
   showHistory(type,obj){
     this.adminComp.showHistory(type,obj);
-}
+  }
+
+  manageGrant(){
+    this.adminComp.manageGrant(null, this.currentDisbursement.grant.id);
+  }
 }

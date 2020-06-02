@@ -241,4 +241,8 @@ export class DisbursementPreviewComponent implements OnInit {
     });
 
   }
+
+  manageGrant(){
+    this.adminComp.manageGrant(null, this.currentDisbursement.grant.id);
+  }
 }
