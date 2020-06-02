@@ -8,6 +8,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import * as inf from 'indian-number-format';
 import { DisbursementNote, DisbursementSnapshot, DisbursementDiff, Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
+import { CurrencyService } from 'app/currency-service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class DisbursementNotesComponent implements OnInit {
     constructor(
         private _bottomSheetRef: MatDialogRef<DisbursementNotesComponent>
         , @Inject(MAT_DIALOG_DATA) public data: DisbursementNote,private http: HttpClient,
-        private disbursementDataService: DisbursementDataService) {
+        private disbursementDataService: DisbursementDataService,
+        private currencyService:CurrencyService) {
 
 const httpOptions = {
               headers: new HttpHeaders({
@@ -86,7 +88,7 @@ const httpOptions = {
     }
 
     _getDisbursementDiff(){
-        if(!this._getDisbursementDiff){
+        if(!this.disbursementDiff){
             this.disbursementDiff = new DisbursementDiff();
         }
     }

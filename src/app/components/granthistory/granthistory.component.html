@@ -26,4 +26,17 @@
   </ng-container>
 </div>
 
+<div *ngIf="data.type==='disbursement'" #flowContainer id="flowContainer" class="text-left" style="max-height: 200px;overflow: scroll;">
+  <p class="mb-0 bg-light p-1" *ngIf="data.data.noteAddedByUser && ((data.currentUser.organization.organizationType==='GRANTEE' && (data.data.status.internalStatus==='ACTIVE' || data.data.status.internalStatus==='CLOSED' || data.currentUser.id===data.data.noteAddedBy)) || data.currentUser.organization.organizationType==='GRANTER')"><b>{{data.data.noteAddedByUser.firstName}} {{data.data.noteAddedByUser.lastName}}</b> <small> ({{data.data.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+  <p *ngIf="data.data.noteAddedByUser && ((data.currentUser.organization.organizationType==='GRANTEE' && (data.data.status.internalStatus==='ACTIVE' || data.data.status.internalStatus==='CLOSED' || data.currentUser.id===data.data.noteAddedBy)) || data.currentUser.organization.organizationType==='GRANTER')" style="border-bottom:1px solid #d4d4d4;">{{data.data.note}}</p>
+  <ng-container *ngFor="let item of disbursementHistory">
+    <ng-container *ngIf="item.note!=='' && item.noteAddedByUser">
+      <p class="mb-0 bg-light p-1"><b>{{item.noteAddedByUser.firstName}} {{item.noteAddedByUser.lastName}}</b> <small> ({{item.noteAdded | date:'dd-MMM-yyyy hh:mm:ss a'}})</small></p>
+      <p style="border-bottom:1px solid #d4d4d4;">{{item.note}}</p>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="!data.data.noteAddedByUser && disbursementHistory.length===0">
+    <p>No notes have been added until now.</p>
+  </ng-container>
+</div>
 

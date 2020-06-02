@@ -95,4 +95,8 @@ export class DisbursementComponent implements OnInit {
   showWorkflowAssigments(){
     this.adminComp.showWorkflowAssigments();
   }
+
+  showHistory(type,obj){
+    this.adminComp.showHistory(type,obj);
+}
 }

@@ -9,6 +9,24 @@ export class Disbursement{
     grant: Grant;
     assignments: DisbursementAssignment[];
     flowPermissions: FlowAuthority;
+    note:string;
+    noteAddedByUser: User;
+    noteAdded:Date;
+    canManage:boolean;
+}
+
+export class DisbursementHistory{
+    seqid:number;
+    id:number;
+    requestedAmount:number;
+    reason:string;
+    status: WorkflowStatus;
+    grant: Grant;
+    assignments: DisbursementAssignment[];
+    flowPermissions: FlowAuthority;
+    note:string;
+    noteAddedByUser: User;
+    noteAdded:Date;
     canManage:boolean;
 }
 
