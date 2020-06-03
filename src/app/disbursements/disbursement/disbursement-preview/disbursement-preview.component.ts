@@ -1,27 +1,42 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import { Disbursement, DisbursementWorkflowAssignmentModel, DisbursementWorkflowAssignment } from 'app/model/disbursement';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Disbursement, DisbursementWorkflowAssignmentModel, DisbursementWorkflowAssignment, ActualDisbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 import { AppComponent } from 'app/app.component';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, DatePipe } from '@angular/common';
 import * as inf from 'indian-number-format';
 import { Attribute, TableData } from 'app/model/dahsboard';
 import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.component';
 import { Router, NavigationStart } from '@angular/router';
 import { WorkflowValidationService } from 'app/workflow-validation-service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDatepicker, MatDatepickerInputEvent } from '@angular/material';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { FieldDialogComponent } from 'app/components/field-dialog/field-dialog.component';
 import { WfassignmentComponent } from 'app/components/wfassignment/wfassignment.component';
 import { WorkflowDataService } from 'app/workflow.data.service';
 import { DisbursementNotesComponent } from 'app/components/disbursementNotes/disbursementNotes.component';
+import { CurrencyService } from 'app/currency-service';
 
 
 @Component({
   selector: 'disbursement-preview-dashboard',
   templateUrl: './disbursement-preview.component.html',
   styleUrls: ['./disbursement-preview.component.css'],
-  providers: [TitleCasePipe]
+  providers: [TitleCasePipe],
+  styles: [`
+       ::ng-deep .disbursements-class .mat-form-field-appearance-legacy .mat-form-field-infix {
+             padding:0 !important;
+       }
+  `,
+  `
+    ::ng-deep .disbursements-class .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+            padding-bottom: 0 !important;
+    }
+  `,`
+   ::ng-deep .disbursements-class .mat-form-field-infix{
+           border-top: 0 !important;
+   }
+  `]
 })
 export class DisbursementPreviewComponent implements OnInit {
 
@@ -31,7 +46,12 @@ export class DisbursementPreviewComponent implements OnInit {
   wfDisabled: boolean = false;
 
   @ViewChild('pdf') pdf;
+  @ViewChild('datePicker') datePicker:MatDatepicker<any>;
+  @ViewChild('tablePlaceholder') tablePlaceholder: ElementRef;
+
   originalDisbursement: any;
+  selectedDateField: any;
+  selectedField: ActualDisbursement;
 
   constructor(
     private disbursementService: DisbursementDataService,
@@ -41,7 +61,9 @@ export class DisbursementPreviewComponent implements OnInit {
     private router: Router,
     private workflowValidationService:WorkflowValidationService,
     private dialog:MatDialog,
-    private workflowDataService: WorkflowDataService
+    private workflowDataService: WorkflowDataService,
+    private datepipe: DatePipe,
+    public currencyService: CurrencyService
     ){
       this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
 
@@ -95,18 +117,18 @@ export class DisbursementPreviewComponent implements OnInit {
     return null;
   }
 
-  getTotals(idx:number,fieldTableValue:TableData[]):string{
-    let total = 0;
-    for(let row of fieldTableValue){
-        let i=0;
-        for(let col of row.columns){
-            if(i===idx){
-                total+=Number(col.value);
-            }
-            i++;
-        }
+  getTotals():string{
+   
+    let total=0;
+    for(let ad of this.currentDisbursement.actualDisbursements){
+      total += ad.actualAmount===undefined?0:Number(ad.actualAmount);
     }
-    return String('₹ ' + inf.format(total,2));
+
+    if(total===0){
+      return '₹';
+    }
+
+    return this.currencyService.getFormattedAmount(total);
   }
 
   getFormattedCurrency(amount: string):string{
@@ -244,5 +266,47 @@ export class DisbursementPreviewComponent implements OnInit {
 
   manageGrant(){
     this.adminComp.manageGrant(null, this.currentDisbursement.grant.id);
+  }
+
+  openDate(actual:ActualDisbursement,ev:MouseEvent){
+    const stDateElem = this.datePicker;
+    this.selectedDateField = ev;
+    this.selectedField = actual;
+    if(!stDateElem.opened){
+        stDateElem.open();
+    } else{
+        stDateElem.close();
+    }
+  }
+
+  setDate(ev: MatDatepickerInputEvent<any>){
+    const trgt = ev.target;
+    this.selectedDateField.target.value = this.datepipe.transform(trgt.value, 'dd-MMM-yyyy');
+    this.selectedField = this.selectedDateField.target.value;
+ }
+
+ showAmountInput(evt: any){
+  evt.currentTarget.style.visibility='hidden';
+  const id = evt.target.attributes.id.value.replace('label_','');
+  const inputElem = this.tablePlaceholder.nativeElement.querySelectorAll('#date_'+id);
+  inputElem[0].style.visibility='visible';
+}
+
+  showFormattedAmount(evt:any){
+    evt.currentTarget.style.visibility='hidden';
+    const id = evt.target.attributes.id.value.replace('date_','');
+    const inputElem = this.tablePlaceholder.nativeElement.querySelectorAll('#label_'+id);
+    inputElem[0].style.visibility='visible';
+  }
+
+  addDisbursementRow(){
+    this.disbursementService.addNewDisbursementRow(this.currentDisbursement)
+    .then((ad:ActualDisbursement) => {
+      this.currentDisbursement.actualDisbursements.push(ad);
+    });
+  }
+
+  deleteDisbursementRow(actual:ActualDisbursement,index:number){
+    this.currentDisbursement.actualDisbursements.splice(index,1);
   }
 }

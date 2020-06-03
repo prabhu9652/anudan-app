@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { Disbursement, DisbursementWorkflowAssignment, DisbursementSnapshot } from "./model/disbursement";
+import { Disbursement, DisbursementWorkflowAssignment, DisbursementSnapshot, ActualDisbursement } from "./model/disbursement";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Grant } from "./model/dahsboard";
 import { UserService } from "./user.service";
@@ -25,27 +25,33 @@ export class DisbursementDataService{
   constructor(private httpClient: HttpClient, public userService:UserService) { }
 
   changeMessage(message: Disbursement) {
-      
-      this.setPermission(message);
-      this.messageSource.next(message);
+      if(message!==undefined){
+        this.setPermission(message);
+        this.messageSource.next(message);
+      }
   }
 
   private getUrl():string{
       const user = this.userService.getUser();
-      return this.url.replace('%USERID%',user.id);
+      if(user!==undefined){
+         return this.url.replace('%USERID%',user.id);
+      }
   }
 
   saveDisbursement(currentDisbursement: Disbursement):Promise<Disbursement> {
-    return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.httpOptions)
-    .toPromise()
-    .then<Disbursement>()
-    .catch(err => {
-        return Promise.reject<Disbursement>('Error creating the disbursement');
-    })
+    if(currentDisbursement!==undefined && currentDisbursement!==null){
+        return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.httpOptions)
+        .toPromise()
+        .then<Disbursement>()
+        .catch(err => {
+            return Promise.reject<Disbursement>('Error creating the disbursement');
+        });
+    }else{
+        return Promise.resolve(null);
+    }
   }
 
   fetchInprogressDisbursements():Promise<Disbursement[]>{
-
     return this.httpClient.get(this.getUrl()+'/status/DRAFT',this.httpOptions)
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
@@ -115,52 +121,75 @@ export class DisbursementDataService{
     }
 
     deleteDisbursement(disbursement:Disbursement):Promise<Disbursement[]>{
-        return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.httpOptions)
-        .toPromise()
-        .then<Disbursement[]>((d:Disbursement[]) =>{
-            if(d && d.length>0){
-                for(let disb of d){
-                    disb = this.setPermission(disb);
+        if(disbursement!==undefined && disbursement!==null){
+            return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.httpOptions)
+            .toPromise()
+            .then<Disbursement[]>((d:Disbursement[]) =>{
+                if(d && d.length>0){
+                    for(let disb of d){
+                        disb = this.setPermission(disb);
+                    }
                 }
-            }
-            return Promise.resolve<Disbursement[]>(d);
-        })
-        .catch(err =>{
-            return Promise.reject<Disbursement[]>('Unable to delete the disbursement');
-        });
+                return Promise.resolve<Disbursement[]>(d);
+            })
+            .catch(err =>{
+                return Promise.reject<Disbursement[]>('Unable to delete the disbursement');
+            });
+        }else{
+            return Promise.resolve(null);
+        }
     }
 
   setPermission(disbursement:Disbursement):Disbursement{
-      const disb = disbursement.assignments.filter(a => a.owner===this.userService.getUser().id && a.stateId==disbursement.status.id);
-    if(disb && disb.length > 0 && disbursement.status.internalStatus!=='ACTIVE' && disbursement.status.internalStatus!=='CLOSED'){
-        disbursement.canManage=true;
+    if(disbursement!==undefined && disbursement!==null){
+        const disb = disbursement.assignments.filter(a => a.owner===this.userService.getUser().id && a.stateId==disbursement.status.id);
+        if(disb && disb.length > 0 && disbursement.status.internalStatus!=='ACTIVE' && disbursement.status.internalStatus!=='CLOSED'){
+            disbursement.canManage=true;
+        }else{
+            disbursement.canManage=false;
+        }
+
+        if(disb && disb.length > 0 && disbursement.status.internalStatus==='ACTIVE'){
+            disbursement.canRecordActuals = true;
+        } else{
+            disbursement.canRecordActuals = false;
+        }
+
+        return disbursement;
     }else{
-        disbursement.canManage=false;
+        return null;
     }
-    return disbursement;
   }
 
   saveAssignments(disbursement:Disbursement,assignment:DisbursementWorkflowAssignment[]):Promise<Disbursement>{
-     return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.httpOptions)
-      .toPromise()
-      .then((d:Disbursement) => {
-          this.setPermission(d);
-          return Promise.resolve<Disbursement>(d);
-      })
-      .catch(err =>{
-          return Promise.reject<Disbursement>('Could not save assignments');
-      });
+    if(disbursement!==undefined && disbursement!==null){
+        return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.httpOptions)
+        .toPromise()
+        .then((d:Disbursement) => {
+            this.setPermission(d);
+            return Promise.resolve<Disbursement>(d);
+        })
+        .catch(err =>{
+            return Promise.reject<Disbursement>('Could not save assignments');
+        });
+    }else{
+        return Promise.resolve(null);
+    }
   }
 
   getDisbursement(disbursementId:Number):Promise<Disbursement>{
-      return this.httpClient.get(this.getUrl()+'/'+disbursementId,this.httpOptions)
-      .toPromise()
-      .then((d:Disbursement) =>{
-          this.setPermission(d);
-          return Promise.resolve<Disbursement>(d)
-      }).catch(err => {
-        return Promise.reject<Disbursement>('Could not retrieve disbursement');
-      });
+      if(disbursementId!==undefined && disbursementId!==null){
+        return this.httpClient.get(this.getUrl()+'/'+disbursementId,this.httpOptions)
+        .toPromise()
+        .then((d:Disbursement) =>{
+            this.setPermission(d);
+            return Promise.resolve<Disbursement>(d)
+        }).catch(err => {
+            return Promise.reject<Disbursement>('Could not retrieve disbursement');
+        });
+    }else{
+        return Promise.resolve(null);
+    }
   }
 
   checkIfHeaderHasMissingEntries(disbursement:Disbursement):boolean{
@@ -172,27 +201,46 @@ export class DisbursementDataService{
   }
 
   getHistory(disbursement:Disbursement):Promise<DisbursementSnapshot>{
-      return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/changeHistory',this.httpOptions)
-      .toPromise()
-      .then<DisbursementSnapshot>()
-      .catch(err => {
-          return Promise.reject<DisbursementSnapshot>("Could not retieve Disbursement snapshot");
-      });
+      if(disbursement!==undefined && disbursement!==null){
+        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/changeHistory',this.httpOptions)
+        .toPromise()
+        .then<DisbursementSnapshot>()
+        .catch(err => {
+            return Promise.reject<DisbursementSnapshot>("Could not retieve Disbursement snapshot");
+        });
+    }else{
+        return Promise.resolve(null);
+    }
   }
 
   submitDisbursement(disbursement:Disbursement,message:string,fromStateId:number,toStateId:number):Promise<Disbursement>{
-    
-    return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
-    .toPromise()
-    .then( (d:Disbursement) => {
-        this.setPermission(d);
-        return Promise.resolve<Disbursement>(d);
-    })
-    .catch(err => {
-        return Promise.reject<Disbursement>('Could not move disbursement');
-    });
+    if(disbursement!==null && disbursement!==null){
+        return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
+        .toPromise()
+        .then( (d:Disbursement) => {
+            this.setPermission(d);
+            return Promise.resolve<Disbursement>(d);
+        })
+        .catch(err => {
+            return Promise.reject<Disbursement>('Could not move disbursement');
+        });
+    }else{
+        return Promise.resolve(null);
+    }
   }
 
+  addNewDisbursementRow(disbursement:Disbursement):Promise<ActualDisbursement>{
+    if(disbursement!==undefined && disbursement!==null){
+        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/actual',this.httpOptions)
+        .toPromise()
+        .then<ActualDisbursement>()
+        .catch(err =>{
+            return Promise.reject<ActualDisbursement>('Unable to reate new actual disbursement entry');
+        });
+    }else{
+        return Promise.resolve(null);
+    }
+  }
          
 
 }

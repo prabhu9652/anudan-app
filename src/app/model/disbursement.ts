@@ -13,6 +13,16 @@ export class Disbursement{
     noteAddedByUser: User;
     noteAdded:Date;
     canManage:boolean;
+    canRecordActuals:boolean;
+    actualDisbursements:ActualDisbursement[];
+}
+
+export class ActualDisbursement{
+    id:number;
+    disbursementDate: Date;
+    actualAmount:number;
+    note: string;
+    disbursementId: number;
 }
 
 export class DisbursementHistory{
