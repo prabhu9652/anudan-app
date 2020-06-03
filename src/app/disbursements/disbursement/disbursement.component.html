@@ -84,7 +84,7 @@
                                 {{column.value}}
                             </td>
                             <td  *ngIf="column.dataType==='currency'" align="right" class="anu-input text-right m-0" style="background:#f4f4f4 !important;">
-                                ₹ {{currencyService.getFormattedAmount(column.value)}}
+                                {{currencyService.getFormattedAmount(column.value)}}
                             </td>
                           </ng-container>
                         </tr>

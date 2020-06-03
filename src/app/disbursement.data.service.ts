@@ -12,6 +12,7 @@ import { User } from "./model/user";
 export class DisbursementDataService{
     private messageSource = new BehaviorSubject<Disbursement>(null);
     url:string = '/api/user/%USERID%/disbursements';
+    months:string[]=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -215,6 +216,18 @@ export class DisbursementDataService{
 
   submitDisbursement(disbursement:Disbursement,message:string,fromStateId:number,toStateId:number):Promise<Disbursement>{
     if(disbursement!==null && disbursement!==null){
+        if(disbursement.actualDisbursements){
+            for(let ad of disbursement.actualDisbursements){
+                if(ad.disbursementDate){
+                    const dateParts = String(ad.disbursementDate).split("-");
+                    const dt = new Date();
+                    dt.setFullYear(Number(dateParts[2]));
+                    dt.setMonth(this.months.indexOf(dateParts[1]));
+                    dt.setDate(Number(dateParts[0]));
+                    ad.disbursementDate = dt;
+                }
+            }
+        }
         return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
         .toPromise()
         .then( (d:Disbursement) => {
@@ -240,6 +253,46 @@ export class DisbursementDataService{
     }else{
         return Promise.resolve(null);
     }
+  }
+
+  deleteDisbursementRow(disbursement:Disbursement,actualDisbursement:ActualDisbursement):Promise<any>{
+    if(disbursement!==undefined && disbursement!==null){
+        return this.httpClient.delete(this.getUrl()+'/'+disbursement.id+'/actual/'+actualDisbursement.id,this.httpOptions)
+        .toPromise()
+        .then()
+        .catch(err =>{
+            return Promise.reject('Unable to reate new actual disbursement entry');
+        });
+    }else{
+        return Promise.resolve();
+    }
+  }
+
+  checkIfActiveOrClosed(disbursement:Disbursement):boolean{
+      if(disbursement.status.internalStatus==='ACTIVE' || disbursement.status.internalStatus==='CLOSED'){
+          return true;
+      }else {
+          return false;
+      }
+  }
+
+  checkIfClosed(disbursement:Disbursement):boolean{
+    if(disbursement.status.internalStatus==='CLOSED'){
+        return true;
+    }else {
+        return false;
+    }
+}
+
+  checkIfDisbursementHasActualDisbursements(disbursement:Disbursement):boolean{
+      if(disbursement.actualDisbursements){
+          for(let d of disbursement.actualDisbursements){
+              if((d.actualAmount!==undefined && d.actualAmount!==null && String(d.actualAmount).trim()!=='') || (d.disbursementDate!==undefined && d.disbursementDate!==null && String(d.disbursementDate).trim()!=='')){
+                  return true;
+              }
+          }
+      }
+          return false;
   }
          
 

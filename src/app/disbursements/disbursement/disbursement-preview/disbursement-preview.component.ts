@@ -5,11 +5,11 @@ import { AppComponent } from 'app/app.component';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import { TitleCasePipe, DatePipe } from '@angular/common';
 import * as inf from 'indian-number-format';
-import { Attribute, TableData } from 'app/model/dahsboard';
+import { Attribute, TableData, CustomDateAdapter } from 'app/model/dahsboard';
 import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.component';
 import { Router, NavigationStart } from '@angular/router';
 import { WorkflowValidationService } from 'app/workflow-validation-service';
-import { MatDialog, MatDatepicker, MatDatepickerInputEvent } from '@angular/material';
+import { MatDialog, MatDatepicker, MatDatepickerInputEvent, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { FieldDialogComponent } from 'app/components/field-dialog/field-dialog.component';
 import { WfassignmentComponent } from 'app/components/wfassignment/wfassignment.component';
@@ -17,12 +17,27 @@ import { WorkflowDataService } from 'app/workflow.data.service';
 import { DisbursementNotesComponent } from 'app/components/disbursementNotes/disbursementNotes.component';
 import { CurrencyService } from 'app/currency-service';
 
+export const APP_DATE_FORMATS = {
+  parse: {
+     dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
+  },
+  display: {
+     dateInput: 'input',
+     monthYearLabel: {year: 'numeric', month: 'short'},
+     dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+     monthYearA11yLabel: {year: 'numeric', month: 'long'},
+  }
+};
 
 @Component({
   selector: 'disbursement-preview-dashboard',
   templateUrl: './disbursement-preview.component.html',
   styleUrls: ['./disbursement-preview.component.css'],
-  providers: [TitleCasePipe],
+  providers: [TitleCasePipe,{
+    provide: DateAdapter, useClass: CustomDateAdapter
+  },{
+    provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+ }],
   styles: [`
        ::ng-deep .disbursements-class .mat-form-field-appearance-legacy .mat-form-field-infix {
              padding:0 !important;
@@ -54,7 +69,7 @@ export class DisbursementPreviewComponent implements OnInit {
   selectedField: ActualDisbursement;
 
   constructor(
-    private disbursementService: DisbursementDataService,
+    public disbursementService: DisbursementDataService,
     private appComponent: AppComponent,
     private titlecasePipe: TitleCasePipe,
     private adminComp: AdminLayoutComponent,
@@ -282,7 +297,11 @@ export class DisbursementPreviewComponent implements OnInit {
   setDate(ev: MatDatepickerInputEvent<any>){
     const trgt = ev.target;
     this.selectedDateField.target.value = this.datepipe.transform(trgt.value, 'dd-MMM-yyyy');
-    this.selectedField = this.selectedDateField.target.value;
+    this.selectedField.disbursementDate = this.selectedDateField.target.value;
+ }
+
+ clearDate(actual:ActualDisbursement){
+   actual.disbursementDate = null;
  }
 
  showAmountInput(evt: any){
@@ -307,6 +326,10 @@ export class DisbursementPreviewComponent implements OnInit {
   }
 
   deleteDisbursementRow(actual:ActualDisbursement,index:number){
-    this.currentDisbursement.actualDisbursements.splice(index,1);
+    this.disbursementService.deleteDisbursementRow(this.currentDisbursement,actual)
+    .then(()=>{
+        this.currentDisbursement.actualDisbursements.splice(index,1);
+    });
+    
   }
 }

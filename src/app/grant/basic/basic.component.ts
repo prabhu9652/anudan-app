@@ -1471,4 +1471,16 @@ setTimeout() {
         this.grantAmountFormatted.nativeElement.style.visibility='visible';
     }
 
+    clearStartDate(){
+      this.currentGrant.startDate = null;
+      this.currentGrant.stDate = '';
+      this.setDateDuration()
+    }
+
+    clearEndDate(){
+      this.currentGrant.endDate = null;
+      this.currentGrant.enDate = '';
+      this.setDateDuration();
+    }
+
 }

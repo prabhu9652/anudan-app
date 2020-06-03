@@ -43,8 +43,8 @@
                 <div class="col-9 text-left pl-3" style="display: flex;align-items: center;">
                   <div class="row">
                     <div class="col-12">
-                      <h4 *ngIf="currentDisbursement.status.internalStatus!=='ACTIVE' && currentDisbursement.status.internalStatus!=='CLOSED'" class="m-0" type="text" autocomplete="off"><b>Approval Request for {{currentDisbursement.grant.name}}</b></h4>
-                      <h4 *ngIf="currentDisbursement.status.internalStatus==='ACTIVE' || currentDisbursement.status.internalStatus==='CLOSED'" class="m-0" type="text" autocomplete="off"><b>Approval Note for {{currentDisbursement.grant.name}}</b></h4>
+                      <h4 *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" class="m-0" type="text" autocomplete="off"><b>Disbursement Approval Request for {{currentDisbursement.grant.name}}</b></h4>
+                      <h4 *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" class="m-0" type="text" autocomplete="off"><b>Disbursement Approval Note for {{currentDisbursement.grant.name}}</b></h4>
                     </div>
                     <div class="col-12 text-left">
                       <span data-html2canvas-ignore [class]="'badge state-' + currentDisbursement.status.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentDisbursement.status.displayName}}</span>
@@ -88,7 +88,8 @@
               </div>
             </div>
             <div class="col-4 mb-2 mx-2">
-              <span style="color: #929292;font-size: 13px;font-family:Roboto;">Requested Amount:</span>
+              <span *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Requested Amount:</span>
+              <span *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Approved Disbursement Amount:</span>
               <div class="ml-0 mb-3"><b><img src="./assets/img/rupee.png" style="width:10px;" class="mr-1">{{getFormattedGrantAmount(currentDisbursement.requestedAmount)}}</b>
                 <br><small>{{getGrantAmountInWords(currentDisbursement.requestedAmount)}}</small>
             </div>
@@ -106,7 +107,7 @@
             <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 mx-2"> 
               <table #tablePlaceholder width="100%" class="disbursements-class">
                 <tr>
-                  <td style="border: 1px solid #e4e4e4;" align="center"><b>Installment #</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2"><b>Installment #</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursed Amount</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Note</b></td>
@@ -123,7 +124,7 @@
                   <td style="border: 1px solid #e4e4e4;">
                     <mat-form-field>
                       <input matInput class="anu-input" readonly [(ngModel)]="actual.disbursementDate" (click)="openDate(actual,$event)" style="cursor: pointer;">
-                      <mat-icon style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
+                      <mat-icon *ngIf="actual.disbursementDate!==undefined && actual.disbursementDate!==null" (click)="clearDate(actual)" style="transform: scale(0.65);position: absolute;right: 0;top:20%;cursor:pointer;">highlight_off</mat-icon>
                     </mat-form-field>
                   </td>
                   <td style="border: 1px solid #e4e4e4;">
@@ -146,9 +147,43 @@
               </tr>
               </table>
             </div>
-            <div class="col-12">
+            <div *ngIf="currentDisbursement.canRecordActuals" class="col-12">
               <span (click)="addDisbursementRow()" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
             </div>
+            <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 text-left mt-4">
+              <div *ngFor="let flow of currentDisbursement.flowPermissions">
+                <button [disabled]="!disbursementService.checkIfDisbursementHasActualDisbursements(currentDisbursement)" mat-stroked-button (click)="submitDisbursement(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">Record Actual Disbursement</button>
+              </div>
+            </div>
+            <ng-container *ngIf="!currentDisbursement.canRecordActuals && disbursementService.checkIfClosed(currentDisbursement)">
+              <table #tablePlaceholder width="100%" class="disbursements-class">
+                <tr>
+                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2"><b>Installment #</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursed Amount</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Note</b></td>
+                </tr>
+                <ng-container *ngFor="let actual of currentDisbursement.actualDisbursements,let i=index">
+                <tr>
+                  <td style="border: 1px solid #e4e4e4;" align="center">{{i+1}}</td>
+                  <td style="border: 1px solid #e4e4e4;" align="center">
+                      <p class="m-0" >{{actual.disbursementDate | date:'dd-MMM-yyyy'}}</p>
+                  </td>
+                  <td style="border: 1px solid #e4e4e4;" class="p-1">
+                      <p class="w-100 text-right m-0">{{currencyService.getFormattedAmount(actual.actualAmount)}}</p>
+                  </td>
+                  <td style="border: 1px solid #e4e4e4;" align="center" class="p-1">
+                      <p matInput class="m-0 text-left">{{actual.note}}</p>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr *ngIf="currentDisbursement.actualDisbursements.length>1" style="background: #f9f9f9;">
+                <td colspan="2" style="border: 1px solid #e4e4e4;" class="pl-5"><b>TOTALS</b></td>
+                <td style="border: 1px solid #e4e4e4;" align="right" class="pr-3"><b>{{getTotals()}}</b></td>
+                <td style="border: 1px solid #e4e4e4;">&nbsp;</td>
+              </tr>
+              </table>
+            </ng-container>
           </div>
           
           <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">

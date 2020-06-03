@@ -68,7 +68,7 @@
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerStart" (click)="pickerStart.open()" placeholder="Select grant start date" type="text" readonly>
                                     <mat-datepicker #pickerStart></mat-datepicker>
-                                    <mat-icon (click)="openStartDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
+                                    <mat-icon *ngIf="currentGrant.stDate!==undefined && currentGrant.stDate!==null && currentGrant.stDate!==''" (click)="clearStartDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;">highlight_off</mat-icon>
                                 </mat-form-field>
 
                             </div>
@@ -79,7 +79,7 @@
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('end', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerEnd" (click)="pickerEnd.open()" placeholder="Select grant end date" readonly>
                                     <mat-datepicker #pickerEnd></mat-datepicker>
-                                    <mat-icon (click)="openEndDate()" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
+                                    <mat-icon *ngIf="currentGrant.enDate!==undefined && currentGrant.enDate!==null && currentGrant.enDate!==''" (click)="clearEndDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;">highlight_off</mat-icon>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
