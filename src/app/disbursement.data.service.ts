@@ -287,12 +287,12 @@ export class DisbursementDataService{
   checkIfDisbursementHasActualDisbursements(disbursement:Disbursement):boolean{
       if(disbursement.actualDisbursements){
           for(let d of disbursement.actualDisbursements){
-              if((d.actualAmount!==undefined && d.actualAmount!==null && String(d.actualAmount).trim()!=='') || (d.disbursementDate!==undefined && d.disbursementDate!==null && String(d.disbursementDate).trim()!=='')){
-                  return true;
+              if((d.actualAmount===undefined || d.actualAmount===null || String(d.actualAmount).trim()==='') || (d.disbursementDate===undefined || d.disbursementDate===null || String(d.disbursementDate).trim()==='')){
+                  return false;
               }
           }
       }
-          return false;
+          return true;
   }
          
 

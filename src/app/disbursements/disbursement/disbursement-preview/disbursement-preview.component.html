@@ -44,7 +44,7 @@
                   <div class="row">
                     <div class="col-12">
                       <h4 *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" class="m-0" type="text" autocomplete="off"><b>Disbursement Approval Request for {{currentDisbursement.grant.name}}</b></h4>
-                      <h4 *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" class="m-0" type="text" autocomplete="off"><b>Disbursement Approval Note for {{currentDisbursement.grant.name}}</b></h4>
+                      <h4 *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" class="m-0" type="text" autocomplete="off"><b>Disbursement Record against Approved Note for <i>{{currentDisbursement.grant.name}}</i></b></h4>
                     </div>
                     <div class="col-12 text-left">
                       <span data-html2canvas-ignore [class]="'badge state-' + currentDisbursement.status.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentDisbursement.status.displayName}}</span>
@@ -96,7 +96,7 @@
   
             </div>
             <div class="col-7 mb-2 mx-2">
-              <span style="color: #929292;font-size: 13px;font-family:Roboto;">Note:</span>
+              <span style="color: #929292;font-size: 13px;font-family:Roboto;">Commentary:</span>
               <div class="ml-0 mb-3"><b>{{currentDisbursement.reason}}</b></div>
   
             </div>
@@ -107,7 +107,7 @@
             <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 mx-2"> 
               <table #tablePlaceholder width="100%" class="disbursements-class">
                 <tr>
-                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2"><b>Installment #</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursed Amount</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Note</b></td>
@@ -142,7 +142,7 @@
               </ng-container>
               <tr *ngIf="currentDisbursement.actualDisbursements.length>1" style="background: #f9f9f9;">
                 <td colspan="2" style="border: 1px solid #e4e4e4;" class="pl-5"><b>TOTALS</b></td>
-                <td style="border: 1px solid #e4e4e4;" align="right" class="pr-3"><b>{{getTotals()}}</b></td>
+                <td style="border: 1px solid #e4e4e4;" align="right" class="pr-3"><b>{{currencyService.getFormattedAmount(getTotals())}}</b></td>
                 <td style="border: 1px solid #e4e4e4;">&nbsp;</td>
               </tr>
               </table>
@@ -158,7 +158,7 @@
             <ng-container *ngIf="!currentDisbursement.canRecordActuals && disbursementService.checkIfClosed(currentDisbursement)">
               <table #tablePlaceholder width="100%" class="disbursements-class">
                 <tr>
-                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2"><b>Installment #</b></td>
+                  <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursed Amount</b></td>
                   <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Note</b></td>
@@ -179,7 +179,7 @@
               </ng-container>
               <tr *ngIf="currentDisbursement.actualDisbursements.length>1" style="background: #f9f9f9;">
                 <td colspan="2" style="border: 1px solid #e4e4e4;" class="pl-5"><b>TOTALS</b></td>
-                <td style="border: 1px solid #e4e4e4;" align="right" class="pr-3"><b>{{getTotals()}}</b></td>
+                <td style="border: 1px solid #e4e4e4;" align="right" class="pr-3"><b>{{currencyService.getFormattedAmount(getTotals())}}</b></td>
                 <td style="border: 1px solid #e4e4e4;">&nbsp;</td>
               </tr>
               </table>

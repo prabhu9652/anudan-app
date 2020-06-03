@@ -20,7 +20,7 @@
           <div class="change-old" *ngIf="disbursementDiff.oldRequestedAmount">{{currencyService.getFormattedAmount(disbursementDiff.oldRequestedAmount)}}</div><div *ngIf="disbursementDiff.oldRequestedAmount && !disbursementDiff.newRequestedAmount" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>
       <div *ngIf="disbursementDiff.oldReason || disbursementDiff.newReason" class="mb-2 change-box">
-        <span class="change-title">Approval Request note changed</span>
+        <span class="change-title">Approval Request Commentary changed</span>
         <div class="change-new" *ngIf="disbursementDiff.newReason">{{disbursementDiff.newReason}}</div><div *ngIf="!disbursementDiff.newReason && disbursementDiff.oldReason" class="text-danger"><i><small>No value</small></i></div>
         <div class="change-old" *ngIf="disbursementDiff.oldReason">{{disbursementDiff.oldReason}}</div><div *ngIf="!disbursementDiff.oldReason && disbursementDiff.newReason" class="text-white"><i><small>Previously had no value</small></i></div>
       </div>

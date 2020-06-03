@@ -72,7 +72,7 @@ export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
 ];
 
 export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursement/approval-request', title: 'Approval Request Details',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursement/approval-request', title: 'Approval Request Note',  icon: 'grant.svg', class: '',divide:false },
   { path: '/disbursement/preview', title: 'Preview & Submit',  icon: 'grant.svg', class: '',divide:false}
 ];
 

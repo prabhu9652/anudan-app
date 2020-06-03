@@ -1,6 +1,7 @@
 <h1 mat-dialog-title>{{message.title}}</h1>
 <pre *ngIf="message.content" [innerHtml]="message.content"></pre>
 <div mat-dialog-actions>
-  <button mat-button mat-flat-button (click)="onNoClick()">No</button>
-  <button mat-raised-button color="primary" (click)="onYesClick()">Yes</button>
+  <button *ngIf='!message.type' mat-button mat-flat-button (click)="onNoClick()">No</button>
+  <button *ngIf='!message.type' mat-raised-button color="primary" (click)="onYesClick()">Yes</button>
+  <button *ngIf='message.type' mat-button mat-raised-button color="primary" (click)="onNoClick()" style="margin:0 auto;">Okay</button>
 </div>

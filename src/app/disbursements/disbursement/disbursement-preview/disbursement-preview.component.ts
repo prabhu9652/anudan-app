@@ -132,18 +132,14 @@ export class DisbursementPreviewComponent implements OnInit {
     return null;
   }
 
-  getTotals():string{
+  getTotals():number{
    
     let total=0;
     for(let ad of this.currentDisbursement.actualDisbursements){
       total += ad.actualAmount===undefined?0:Number(ad.actualAmount);
     }
 
-    if(total===0){
-      return '₹';
-    }
-
-    return this.currencyService.getFormattedAmount(total);
+    return total;
   }
 
   getFormattedCurrency(amount: string):string{
@@ -208,6 +204,14 @@ export class DisbursementPreviewComponent implements OnInit {
   }
 
   submitDisbursement(toState:number){
+
+    if(this.currentDisbursement.requestedAmount < this.getTotals()){
+      this.dialog.open(FieldDialogComponent,{
+        data: {title: 'The disbursed total cannot be greater than the approved amount of '+this.currencyService.getFormattedAmount(this.currentDisbursement.requestedAmount),type:'simple'},
+        panelClass: 'center-class'
+      });
+      return;
+    }
 
     this.workflowDataService.getDisbursementWorkflowStatuses(this.currentDisbursement)
     .then(workflowStatuses => {
