@@ -15,6 +15,7 @@ export class Disbursement{
     canManage:boolean;
     canRecordActuals:boolean;
     actualDisbursements:ActualDisbursement[];
+    approvedActualsDibursements: ActualDisbursement[];
 }
 
 export class ActualDisbursement{

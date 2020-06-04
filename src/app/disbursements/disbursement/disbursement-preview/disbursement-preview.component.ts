@@ -142,6 +142,20 @@ export class DisbursementPreviewComponent implements OnInit {
     return total;
   }
 
+  getGrantTotals(idx:number,fieldTableValue:TableData[]):string{
+    let total = 0;
+    for(let row of fieldTableValue){
+        let i=0;
+        for(let col of row.columns){
+            if(i===idx){
+                total+=Number(col.value);
+            }
+            i++;
+        }
+    }
+    return this.currencyService.getFormattedAmount(total);
+}
+
   getFormattedCurrency(amount: string):string{
     if(!amount || amount===''){
         return inf.format(Number("0"),2);

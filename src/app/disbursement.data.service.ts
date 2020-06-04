@@ -41,6 +41,9 @@ export class DisbursementDataService{
 
   saveDisbursement(currentDisbursement: Disbursement):Promise<Disbursement> {
     if(currentDisbursement!==undefined && currentDisbursement!==null){
+        if(currentDisbursement.approvedActualsDibursements){
+            currentDisbursement.approvedActualsDibursements = null;
+        }
         return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.httpOptions)
         .toPromise()
         .then<Disbursement>()
@@ -216,6 +219,9 @@ export class DisbursementDataService{
 
   submitDisbursement(disbursement:Disbursement,message:string,fromStateId:number,toStateId:number):Promise<Disbursement>{
     if(disbursement!==null && disbursement!==null){
+        if(disbursement.approvedActualsDibursements){
+            disbursement.approvedActualsDibursements = null;
+        }
         if(disbursement.actualDisbursements){
             for(let ad of disbursement.actualDisbursements){
                 if(ad.disbursementDate){

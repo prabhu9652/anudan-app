@@ -87,6 +87,77 @@
   
               </div>
             </div>
+            <div class="col-12 px-0" *ngIf="getGrantDisbursementAttribute()">
+              <p class="text-header">Planned Disbursement</p>
+              <table id="tablePlaceholderX" width="100%">
+                <tr style="background: #f9f9f9">
+                  <td width="2%" align="center" valign="middle" style="border: 1px solid #e4e4e4;">
+                    Planned Installment #
+                  </td>
+                  <ng-container *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns, let i = index">
+                    <td *ngIf="column.name!=='Notes'" width="15%" align="center" valign="middle" style="border: 1px solid #e4e4e4;" >
+                      {{column.name}}
+                    </td>
+                    <td *ngIf="column.name==='Notes'" width="50%" align="center" valign="middle" style="border: 1px solid #e4e4e4;" >
+                      {{column.name}}
+                    </td>
+                  </ng-container>
+                </tr>
+                <ng-container *ngFor="let row of getGrantDisbursementAttribute().fieldTableValue, let i = index">
+                  <tr>
+                    <td width="2%" class="anu-input m-0 text-center" style="background:#f4f4f4 !important;">
+                     {{row.name}}
+                    </td>
+                    <ng-container *ngFor="let column of row.columns,let j = index">
+                      <td width="15%" *ngIf="!column.dataType && column.name!=='Notes'" class="anu-input m-0" style="background:#f4f4f4 !important;">
+                          {{column.value}}
+                      </td>
+                      <td width="50%"  *ngIf="!column.dataType && column.name==='Notes'" width="60%" class="anu-input m-0" style="background:#f4f4f4 !important;">
+                          {{column.value}}
+                      </td>
+                      <td  *ngIf="column.dataType==='currency'" align="right" class="anu-input text-right m-0" style="background:#f4f4f4 !important;">
+                          {{currencyService.getFormattedAmount(column.value)}}
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+                <tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                  <td class="py-2 anu-input" colspan="2" align="center" style="background:#f4f4f4 !important;">GRANT TOTALS:</td>
+                  <ng-container *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
+                    <td class="text-right pr-3 my-0 anu-input" *ngIf="column.dataType==='currency'" style="background:#f4f4f4 !important;"><b>{{getGrantTotals(j,getGrantDisbursementAttribute().fieldTableValue)}}</b></td>
+                  </ng-container>
+                  <td class=" anu-input" style="background:#f4f4f4 !important;">&nbsp;</td>
+                </tr>
+              </table>
+            </div>
+            <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 px-0 mt-3 mb-4">
+              <p class="text-header">Recorded Disbursements</p>
+              <table width="100%" style="background:#f2f2f2">
+                  <tr>
+                      <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
+                      <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
+                      <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Amount</b></td>
+                      <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Commentary</b></td>
+                  </tr>
+                  <ng-container *ngIf="currentDisbursement.approvedActualsDibursements">
+                  <ng-container *ngFor="let ad of currentDisbursement.approvedActualsDibursements,let i=index">
+                          <tr>
+                              <td style="border: 1px solid #e4e4e4;" align="center">{{i+1}}</td>
+                              <td style="border: 1px solid #e4e4e4;" align="center">
+                                  <p class="m-0" >{{ad.disbursementDate | date:'dd-MMM-yyyy'}}</p>
+                              </td>
+                              <td style="border: 1px solid #e4e4e4;" class="p-1">
+                                  <p class="w-100 text-right m-0">{{currencyService.getFormattedAmount(ad.actualAmount)}}</p>
+                              </td>
+                              <td style="border: 1px solid #e4e4e4;" align="center" class="p-1">
+                                  <p matInput class="m-0 text-left">{{ad.note}}</p>
+                              </td>
+                          </tr>
+                  </ng-container>
+                </ng-container>
+              </table>
+            </div>
+            <hr>
             <div class="col-4 mb-2 mx-2">
               <span *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Requested Amount:</span>
               <span *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Approved Disbursement Amount:</span>
@@ -104,6 +175,7 @@
               <input matInput [matDatepicker]="datePicker" (dateInput)="setDate($event)">
               <mat-datepicker #datePicker></mat-datepicker>
             </mat-form-field>
+            
             <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 mx-2"> 
               <table #tablePlaceholder width="100%" class="disbursements-class">
                 <tr>

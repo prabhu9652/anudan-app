@@ -56,7 +56,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12" *ngIf="getGrantDisbursementAttribute()">
+                <div class="col-12 mt-3" *ngIf="getGrantDisbursementAttribute()">
+                    <p class="text-header">Planned Disbursement</p>
                     <table id="tablePlaceholderX" width="100%">
                       <tr style="background: #f9f9f9">
                         <td width="2%" align="center" valign="middle" style="border: 1px solid #e4e4e4;">
@@ -90,12 +91,37 @@
                         </tr>
                       </ng-container>
                       <tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
-                        <td class="py-2" colspan="2" align="center" style="position: sticky; left: 0; z-index: 1;font-weight:600;">GRANT TOTALS:</td>
+                        <td class="anu-input" colspan="2" align="center" style="background:#f4f4f4;">GRANT TOTALS:</td>
                         <ng-container *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
-                          <td class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getTotals(j,getGrantDisbursementAttribute().fieldTableValue)}}</b></td>
+                          <td class="text-right anu-input" *ngIf="column.dataType==='currency'" style="background:#f4f4f4;"><b>{{getTotals(j,getGrantDisbursementAttribute().fieldTableValue)}}</b></td>
                         </ng-container>
-                        <td>&nbsp;</td>
+                        <td class="anu-input" style="background:#f4f4f4;">&nbsp;</td>
                       </tr>
+                    </table>
+                </div>
+                <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 mt-3">
+                    <p class="text-header">Recorded Disbursements</p>
+                    <table width="100%" style="background:#f2f2f2">
+                        <tr>
+                            <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
+                            <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
+                            <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Amount</b></td>
+                            <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Commentary</b></td>
+                        </tr>
+                        <ng-container *ngFor="let ad of currentDisbursement.approvedActualsDibursements,let i=index">
+                                <tr>
+                                    <td style="border: 1px solid #e4e4e4;" align="center">{{i+1}}</td>
+                                    <td style="border: 1px solid #e4e4e4;" align="center">
+                                        <p class="m-0" >{{ad.disbursementDate | date:'dd-MMM-yyyy'}}</p>
+                                    </td>
+                                    <td style="border: 1px solid #e4e4e4;" class="p-1">
+                                        <p class="w-100 text-right m-0">{{currencyService.getFormattedAmount(ad.actualAmount)}}</p>
+                                    </td>
+                                    <td style="border: 1px solid #e4e4e4;" align="center" class="p-1">
+                                        <p matInput class="m-0 text-left">{{ad.note}}</p>
+                                    </td>
+                                </tr>
+                        </ng-container>
                     </table>
                 </div>
                 <div class="col-12">
