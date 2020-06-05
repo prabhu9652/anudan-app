@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 import { AppComponent } from 'app/app.component';
@@ -17,7 +17,7 @@ import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.comp
   styleUrls: ['./disbursement.component.css'],
   providers: [TitleCasePipe]
 })
-export class DisbursementComponent implements OnInit {
+export class DisbursementComponent implements OnInit,OnDestroy {
 
   currentDisbursement:Disbursement;
   subscribers: any = {};
@@ -34,7 +34,7 @@ export class DisbursementComponent implements OnInit {
     public currencyService: CurrencyService,
     private adminComp: AdminLayoutComponent
     ){
-      this.subscribers.name = this.router.events.subscribe((val) => {
+      this.subscribers = this.router.events.subscribe((val) => {
         if(val instanceof NavigationStart && this.currentDisbursement){
             this.disbursementService.saveDisbursement(this.currentDisbursement)
             .then(d => {
@@ -51,6 +51,10 @@ export class DisbursementComponent implements OnInit {
     if(this.currentDisbursement===undefined || this.currentDisbursement===null){
       this.router.navigate(['dashboard']);
     }
+  }
+
+  ngOnDestroy(){
+    this.subscribers.unsubscribe();
   }
   
 

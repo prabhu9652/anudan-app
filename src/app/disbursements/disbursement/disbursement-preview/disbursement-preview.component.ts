@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Disbursement, DisbursementWorkflowAssignmentModel, DisbursementWorkflowAssignment, ActualDisbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 import { AppComponent } from 'app/app.component';
@@ -53,7 +53,7 @@ export const APP_DATE_FORMATS = {
    }
   `]
 })
-export class DisbursementPreviewComponent implements OnInit {
+export class DisbursementPreviewComponent implements OnInit, OnDestroy {
 
   currentDisbursement:Disbursement
   logoUrl: string;
@@ -82,7 +82,7 @@ export class DisbursementPreviewComponent implements OnInit {
     ){
       this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
 
-      this.subscribers.name = this.router.events.subscribe((val) => {
+      this.subscribers = this.router.events.subscribe((val) => {
         if(val instanceof NavigationStart && this.currentDisbursement){
           this.disbursementService.saveDisbursement(this.currentDisbursement)
           .then(d => {
@@ -103,6 +103,10 @@ export class DisbursementPreviewComponent implements OnInit {
     this.logoUrl = "/api/public/images/"+this.currentDisbursement.grant.grantorOrganization.code+"/logo";
 
     console.log(this.currentDisbursement);
+  }
+
+  ngOnDestroy(){
+      this.subscribers.unsubscribe();
   }
 
 
