@@ -361,13 +361,17 @@ drop(event: CdkDragDrop<string[]>) {
                this.organizationElem.close();
            }
            this.grantsElem.close();
-           this.disbursementsElem.close();
+           if(this.disbursementsElem){
+            this.disbursementsElem.close();
+           }
        }else if(thisMenu==='grants'){
             if(this.organizationElem){
                 this.organizationElem.close();
             }
            this.reportsElem.close();
-           this.disbursementsElem.close();
+           if(this.disbursementsElem){
+            this.disbursementsElem.close();
+           }
        }else if(thisMenu==='disbursements'){
           if(this.organizationElem){
               this.organizationElem.close();

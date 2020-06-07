@@ -496,6 +496,8 @@ saveDifferences(oldSection,oldAttr,section,attr){
 getDisbursementTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';
                 const tabData = data;
+                
+                if(tabData!==undefined && tabData.length>0){
                 html += '<td>#</td>';
                 for(let i=0; i< tabData[0].columns.length;i++){
 
@@ -505,6 +507,7 @@ getDisbursementTabularData(data){
                     //}
                 }
                 html += '</tr>';
+                
                 for(let i=0; i< tabData.length;i++){
 
                     html += '<tr><td>' + tabData[i].name + '</td>';
@@ -525,6 +528,9 @@ getDisbursementTabularData(data){
                     }
                     html += '</tr>';
                 }
+            }else{
+                html += '<tr><td>No Data</td></tr>';
+            }
 
                 html += '</table>'
                 //document.getElementById('attribute_' + elemId).innerHTML = '';

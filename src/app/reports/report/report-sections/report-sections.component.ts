@@ -921,9 +921,9 @@ deleteAttachment(attributeId, attachmentId){
 
   addDisbursementRow(attr: Attribute){
      const row = new TableData();
-     row.name = String(Number(attr.fieldTableValue[attr.fieldTableValue.length-1].name)+1);
-     row.header = attr.fieldTableValue[0].header;
-     row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
+     row.name = String(Number(attr.fieldTableValue.length>0?(attr.fieldTableValue[attr.fieldTableValue.length-1].name):'0')+1);
+     row.header = attr.fieldTableValue[0]?attr.fieldTableValue[0].header:'#';
+     row.columns = JSON.parse(attr.fieldTableValue[0]?JSON.stringify(attr.fieldTableValue[0].columns):'[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]');
      if(this.appComp.loggedInUser.organization.organizationType==='GRANTEE'){
         row.enteredByGrantee = true;
      }if(this.appComp.loggedInUser.organization.organizationType==='GRANTER'){
