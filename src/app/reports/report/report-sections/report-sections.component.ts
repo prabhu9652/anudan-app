@@ -878,7 +878,7 @@ deleteAttachment(attributeId, attachmentId){
                 i++;
             }
         }
-        for(let row of this.currentReport.grant.approvedReportsDisbursements){
+        /*for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
             let i=0;
             for(let col of row.columns){
                 if(i===idx){
@@ -886,7 +886,7 @@ deleteAttachment(attributeId, attachmentId){
                 }
                 i++;
             }
-        }
+        }*/
         return String('₹ ' + inf.format(total,2));
     }
 
@@ -907,7 +907,7 @@ deleteAttachment(attributeId, attachmentId){
                           console.log(attrib.fieldTableValue);
                           const tableData = attrib.fieldTableValue;
                           tableData.splice(rowIndex,1);
-                          const starCounter = this.currentReport.grant.approvedReportsDisbursements?this.currentReport.grant.approvedReportsDisbursements.length:0;
+                          const starCounter = this.getGrantDisbursementAttribute().fieldTableValue?this.getGrantDisbursementAttribute().fieldTableValue.length:0;
                           for(let i=starCounter; i<tableData.length+starCounter; i++){
                             tableData[i-starCounter].name = String(i+1);
                           }

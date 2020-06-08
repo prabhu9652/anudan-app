@@ -379,7 +379,7 @@
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
                                   <td width="10%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
-                                    <mat-icon *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
+                                    <mat-icon *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee && row.status" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
                                               aria-hidden="false" style="font-size:12px;top: -3px; position: relative; left: 88%;z-index:1;cursor:pointer;"
                                               aria-label="Example home icon" inline="false" title="Delete this row">
                                       delete_outline
@@ -396,8 +396,11 @@
                                     <ng-container *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && !row.enteredByGrantee">
                                       <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0px;">{{row.name}}</p>
                                     </ng-container>
-                                    <ng-container *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee">
+                                    <ng-container *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee && row.status">
                                       <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:-14px;">{{row.name}}</p>
+                                    </ng-container>
+                                    <ng-container *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee && !row.status">
+                                      <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0px;">{{row.name}}</p>
                                     </ng-container>
                                     <ng-container *ngIf="attribute.fieldTableValue.length===1 && currentReport.forGranteeUse && row.enteredByGrantee">
                                       <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;position:relative;top:0px;">{{row.name}}</p>
@@ -419,7 +422,7 @@
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
                                         <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && !row.enteredByGrantee" (blur)="showFormattedAmount($event)" #committedAmount type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" disabled readonly style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && !row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;color:#212529;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && !row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;color:#212529;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                         <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && row.enteredByGrantee"  #committedAmount type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
@@ -431,18 +434,24 @@
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && !row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
-                                        <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType  && row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType  && row.enteredByGrantee && row.status" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}">
-                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
+                                               <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType  && row.enteredByGrantee && !row.status" matInput [(ngModel)]="column.value" class="anu-input" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
+                                               [ngModelOptions]="{standAlone:true}">
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
-                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee" (click)="openDate(column,$event)" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee && !row.status" matInput [(ngModel)]="column.value" class="anu-input" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
+                                               [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
+                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status" (click)="openDate(column,$event)" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
 
                                         <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && !row.enteredByGrantee" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"  readonly disabled style="color:#212529;background:#f4f4f4 !important;">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;">{{getFormattedCurrency(column.value)}}</p>
-                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" (blur)="showFormattedAmount($event)">
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee && row.status" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;">{{getFormattedCurrency(column.value)}}</p>
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee && row.status" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" (blur)="showFormattedAmount($event)">
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee && !row.status" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"  readonly disabled style="color:#212529;background:#f4f4f4 !important;">
+                                        <p [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee && !row.status" type="number" class="anu-input w-100 text-right" style="position:absolute;top:-1px;color:#212529;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                       </mat-form-field>
                                     </td>
                                   </ng-container>

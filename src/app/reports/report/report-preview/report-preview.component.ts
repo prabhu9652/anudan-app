@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {Report,ReportSectionInfo,ReportWorkflowAssignmentModel,ReportWorkflowAssignment} from '../../../model/report'
 import {ReportNotesComponent} from '../../../components/reportNotes/reportNotes.component';
 import {MatDialog} from '@angular/material';
-import {Section,WorkflowStatus,TableData} from '../../../model/dahsboard';
+import {Section,WorkflowStatus,TableData, Attribute} from '../../../model/dahsboard';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
@@ -479,7 +479,7 @@ export class ReportPreviewComponent implements OnInit {
                  i++;
              }
          }
-         for(let row of this.currentReport.grant.approvedReportsDisbursements){
+         /*for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
              let i=0;
              for(let col of row.columns){
                  if(i===idx){
@@ -487,11 +487,24 @@ export class ReportPreviewComponent implements OnInit {
                  }
                  i++;
              }
-         }
+         }*/
          return String('₹ ' + inf.format(total,2));
      }
 
      manageGrant(){
        this.adminComp.manageGrant(null, this.currentReport.grant.id);
      }
+
+     getGrantDisbursementAttribute():Attribute{
+        for(let section of this.currentReport.grant.grantDetails.sections){
+            if(section.attributes){
+                for(let attr of section.attributes){
+                    if(attr.fieldType==='disbursement'){
+                        return attr;
+                    }
+                }
+            }
+        }
+        return null;
+      }
 }

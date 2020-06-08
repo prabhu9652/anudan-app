@@ -13,13 +13,7 @@ export class DisbursementDataService{
     private messageSource = new BehaviorSubject<Disbursement>(null);
     url:string = '/api/user/%USERID%/disbursements';
     months:string[]=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-      'Authorization': localStorage.getItem('AUTH_TOKEN')
-    })
-  };
+    
 
     currentMessage = this.messageSource.asObservable();
 
@@ -39,12 +33,24 @@ export class DisbursementDataService{
       }
   }
 
+  private getHeader(){
+    const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+      };
+      return httpOptions;
+  }
+
+
   saveDisbursement(currentDisbursement: Disbursement):Promise<Disbursement> {
     if(currentDisbursement!==undefined && currentDisbursement!==null){
         if(currentDisbursement.approvedActualsDibursements){
             currentDisbursement.approvedActualsDibursements = null;
         }
-        return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.httpOptions)
+        return this.httpClient.post(this.getUrl() + "/",currentDisbursement,this.getHeader())
         .toPromise()
         .then<Disbursement>()
         .catch(err => {
@@ -56,7 +62,7 @@ export class DisbursementDataService{
   }
 
   fetchInprogressDisbursements():Promise<Disbursement[]>{
-    return this.httpClient.get(this.getUrl()+'/status/DRAFT',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/DRAFT',this.getHeader())
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -73,7 +79,7 @@ export class DisbursementDataService{
 
   fetchActiveDisbursements():Promise<Disbursement[]>{
 
-    return this.httpClient.get(this.getUrl()+'/status/ACTIVE',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/ACTIVE',this.getHeader())
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -90,7 +96,7 @@ export class DisbursementDataService{
 
   fetchClosedDisbursements():Promise<Disbursement[]>{
 
-    return this.httpClient.get(this.getUrl()+'/status/CLOSED',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/status/CLOSED',this.getHeader())
     .toPromise().then<Disbursement[]>((d:Disbursement[]) =>{
         if(d && d.length>0){
             for(let disb of d){
@@ -106,7 +112,7 @@ export class DisbursementDataService{
   }
 
   showOwnedActiveGrants():Promise<Grant[]>{
-    return this.httpClient.get(this.getUrl()+'/active-grants',this.httpOptions)
+    return this.httpClient.get(this.getUrl()+'/active-grants',this.getHeader())
     .toPromise()
     .then<Grant[]>().catch(err =>{
         return Promise.reject<Grant[]>('Could not retrieve Active grants');
@@ -116,7 +122,7 @@ export class DisbursementDataService{
     createNewDisbursement(selectedGrant:Grant):Promise<Disbursement> {
         
         const disbursement:Disbursement=new Disbursement();
-        return this.httpClient.post<Disbursement>(this.getUrl()+'/grant/'+selectedGrant.id, disbursement,this.httpOptions)
+        return this.httpClient.post<Disbursement>(this.getUrl()+'/grant/'+selectedGrant.id, disbursement,this.getHeader())
         .toPromise()
         .then<Disbursement>()
         .catch(err =>{
@@ -126,7 +132,7 @@ export class DisbursementDataService{
 
     deleteDisbursement(disbursement:Disbursement):Promise<Disbursement[]>{
         if(disbursement!==undefined && disbursement!==null){
-            return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.httpOptions)
+            return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.getHeader())
             .toPromise()
             .then<Disbursement[]>((d:Disbursement[]) =>{
                 if(d && d.length>0){
@@ -167,7 +173,7 @@ export class DisbursementDataService{
 
   saveAssignments(disbursement:Disbursement,assignment:DisbursementWorkflowAssignment[]):Promise<Disbursement>{
     if(disbursement!==undefined && disbursement!==null){
-        return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.httpOptions)
+        return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.getHeader())
         .toPromise()
         .then((d:Disbursement) => {
             this.setPermission(d);
@@ -183,7 +189,7 @@ export class DisbursementDataService{
 
   getDisbursement(disbursementId:Number):Promise<Disbursement>{
       if(disbursementId!==undefined && disbursementId!==null){
-        return this.httpClient.get(this.getUrl()+'/'+disbursementId,this.httpOptions)
+        return this.httpClient.get(this.getUrl()+'/'+disbursementId,this.getHeader())
         .toPromise()
         .then((d:Disbursement) =>{
             this.setPermission(d);
@@ -206,7 +212,7 @@ export class DisbursementDataService{
 
   getHistory(disbursement:Disbursement):Promise<DisbursementSnapshot>{
       if(disbursement!==undefined && disbursement!==null){
-        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/changeHistory',this.httpOptions)
+        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/changeHistory',this.getHeader())
         .toPromise()
         .then<DisbursementSnapshot>()
         .catch(err => {
@@ -234,7 +240,7 @@ export class DisbursementDataService{
                 }
             }
         }
-        return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.httpOptions)
+        return this.httpClient.post(this.getUrl()+'/'+disbursement.id+'/flow/'+fromStateId+'/'+toStateId,{disbursement:disbursement,note:message}, this.getHeader())
         .toPromise()
         .then( (d:Disbursement) => {
             this.setPermission(d);
@@ -250,7 +256,7 @@ export class DisbursementDataService{
 
   addNewDisbursementRow(disbursement:Disbursement):Promise<ActualDisbursement>{
     if(disbursement!==undefined && disbursement!==null){
-        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/actual',this.httpOptions)
+        return this.httpClient.get(this.getUrl()+'/'+disbursement.id+'/actual',this.getHeader())
         .toPromise()
         .then<ActualDisbursement>()
         .catch(err =>{
@@ -263,7 +269,7 @@ export class DisbursementDataService{
 
   deleteDisbursementRow(disbursement:Disbursement,actualDisbursement:ActualDisbursement):Promise<any>{
     if(disbursement!==undefined && disbursement!==null){
-        return this.httpClient.delete(this.getUrl()+'/'+disbursement.id+'/actual/'+actualDisbursement.id,this.httpOptions)
+        return this.httpClient.delete(this.getUrl()+'/'+disbursement.id+'/actual/'+actualDisbursement.id,this.getHeader())
         .toPromise()
         .then()
         .catch(err =>{
