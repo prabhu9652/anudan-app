@@ -68,7 +68,7 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
 export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
   { path: '/disbursements/in-progress', title: 'Approvals In-progress',  icon: 'grant.svg', class: '',divide:false },
   { path: '/disbursements/approved', title: 'Approvals Active',  icon: 'view_agenda', class: '',divide:false },
-  { path: '/disbursements/closed', title: 'Approvals Closed',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/disbursements/closed', title: 'Approvals Disbursed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
