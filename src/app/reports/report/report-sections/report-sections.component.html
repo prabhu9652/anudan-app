@@ -461,12 +461,12 @@
                               <div class="row"><div class="col-12">
                                 <span *ngIf="currentReport.forGranteeUse" (click)="addDisbursementRow(attribute)" style="cursor:pointer;"><i class="fas fa-plus-circle text-green mr-1"></i>Add a row</span>
                               </div></div>
-                              <tr *ngIf="getGrantDisbursementAttribute() && getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                              <!--tr *ngIf="getGrantDisbursementAttribute() && getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
                                 <td class="py-2" align="center" style="position: sticky; left: 0; z-index: 1;"><p  class="w-100" style="font-weight:600;">TOTALS:</p></td>
                                 <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
                                   <label class="text-right pr-3 my-0 w-100" *ngIf="column.dataType==='currency'"><b>{{getDisbursementTotals(j,attribute.fieldTableValue)}}</b></label>
                                 </td>
-                              </tr>
+                              </tr-->
                             </table>
                           </div>
                         </div>

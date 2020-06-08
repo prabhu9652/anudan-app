@@ -869,7 +869,18 @@ deleteAttachment(attributeId, attachmentId){
 
     getDisbursementTotals(idx:number,fieldTableValue:TableData[]):string{
         let total = 0;
-        for(let row of fieldTableValue){
+        if(fieldTableValue){
+            for(let row of fieldTableValue){
+                let i=0;
+                for(let col of row.columns){
+                    if(i===idx){
+                        total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
+                    }
+                    i++;
+                }
+            }
+        }
+        for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
             let i=0;
             for(let col of row.columns){
                 if(i===idx){
@@ -878,16 +889,7 @@ deleteAttachment(attributeId, attachmentId){
                 i++;
             }
         }
-        /*for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
-            let i=0;
-            for(let col of row.columns){
-                if(i===idx){
-                    total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
-                }
-                i++;
-            }
-        }*/
-        return String('₹ ' + inf.format(total,2));
+        return this.currencyService.getFormattedAmount(total);
     }
 
 

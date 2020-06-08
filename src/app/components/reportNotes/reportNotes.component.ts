@@ -181,7 +181,11 @@ const httpOptions = {
 
                                 let hasDifferences = false;
 
-                                if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
+                                if(oldAttr.fieldTableValue && !attr.fieldTableValue){
+                                    hasDifferences = true;
+                                }else if(!oldAttr.fieldTableValue && attr.fieldTableValue){
+                                    hasDifferences = true;
+                                }else if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
                                     hasDifferences = true;
                                 }else{
                                     for(let i=0; i<oldAttr.fieldTableValue.length;i++){
@@ -497,7 +501,7 @@ getDisbursementTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';
                 const tabData = data;
                 
-                if(tabData!==undefined && tabData.length>0){
+                if(tabData!==undefined && tabData!==null && tabData.length>0){
                 html += '<td>#</td>';
                 for(let i=0; i< tabData[0].columns.length;i++){
 
