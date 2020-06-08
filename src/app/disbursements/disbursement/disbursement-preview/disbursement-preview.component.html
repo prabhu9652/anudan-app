@@ -137,6 +137,7 @@
                       <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
                       <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Date</b></td>
                       <td style="border: 1px solid #e4e4e4;" align="center"><b>Disbursement Amount</b></td>
+                      <td style="border: 1px solid #e4e4e4;" align="center"><b>Funds from Other Sources</b></td>
                       <td style="border: 1px solid #e4e4e4;" align="center" width="40%"><b>Commentary</b></td>
                   </tr>
                   <ng-container *ngIf="currentDisbursement.approvedActualsDibursements">
@@ -148,6 +149,9 @@
                               </td>
                               <td style="border: 1px solid #e4e4e4;" class="p-1">
                                   <p class="w-100 text-right m-0">{{currencyService.getFormattedAmount(ad.actualAmount)}}</p>
+                              </td>
+                              <td style="border: 1px solid #e4e4e4;" class="p-1">
+                                  <p class="w-100 text-right m-0">{{currencyService.getFormattedAmount(ad.otherSources)}}</p>
                               </td>
                               <td style="border: 1px solid #e4e4e4;" align="center" class="p-1">
                                   <p matInput class="m-0 text-left">{{ad.note}}</p>

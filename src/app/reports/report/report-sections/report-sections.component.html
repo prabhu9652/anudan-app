@@ -334,7 +334,7 @@
                                     <ng-container *ngFor="let column of row.columns,let j = index">
                                       <td [width]="column.name==='Notes'?'20%':'12%'">
                                           <p *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="background:#f4f4f4 !important;">{{column.value}}</p>
-                                          <p *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                          <p *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                       </td>
                                     </ng-container>
                                   </tr>
@@ -361,12 +361,12 @@
                           <div id="tableArea" class="row dibursements-class mt-4" style="padding-left:15px;padding-right:15px;">
                             <table #dataColumns id="tablePlaceholder" width="100%">
                               <tr>
-                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                <ng-container *ngIf="attribute.fieldTableValue">
                                 <td align="center" valign="middle" width="10%" style="background: rgb(244,244,244);border: 1px solid #e4e4e4;">
                                   <label class="m-0">#</label>
                                 </td>
                                 </ng-container>
-                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                <ng-container *ngIf="attribute.fieldTableValue">
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
 
                                   <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
@@ -375,7 +375,7 @@
                                 </ng-container>
                                 </ng-container>
                               </tr>
-                              <ng-container *ngIf="attribute.fieldTableValue[0]">
+                              <ng-container *ngIf="attribute.fieldTableValue">
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
                                   <td width="10%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
@@ -422,9 +422,9 @@
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && !row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;color:#212529;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
                                         <input [id]="'data_'+i+'_'+j"  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && row.enteredByGrantee"  #committedAmount type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"
                                                [ngModelOptions]="{standAlone:true}" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                         <input *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                       </mat-form-field>
                                       <mat-form-field style="margin-top: 3px;" *ngIf="currentReport.forGranteeUse">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType  && !row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
@@ -439,9 +439,9 @@
 
                                         <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && !row.enteredByGrantee" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right"  readonly disabled style="color:#212529;background:#f4f4f4 !important;">
-                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;">₹ {{getFormattedCurrency(column.value)}}</p>
+                                        <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee" #amountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;">{{getFormattedCurrency(column.value)}}</p>
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name==='Funds from Other Sources' && row.enteredByGrantee" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" (blur)="showFormattedAmount($event)">
                                       </mat-form-field>
                                     </td>

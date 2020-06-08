@@ -24,6 +24,7 @@ export class ActualDisbursement{
     actualAmount:number;
     note: string;
     disbursementId: number;
+    otherSources:number
 }
 
 export class DisbursementHistory{

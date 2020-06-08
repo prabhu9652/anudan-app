@@ -516,7 +516,7 @@ getDisbursementTabularData(data){
                       if(!tabData[i].columns[j].dataType || tabData[i].columns[j].dataType==='date'){
                         html+='<td>' + tabData[i].columns[j].value + '</td>';
                       }else if(tabData[i].columns[j].dataType==='currency'){
-                        if(!tabData[i].columns[j].value || tabData[i].columns[j].value===''){
+                        if(!tabData[i].columns[j].value || tabData[i].columns[j].value==='' || tabData[i].columns[j].value==='null'){
                             html+='<td class="text-right">₹ ' + inf.format(Number("0"),2) + '</td>';
                         }else{
                             html+='<td class="text-right">₹ ' + inf.format(Number(tabData[i].columns[j].value),2) + '</td>';

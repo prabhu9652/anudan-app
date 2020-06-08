@@ -425,6 +425,7 @@ export class TableData {
   header:string;
   columns: ColumnData[];
   enteredByGrantee: boolean;
+  status:boolean;
 }
 
 export class TemplateLibrary{

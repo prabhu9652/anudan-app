@@ -24,6 +24,7 @@ import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import * as inf from 'indian-number-format';
 import { AttributeService } from 'app/attribute-validation-service';
+import { CurrencyService } from 'app/currency-service';
 
 export const APP_DATE_FORMATS = {
    parse: {
@@ -100,7 +101,8 @@ export class ReportSectionsComponent implements OnInit {
         private dialog: MatDialog,
         private elem: ElementRef,
         private datepipe: DatePipe,
-        private attributeService:AttributeService) {
+        private attributeService:AttributeService,
+        private currencyService: CurrencyService) {
 
         this.route.params.subscribe( (p) => {
         this.action = p['action'];
@@ -285,7 +287,7 @@ export class ReportSectionsComponent implements OnInit {
                 data.header="";
                 data.columns = [];
 
-                const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from other Sources','Notes'];
+                const colHeaders = ['Disbursement Date','Actual Disbursement','Funds from Other Sources','Notes'];
                 for(let i=0; i< 4; i++){
                 const col = new ColumnData();
                 col.name = colHeaders[i];
@@ -819,10 +821,10 @@ deleteAttachment(attributeId, attachmentId){
     }
 
     getFormattedCurrency(amount: string):string{
-        if(!amount || amount===''){
-            return inf.format(Number("0"),2);
+        if(amount===undefined || amount===null || amount==='null'){
+            amount='';
         }
-        return inf.format(Number(amount),2);
+        return this.currencyService.getFormattedAmount(Number(amount));
     }
 
     showAmountInput(evt: any){
@@ -871,7 +873,7 @@ deleteAttachment(attributeId, attachmentId){
             let i=0;
             for(let col of row.columns){
                 if(i===idx){
-                    total+=Number(col.value);
+                    total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
                 }
                 i++;
             }
@@ -880,7 +882,7 @@ deleteAttachment(attributeId, attachmentId){
             let i=0;
             for(let col of row.columns){
                 if(i===idx){
-                    total+=Number(col.value);
+                    total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
                 }
                 i++;
             }
@@ -921,9 +923,10 @@ deleteAttachment(attributeId, attachmentId){
 
   addDisbursementRow(attr: Attribute){
      const row = new TableData();
-     row.name = String(Number(attr.fieldTableValue.length>0?(attr.fieldTableValue[attr.fieldTableValue.length-1].name):'0')+1);
-     row.header = attr.fieldTableValue[0]?attr.fieldTableValue[0].header:'#';
-     row.columns = JSON.parse(attr.fieldTableValue[0]?JSON.stringify(attr.fieldTableValue[0].columns):'[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]');
+     row.name = String(Number((attr.fieldTableValue && attr.fieldTableValue.length>0)?(attr.fieldTableValue[attr.fieldTableValue.length-1].name):'0')+1);
+     row.header = (attr.fieldTableValue && attr.fieldTableValue.length>0 && attr.fieldTableValue[0])?attr.fieldTableValue[0].header:'#';
+     row.status = true;
+     row.columns = JSON.parse((attr.fieldTableValue && attr.fieldTableValue.length>0 && attr.fieldTableValue[0])?JSON.stringify(attr.fieldTableValue[0].columns):'[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]');
      if(this.appComp.loggedInUser.organization.organizationType==='GRANTEE'){
         row.enteredByGrantee = true;
      }if(this.appComp.loggedInUser.organization.organizationType==='GRANTER'){
@@ -932,8 +935,10 @@ deleteAttachment(attributeId, attachmentId){
      for(let i=0; i<row.columns.length;i++){
       row.columns[i].value = '';
      }
-
-     attr.fieldTableValue.push(row);
+     if(!attr.fieldTableValue){
+        attr.fieldTableValue = [];
+    }
+        attr.fieldTableValue.push(row);
   }
 
     getCommittedGrantTotals(idx:number):string{

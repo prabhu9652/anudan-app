@@ -11,8 +11,8 @@ import { TitleCasePipe } from "@angular/common";
       
     getFormattedAmount(amount:number):string
     {
-        if(amount===undefined || amount===null || amount===0){
-            return '₹'
+        if(amount===undefined || amount===null || amount===0 || String(amount)==='null'){
+            return '₹ 0'
         }
         return '₹ ' + inf.format(amount,2);
     }
