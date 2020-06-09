@@ -285,4 +285,21 @@ export class ReportHeaderComponent implements OnInit {
      manageGrant(){
        this.adminComp.manageGrant(null, this.currentReport.grant.id);
      }
+
+     clearStartDate(){
+        this.currentReport.startDate = null;
+        this.currentReport.stDate = '';
+        this.setDateDuration();
+      }
+  
+      clearEndDate(){
+        this.currentReport.endDate = null;
+        this.currentReport.enDate = '';
+        this.setDateDuration();
+      }
+
+      clearDueDate(){
+        this.currentReport.dueDate = null;
+        this.currentReport.dDate = '';
+      }
 }

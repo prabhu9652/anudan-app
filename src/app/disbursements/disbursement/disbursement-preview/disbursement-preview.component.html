@@ -204,7 +204,8 @@
                   <td style="border: 1px solid #e4e4e4;">
                     <mat-form-field>
                       <input matInput class="anu-input" readonly [(ngModel)]="actual.disbursementDate" (click)="openDate(actual,$event)" style="cursor: pointer;">
-                      <mat-icon *ngIf="actual.disbursementDate!==undefined && actual.disbursementDate!==null" (click)="clearDate(actual)" style="transform: scale(0.65);position: absolute;right: 0;top:20%;cursor:pointer;">highlight_off</mat-icon>
+                      <mat-icon *ngIf="actual.disbursementDate!==undefined && actual.disbursementDate!==null" (click)="clearDate(actual)" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
+                      <mat-icon  (click)="openDate(actual,$event)" [ngStyle]="(actual.disbursementDate!==undefined && actual.disbursementDate!==null)?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'27%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'27%','cursor':'pointer'}">calendar_today</mat-icon>
                     </mat-form-field>
                   </td>
                   <td style="border: 1px solid #e4e4e4;">

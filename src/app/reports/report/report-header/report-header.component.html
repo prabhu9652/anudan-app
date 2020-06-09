@@ -111,10 +111,9 @@
                                                    (click)="pickerStart.open()" style="cursor:pointer;"
                                                    readonly>
                                             <mat-datepicker #pickerStart></mat-datepicker>
-                                            <mat-icon (click)="openStartDate()"
-                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
-                                                calendar_today
-                                            </mat-icon>
+                                            
+                                            <mat-icon *ngIf="currentReport.stDate!==undefined && currentReport.stDate!==null && currentReport.stDate!==''" (click)="clearStartDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
+                                            <mat-icon  (click)="openStartDate()" [ngStyle]="(currentReport.stDate!==undefined && currentReport.stDate!==null && currentReport.stDate!=='')?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'27%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'27%','cursor':'pointer'}">calendar_today</mat-icon>
                                         </mat-form-field>
                                         <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Start Date:</label>
                                         <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.stDate | date:'d-MMM-yyyy'}}</p>
@@ -128,10 +127,9 @@
                                                    (ngModelChange)="manageDate('end', $event, currentReport.enDate)"
                                                    [matDatepicker]="pickerEnd" placeholder="Report End date" readonly (click)="pickerEnd.open()" style="cursor:pointer;">
                                             <mat-datepicker #pickerEnd></mat-datepicker>
-                                            <mat-icon (click)="openEndDate()"
-                                                      style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
-                                                calendar_today
-                                            </mat-icon>
+                                           
+                                            <mat-icon *ngIf="currentReport.enDate!==undefined && currentReport.enDate!==null && currentReport.enDate!==''" (click)="clearEndDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
+                                            <mat-icon  (click)="openEndDate()" [ngStyle]="(currentReport.enDate!==undefined && currentReport.enDate!==null && currentReport.enDate!=='')?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'27%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'27%','cursor':'pointer'}">calendar_today</mat-icon>
                                         </mat-form-field>
                                         <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">End Date:</label>
                                         <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.enDate | date:'d-MMM-yyyy'}}</p>
@@ -157,10 +155,9 @@
                                            (ngModelChange)="manageDate('due', $event, currentReport.dDate)"
                                            [matDatepicker]="pickerDue" placeholder="Report Due date" readonly (click)="pickerDue.open()" style="cursor:pointer;">
                                     <mat-datepicker #pickerDue></mat-datepicker>
-                                    <mat-icon (click)="openDueDate()"
-                                              style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">
-                                        calendar_today
-                                    </mat-icon>
+                                    
+                                    <mat-icon *ngIf="currentReport.dDate!==undefined && currentReport.dDate!==null && currentReport.dDate!==''" (click)="clearDueDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
+                                    <mat-icon  (click)="openDueDate()" [ngStyle]="(currentReport.dDate!==undefined && currentReport.dDate!==null && currentReport.dDate!=='')?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'27%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'27%','cursor':'pointer'}">calendar_today</mat-icon>
                                 </mat-form-field>
                                 <label *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">Due Date:</label>
                                 <p *ngIf="(currentReport.canManage && currentReport.forGranteeUse) || !currentReport.canManage">{{currentReport.dDate | date:'d-MMM-yyyy'}}</p>
