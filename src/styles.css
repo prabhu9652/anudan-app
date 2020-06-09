@@ -330,8 +330,22 @@ input:-internal-autofill-selected{
 
 }
 
+.btn-green-primary{
+  background-color: #39743C !important;
+  border: 1px solid #39743C !important;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 .bg-green{
     background-color: #39743C !important;
+}
+
+font-white{
+  color: #fff !important;
 }
 
 .btn-blue{

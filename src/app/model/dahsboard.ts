@@ -142,6 +142,7 @@ export class FlowAuthority {
   toName: string;
   action: string;
   noteRequired: boolean;
+  seqOrder:number;
 }
 
 export class Submission {

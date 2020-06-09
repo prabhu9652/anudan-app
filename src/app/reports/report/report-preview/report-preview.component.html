@@ -5,7 +5,7 @@
       <h4 class="col-11 text-left my-3 section-header">
         <div *ngIf="currentReport.canManage" style="display:flex;">
           <div *ngFor="let flow of currentReport.flowAuthorities">
-            <button [disabled]="wfDisabled" mat-stroked-button (click)="submitReport(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">{{flow.action}}</button>
+            <button [disabled]="wfDisabled" mat-stroked-button (click)="submitReport(flow.toStateId)" id="{{flow.action}}" [class]="flow.seqOrder===0?'mr-1 btn btn-sm btn-green-primary':'mr-1 btn btn-sm btn-green'">{{flow.action}}</button>
           </div>
         </div>
       </h4>
