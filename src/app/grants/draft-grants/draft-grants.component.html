@@ -39,20 +39,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-2 text-right">
-                                        <div class="row w-100 text-right">
-                                            <div class="col-12"><span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span></div>
+                                    <div class="col-2">
+                                        <div class="row">
+                                            <div class="col-12"><span [class]="'badge text-white state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span></div>
                                             <!--div class="col-12"><small>Assigned to
                                             <ng-container class="col-12" *ngFor="let assignment of grant.currentAssignment">
                                                 <ng-container *ngIf="appComponent.loggedInUser.id===assignment.user.id">me</ng-container>
                                                 <ng-container *ngIf="appComponent.loggedInUser.id!==assignment.user.id">{{assignment.user.firstName}} {{assignment.user.lastName}}</ng-container>
                                             </ng-container>
                                             </small></div-->
-                                            <div class="col-12 h-100" style="display: flex; align-items: center;">
+                                            <div class="col-12" style="display: flex; align-items: center;justify-content: center;">
                                                 <button *ngIf="grant.canManage && grant.grantStatus.internalStatus==='DRAFT'"
-                                                        class="btn btn-sm btn-red px-1 mt-5"
-                                                        (click)="deleteGrant(grant)">Delete Grant
-                                                </button>
+                                                        class="btn btn-sm btn-red mt-5 mx-0"
+                                                        (click)="deleteGrant(grant)">Delete</button>
                                             </div>
                                         </div>
 

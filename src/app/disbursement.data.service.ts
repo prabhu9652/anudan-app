@@ -132,7 +132,7 @@ export class DisbursementDataService{
 
     deleteDisbursement(disbursement:Disbursement):Promise<Disbursement[]>{
         if(disbursement!==undefined && disbursement!==null){
-            return this.httpClient.delete(this.getUrl()+'/'+disbursement.id,this.getHeader())
+            return this.httpClient.delete(this.getUrl()+'/'+disbursement.id+'/DRAFT',this.getHeader())
             .toPromise()
             .then<Disbursement[]>((d:Disbursement[]) =>{
                 if(d && d.length>0){
