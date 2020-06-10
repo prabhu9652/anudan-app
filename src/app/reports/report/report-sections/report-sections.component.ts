@@ -1021,4 +1021,8 @@ openDate(column:ColumnData,ev:MouseEvent){
         
         return hasData;
     }
+
+    clearDate(column){
+        column.value="";
+    }
 }

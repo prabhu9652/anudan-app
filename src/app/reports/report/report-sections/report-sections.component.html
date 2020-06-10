@@ -438,12 +438,12 @@
                                                [ngModelOptions]="{standAlone:true}">
                                                <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType  && row.enteredByGrantee && !row.status" matInput [(ngModel)]="column.value" class="anu-input" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
-                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status" matInput [(ngModel)]="column.value" class="anu-input"
+                                        <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status" matInput [(ngModel)]="column.value" class="anu-input" readonly style="cursor: pointer;"
                                                [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="column.dataType==='date' && row.enteredByGrantee && !row.status" matInput [(ngModel)]="column.value" class="anu-input" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}" (click)="openDate(column,$event)">
-                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status" (click)="openDate(column,$event)" style="transform: scale(0.5);position: absolute;right: 0;top:30%;cursor:pointer;">calendar_today</mat-icon>
-
+                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status && column.value!==''" (click)="clearDate(column)" style="transform: scale(0.65);position: absolute;right: 0;top:21%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
+                                        <mat-icon *ngIf="column.dataType==='date' && row.enteredByGrantee && row.status"  (click)="openDate(column,$event)" [ngStyle]="(column.dataType==='date' && row.enteredByGrantee && row.status && column.value!=='')?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'21%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'21%','cursor':'pointer'}">calendar_today</mat-icon>
                                         <input  *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" type="number" matInput [(ngModel)]="column.value" class="anu-input text-right" readonly disabled style="color:#212529;background:#f4f4f4 !important;"
                                                [ngModelOptions]="{standAlone:true}">
                                         <p [id]="'label_'+i+'_'+j" *ngIf="column.dataType==='currency' && column.name!=='Funds from Other Sources'" class="anu-input w-100 text-right" style="position:absolute;top:-1px;cursor: text;background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
