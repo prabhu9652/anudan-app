@@ -66,7 +66,7 @@
                                     <mat-label>Grant Start Date</mat-label>
                                     <input style="cursor:pointer;" id="grantStart" matInput [(ngModel)]="currentGrant.stDate"  class="anu-input"  (dateInput)="datePickerSelected($event)"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('start', $event, currentGrant.stDate)"
-                                           [matDatepicker]="pickerStart" (click)="pickerStart.open()" placeholder="Select grant start date" type="text" readonly>
+                                           [matDatepicker]="pickerStart" (click)="pickerStart.open()" placeholder="Select grant start date" type="text" readonly [matDatepickerFilter]="startDateFilter">
                                     <mat-datepicker #pickerStart></mat-datepicker>
                                     <mat-icon *ngIf="currentGrant.stDate!==undefined && currentGrant.stDate!==null && currentGrant.stDate!==''" (click)="clearStartDate()" style="transform: scale(0.65);position: absolute;right: 0;top:27%;cursor:pointer;color:#7f7f7f">clear</mat-icon>
                                     <mat-icon  (click)="pickerStart.open()" [ngStyle]="(currentGrant.stDate!==undefined && currentGrant.stDate!==null && currentGrant.stDate!=='')?{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'20px','top':'27%','cursor':'pointer'}:{'transform': 'scale(0.55)','color':'#7f7f7f','position': 'absolute','right':'0','top':'27%','cursor':'pointer'}">calendar_today</mat-icon>
@@ -76,7 +76,7 @@
                             <div class="col-4">
                                 <mat-form-field [floatLabel]="'always'">
                                     <mat-label>Grant End Date</mat-label>
-                                    <input style="cursor:pointer;" id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input" (dateInput)="datePickerSelected($event)"
+                                    <input style="cursor:pointer;" id="grantEnd" matInput [(ngModel)]="currentGrant.enDate"  class="anu-input" (dateInput)="datePickerSelected($event)" [matDatepickerFilter]="endDateFilter"
                                            [ngModelOptions]="{standAlone:true}" (ngModelChange)="manageDate('end', $event, currentGrant.stDate)"
                                            [matDatepicker]="pickerEnd" (click)="pickerEnd.open()" placeholder="Select grant end date" readonly>
                                     <mat-datepicker #pickerEnd></mat-datepicker>

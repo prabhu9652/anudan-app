@@ -1483,4 +1483,21 @@ setTimeout() {
       this.setDateDuration();
     }
 
+    startDateFilter = (d: Date | null): boolean => {
+      const today = new Date();
+      const day = (d || today);
+      if(this.currentGrant.endDate){
+        return day<=new Date(this.currentGrant.endDate);
+      }
+      return true;
+    }
+
+    endDateFilter = (d: Date | null): boolean => {
+      const today = new Date();
+      const day = (d || today);
+      if(this.currentGrant.startDate){
+        return day>=new Date(this.currentGrant.startDate);
+      }
+      return true;
+    }
 }

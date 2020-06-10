@@ -892,6 +892,21 @@ deleteAttachment(attributeId, attachmentId){
         return this.currencyService.getFormattedAmount(total);
     }
 
+    getFundsFromOtherSourceTotals():number{
+        let total = 0;
+        
+        for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
+            let i=0;
+            for(let col of row.columns){
+                if(i===2){
+                    total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
+                }
+                i++;
+            }
+        }
+        return total;
+    }
+
 
 
     deleteDisbursementRow(sectionId, attributeId,rowIndex){

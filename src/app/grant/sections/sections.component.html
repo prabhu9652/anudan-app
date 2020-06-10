@@ -331,7 +331,7 @@
                                 </td>
                               </tr>
                               <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f9f9f9;">
-                                <td align="center"><b style="color:#949494;">Committed Grant Amount:</b></td>
+                                <td align="center"><b style="color:#949494;">Planned Project Fund:</b></td>
                                 <td *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
                                   <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b style="color:#949494;">{{getCommittedGrantTotals(j)}}</b></p>
                                 </td>

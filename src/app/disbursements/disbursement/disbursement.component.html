@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="col-12 mt-3" *ngIf="getGrantDisbursementAttribute()">
-                    <p class="text-header">Planned Disbursement</p>
+                    <p class="text-header">Planned Project Funds</p>
                     <table id="tablePlaceholderX" width="100%">
                       <tr style="background: #f9f9f9">
                         <td width="2%" align="center" valign="middle" style="border: 1px solid #e4e4e4;">
@@ -100,7 +100,7 @@
                     </table>
                 </div>
                 <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 mt-3">
-                    <p class="text-header">Past Disbursements/ Funds from Other Sources</p>
+                    <p class="text-header">Actual Project Funds</p>
                     <table width="100%" style="background:#f2f2f2">
                         <tr>
                             <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
@@ -132,14 +132,14 @@
                     <div class="row mt-4">
                         <div class="col-4">
                             <mat-form-field>
-                                <input #disbursementAmount  (blur)="showFormattedAmount($event)" matInput class="anu-input text-right" placeholder="Requested Amount:" [(ngModel)]='currentDisbursement.requestedAmount' type="number"/>
+                                <input #disbursementAmount  (blur)="showFormattedAmount($event)" matInput class="anu-input text-right" placeholder="Disbursement Amount Requested:" [(ngModel)]='currentDisbursement.requestedAmount' type="number"/>
                                 <p #disbursementAmountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right" style="position:absolute;top:7px;cursor: text;" [innerHtml]="currencyService.getFormattedAmount(currentDisbursement.requestedAmount)"></p>
                             </mat-form-field>
                             
 
                         </div>
                         <div class="col-8">
-                            <label style="font-weight: 400; font-family: Lato; color: rgba(0,0,0,.54);">Requested Amount (In Words)</label>
+                            <label style="font-weight: 400; font-family: Lato; color: rgba(0,0,0,.54);">Amount (In Words)</label>
                             <p  disabled readonly [innerHtml]="currencyService.getAmountInWords(currentDisbursement.requestedAmount)"></p>
                         </div>
                         <div class="col-12">

@@ -185,7 +185,7 @@
                         <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Preview</p>
                     </a>
                     <a class="nav-link mb-2" [routerLink]="[menuItem.path]" *ngIf="(!currentDisbursement.canManage && currentDisbursement.canRecordActuals)  && menuItem.title==='Preview & Submit'">
-                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Disbursement</p>
+                        <p style="font-size: 15px;"><img src="./assets/img/{{menuItem.icon}}" class="mr-2">Record Disbursement</p>
                     </a>
                 </ng-container>
             </li>

@@ -146,6 +146,16 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
     return total;
   }
 
+  getApprovedActualTotals():number{
+    let total = 0;
+    if(this.currentDisbursement.approvedActualsDibursements && this.currentDisbursement.approvedActualsDibursements.length>0){
+      for(let ad of this.currentDisbursement.approvedActualsDibursements){
+        total+=ad.actualAmount;
+      }
+    }
+    return total;
+  }
+
   getGrantTotals(idx:number,fieldTableValue:TableData[]):string{
     let total = 0;
     for(let row of fieldTableValue){
@@ -268,6 +278,13 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   }
 
   openBottomSheetForReportNotes(toStateId: number): void {
+    if(this.workflowValidationService.getStatusByStatusIdForDisbursement(toStateId, this.appComponent).internalStatus==='ACTIVE' && (this.currentDisbursement.requestedAmount+this.getApprovedActualTotals())> this.currentDisbursement.grant.amount){
+      const dialogRef = this.dialog.open(MessagingComponent,{
+        data: "Total requested funds for grant cannot exceed " + this.currencyService.getFormattedAmount(this.currentDisbursement.grant.amount),
+        panelClass: 'center-class'
+      });
+      return;
+    }
 
     const _bSheet = this.dialog.open(DisbursementNotesComponent, {
       hasBackdrop: false,
@@ -353,5 +370,11 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
         this.currentDisbursement.actualDisbursements.splice(index,1);
     });
     
+  }
+
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    const day = (d || today);
+    return day <= today && day >=  new Date(this.currentDisbursement.grant.startDate);
   }
 }

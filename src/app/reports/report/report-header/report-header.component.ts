@@ -302,4 +302,31 @@ export class ReportHeaderComponent implements OnInit {
         this.currentReport.dueDate = null;
         this.currentReport.dDate = '';
       }
+
+      startDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.endDate){
+          return day<=new Date(this.currentReport.endDate);
+        }
+        return true;
+      }
+  
+      endDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.startDate){
+          return day>=new Date(this.currentReport.startDate);
+        }
+        return true;
+      }
+
+      dueDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.endDate){
+          return day>=new Date(this.currentReport.endDate);
+        }
+        return true;
+      }
 }

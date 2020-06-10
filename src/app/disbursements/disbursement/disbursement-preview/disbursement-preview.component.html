@@ -87,8 +87,8 @@
   
               </div>
             </div>
-            <div class="col-12 px-0 m02" *ngIf="getGrantDisbursementAttribute()">
-              <p class="text-header">Planned Disbursement</p>
+            <div class="col-12 px-0 mx-2 mt-3 mb-2" *ngIf="getGrantDisbursementAttribute()">
+              <p class="text-header">Planned Project Funds</p>
               <table id="tablePlaceholderX" width="100%">
                 <tr style="background: #f9f9f9">
                   <td width="2%" align="center" valign="middle" style="border: 1px solid #e4e4e4;">
@@ -130,8 +130,8 @@
                 </tr>
               </table>
             </div>
-            <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 px-0 mt-3 mb-4">
-              <p class="text-header">Past Disbursements/ Funds from Other Sources</p>
+            <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 px-0 mx-2 mt-3 mb-2">
+              <p class="text-header">Actual Project Funds</p>
               <table width="100%" style="background:#f2f2f2">
                   <tr>
                       <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
@@ -161,11 +161,11 @@
                 </ng-container>
               </table>
             </div>
-            <hr>
-            <div class="col-12">
-              <div class="row py-2" style="border:1px solid #f4f4f4">
+            <div class="col-12 px-0 mx-2 mt-3 mb-2">
+              <p class="text-header">Approval Note</p>
+              <div class="row py-2 mx-0" style="border:1px solid #f4f4f4">
               <div class="col-4 mb-2 mx-2">
-                <span *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Requested Amount:</span>
+                <span *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Disbursement Amount Requested:</span>
                 <span *ngIf="disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Approved Disbursement Amount:</span>
                 <div class="ml-0 mb-1"><b><img src="./assets/img/rupee.png" style="width:10px;" class="mr-1">{{getFormattedGrantAmount(currentDisbursement.requestedAmount)}}</b>
                   <br><small>{{getGrantAmountInWords(currentDisbursement.requestedAmount)}}</small>
@@ -180,11 +180,12 @@
             </div>
             </div>
             <mat-form-field style="height:0;visibility: hidden;">
-              <input matInput [matDatepicker]="datePicker" (dateInput)="setDate($event)">
+              <input matInput [matDatepicker]="datePicker" (dateInput)="setDate($event)" [matDatepickerFilter]="dateFilter">
               <mat-datepicker #datePicker></mat-datepicker>
             </mat-form-field>
             
-            <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 mx-2"> 
+            <div *ngIf="currentDisbursement.canRecordActuals" class="col-12 px-0 mx-2 mt-3 mb-2"> 
+              <p class="text-header">Record Disbursement</p>
               <table #tablePlaceholder width="100%" class="disbursements-class">
                 <tr>
                   <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>

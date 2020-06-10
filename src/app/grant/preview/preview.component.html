@@ -222,7 +222,7 @@
                                                 </tr>
                                             </ng-container>
                                             <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f4f4f4;">
-                                                <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Totals:</b></td>
+                                                <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Total:</b></td>
                                                 <td align="right" style="padding:5px;font-size: 16px;font-family:Roboto;" *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
                                                     <b *ngIf="column.dataType==='currency'">{{getTotals(j,attribute.fieldTableValue)}}</b>
                                                 </td>
