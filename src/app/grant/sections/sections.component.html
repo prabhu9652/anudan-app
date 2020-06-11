@@ -289,14 +289,14 @@
                                   <label class="m-0"><span>Planned Installment #</span></label>
                                 </td>
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
-                                  <td align="center" [width]="column.name==='Notes'?'':'15%'" valign="middle" style="border: 1px solid #e4e4e4;">
+                                  <td align="center" [width]="column.name==='Notes'?'':'15%'" valign="middle" [ngStyle]="column.name==='Funds from other Sources'?{'border': '1px solid #e4e4e4','background':'#e7f5e8'}:{'border': '1px solid #e4e4e4'}">
                                     <label class="m-0 text-center p-2" style="font-weight:400;font-size:14px;">{{column.name}}</label>
                                   </td>
                                 </ng-container>
                               </tr>
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
-                                  <td width="15%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
+                                  <td width="15%" [ngStyle]="row.name==='Funds from other Sources'?{'background': '#e7f5e8','padding':'2px 4px','border': '1px solid #e4e4e4'}:{'background': 'rgb(244,244,244)','padding':'2px 4px','border': '1px solid #e4e4e4'}">
                                       <mat-icon *ngIf="attribute.fieldTableValue.length>1" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
                                                 aria-hidden="false" style="font-size:18px;top: -16px; position: relative; left: 88%;z-index:1;cursor:pointer;"
                                                 aria-label="Example home icon" inline="false" title="Delete this row">
@@ -310,7 +310,7 @@
                                     </ng-container>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns,let j = index">
-                                    <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'':'18%'">
+                                    <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'':'18%'" [ngStyle]="column.name==='Funds from other Sources'?{'background':'#e7f5e8'}:{'background':'transparent'}">
                                       <mat-form-field style="margin-top: 10px;">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}"

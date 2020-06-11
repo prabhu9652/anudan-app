@@ -859,7 +859,7 @@ export class PreviewComponent implements OnInit {
       return;
     }
 
-    if(this.getGrantPlannedDisbursementTotals()===0){
+    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.getGrantPlannedDisbursementTotals()===0){
       const dialogRef = this.dialog.open(MessagingComponent,{
         data: "There are no Planned Funds for this project",
         panelClass: 'center-class'

@@ -131,7 +131,7 @@
               </table>
             </div>
             <div *ngIf="currentDisbursement.approvedActualsDibursements && currentDisbursement.approvedActualsDibursements.length>0" class="col-12 px-0 mx-2 mt-3 mb-2">
-              <p class="text-header">Actual Project Funds</p>
+              <p class="text-header">Project Funds Received</p>
               <table width="100%" style="background:#f2f2f2">
                   <tr>
                       <td style="border: 1px solid #e4e4e4;" align="center" class="py-2" width="10%"><b>#</b></td>
@@ -162,7 +162,7 @@
               </table>
             </div>
             <div class="col-12 px-0 mx-2 mt-3 mb-2">
-              <p class="text-header">Approval Note</p>
+              <p class="text-header">Approval Request Note <small>  ({{currentDisbursement.status.name}})</small></p>
               <div class="row py-2 mx-0" style="border:1px solid #f4f4f4">
               <div class="col-4 mb-2 mx-2">
                 <span *ngIf="!disbursementService.checkIfActiveOrClosed(currentDisbursement)" style="color: #929292;font-size: 13px;font-family:Roboto;">Disbursement Amount Requested:</span>

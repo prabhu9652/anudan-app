@@ -322,7 +322,7 @@
                                     <label class="m-0"><span>Planned Installment #</span></label>
                                   </td>
                                   <ng-container *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns, let i = index">
-                                    <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
+                                    <td align="center" valign="middle" [ngStyle]="column.name==='Funds from other Sources'?{'border': '1px solid #e4e4e4','background':'#e7f5e8'}:{'border': '1px solid #e4e4e4'}" width="10%">
                                       <label class="m-0 text-center p-2 m-0" style="font-weight:400;font-size:14px;">{{column.name}}</label>
                                     </td>
                                   </ng-container>
@@ -333,7 +333,7 @@
                                       <p class="anu-input m-0 text-center" style="background:#f4f4f4 !important;"><label class="w-100 m-0">{{row.name}}</label></p>
                                     </td>
                                     <ng-container *ngFor="let column of row.columns,let j = index">
-                                      <td [width]="column.name==='Notes'?'20%':'12%'">
+                                      <td [width]="column.name==='Notes'?'20%':'12%'" [ngStyle]="column.name==='Funds from other Sources'?{'background':'#e7f5e8'}:{}">
                                           <p *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="background:#f4f4f4 !important;">{{column.value}}</p>
                                           <p *ngIf="column.dataType==='currency'" class="anu-input w-100 text-right m-0" style="background:#f4f4f4 !important;">{{getFormattedCurrency(column.value)}}</p>
                                       </td>
@@ -360,7 +360,7 @@
 
 
                           <div id="tableArea" class="row dibursements-class mt-4" style="padding-left:15px;padding-right:15px;">
-                            <p class="text-header">Actual Project Funds</p>
+                            <p class="text-header">Project Funds Received</p>
                             <table #dataColumns id="tablePlaceholder" width="100%">
                               <ng-container *ngIf="!attribute.fieldTableValue">
                                 <tr><td>
@@ -376,7 +376,7 @@
                                 <ng-container *ngIf="attribute.fieldTableValue">
                                 <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
 
-                                  <td align="center" valign="middle" style="border: 1px solid #e4e4e4;" width="10%">
+                                  <td align="center" valign="middle" [ngStyle]="column.name==='Funds from Other Sources'?{'border': '1px solid #e4e4e4','background':'#e7f5e8'}:{'border': '1px solid #e4e4e4'}" width="10%">
                                     <label class="m-0 text-center p-2" style="font-weight:400;font-size:14px;">{{column.name}}</label>
                                   </td>
                                 </ng-container>
@@ -385,7 +385,7 @@
                               <ng-container *ngIf="attribute.fieldTableValue">
                               <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
                                 <tr>
-                                  <td width="10%" style="background: rgb(244,244,244);padding:2px 4px;border: 1px solid #e4e4e4;">
+                                  <td width="10%" [ngStyle]="row.enteredByGrantee?{'background': '#e7f5e8','padding':'2px 4px','border': '1px solid #e4e4e4'}:{'background': 'rgb(244,244,244)','padding':'2px 4px','border': '1px solid #e4e4e4'}">
                                     <mat-icon *ngIf="attribute.fieldTableValue.length>1 && currentReport.forGranteeUse && row.enteredByGrantee && row.status" (click)="deleteDisbursementRow(section.id,attribute.id,i)"
                                               aria-hidden="false" style="font-size:12px;top: -3px; position: relative; left: 88%;z-index:1;cursor:pointer;"
                                               aria-label="Example home icon" inline="false" title="Delete this row">
@@ -417,7 +417,7 @@
                                     </ng-container>
                                   </td>
                                   <ng-container *ngFor="let column of row.columns,let j = index">
-                                    <td style="border: 1px solid #e4e4e4;padding-top:0;" [width]="column.name==='Notes'?'20%':'12%'">
+                                    <td [ngStyle]="row.enteredByGrantee?{'border': '1px solid #e4e4e4','padding-top':'0','background':'#e7f5e8'}:{'border': '1px solid #e4e4e4','padding-top':'0'}" [width]="column.name==='Notes'?'23%':'12%'">
                                       <mat-form-field style="margin-top: 3px;" *ngIf="!currentReport.forGranteeUse">
                                         <input [id]="'data_'+i+'_'+j" *ngIf="!column.dataType && !row.enteredByGrantee" matInput [(ngModel)]="column.value" class="anu-input"
                                                [ngModelOptions]="{standAlone:true}" disabled readonly style="color:#212529;background:#f4f4f4 !important;">
