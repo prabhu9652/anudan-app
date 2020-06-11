@@ -19,6 +19,8 @@ import { environment } from '../environments/environment';
 import { SwUpdate } from '@angular/service-worker';
 import { first,tap,switchMap } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material';
+import { SingleReportDataService } from './single.report.data.service';
+import { DisbursementDataService } from './disbursement.data.service';
 
 
 @Component({
@@ -61,6 +63,7 @@ export class AppComponent implements AfterViewChecked{
   tenantUsers:User[];
   reportWorkflowStatuses: WorkflowStatus[];
   grantWorkflowStatuses: WorkflowStatus[];
+  disbursementWorkflowStatuses: WorkflowStatus[];
   reportTransitions: WorkflowTransition[];
   releaseVersion: string;
   public appConfig: AppConfig = {
@@ -94,6 +97,8 @@ export class AppComponent implements AfterViewChecked{
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     private grantService: GrantDataService,
+    private singleReportService:SingleReportDataService,
+    private disbursementDataService:DisbursementDataService,
     private updateService: UpdateService,
     private appRef: ApplicationRef,
     private updates: SwUpdate,
@@ -268,6 +273,8 @@ interval(10000).subscribe(t => {
     this.notifications = [];
 
     this.grantService.changeMessage(null,0);
+    this.singleReportService.changeMessage(null);
+    this.disbursementDataService.changeMessage(null);
     if(this.confgSubscription){
         this.confgSubscription.unsubscribe();
     }

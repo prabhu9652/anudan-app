@@ -285,4 +285,60 @@ export class ReportHeaderComponent implements OnInit {
      manageGrant(){
        this.adminComp.manageGrant(null, this.currentReport.grant.id);
      }
+
+     clearStartDate(){
+        this.currentReport.startDate = null;
+        this.currentReport.stDate = '';
+        this.setDateDuration();
+      }
+  
+      clearEndDate(){
+        this.currentReport.endDate = null;
+        this.currentReport.enDate = '';
+        this.setDateDuration();
+      }
+
+      clearDueDate(){
+        this.currentReport.dueDate = null;
+        this.currentReport.dDate = '';
+      }
+
+      startDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.endDate && !this.currentReport.dueDate){
+          return day<=new Date(this.currentReport.endDate);
+        } else if (this.currentReport.dueDate && this.currentReport.dueDate){
+            return (day<=new Date(this.currentReport.dueDate) && day<=new Date(this.currentReport.endDate));
+        } else if (!this.currentReport.dueDate && this.currentReport.dueDate){
+            return day<=new Date(this.currentReport.dueDate);
+        }
+        return true;
+      }
+  
+      endDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.startDate && !this.currentReport.dueDate){
+          return day>=new Date(this.currentReport.startDate);
+        } else if(this.currentReport.startDate && this.currentReport.dueDate){
+            return (day>=new Date(this.currentReport.startDate) && day< new Date(this.currentReport.dueDate));
+        } else if(!this.currentReport.startDate && this.currentReport.dueDate){
+            return (day< new Date(this.currentReport.dueDate));
+        }
+        return true;
+      }
+
+      dueDateFilter = (d: Date | null): boolean => {
+        const today = new Date();
+        const day = (d || today);
+        if(this.currentReport.endDate && !this.currentReport.startDate){
+          return day>=new Date(this.currentReport.endDate);
+        } else if(this.currentReport.endDate && this.currentReport.startDate){
+            return (day>new Date(this.currentReport.endDate) && day>new Date(this.currentReport.startDate));
+        } else if(!this.currentReport.endDate && this.currentReport.startDate){
+            return (day>new Date(this.currentReport.startDate));
+        }
+        return true;
+      }
 }

@@ -5,7 +5,7 @@
             <h4 class="col-11 text-left my-3 section-header" style="display:flex;align-items:center">
                 <div style="display:flex;">
                     <div *ngFor="let flow of currentGrant.flowAuthorities">
-                        <button [disabled]="currentGrant.grantStatus.internalStatus==='ACTIVE' || wfDisabled" mat-stroked-button (click)="submitGrant(flow.toStateId)" id="{{flow.action}}" class="mr-1 btn btn-sm btn-green">{{flow.action}}</button>
+                        <button [disabled]="currentGrant.grantStatus.internalStatus==='ACTIVE' || wfDisabled" mat-stroked-button (click)="submitGrant(flow.toStateId)" id="{{flow.action}}" [class]="flow.seqOrder===0?'mr-1 btn btn-sm btn-green-primary':'mr-1 btn btn-sm btn-green'">{{flow.action}}</button>
                     </div>
                 </div>
             </h4>
@@ -222,7 +222,7 @@
                                                 </tr>
                                             </ng-container>
                                             <tr *ngIf="attribute.fieldTableValue.length>1" style="background:#f4f4f4;">
-                                                <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Totals:</b></td>
+                                                <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Total:</b></td>
                                                 <td align="right" style="padding:5px;font-size: 16px;font-family:Roboto;" *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
                                                     <b *ngIf="column.dataType==='currency'">{{getTotals(j,attribute.fieldTableValue)}}</b>
                                                 </td>

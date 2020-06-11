@@ -16,4 +16,8 @@ export class WorkflowValidationService{
     getStatusByStatusIdForReport(statusId:number, appComp:AppComponent):WorkflowStatus{
         return appComp.reportWorkflowStatuses.filter(ws => ws.id===statusId)[0];
     }
+    
+    getStatusByStatusIdForDisbursement(statusId:number, appComp:AppComponent):WorkflowStatus{
+        return appComp.disbursementWorkflowStatuses.filter(ws => ws.id===statusId)[0];
+    }
 }

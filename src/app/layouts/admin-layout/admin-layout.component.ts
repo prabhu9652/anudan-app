@@ -21,8 +21,9 @@ import {ToastrService,IndividualConfig} from 'ngx-toastr';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {NotificationspopupComponent} from '../../components/notificationspopup/notificationspopup.component';
 import {SingleReportDataService} from '../../single.report.data.service'
-import { Disbursement } from 'app/model/disbursement';
+import { Disbursement, DisbursementWorkflowAssignmentModel,DisbursementWorkflowAssignment } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
+import { WorkflowDataService } from 'app/workflow.data.service';
 
 
 
@@ -64,7 +65,8 @@ export class AdminLayoutComponent implements OnInit {
     , private toastr:ToastrService
     , private dialog: MatDialog
     , private singleReportDataService: SingleReportDataService
-    , private disbursementService: DisbursementDataService) {
+    , private disbursementService: DisbursementDataService
+    , private workflowDataService:WorkflowDataService) {
     
   }
 
@@ -118,7 +120,7 @@ export class AdminLayoutComponent implements OnInit {
             this.appComponent.initAppUI();
           });*/
 
-      this.intervalSubscription = interval(3000).subscribe(t => {
+      this.intervalSubscription = interval(5000).subscribe(t => {
            if($("#messagepopover").css('display')==='block'){
             return;
            }
@@ -416,7 +418,48 @@ export class AdminLayoutComponent implements OnInit {
                           dialogRef.close();
                       }
                   });
-    }
+    }else if(this.appComponent.currentView==='disbursement'){
+
+        this.workflowDataService.getDisbursementWorkflowStatuses(this.currentDisbursement)
+        .then( workflowStatuses => {
+            const wfModel = new DisbursementWorkflowAssignmentModel();
+            wfModel.users = this.appComponent.tenantUsers;
+            wfModel.workflowStatuses = workflowStatuses;
+            wfModel.workflowAssignments = this.currentDisbursement.assignments;
+            wfModel.type=this.appComponent.currentView;
+            wfModel.disbursement = this.currentDisbursement;
+            wfModel.canManage = this.currentDisbursement.canManage;
+            const dialogRef = this.dialog.open(WfassignmentComponent, {
+                data: {model:wfModel,userId: this.appComponent.loggedInUser.id},
+                panelClass: 'wf-assignment-class'
+            });
+    
+            dialogRef.afterClosed().subscribe(result => {
+                if (result.result) {
+                    const ass:DisbursementWorkflowAssignment[] = [];
+                    for(let data of result.data){
+                        const wa = new DisbursementWorkflowAssignment();
+                        wa.id=data.id;
+                        wa.stateId = data.stateId;
+                        wa.assignmentId = data.userId;
+                        wa.disbursementId = data.disbursementId;
+                        wa.customAssignments = data.customAssignments;
+                        ass.push(wa);
+                    }
+    
+                    this.disbursementService.saveAssignments(this.currentDisbursement,ass)
+                    .then(disbursement =>{
+                        this.disbursementService.changeMessage(disbursement);
+                        this.currentDisbursement = disbursement;
+                        this.manageDisbursement(null,disbursement.id);
+                    });
+                } else {
+                    dialogRef.close();
+                }
+            });
+        });
+        
+    }   
   }
 
   setDateDuration(){
@@ -486,6 +529,34 @@ export class AdminLayoutComponent implements OnInit {
           }
           $("#messagepopover").css('display','none');
         });
+
+    }
+
+    manageDisbursement(notification: Notifications, disbursementId: number) {
+
+        this.disbursementService.getDisbursement(disbursementId)
+        .then((disbursement:Disbursement) => {
+            this.disbursementService.changeMessage(disbursement);
+            this.appComponent.currentView = 'disbursement';
+            
+            if(disbursement.canManage && disbursement.status.internalStatus!='ACTIVE' && disbursement.status.internalStatus!='CLOSED'){
+                //this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
+                //this.router.navigate(['disbursement/approval-request']);
+            } else{
+                if(disbursement.status.internalStatus==='ACTIVE'){
+                  this.appComponent.subMenu = {name:'Approvals Active',action:'ad'};
+                } else if (disbursement.status.internalStatus === 'CLOSED'){
+                  this.appComponent.subMenu = {name:'Approvals Closed',action:'cd'};
+                }
+                this.appComponent.action = 'preview';
+                this.router.navigate(['disbursement/preview']);
+            }
+            $("#messagepopover").css('display','none');
+        });
+        
+
+          
+        
 
     }
 

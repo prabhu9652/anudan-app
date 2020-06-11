@@ -37,4 +37,5 @@ export class Configuration{
     reportWorkflowStatuses:WorkflowStatus[];
     grantWorkflowStatuses: WorkflowStatus[];
     reportTransitions: WorkflowTransition[];
+    disbursementWorkflowStatuses: WorkflowStatus[];
 }

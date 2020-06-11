@@ -4,6 +4,7 @@ import {Grant, GrantHistory} from '../../model/dahsboard';
 import {ReportHistory} from '../../model/report';
 import {WorkflowTransition} from '../../model/workflow-transition';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import { DisbursementHistory } from 'app/model/disbursement';
 
 declare var $: any;
 declare var jsPlumb: any;
@@ -18,6 +19,7 @@ export class GranthistoryComponent implements OnInit {
 
     grantHistory: GrantHistory[]=[];
     reportHistory: ReportHistory[]=[];
+    disbursementHistory: DisbursementHistory[]=[];
 
   constructor(
     public dialogRef: MatDialogRef<GranthistoryComponent>
@@ -51,10 +53,10 @@ export class GranthistoryComponent implements OnInit {
                 this.reportHistory = history;
             });
         }else if(this.data.type==='disbursement'){
-          const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/disbursement/'+this.data.data.id+'/history/';
+          const url = '/api/user/' + JSON.parse(localStorage.getItem('USER')).id+ '/disbursements/'+this.data.data.id+'/history/';
 
-          this.http.get<ReportHistory[]>(url, httpOptions).subscribe((history: ReportHistory[]) => {
-              this.reportHistory = history;
+          this.http.get<DisbursementHistory[]>(url, httpOptions).subscribe((history: DisbursementHistory[]) => {
+              this.disbursementHistory = history;
           });
       }
 

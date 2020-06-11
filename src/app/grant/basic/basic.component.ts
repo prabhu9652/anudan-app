@@ -1471,4 +1471,33 @@ setTimeout() {
         this.grantAmountFormatted.nativeElement.style.visibility='visible';
     }
 
+    clearStartDate(){
+      this.currentGrant.startDate = null;
+      this.currentGrant.stDate = '';
+      this.setDateDuration()
+    }
+
+    clearEndDate(){
+      this.currentGrant.endDate = null;
+      this.currentGrant.enDate = '';
+      this.setDateDuration();
+    }
+
+    startDateFilter = (d: Date | null): boolean => {
+      const today = new Date();
+      const day = (d || today);
+      if(this.currentGrant.endDate){
+        return day<=new Date(this.currentGrant.endDate);
+      }
+      return true;
+    }
+
+    endDateFilter = (d: Date | null): boolean => {
+      const today = new Date();
+      const day = (d || today);
+      if(this.currentGrant.startDate){
+        return day>=new Date(this.currentGrant.startDate);
+      }
+      return true;
+    }
 }

@@ -181,7 +181,11 @@ const httpOptions = {
 
                                 let hasDifferences = false;
 
-                                if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
+                                if(oldAttr.fieldTableValue && !attr.fieldTableValue){
+                                    hasDifferences = true;
+                                }else if(!oldAttr.fieldTableValue && attr.fieldTableValue){
+                                    hasDifferences = true;
+                                }else if(oldAttr.fieldTableValue.length!==attr.fieldTableValue.length){
                                     hasDifferences = true;
                                 }else{
                                     for(let i=0; i<oldAttr.fieldTableValue.length;i++){
@@ -496,6 +500,8 @@ saveDifferences(oldSection,oldAttr,section,attr){
 getDisbursementTabularData(data){
                 let html = '<table width="100%" border="1"><tr>';
                 const tabData = data;
+                
+                if(tabData!==undefined && tabData!==null && tabData.length>0){
                 html += '<td>#</td>';
                 for(let i=0; i< tabData[0].columns.length;i++){
 
@@ -505,6 +511,7 @@ getDisbursementTabularData(data){
                     //}
                 }
                 html += '</tr>';
+                
                 for(let i=0; i< tabData.length;i++){
 
                     html += '<tr><td>' + tabData[i].name + '</td>';
@@ -513,7 +520,7 @@ getDisbursementTabularData(data){
                       if(!tabData[i].columns[j].dataType || tabData[i].columns[j].dataType==='date'){
                         html+='<td>' + tabData[i].columns[j].value + '</td>';
                       }else if(tabData[i].columns[j].dataType==='currency'){
-                        if(!tabData[i].columns[j].value || tabData[i].columns[j].value===''){
+                        if(!tabData[i].columns[j].value || tabData[i].columns[j].value==='' || tabData[i].columns[j].value==='null'){
                             html+='<td class="text-right">₹ ' + inf.format(Number("0"),2) + '</td>';
                         }else{
                             html+='<td class="text-right">₹ ' + inf.format(Number(tabData[i].columns[j].value),2) + '</td>';
@@ -525,6 +532,9 @@ getDisbursementTabularData(data){
                     }
                     html += '</tr>';
                 }
+            }else{
+                html += '<tr><td>No Data</td></tr>';
+            }
 
                 html += '</table>'
                 //document.getElementById('attribute_' + elemId).innerHTML = '';

@@ -66,13 +66,13 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
 ];
 
 export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursements/in-progress', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
-  { path: '/disbursements/approved', title: 'Approved',  icon: 'view_agenda', class: '',divide:false },
-  { path: '/disbursements/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/disbursements/in-progress', title: 'Approvals In-progress',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursements/approved', title: 'Approvals Active',  icon: 'view_agenda', class: '',divide:false },
+  { path: '/disbursements/closed', title: 'Approvals Disbursed',  icon: 'preview.svg', class: '',divide:false }
 ];
 
 export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursement/approval-request', title: 'Disbursement Approval Request',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/disbursement/approval-request', title: 'Approval Request Note',  icon: 'grant.svg', class: '',divide:false },
   { path: '/disbursement/preview', title: 'Preview & Submit',  icon: 'grant.svg', class: '',divide:false}
 ];
 
@@ -361,13 +361,17 @@ drop(event: CdkDragDrop<string[]>) {
                this.organizationElem.close();
            }
            this.grantsElem.close();
-           //this.disbursementsElem.close();
+           if(this.disbursementsElem){
+            this.disbursementsElem.close();
+           }
        }else if(thisMenu==='grants'){
             if(this.organizationElem){
                 this.organizationElem.close();
             }
            this.reportsElem.close();
-           //this.disbursementsElem.close();
+           if(this.disbursementsElem){
+            this.disbursementsElem.close();
+           }
        }else if(thisMenu==='disbursements'){
           if(this.organizationElem){
               this.organizationElem.close();

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 import { AppComponent } from 'app/app.component';
@@ -6,6 +6,9 @@ import * as indianCurrencyInWords from 'indian-currency-in-words';
 import { TitleCasePipe } from '@angular/common';
 import * as inf from 'indian-number-format';
 import { Attribute, TableData } from 'app/model/dahsboard';
+import { Router, NavigationStart } from '@angular/router';
+import { CurrencyService } from 'app/currency-service';
+import { AdminLayoutComponent } from 'app/layouts/admin-layout/admin-layout.component';
 
 
 @Component({
@@ -14,9 +17,10 @@ import { Attribute, TableData } from 'app/model/dahsboard';
   styleUrls: ['./disbursement.component.css'],
   providers: [TitleCasePipe]
 })
-export class DisbursementComponent implements OnInit {
+export class DisbursementComponent implements OnInit,OnDestroy {
 
   currentDisbursement:Disbursement;
+  subscribers: any = {};
 
   @ViewChild('disbursementAmountFormatted') disbursementAmountFormatted:ElementRef;
   @ViewChild('disbursementAmount') disbursementAmount:ElementRef;
@@ -25,29 +29,34 @@ export class DisbursementComponent implements OnInit {
   constructor(
     private disbursementService: DisbursementDataService,
     private appComponent: AppComponent,
-    private titlecasePipe: TitleCasePipe
-    ){}
+    private titlecasePipe: TitleCasePipe,
+    private router: Router,
+    public currencyService: CurrencyService,
+    private adminComp: AdminLayoutComponent
+    ){
+      this.subscribers = this.router.events.subscribe((val) => {
+        if(val instanceof NavigationStart && this.currentDisbursement){
+            this.disbursementService.saveDisbursement(this.currentDisbursement)
+            .then(d => {
+              this.disbursementService.changeMessage(d);
+            });
+        }
+      });
+    }
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursement';
-    this.appComponent.subMenu = {name:'In-progress Disbursements',action:'id'};
-
+    
     this.disbursementService.currentMessage.subscribe( disbursement => this.currentDisbursement = disbursement);
-  }
-
-
-  getGrantAmountInWords(amount:number){
-    let amtInWords = '-';
-    if(amount){
-        amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
-        return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+    if(this.currentDisbursement===undefined || this.currentDisbursement===null){
+      this.router.navigate(['dashboard']);
     }
-    return amtInWords;
   }
 
-  getFormattedGrantAmount(amount: number):string{
-    return inf.format(amount,2);
+  ngOnDestroy(){
+    this.subscribers.unsubscribe();
   }
+  
 
   getGrantDisbursementAttribute():Attribute{
     for(let section of this.currentDisbursement.grant.grantDetails.sections){
@@ -73,15 +82,9 @@ export class DisbursementComponent implements OnInit {
             i++;
         }
     }
-    return String('₹ ' + inf.format(total,2));
+    return this.currencyService.getFormattedAmount(total);
   }
 
-  getFormattedCurrency(amount: string):string{
-    if(!amount || amount===''){
-        return inf.format(Number("0"),2);
-    }
-    return inf.format(Number(amount),2);
-  }
 
   showAmountInput(evt: any){
     evt.currentTarget.style.visibility='hidden';
@@ -91,5 +94,17 @@ export class DisbursementComponent implements OnInit {
   showFormattedAmount(evt:any){
     evt.currentTarget.style.visibility='hidden';
     this.disbursementAmountFormatted.nativeElement.style.visibility='visible';
+  }
+
+  showWorkflowAssigments(){
+    this.adminComp.showWorkflowAssigments();
+  }
+
+  showHistory(type,obj){
+    this.adminComp.showHistory(type,obj);
+  }
+
+  manageGrant(){
+    this.adminComp.manageGrant(null, this.currentDisbursement.grant.id);
   }
 }

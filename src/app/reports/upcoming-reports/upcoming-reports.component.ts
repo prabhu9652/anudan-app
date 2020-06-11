@@ -14,6 +14,7 @@ import {ReportComponent} from '../report/report.component';
 import {TitleCasePipe} from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 
 @Component({
@@ -27,12 +28,14 @@ export class UpcomingReportsComponent implements OnInit {
     reportStartDate: Date;
     reportEndDate: Date;
     reportsToSetup: Report[];
+    reportsToSetupData: Report[];
     reportsReadyToSubmit: Report[];
     addnlReports: Report[];
     futureReportsToSetup: Report[];
     subscribers: any = {};
     grants: Grant[] = [];
     otherReportsClicked: boolean = false;
+    upcomingSearchCriteria:string;
 
     constructor(
         private reportService: ReportDataService,
@@ -77,6 +80,7 @@ export class UpcomingReportsComponent implements OnInit {
     this.http.get<Report[]>(url, httpOptions1).subscribe((reports: Report[]) => {
         //this.processReports(reports);
         this.reportsToSetup = reports;
+        this.reportsToSetupData = reports;
         this.processReports(reports);
     });
 
@@ -230,5 +234,16 @@ export class UpcomingReportsComponent implements OnInit {
 
     getFormattedGrantAmount(amount: number):string{
         return inf.format(amount,2);
+    }
+
+    startFilter(_for:string,ev){
+        const searchCriteria = ev.target.value;
+        if(_for==='upcoming'){
+            if(searchCriteria!==''){
+                this.reportsToSetupData = this.reportsToSetup.filter(r => r.grant.name.includes(searchCriteria) || r.name.includes(searchCriteria));
+            }else{
+                this.reportsToSetupData = this.reportsToSetup;
+            }
+        }
     }
 }

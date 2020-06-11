@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {SingleReportDataService} from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import {Report,ReportSectionInfo,ReportWorkflowAssignmentModel,ReportWorkflowAssignment} from '../../../model/report'
 import {ReportNotesComponent} from '../../../components/reportNotes/reportNotes.component';
 import {MatDialog} from '@angular/material';
-import {Section,WorkflowStatus,TableData} from '../../../model/dahsboard';
+import {Section,WorkflowStatus,TableData, Attribute} from '../../../model/dahsboard';
 import {Configuration} from '../../../model/app-config';
 import {User} from '../../../model/user';
 import {FieldDialogComponent} from '../../../components/field-dialog/field-dialog.component';
@@ -25,6 +25,7 @@ import * as inf from 'indian-number-format';
 import { WorkflowValidationService } from 'app/workflow-validation-service';
 import { ReportValidationService } from 'app/report-validation-service';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
+import { CurrencyService } from 'app/currency-service';
 
 
 
@@ -63,7 +64,8 @@ export class ReportPreviewComponent implements OnInit {
         private sidebar: SidebarComponent,
         private titlecasePipe: TitleCasePipe,
         private workflowValidationService: WorkflowValidationService,
-        private reportValidationService:ReportValidationService
+        private reportValidationService:ReportValidationService,
+        private currencyService: CurrencyService
         ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
@@ -443,12 +445,13 @@ export class ReportPreviewComponent implements OnInit {
     }
 
     getFormattedGrantAmount(amount: number):string{
-        return inf.format(amount,2);
+        return this.currencyService.getFormattedAmount(amount);
     }
 
 
   getFormattedCurrency(amount: number):string{
-      return inf.format(!amount?0:amount,2);
+    
+      return this.currencyService.getFormattedAmount(amount);
   }
 
  getTotals(idx:number,fieldTableValue:TableData[]):string{
@@ -471,24 +474,37 @@ export class ReportPreviewComponent implements OnInit {
              let i=0;
              for(let col of row.columns){
                  if(i===idx){
-                     total+=Number(col.value);
+                     total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
                  }
                  i++;
              }
          }
-         for(let row of this.currentReport.grant.approvedReportsDisbursements){
+         /*for(let row of this.getGrantDisbursementAttribute().fieldTableValue){
              let i=0;
              for(let col of row.columns){
                  if(i===idx){
-                     total+=Number(col.value);
+                     total+=(col.value!==undefined && col.value!==null && col.value!=='null')?Number(col.value):0;
                  }
                  i++;
              }
-         }
+         }*/
          return String('₹ ' + inf.format(total,2));
      }
 
      manageGrant(){
        this.adminComp.manageGrant(null, this.currentReport.grant.id);
      }
+
+     getGrantDisbursementAttribute():Attribute{
+        for(let section of this.currentReport.grant.grantDetails.sections){
+            if(section.attributes){
+                for(let attr of section.attributes){
+                    if(attr.fieldType==='disbursement'){
+                        return attr;
+                    }
+                }
+            }
+        }
+        return null;
+      }
 }

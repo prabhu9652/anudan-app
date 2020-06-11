@@ -142,6 +142,7 @@ export class FlowAuthority {
   toName: string;
   action: string;
   noteRequired: boolean;
+  seqOrder:number;
 }
 
 export class Submission {
@@ -425,6 +426,7 @@ export class TableData {
   header:string;
   columns: ColumnData[];
   enteredByGrantee: boolean;
+  status:boolean;
 }
 
 export class TemplateLibrary{

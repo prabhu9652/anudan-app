@@ -6,7 +6,10 @@ import { MatDialog } from '@angular/material';
 import { GrantSelectionDialogComponent } from 'app/components/grant-selection-dialog/grant-selection-dialog.component';
 import { Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
-import { Router } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
+import { CurrencyService } from 'app/currency-service';
+import { DisbursementsComponent } from '../disbursements.component';
+import { FieldDialogComponent } from 'app/components/field-dialog/field-dialog.component';
 
 
 @Component({
@@ -15,60 +18,93 @@ import { Router } from '@angular/router';
   styleUrls: ['./inprogress-disbursements.component.css']
 })
 export class InprogressDisbursementsComponent implements OnInit {
-
+  
   disbursements: Disbursement[];
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-      'Authorization': localStorage.getItem('AUTH_TOKEN')
-    })
-  };
+  
 
   public constructor(
     public appComponent: AppComponent,
     private httpClient: HttpClient,
     private dialog: MatDialog,
-    private disbursementDataService: DisbursementDataService,
-    private router: Router
+    public disbursementDataService: DisbursementDataService,
+    private router: Router,
+    public currencyService: CurrencyService
   ){};
 
 
   ngOnInit() {
     this.appComponent.currentView = 'disbursements';
+    this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
+    this.fetchInprogressDisbursements();
   }
+
+  fetchInprogressDisbursements() {
+    this.disbursementDataService.fetchInprogressDisbursements().then(list =>{
+      this.disbursements = list;
+      console.log(this.disbursements)
+    });
+  }
+
 
   showOwnedActiveGrants(){
 
-    const url = '/api/user/'+this.appComponent.loggedInUser.id+'/disbursements/active-grants';
-    this.httpClient.get(url,this.httpOptions).subscribe((ownedGrants:Grant[])=>{
-      const dialogRef = this.dialog.open(GrantSelectionDialogComponent, {
-        data: ownedGrants,
-        panelClass: 'grant-template-class'
-      });
-
-      dialogRef.afterClosed().subscribe((result)=>{
-        if(result.result){
-          this.createDisbursement(result.selectedGrant);
-        }else{
-          dialogRef.close();
-        }
-      })
-
-    },error =>{
-      console.log(error)
+    this.disbursementDataService.showOwnedActiveGrants()
+    .then(ownedGrants => {
+      if(ownedGrants!==null){
+        const dialogRef = this.dialog.open(GrantSelectionDialogComponent, {
+          data: ownedGrants,
+          panelClass: 'grant-template-class'
+        });
+  
+        dialogRef.afterClosed().subscribe((result)=>{
+          if(result.result){
+            this.createDisbursement(result.selectedGrant);
+          }else{
+            dialogRef.close();
+          }
+        });
+      }
     });
-  }
-  createDisbursement(selectedGrant: Grant) {
-    const url = '/api/user/'+this.appComponent.loggedInUser.id+'/disbursements/grant/'+selectedGrant.id;
-    const disbursement:Disbursement=new Disbursement();
-    this.httpClient.post<Disbursement>(url, disbursement,this.httpOptions).subscribe((d: Disbursement) => {
-      this.disbursementDataService.changeMessage(d);
-      this.router.navigate(['disbursement/approval-request'])
 
-    },error =>{
-      console.error('Failed to create disbursement');
-      
+    
+
+  }
+
+
+  createDisbursement(selectedGrant: Grant) {
+    this.disbursementDataService.createNewDisbursement(selectedGrant)
+    .then(d => {
+      this.disbursementDataService.changeMessage(d);
+      this.router.navigate(['disbursement/approval-request']);
+    })
+    
+  }
+
+  manageDisbursement(disbursement:Disbursement){
+    this.disbursementDataService.changeMessage(disbursement);
+    if(disbursement.canManage){
+      this.router.navigate(['disbursement/approval-request']);
+    }else{
+      this.router.navigate(['disbursement/preview']);
+    }
+  }
+
+  deleteDisbursement(disbursement:Disbursement){
+
+    const dialogRef = this.dialog.open(FieldDialogComponent,{
+      data: {title:'Are you sure you want to delete this disbursement?'},
+      panelClass: 'center-class'
+    });
+
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        this.disbursementDataService.deleteDisbursement(disbursement)
+        .then(disbs => {
+          this.disbursements = disbs;
+        })
+      }else{
+        dialogRef.close();
+      }
     });
   }
 

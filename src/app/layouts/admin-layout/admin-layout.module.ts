@@ -93,6 +93,7 @@ import { ApprovedDisbursementsComponent } from 'app/disbursements/approved-disbu
 import { ClosedDisbursementsComponent } from 'app/disbursements/closed-disbursements/closed-disbursements.component';
 import { DisbursementComponent } from 'app/disbursements/disbursement/disbursement.component';
 import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/disbursement-preview/disbursement-preview.component';
+import { DisbursementNotesComponent } from 'app/components/disbursementNotes/disbursementNotes.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -155,6 +156,7 @@ import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/dis
         InviteDialogComponent,
         GrantNotesComponent,
         ReportNotesComponent,
+        DisbursementNotesComponent,
         GrantTemplateDialogComponent,
         ReportTemplateDialogComponent,
         GrantSelectionDialogComponent,
@@ -189,7 +191,7 @@ import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/dis
         DisbursementComponent,
         DisbursementPreviewComponent
     ],
-    entryComponents: [FieldDialogComponent,WelcomePopupComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent],
+    entryComponents: [FieldDialogComponent,WelcomePopupComponent,AddnlreportsDialogComponent,InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent,ReportTemplateDialogComponent,GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent,SectionEditComponent,ReportNotesComponent, DisbursementNotesComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

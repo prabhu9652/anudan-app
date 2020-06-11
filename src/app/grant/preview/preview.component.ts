@@ -48,6 +48,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GrantValidationService } from 'app/grant-validation-service';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { WorkflowValidationService } from 'app/workflow-validation-service';
+import { CurrencyService } from 'app/currency-service';
 
 
 @Component({
@@ -129,7 +130,8 @@ export class PreviewComponent implements OnInit {
       , public grantComponent: GrantComponent
       , private titlecasePipe:TitleCasePipe
       , private grantValidationService: GrantValidationService
-      , private workflowValidationService: WorkflowValidationService) {
+      , private workflowValidationService: WorkflowValidationService,
+      public currencyService: CurrencyService) {
     this.colors = new Colors();
 
      this.grantData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(grant => this.currentGrant = grant);
@@ -849,6 +851,22 @@ export class PreviewComponent implements OnInit {
       return;
     }
 
+    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && (this.getGrantPlannedDisbursementTotals()> this.currentGrant.amount)){
+      const dialogRef = this.dialog.open(MessagingComponent,{
+        data: "Planned Project Funds cannot be greater than Grant Amount of " + this.currencyService.getFormattedAmount(this.currentGrant.amount),
+        panelClass: 'center-class'
+      });
+      return;
+    }
+
+    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.getGrantPlannedDisbursementTotals()===0){
+      const dialogRef = this.dialog.open(MessagingComponent,{
+        data: "There are no Planned Funds for this project",
+        panelClass: 'center-class'
+      });
+      return;
+    }
+
     for(let assignment of this.currentGrant.workflowAssignment){
         const status1 = this.appComp.appConfig.workflowStatuses.filter((status) => status.id===assignment.stateId);
         if(assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0 && !status1[0].terminal){
@@ -982,11 +1000,6 @@ export class PreviewComponent implements OnInit {
   }
 
 
-  postionFirstColumn(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.first-column').css('left', dist + 'px');
-  }
-
   private _setEditMode(state: boolean) {
     this.editMode = state;
     /*if (state) {
@@ -996,26 +1009,7 @@ export class PreviewComponent implements OnInit {
     }*/
   }
 
-  scrollHeaderContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    $('.kpi-block').scrollLeft(dist);
-    /*const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');*/
-  }
 
-  scrollChildContent(event: Event) {
-    const dist = event.srcElement.scrollLeft;
-    const submissionBlock = this.elem.nativeElement.querySelector('.submissions-block');
-    submissionBlock.scrollLeft = dist;
-    const kpisBlocks = this.elem.nativeElement.querySelectorAll('.kpi-block');
-    for (const singleBlock of kpisBlocks) {
-      singleBlock.scrollLeft = dist;
-    }
-    $('.kpi-block').css('left', (0 - dist) + 'px');
-  }
 
   updateSubmission(event: Event, kpiType: string, kpiDataId: number) {
     console.log((<HTMLInputElement>event.target).value + '  ' + kpiType + '  ' + kpiDataId);
@@ -1528,6 +1522,31 @@ getCleanText(section:Section): string{
         }
         return '₹ ' + String(inf.format(total,2));
     }
+
+    getGrantPlannedDisbursementTotals():number{
+      if(this.currentGrant.grantDetails.sections){
+        for(let sec of this.currentGrant.grantDetails.sections){
+          if(sec.attributes){
+            for(let attr of sec.attributes){
+              if(attr.fieldType==='disbursement'){
+                let total = 0;
+                for(let row of attr.fieldTableValue){
+                    let i=0;
+                    for(let col of row.columns){
+                        if(i===1){
+                            total+=Number(col.value);
+                        }
+                        i++;
+                    }
+                }
+                return total;
+              }
+            }
+          }
+        }
+      }
+      return 0;
+  }
 
     trackChange(ev:Event){
         console.log(ev);

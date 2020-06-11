@@ -7,17 +7,19 @@
                 <div class="col-12">
                     <mat-tab-group>
                         <mat-tab *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'" label="Reports Due Now ({{reportsToSetup?reportsToSetup.length:0}})">
-
-                            <div *ngIf="!reportsToSetup">
+                            <div *ngIf=reportsToSetupData>
+                                <input class=" anu-input my-1" style="line-height: 100% !important; position: relative; max-height: 25px; min-height: 25px; float: right;font-size: 11px !important;color: #7f7f7f;" placeholder="Search..." [(ngModel)]="upcomingSearchCriteria" (keyup)="startFilter('upcoming',$event)" >
+                            </div>
+                            <div *ngIf="!reportsToSetupData">
                                 <img src="./assets/img/loader.gif" style="width:10%;">
                                 <p style="color: black" > Loading upcoming reports... </p>
                             </div>
-                            <div *ngIf="reportsToSetup && reportsToSetup.length===0">
+                            <div *ngIf="reportsToSetupData && reportsToSetupData.length===0">
                                 <p style="color: black" > No reports found </p>
                             </div>
                                 <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                                      style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
-                                     *ngFor="let report of reportsToSetup; let i = index" (click)="manageReport(report)">
+                                     *ngFor="let report of reportsToSetupData; let i = index" (click)="manageReport(report)">
                                     <div class="col-12 mb-1"><p class="text-subheader text-left mb-0">
                                         Grant Name: <b>{{(report.grant.referenceNo?report.grant.referenceNo+' | ':'') + report.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
                                         Grantee Organization: <b>{{report.grant.organization?report.grant.organization.name:''}}</b><br>
