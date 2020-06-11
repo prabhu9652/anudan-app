@@ -851,9 +851,17 @@ export class PreviewComponent implements OnInit {
       return;
     }
 
-    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.getGrantPlannedDisbursementTotals()> this.currentGrant.amount){
+    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && (this.getGrantPlannedDisbursementTotals()> this.currentGrant.amount)){
       const dialogRef = this.dialog.open(MessagingComponent,{
         data: "Planned Project Funds cannot be greater than Grant Amount of " + this.currencyService.getFormattedAmount(this.currentGrant.amount),
+        panelClass: 'center-class'
+      });
+      return;
+    }
+
+    if(this.getGrantPlannedDisbursementTotals()===0){
+      const dialogRef = this.dialog.open(MessagingComponent,{
+        data: "There are no Planned Funds for this project",
         panelClass: 'center-class'
       });
       return;

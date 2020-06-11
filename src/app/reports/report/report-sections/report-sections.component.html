@@ -360,10 +360,13 @@
 
 
                           <div id="tableArea" class="row dibursements-class mt-4" style="padding-left:15px;padding-right:15px;">
-                            <ng-container *ngIf="attribute.fieldTableValue">
-                              <p class="text-header">Actual Project Funds</p>
-                            </ng-container>
+                            <p class="text-header">Actual Project Funds</p>
                             <table #dataColumns id="tablePlaceholder" width="100%">
+                              <ng-container *ngIf="!attribute.fieldTableValue">
+                                <tr><td>
+                                  <p>No funds have been recorded for this project yet</p>
+                                </td></tr>
+                              </ng-container>
                               <tr>
                                 <ng-container *ngIf="attribute.fieldTableValue">
                                 <td align="center" valign="middle" width="10%" style="background: rgb(244,244,244);border: 1px solid #e4e4e4;">
