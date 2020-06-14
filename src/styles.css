@@ -186,8 +186,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   line-height: 165% !important;
   font-size: 14px !important;
   padding: 8px 12px !important;
-  background: #fff !important;
+  background: #fff;
   min-height: 41px;
+  background-image: none !important;
 }
 
 .anu-input-plain{

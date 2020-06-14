@@ -427,6 +427,7 @@ export class TableData {
   columns: ColumnData[];
   enteredByGrantee: boolean;
   status:boolean;
+  saved:boolean;
 }
 
 export class TemplateLibrary{
