@@ -65,6 +65,9 @@ manageGrant(notification: Notifications){
 manageReport(notification: Notifications){
     this.dialogRef.close({result:true, notificationFor:'REPORT', data: notification});
 }
+manageDisbursement(notification: Notifications){
+    this.dialogRef.close({result:true, notificationFor:'DISBURSEMENT', data: notification});
+}
 
     markAsRead(ev:any,notification:Notifications){
         this.expanded = !this.expanded;

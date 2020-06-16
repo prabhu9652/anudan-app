@@ -412,6 +412,7 @@ export class Notifications{
   grantId: number;
   reportId: number;
   notificationFor;
+  disbursementId:number;
 }
 
 export class ColumnData{

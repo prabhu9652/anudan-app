@@ -515,9 +515,15 @@ export class AdminLayoutComponent implements OnInit {
           }else{
               grant.canManage=false;
           }
-          if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-              this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
-              this.router.navigate(['grant/basic-details']);
+          if(grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
+              if(grant.canManage){
+                this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
+                this.router.navigate(['grant/basic-details']);
+              }else{
+                this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
+                this.router.navigate(['grant/preview']);
+              }
+              
           } else{
               if(grant.grantStatus.internalStatus==='ACTIVE'){
                 this.appComponent.subMenu = {name:'Active Grants',action:'ag'};
@@ -537,11 +543,13 @@ export class AdminLayoutComponent implements OnInit {
         this.disbursementService.getDisbursement(disbursementId)
         .then((disbursement:Disbursement) => {
             this.disbursementService.changeMessage(disbursement);
+            this.disbursementService.getPermission(disbursement);
             this.appComponent.currentView = 'disbursement';
             
+            
             if(disbursement.canManage && disbursement.status.internalStatus!='ACTIVE' && disbursement.status.internalStatus!='CLOSED'){
-                //this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
-                //this.router.navigate(['disbursement/approval-request']);
+                this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
+                this.router.navigate(['disbursement/approval-request']);
             } else{
                 if(disbursement.status.internalStatus==='ACTIVE'){
                   this.appComponent.subMenu = {name:'Approvals Active',action:'ad'};
@@ -632,6 +640,8 @@ showMessages(){
                         this.manageGrant(result.data,result.data.grantId);
                     }else if(result.notificationFor==='REPORT'){
                         this.manageReport(result.data,result.data.reportId);
+                    }else if(result.notificationFor==='DISBURSEMENT'){
+                        this.manageDisbursement(result.data,result.data.disbursementId);
                     }
 
                   }

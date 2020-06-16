@@ -171,6 +171,11 @@ export class DisbursementDataService{
     }
   }
 
+  getPermission(disbursement:Disbursement):Disbursement{
+      this.setPermission(disbursement);
+      return disbursement;
+  }
+
   saveAssignments(disbursement:Disbursement,assignment:DisbursementWorkflowAssignment[]):Promise<Disbursement>{
     if(disbursement!==undefined && disbursement!==null){
         return this.httpClient.post(this.getUrl()+'/'+disbursement.id + '/assignment',{disbursement:disbursement,assignments:assignment},this.getHeader())
