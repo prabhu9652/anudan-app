@@ -16,6 +16,8 @@ import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/mater
 import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
 import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
 import * as inf from 'indian-number-format';
+import { Disbursement } from 'app/model/disbursement';
+import { DisbursementDataService } from 'app/disbursement.data.service';
 
 
 @Component({
@@ -62,7 +64,8 @@ export class DashboardComponent implements OnInit {
               public grantComponent: GrantComponent,
               private dataService: DataService,
               private dialog: MatDialog,
-              private singleReportDataService:SingleReportDataService) {
+              private singleReportDataService:SingleReportDataService,
+              private disbursementService:DisbursementDataService) {
 
               this.route.queryParams.subscribe(params => {
                       this.parameters = params;
@@ -83,12 +86,12 @@ export class DashboardComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
               if (result) {
-                      this.fetchReportOrGrant();
+                      this.fetchReportOrGrantOrDisbursement();
               }
          });
 
     }else if(this.parameters.status && this.parameters.status==='e' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
-        this.fetchReportOrGrant();
+        this.fetchReportOrGrantOrDisbursement();
     } else{
         const user = JSON.parse(localStorage.getItem('USER'));
         this.appComponent.loggedInUser = user;
@@ -169,7 +172,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  fetchReportOrGrant(){
+  fetchReportOrGrantOrDisbursement(){
     const type = this.parameters.type;
     if(type==='grant'){
       const grantCode = this.parameters.g;
@@ -242,7 +245,40 @@ export class DashboardComponent implements OnInit {
               }
              // this.router.navigate(['grants']);
           });
-    }else{
+    }else if(type==='disbursement'){
+      const disbursementCode = this.parameters.d;
+        const queryParams = new HttpParams().set('d', disbursementCode)
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            }),
+            params: queryParams
+        };
+        const url = '/api/user/'+this.appComponent.loggedInUser.id+'/disbursements/resolve';
+
+
+        this.http.get(url,httpOptions).subscribe((disbursement:Disbursement) => {
+            this.appComponent.currentView = 'disbursement';
+            this.disbursementService.changeMessage(disbursement)
+
+            this.disbursementService.getPermission(disbursement);
+             if(disbursement.status.internalStatus==='DRAFT' || disbursement.status.internalStatus==='REVIEW'){
+                  this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
+              } else if(disbursement.status.internalStatus==='ACTIVE'){
+                  this.appComponent.subMenu = {name:'Approvals Active',action:'ad'};
+              } else if(disbursement.status.internalStatus==='CLOSED'){
+                  this.appComponent.subMenu = {name:'Approvals Closed',action:'cd'};
+              }
+            if(disbursement.canManage){
+                this.router.navigate(['disbursement/approval-request']);
+            } else{
+                this.router.navigate(['disbursement/preview']);
+            }
+           // this.router.navigate(['grants']);
+        });
+  }else{
         this.fetchDashboard(this.appComponent.loggedInUser.id);
     }
   }

@@ -18,10 +18,10 @@ export class AuthGuardService implements CanActivate {
     const isLoggedIn = false; // ... your login logic here
     const params = route.queryParams;
     if(params && params.action==='registration'){
-        this.router.navigate(['/registration'], { queryParams: { g: params.g,r: params.r, email: params.email,org:params.org,type:params.type } });
+        this.router.navigate(['/registration'], { queryParams: { g: params.g,r: params.r,d:params.d, email: params.email,org:params.org,type:params.type } });
         return false;
     }else if(params && params.action==='login'){
-        this.router.navigate(['/login'], { queryParams: { g: params.g,r: params.r, email: params.email,org:params.org,type:params.type } });
+        this.router.navigate(['/login'], { queryParams: { g: params.g,r: params.r,d:params.d, email: params.email,org:params.org,type:params.type } });
         return false;
     }else if(params && params.action==='reset-password'){
          this.router.navigate(['/setnewpassword'], { queryParams: { email: params.email,key:params.key,org:params.org} });

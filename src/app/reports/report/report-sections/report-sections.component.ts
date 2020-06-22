@@ -943,6 +943,7 @@ deleteAttachment(attributeId, attachmentId){
      row.name = String(Number((attr.fieldTableValue && attr.fieldTableValue.length>0)?(attr.fieldTableValue[attr.fieldTableValue.length-1].name):'0')+1);
      row.header = (attr.fieldTableValue && attr.fieldTableValue.length>0 && attr.fieldTableValue[0])?attr.fieldTableValue[0].header:'#';
      row.status = true;
+     row.saved = false;
      row.columns = JSON.parse((attr.fieldTableValue && attr.fieldTableValue.length>0 && attr.fieldTableValue[0])?JSON.stringify(attr.fieldTableValue[0].columns):'[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]');
      if(this.appComp.loggedInUser.organization.organizationType==='GRANTEE'){
         row.enteredByGrantee = true;

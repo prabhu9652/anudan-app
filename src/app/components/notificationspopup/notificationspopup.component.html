@@ -11,6 +11,7 @@
     <div [innerHTML]="notification.message"></div>
     <button class="btn btn-sm btn-green" *ngIf="notification.notificationFor==='GRANT'" (click)="manageGrant(notification)">Go to grant</button>
     <button class="btn btn-sm btn-green" *ngIf="notification.notificationFor==='REPORT'" (click)="manageReport(notification)">Go to report</button>
+    <button class="btn btn-sm btn-green" *ngIf="notification.notificationFor==='DISBURSEMENT'" (click)="manageDisbursement(notification)">Go to Approval Note</button>
   </mat-expansion-panel>
   </mat-accordion>
 </div>

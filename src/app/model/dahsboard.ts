@@ -412,6 +412,7 @@ export class Notifications{
   grantId: number;
   reportId: number;
   notificationFor;
+  disbursementId:number;
 }
 
 export class ColumnData{
@@ -427,6 +428,7 @@ export class TableData {
   columns: ColumnData[];
   enteredByGrantee: boolean;
   status:boolean;
+  saved:boolean;
 }
 
 export class TemplateLibrary{
