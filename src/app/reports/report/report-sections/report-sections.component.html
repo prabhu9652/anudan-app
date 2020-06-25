@@ -227,7 +227,7 @@
                           *ngIf="
                             attribute.fieldType === 'multiline' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse
+                            !currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -246,7 +246,7 @@
                           *ngIf="
                             attribute.fieldType === 'multiline' &&
                             currentReport.canManage &&
-                              currentReport.forGranteeUse
+                            currentReport.forGranteeUse
                           "
                         >
                           <label>Title:</label>
@@ -391,7 +391,7 @@
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse &&
+                            !currentReport.forGranteeUse &&
                             attribute.canEdit
                           "
                         >
@@ -410,7 +410,7 @@
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse &&
+                            !currentReport.forGranteeUse &&
                             !attribute.canEdit
                           "
                         >
@@ -432,7 +432,7 @@
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
                             currentReport.canManage &&
-                              currentReport.forGranteeUse
+                            currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1707,6 +1707,27 @@
                                               column.dataType === 'currency' &&
                                               column.name ===
                                                 'Funds from Other Sources' &&
+                                              !row.enteredByGrantee
+                                            "
+                                            #amountFormatted
+                                            class="anu-input w-100 text-right"
+                                            style="
+                                              position: absolute;
+                                              top: -1px;
+                                              cursor: text;
+                                              background: #f4f4f4 !important;
+                                            "
+                                          >
+                                            {{
+                                              getFormattedCurrency(column.value)
+                                            }}
+                                          </p>
+                                          <p
+                                            [id]="'label_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name ===
+                                                'Funds from Other Sources' &&
                                               row.enteredByGrantee &&
                                               row.status
                                             "
@@ -1733,6 +1754,7 @@
                                               row.status
                                             "
                                             type="number"
+                                            (keypress)="amountValidator.validatePositive($event)"
                                             matInput
                                             [(ngModel)]="column.value"
                                             class="anu-input text-right"
@@ -1786,6 +1808,7 @@
                                   </tr>
                                 </ng-container>
                               </ng-container>
+
                               <div class="row">
                                 <div class="col-12">
                                   <span
@@ -1802,12 +1825,39 @@
                                   >
                                 </div>
                               </div>
-                              <!--tr *ngIf="getGrantDisbursementAttribute() && getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
-                                <td class="py-2" align="center" style="position: sticky; left: 0; z-index: 1;"><p  class="w-100" style="font-weight:600;">TOTALS:</p></td>
-                                <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
-                                  <label class="text-right pr-3 my-0 w-100" *ngIf="column.dataType==='currency'"><b>{{getDisbursementTotals(j,attribute.fieldTableValue)}}</b></label>
+                              <tr
+                                *ngIf="
+                                  attribute.fieldTableValue &&
+                                  attribute.fieldTableValue.length > 1
+                                "
+                                style="background: #f4f4f4;"
+                              >
+                                <td
+                                  class="py-2"
+                                  align="center"
+                                  style="position: sticky; left: 0; z-index: 1;"
+                                >
+                                  <label class="w-100" style="font-weight: 600;"
+                                    >TOTAL:</label
+                                  >
                                 </td>
-                              </tr-->
+                                <td
+                                  *ngFor="
+                                    let column of attribute.fieldTableValue[0]
+                                      .columns;
+                                    let j = index
+                                  "
+                                  valign="middle"
+                                >
+                                  <label
+                                    class="text-right pr-3 my-0 w-100"
+                                    *ngIf="column.dataType === 'currency'"
+                                    ><b>{{
+                                      getTotals(j, attribute.fieldTableValue)
+                                    }}</b></label
+                                  >
+                                </td>
+                              </tr>
                             </table>
                           </div>
                         </div>
@@ -1817,7 +1867,7 @@
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse
+                            !currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1841,7 +1891,7 @@
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
                             currentReport.canManage &&
-                              currentReport.forGranteeUse
+                            currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1915,7 +1965,7 @@
                             appComp.loggedInUser.organization
                               .organizationType === 'GRANTER' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse
+                            !currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1936,7 +1986,7 @@
                             appComp.loggedInUser.organization
                               .organizationType === 'GRANTEE' &&
                             currentReport.canManage &&
-                              currentReport.forGranteeUse
+                            currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1960,7 +2010,7 @@
                             appComp.loggedInUser.organization
                               .organizationType === 'GRANTER' &&
                             currentReport.canManage &&
-                              !currentReport.forGranteeUse
+                            !currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>
@@ -1986,7 +2036,7 @@
                             appComp.loggedInUser.organization
                               .organizationType === 'GRANTEE' &&
                             currentReport.canManage &&
-                              currentReport.forGranteeUse
+                            currentReport.forGranteeUse
                           "
                         >
                           <mat-form-field>

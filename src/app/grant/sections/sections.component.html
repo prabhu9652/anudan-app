@@ -854,6 +854,9 @@
                               [ngModelOptions]="{ standAlone: true }"
                               placeholder="Target/Goal"
                               (ngModelChange)="checkGrant()"
+                              (keypress)="
+                                amountValidator.validatePositive($event)
+                              "
                             />
                           </mat-form-field>
                         </div>

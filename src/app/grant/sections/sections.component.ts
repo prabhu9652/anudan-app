@@ -83,6 +83,7 @@ import { MatSelectChange } from "@angular/material/select";
 
 import * as inf from "indian-number-format";
 import { AttributeService } from "app/attribute-validation-service";
+import { AmountValidator } from "app/amount-validator";
 
 @Component({
   selector: "app-sections",
@@ -180,7 +181,8 @@ export class SectionsComponent
     private sidebar: SidebarComponent,
     private data: DataService,
     private cdr: ChangeDetectorRef,
-    private attributeService: AttributeService
+    private attributeService: AttributeService,
+    public amountValidator:AmountValidator
   ) {
     this.colors = new Colors();
 
