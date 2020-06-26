@@ -7,10 +7,11 @@ import {
   ActualDisbursement,
 } from "./model/disbursement";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
-import { Grant } from "./model/dahsboard";
+import { Grant, TableData } from "./model/dahsboard";
 import { UserService } from "./user.service";
 import { User } from "./model/user";
 import { CurrencyService } from "./currency-service";
+import { Report } from "./model/report";
 
 @Injectable({
   providedIn: "root",
@@ -453,5 +454,45 @@ export class DisbursementDataService {
       total += ad.otherSources ? ad.otherSources : 0;
     }
     return total;
+  }
+
+  addNewDisbursementRowByGrantee(report: Report): Promise<TableData> {
+    if (report !== undefined && report !== null) {
+      return this.httpClient
+        .post(
+          this.getUrl() +
+            "/grant/" +
+            report.grant.id +
+            "/report/" +
+            report.id +
+            "/record",
+          {},
+          this.getHeader()
+        )
+        .toPromise()
+        .then<TableData>()
+        .catch((err) => {
+          return Promise.reject<TableData>(
+            "Unable to create new actual disbursement entry"
+          );
+        });
+    } else {
+      return Promise.resolve(null);
+    }
+  }
+
+  removeDisbursementRowByGrantee(actualDisbursementId: number): Promise<void> {
+    return this.httpClient
+      .delete(
+        this.getUrl() + "/remove/" + actualDisbursementId,
+        this.getHeader()
+      )
+      .toPromise()
+      .then<void>()
+      .catch((err) => {
+        return Promise.reject<void>(
+          "Unable to create new actual disbursement entry"
+        );
+      });
   }
 }

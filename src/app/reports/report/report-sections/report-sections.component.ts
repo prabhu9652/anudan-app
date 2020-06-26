@@ -63,6 +63,7 @@ import * as inf from "indian-number-format";
 import { AttributeService } from "app/attribute-validation-service";
 import { CurrencyService } from "app/currency-service";
 import { AmountValidator } from "app/amount-validator";
+import { DisbursementDataService } from "app/disbursement.data.service";
 
 export const APP_DATE_FORMATS = {
   parse: {
@@ -154,7 +155,8 @@ export class ReportSectionsComponent implements OnInit {
     private datepipe: DatePipe,
     private attributeService: AttributeService,
     private currencyService: CurrencyService,
-    public amountValidator: AmountValidator
+    public amountValidator: AmountValidator,
+    private disbursementService: DisbursementDataService
   ) {
     this.route.params.subscribe((p) => {
       this.action = p["action"];
@@ -1212,18 +1214,18 @@ export class ReportSectionsComponent implements OnInit {
               if (attrib.id == attributeId) {
                 console.log(attrib.fieldTableValue);
                 const tableData = attrib.fieldTableValue;
-                tableData.splice(rowIndex, 1);
-                const starCounter = this.getGrantDisbursementAttribute()
-                  .fieldTableValue
-                  ? this.getGrantDisbursementAttribute().fieldTableValue.length
-                  : 0;
-                for (
-                  let i = starCounter;
-                  i < tableData.length + starCounter;
-                  i++
-                ) {
-                  tableData[i - starCounter].name = String(i + 1);
-                }
+
+                this.disbursementService
+                  .removeDisbursementRowByGrantee(
+                    tableData[rowIndex].actualDisbursementId
+                  )
+                  .then(() => {
+                    tableData.splice(rowIndex, 1);
+                    const starCounter = tableData ? tableData.length : 0;
+                    for (let i = 0; i < starCounter; i++) {
+                      tableData[i].name = String(i + 1);
+                    }
+                  });
               }
             }
           }
@@ -1235,42 +1237,53 @@ export class ReportSectionsComponent implements OnInit {
   }
 
   addDisbursementRow(attr: Attribute) {
-    const row = new TableData();
-    row.name = String(
-      Number(
-        attr.fieldTableValue && attr.fieldTableValue.length > 0
-          ? attr.fieldTableValue[attr.fieldTableValue.length - 1].name
-          : "0"
-      ) + 1
-    );
-    row.header =
-      attr.fieldTableValue &&
-      attr.fieldTableValue.length > 0 &&
-      attr.fieldTableValue[0]
-        ? attr.fieldTableValue[0].header
-        : "#";
-    row.status = true;
-    row.saved = false;
-    row.columns = JSON.parse(
-      attr.fieldTableValue &&
-        attr.fieldTableValue.length > 0 &&
-        attr.fieldTableValue[0]
-        ? JSON.stringify(attr.fieldTableValue[0].columns)
-        : '[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]'
-    );
-    if (this.appComp.loggedInUser.organization.organizationType === "GRANTEE") {
-      row.enteredByGrantee = true;
-    }
-    if (this.appComp.loggedInUser.organization.organizationType === "GRANTER") {
-      row.enteredByGrantee = false;
-    }
-    for (let i = 0; i < row.columns.length; i++) {
-      row.columns[i].value = "";
-    }
-    if (!attr.fieldTableValue) {
-      attr.fieldTableValue = [];
-    }
-    attr.fieldTableValue.push(row);
+    this.disbursementService
+      .addNewDisbursementRowByGrantee(this.currentReport)
+      .then((td) => {
+        const row = td;
+        row.name = String(
+          Number(
+            attr.fieldTableValue && attr.fieldTableValue.length > 0
+              ? attr.fieldTableValue[attr.fieldTableValue.length - 1].name
+              : "0"
+          ) + 1
+        ); /* 
+        row.header =
+          attr.fieldTableValue &&
+          attr.fieldTableValue.length > 0 &&
+          attr.fieldTableValue[0]
+            ? attr.fieldTableValue[0].header
+            : "#";
+        row.status = true;
+        row.saved = false;
+        row.columns = JSON.parse(
+          attr.fieldTableValue &&
+            attr.fieldTableValue.length > 0 &&
+            attr.fieldTableValue[0]
+            ? JSON.stringify(attr.fieldTableValue[0].columns)
+            : '[{"name":"Disbursement Date","value":"","dataType":"date"},{"name":"Actual Amount","value":"","dataType":"currency"},{"name":"Funds from Other Sources","value":"","dataType":"currency"},{"name":"Notes","value":""}]'
+        );
+        if (this.appComp.loggedInUser.organization.organizationType === "GRANTEE") {
+          row.enteredByGrantee = true;
+        }
+        if (this.appComp.loggedInUser.organization.organizationType === "GRANTER") {
+          row.enteredByGrantee = false;
+        }
+        for (let i = 0; i < row.columns.length; i++) {
+          row.columns[i].value = "";
+        }
+        if (!attr.fieldTableValue) {
+          attr.fieldTableValue = [];
+        } */
+        if (
+          attr.fieldTableValue === undefined ||
+          attr.fieldTableValue === null
+        ) {
+          attr.fieldTableValue = [];
+        } else {
+        }
+        attr.fieldTableValue.push(row);
+      });
   }
 
   getCommittedGrantTotals(idx: number): string {

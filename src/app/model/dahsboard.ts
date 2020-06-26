@@ -1,8 +1,8 @@
-import {User} from './user';
-import * as moment from 'moment';
+import { User } from "./user";
+import * as moment from "moment";
 import _date = moment.unitOfTime._date;
-import {NativeDateAdapter} from '@angular/material';
-import {Report} from './report';
+import { NativeDateAdapter } from "@angular/material";
+import { Report } from "./report";
 
 export class Organization {
   id: number;
@@ -72,14 +72,14 @@ export class GrantKpi {
 }
 
 export class Template {
-    description: string;
-    id: number;
-    location: string;
-    name: string;
-    type: string;
-    version: number;
-    fileType: string;
-    data: string;
+  description: string;
+  id: number;
+  location: string;
+  name: string;
+  type: string;
+  version: number;
+  fileType: string;
+  data: string;
 }
 
 export class Note {
@@ -142,7 +142,7 @@ export class FlowAuthority {
   toName: string;
   action: string;
   noteRequired: boolean;
-  seqOrder:number;
+  seqOrder: number;
 }
 
 export class Submission {
@@ -150,7 +150,7 @@ export class Submission {
   grant: Grant;
   title: string;
   submitBy: Date;
-  submitDateStr: string
+  submitDateStr: string;
   submissionStatus: SubmissionStatus;
   quantitiaveKpisubmissions: QuantitiaveKpisubmission[];
   qualitativeKpiSubmissions: QualitativeKpiSubmission[];
@@ -187,24 +187,24 @@ export class Attribute {
   attachments: Attachment[];
   target: string;
   actualTarget: string;
-  cumulativeActuals:number;
+  cumulativeActuals: number;
   frequency: string;
   deletable: boolean;
   required: boolean;
 }
 
-export class Attachment{
-    id: number;
-    name: string;
-    description: string;
-    location: string;
-    version: number;
-    title: string;
-    type: string;
-    createdOn: Date;
-    createdBy: string;
-    updatedOn: Date;
-    updatedBy: string;
+export class Attachment {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  version: number;
+  title: string;
+  type: string;
+  createdOn: Date;
+  createdBy: string;
+  updatedOn: Date;
+  updatedBy: string;
 }
 
 export class Section {
@@ -239,7 +239,7 @@ export class Grant {
   name: string;
   description: string;
   grantStatus: WorkflowStatus;
-  substatus: WorkflowStatus
+  substatus: WorkflowStatus;
   statusName: string;
   startDate: Date;
   stDate: string;
@@ -257,7 +257,7 @@ export class Grant {
   grantTemplate: GrantTemplate;
   createdAt: Date;
   createdBy: string;
-  currentAssignment:User[];
+  currentAssignment: User[];
   workflowAssignment: WorkflowAssignment[];
   note: string;
   noteAdded: Date;
@@ -293,7 +293,7 @@ export class GrantHistory {
   name: string;
   description: string;
   grantStatus: WorkflowStatus;
-  substatus: WorkflowStatus
+  substatus: WorkflowStatus;
   statusName: string;
   startDate: Date;
   stDate: string;
@@ -311,7 +311,7 @@ export class GrantHistory {
   grantTemplate: GrantTemplate;
   createdAt: Date;
   createdBy: string;
-  currentAssignment:User[];
+  currentAssignment: User[];
   workflowAssignment: WorkflowAssignment[];
   note: string;
   noteAdded: Date;
@@ -319,17 +319,17 @@ export class GrantHistory {
   noteAddedByUser: User;
 }
 
-export class WorkflowAssignment{
-    id: number;
-    grantId: number;
-    stateName: WorkflowStatus;
-    stateId: number;
-    assignments: number;
-    assignmentUser: User;
-    anchor: boolean;
-    constructor(){}
+export class WorkflowAssignment {
+  id: number;
+  grantId: number;
+  stateName: WorkflowStatus;
+  stateId: number;
+  assignments: number;
+  assignmentUser: User;
+  anchor: boolean;
+  constructor() {}
 }
-export class GrantTemplate{
+export class GrantTemplate {
   id: number;
   name: string;
   description: string;
@@ -372,30 +372,30 @@ export class AttachmentTemplates {
 }
 
 export class NoteTemplates {
-    kpiDataId: number;
-    kpiDataType: string;
-    grantId: number;
-    title: string;
-    subTitle: string;
-    notes: Note[];
-    canManage: boolean;
+  kpiDataId: number;
+  kpiDataType: string;
+  grantId: number;
+  title: string;
+  subTitle: string;
+  notes: Note[];
+  canManage: boolean;
 }
 
-export class GrantNote{
-    currentGrant: Grant;
-    originalGrant: Grant;
-    canManage: boolean;
+export class GrantNote {
+  currentGrant: Grant;
+  originalGrant: Grant;
+  canManage: boolean;
 }
 
 export class SerializationHelper {
   static toInstance<T>(obj: T, json: string): T {
     const jsonObj = JSON.parse(json);
 
-    if (typeof obj['fromJSON'] === 'function') {
-      obj['fromJSON'](jsonObj);
+    if (typeof obj["fromJSON"] === "function") {
+      obj["fromJSON"](jsonObj);
     } else {
       for (const propName of jsonObj) {
-        obj[propName] = jsonObj[propName]
+        obj[propName] = jsonObj[propName];
       }
     }
 
@@ -403,7 +403,7 @@ export class SerializationHelper {
   }
 }
 
-export class Notifications{
+export class Notifications {
   id: number;
   message: string;
   title: string;
@@ -412,26 +412,28 @@ export class Notifications{
   grantId: number;
   reportId: number;
   notificationFor;
-  disbursementId:number;
+  disbursementId: number;
 }
 
-export class ColumnData{
+export class ColumnData {
   id: number;
   name: string;
   value: string;
-  dataType:string;
+  dataType: string;
 }
 
 export class TableData {
   name: string;
-  header:string;
+  header: string;
   columns: ColumnData[];
   enteredByGrantee: boolean;
-  status:boolean;
-  saved:boolean;
+  status: boolean;
+  saved: boolean;
+  actualDisbursementId: number;
+  disbursementId: number;
 }
 
-export class TemplateLibrary{
+export class TemplateLibrary {
   id: number;
   name: string;
   description: string;
@@ -440,78 +442,76 @@ export class TemplateLibrary{
   granterId: number;
 }
 
-export class FieldInfo{
-    attributeId: number;
-    stringAttributeId: number;
-    grant: Grant;
+export class FieldInfo {
+  attributeId: number;
+  stringAttributeId: number;
+  grant: Grant;
 }
 
-
-export class DocInfo{
-    attachmentId: number;
-    grant: Grant;
+export class DocInfo {
+  attachmentId: number;
+  grant: Grant;
 }
 
-export class SectionInfo{
-    sectionId: number;
-    sectionName: string;
-    grant: Grant;
+export class SectionInfo {
+  sectionId: number;
+  sectionName: string;
+  grant: Grant;
 }
 
-export class WorkflowAssignmentModel{
- users: User[];
- workflowStatuses: WorkflowStatus[];
- workflowAssignment: WorkflowAssignment[];
- grant: Grant;
- type:string;
- canManage: boolean;
- constructor(){}
+export class WorkflowAssignmentModel {
+  users: User[];
+  workflowStatuses: WorkflowStatus[];
+  workflowAssignment: WorkflowAssignment[];
+  grant: Grant;
+  type: string;
+  canManage: boolean;
+  constructor() {}
 }
 
-export class AttachmentDownloadRequest{
-    attachmentIds: number[];
+export class AttachmentDownloadRequest {
+  attachmentIds: number[];
 }
 
-export class GrantDiff{
-    oldGrantName: string;
-    newGrantName: string;
-    oldGrantStartDate: Date;
-    newGrantStartDate: Date;
-    oldGrantEndDate: Date;
-    newGrantEndDate: Date;
-    oldGrantAmount: number;
-    newGrantAmount: number;
-    oldGrantee: string;
-    newGrantee: string;
-    oldRep: string;
-    newRep: string;
-    sectionDiffs: SectionDiff[];
+export class GrantDiff {
+  oldGrantName: string;
+  newGrantName: string;
+  oldGrantStartDate: Date;
+  newGrantStartDate: Date;
+  oldGrantEndDate: Date;
+  newGrantEndDate: Date;
+  oldGrantAmount: number;
+  newGrantAmount: number;
+  oldGrantee: string;
+  newGrantee: string;
+  oldRep: string;
+  newRep: string;
+  sectionDiffs: SectionDiff[];
 }
 
-export class SectionDiff{
-    hasSectionLevelChanges = false;
-    order: number;
-    oldSection: Section;
-    newSection: Section;
-    attributesDiffs: AttributeDiff[]
+export class SectionDiff {
+  hasSectionLevelChanges = false;
+  order: number;
+  oldSection: Section;
+  newSection: Section;
+  attributesDiffs: AttributeDiff[];
 }
-export class AttributeDiff{
-    section: string;
-    oldAttribute: Attribute;
-    newAttribute: Attribute;
+export class AttributeDiff {
+  section: string;
+  oldAttribute: Attribute;
+  newAttribute: Attribute;
 }
 
 export class CustomDateAdapter extends NativeDateAdapter {
-   format(date: Date, displayFormat: Object): string {
-      if (displayFormat === 'input') {
-         const day = date.getDate();
-         const month = moment(date).format("MMM");//date.getUTCMonth() + 1;
-         const year = date.getFullYear();
-         // Return the format as per your requirement
-         return `${day}-${month}-${year}`;
-      } else {
-         return date.toDateString();
-      }
-   }
+  format(date: Date, displayFormat: Object): string {
+    if (displayFormat === "input") {
+      const day = date.getDate();
+      const month = moment(date).format("MMM"); //date.getUTCMonth() + 1;
+      const year = date.getFullYear();
+      // Return the format as per your requirement
+      return `${day}-${month}-${year}`;
+    } else {
+      return date.toDateString();
+    }
+  }
 }
-
