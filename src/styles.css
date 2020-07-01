@@ -356,6 +356,10 @@ input:-internal-autofill-selected {
   justify-content: center;
 }
 
+.btn-gray{
+  background:#757575;
+}
+
 .bg-green {
   background-color: #39743c !important;
 }

@@ -1,0 +1,20 @@
+<span class="" style="position:absolute; right: 0; left: auto;top: 4px;" (click)="onNoClick()"
+  (scroll)="redrawOnScroll()">
+  <mat-icon style="font-size: 20px;">close</mat-icon>
+</span>
+<p mat-dialog-title class="text-header" style="font-weight: normal;"><b>Past Approvers</b></p>
+<ul *ngIf="message" style="min-width: 400px;padding-left: 2px;">
+  <li style="list-style: none;">
+    <div class="row mb-2" style="border-bottom: 1px solid #f4f4f4;">
+      <div class="col-6"><b>Name</b></div>
+      <div class="col-6"><b>Modified on</b></div>
+    </div>
+  </li>
+  <li *ngFor="let m of message" style="list-style: none;">
+    <div class="row">
+      <div class="col-6">{{m.assignmentUser?m.assignmentUser.firstName:"Initial Assignment"}}
+        {{m.assignmentUser?m.assignmentUser.lastName:""}}</div>
+      <div class="col-6">{{m.updatedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
+    </div>
+  </li>
+</ul>

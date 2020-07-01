@@ -46,6 +46,7 @@ import { ExportAsModule } from 'ngx-export-as';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FieldDialogComponent } from './components/field-dialog/field-dialog.component';
+import { OwnersPopupComponent } from './components/owners-popup/owners-popup.component';
 
 export class AnudanErrorHandler implements ErrorHandler {
   constructor() { }
@@ -88,6 +89,7 @@ export function provideConfig() {
     GranthistoryComponent,
     MessagingComponent,
     FieldDialogComponent,
+    OwnersPopupComponent,
     NotificationspopupComponent
   ],
   imports: [
@@ -148,7 +150,7 @@ export function provideConfig() {
     MatMenuModule,
     { provide: ErrorHandler, useClass: AnudanErrorHandler }
   ],
-  entryComponents: [WfassignmentComponent, GranthistoryComponent, NotificationspopupComponent, MessagingComponent, FieldDialogComponent],
+  entryComponents: [WfassignmentComponent, GranthistoryComponent, NotificationspopupComponent, MessagingComponent, FieldDialogComponent, OwnersPopupComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
