@@ -205,6 +205,30 @@ body {
   background-image: none !important;
 }
 
+.anu-select{
+  background: url(./assets/img/DownArrow.jpg) #fff!important;
+    background-size: 5% !important;
+    background-repeat: no-repeat !important;
+    background-position-x: 98% !important;
+    background-position-y: 50% !important;
+    overflow: hidden !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 23px !important;
+}
+
+.anu-select-container{
+  position: absolute;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    right: 15px;
+    background: #fff;
+    top: 1px;
+}
+
 .anu-input-plain {
   line-height: 165% !important;
   font-size: 14px !important;

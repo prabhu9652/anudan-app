@@ -1,19 +1,21 @@
 <span class="" style="position:absolute; right: 0; left: auto;top: 4px;" (click)="onNoClick()">
   <mat-icon style="font-size: 20px;">close</mat-icon>
 </span>
-<p mat-dialog-title class="text-header" style="font-weight: normal;"><b>Past Approvers</b></p>
+<p mat-dialog-title class="text-header" style="font-weight: normal;"><b>{{message.title}}</b></p>
 <ul *ngIf="message" style="min-width: 400px;padding-left: 2px;">
   <li style="list-style: none;">
     <div class="row mb-2" style="border-bottom: 1px solid #f4f4f4;">
-      <div class="col-6"><b>Name</b></div>
-      <div class="col-6"><b>Modified on</b></div>
+      <div class="col-8" style="font-size:13px;"><b>Name</b></div>
+      <div class="col-4 p-1" style="font-size:13px;"><b>Modified on</b></div>
     </div>
   </li>
-  <li *ngFor="let m of message" style="list-style: none;">
+  <li *ngFor="let m of message.history" style="list-style: none;">
     <div class="row">
-      <div class="col-6">{{m.assignmentUser?m.assignmentUser.firstName:"Initial Assignment"}}
-        {{m.assignmentUser?m.assignmentUser.lastName:""}}</div>
-      <div class="col-6">{{m.updatedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
+      <div class="col-8" style="font-size:13px;" *ngIf="m.assignmentUser.active">{{m.assignmentUser.firstName}}
+        {{m.assignmentUser.lastName}}</div>
+      <div class="col-8" style="font-size:13px;" *ngIf="!m.assignmentUser.active">Unregisted:
+        {{m.assignmentUser.emailId}}</div>
+      <div class="col-4 p-1" style="font-size:13px;">{{m.updatedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
     </div>
   </li>
 </ul>
