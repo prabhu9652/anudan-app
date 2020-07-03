@@ -327,7 +327,8 @@ export class WorkflowAssignment {
   assignments: number;
   assignmentUser: User;
   anchor: boolean;
-  constructor() {}
+  history: any[];
+  constructor() { }
 }
 export class GrantTemplate {
   id: number;
@@ -466,7 +467,7 @@ export class WorkflowAssignmentModel {
   grant: Grant;
   type: string;
   canManage: boolean;
-  constructor() {}
+  constructor() { }
 }
 
 export class AttachmentDownloadRequest {
