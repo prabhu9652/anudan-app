@@ -657,6 +657,12 @@ font-white {
   left: 150px !important;
 }
 
+.center-class-long {
+  max-width: calc(90% - 200px) !important;
+  position: relative !important;
+  left: 150px !important;
+}
+
 .notifications-class {
   min-width: calc(80% - 300px) !important;
   max-width: calc(80% - 300px) !important;

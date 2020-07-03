@@ -916,7 +916,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     showOwners(event, history, title) {
         const dgReg = this.dialog.open(OwnersPopupComponent, {
             data: { history: history, title: title },
-            panelClass: 'center-class'
+            panelClass: 'center-class-long'
         });
 
 

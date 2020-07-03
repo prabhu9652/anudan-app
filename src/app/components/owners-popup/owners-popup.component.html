@@ -5,17 +5,23 @@
 <ul *ngIf="message" style="min-width: 400px;padding-left: 2px;">
   <li style="list-style: none;">
     <div class="row mb-2" style="border-bottom: 1px solid #f4f4f4;">
-      <div class="col-8" style="font-size:13px;"><b>Name</b></div>
-      <div class="col-4 p-1" style="font-size:13px;"><b>Modified on</b></div>
+      <div class="col-3" style="font-size:12px;"><b>Name</b></div>
+      <div class="col-3" style="font-size:12px;"><b>From</b></div>
+      <div class="col-3" style="font-size:12px;"><b>To</b></div>
+      <div class="col-3" style="font-size:12px;"><b>Changed By</b></div>
     </div>
   </li>
   <li *ngFor="let m of message.history" style="list-style: none;">
     <div class="row">
-      <div class="col-8" style="font-size:13px;" *ngIf="m.assignmentUser.active">{{m.assignmentUser.firstName}}
+      <div class="col-3" style="font-size:12px;" *ngIf="m.assignmentUser.active">{{m.assignmentUser.firstName}}
         {{m.assignmentUser.lastName}}</div>
-      <div class="col-8" style="font-size:13px;" *ngIf="!m.assignmentUser.active">Unregisted:
+      <div class="col-3" style="font-size:12px;" *ngIf="!m.assignmentUser.active">Unregistered:
         {{m.assignmentUser.emailId}}</div>
-      <div class="col-4 p-1" style="font-size:13px;">{{m.updatedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
+      <div class="col-3" style="font-size:12px;">{{m.assignedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
+      <div class="col-3" style="font-size:12px;">{{m.updatedOn | date:'dd-MMM-yyyy hh:mm a'}}</div>
+      <div class="col-3" style="font-size:12px;" *ngIf="m.updatedByUser">{{m.updatedByUser.firstName}}
+        {{m.updatedByUser.lastName}}</div>
+
     </div>
   </li>
 </ul>
