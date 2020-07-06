@@ -9,6 +9,7 @@ import { User } from 'app/model/user';
 import { MessagingComponent } from '../messaging/messaging.component';
 import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
 import { OwnersPopupComponent } from '../owners-popup/owners-popup.component';
+import { environment } from 'environments/environment';
 
 declare var $: any;
 declare var jsPlumb: any;
@@ -572,7 +573,11 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
 
     }
     handleSelection(event: any): boolean | void {
+
         this.updateGrantAndDisbursementUsers();
+        if (!environment.production) {
+            return;
+        }
 
         const options = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
         const previousOptions = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
@@ -802,6 +807,9 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     }
 
     updateGrantAndDisbursementUsers() {
+        if (!environment.production) {
+            return;
+        }
         const assignmentElems = $('[id^="assignment_"]');
         for (let i = 0; i < assignmentElems.length; i++) {
             console.log(assignmentElems[i].getAttribute('data-counter'));
@@ -825,6 +833,9 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     }
 
     updateReportUsers() {
+        if (!environment.production) {
+            return;
+        }
         const assignmentElems = $('[id^="assignment_"]');
         for (let i = 2; i < assignmentElems.length; i++) {
             console.log(assignmentElems[i].getAttribute('data-counter'));
