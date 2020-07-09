@@ -36,27 +36,27 @@
           <mat-list-item>
             <p [id] mat-line style="
                                     border-bottom: 1px solid #d4d4d4;
-                                    padding-left: 0;
+                                    padding-left: 0;font-size: 14px;
                                   ">
               {{ attachment.name + "." + attachment.extension }}
             </p>
             <input id='attachment_{{attachment.id}}' mat-list-icon class="attachment-checkbox" type="checkbox" (change)="
                                     handleSelection(attachment.id)
-                                  " />
+                                  " style="width: 18px;" />
           </mat-list-item>
         </ng-container>
         <mat-list-item *ngIf="
                                projectDocs &&
                                projectDocs.length > 0
                               ">
-          <button id="downloadBtn" class="btn btn-sm btn-blue" disabled (click)="downloadSelection(attachment.id)">
+          <button id="downloadBtn" class="btn btn-sm btn-blue" disabled (click)="downloadSelection()">
             <mat-icon style="cursor: pointer;top: 5px; font-size: 13px; margin-right: 3px;">
               system_update_alt
             </mat-icon>
             Download Selected Documents
           </button>
 
-          <button id="deleteBtn" class="btn btn-sm btn-blue ml-4" disabled (click)="deleteSelection(attachemnt.id)">
+          <button id="deleteBtn" class="btn btn-sm btn-blue ml-4" disabled (click)="deleteSelection()">
             <img src="./assets/img/trash.svg"
               style="width: 16px; opacity: 1; position: absolute; left: 0; margin-left: 5px; top: 5px;" />Delete
             Selected Documents

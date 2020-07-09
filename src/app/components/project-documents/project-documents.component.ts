@@ -1,8 +1,11 @@
 import { Component, Inject, OnInit, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule, MatDialog } from '@angular/material';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { DocInfo, AttachmentDownloadRequest } from 'app/model/dahsboard';
 import { ProjectDoc } from 'app/model/project-doc';
+import { saveAs } from "file-saver";
+import { FieldDialogComponent } from '../field-dialog/field-dialog.component';
+
 
 @Component({
   selector: 'project-documents-dialog',
@@ -17,7 +20,8 @@ export class ProjectDocumentsComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ProjectDocumentsComponent>
     , @Inject(MAT_DIALOG_DATA) public message: any,
     private http: HttpClient,
-    private elem: ElementRef) {
+    private elem: ElementRef,
+    private dialog: MatDialog) {
     this.dialogRef.disableClose = true;
 
     const endpoint =
@@ -110,7 +114,7 @@ export class ProjectDocumentsComponent implements OnInit {
     }
   }
 
-  /*downloadSelection() {
+  downloadSelection() {
     const elems = this.elem.nativeElement.querySelectorAll(
       '[id^="attachment_"]'
     );
@@ -119,7 +123,7 @@ export class ProjectDocumentsComponent implements OnInit {
       selectedAttachments.attachmentIds = [];
       for (let singleElem of elems) {
         if (singleElem.checked) {
-          selectedAttachments.attachmentIds.push(singleElem.id.split("_")[3]);
+          selectedAttachments.attachmentIds.push(singleElem.id.split("_")[1]);
         }
       }
       const httpOptions = {
@@ -133,19 +137,19 @@ export class ProjectDocumentsComponent implements OnInit {
 
       let url =
         "/api/user/" +
-        this.appComp.loggedInUser.id +
+        this.message.loggedInUser.id +
         "/grant/" +
-        this.currentGrant.id +
-        "/attachments";
+        this.message.currentGrant.id +
+        "/documents/download";
       this.http
         .post(url, selectedAttachments, httpOptions)
         .subscribe((data) => {
-          //saveAs(data, this.currentGrant.name + ".zip");
+          saveAs(data, this.message.currentGrant.name + ".zip");
         });
     }
-  }*/
+  }
 
-  /*deleteSelection(attribId) {
+  deleteSelection() {
 
     const dReg = this.dialog.open(FieldDialogComponent, {
       data: { title: 'Are you sure you want to delete the selected document(s)?' },
@@ -155,28 +159,28 @@ export class ProjectDocumentsComponent implements OnInit {
     dReg.afterClosed().subscribe(result => {
       if (result) {
         const elems = this.elem.nativeElement.querySelectorAll(
-          '[id^="attriute_' + attribId + '_attachment_"]'
+          '[id^="attachment_"]'
         );
         const selectedAttachments = new AttachmentDownloadRequest();
         if (elems.length > 0) {
           selectedAttachments.attachmentIds = [];
           for (let singleElem of elems) {
             if (singleElem.checked) {
-              selectedAttachments.attachmentIds.push(singleElem.id.split("_")[3]);
+              selectedAttachments.attachmentIds.push(singleElem.id.split("_")[1]);
             }
           }
         }
         for (let item of selectedAttachments.attachmentIds) {
-          this.deleteAttachment(attribId, item);
+          this.deleteAttachment(item);
         }
       } else {
         dReg.close();
       }
     });
 
-  }*/
+  }
 
-  /*deleteAttachment(attributeId, attachmentId) {
+  deleteAttachment(attachmentId) {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
@@ -187,34 +191,17 @@ export class ProjectDocumentsComponent implements OnInit {
 
     const url =
       "/api/user/" +
-      this.appComp.loggedInUser.id +
+      this.message.loggedInUser.id +
       "/grant/" +
-      this.currentGrant.id +
-      "/attribute/" +
-      attributeId +
-      "/attachment/" +
+      this.message.currentGrant.id +
+      "/document/" +
       attachmentId;
     this.http
-      .post<Grant>(url, this.currentGrant, httpOptions)
-      .subscribe((grant: Grant) => {
-        this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
-        this.currentGrant = grant;
-        for (let section of this.currentGrant.grantDetails.sections) {
-          if (section && section.attributes) {
-            for (let attr of section.attributes) {
-              if (attributeId === attr.id) {
-                if (attr.attachments && attr.attachments.length > 0) {
-                  this.newField =
-                    "attriute_" +
-                    attributeId +
-                    "_attachment_" +
-                    attr.attachments[attr.attachments.length - 1].id;
-                }
-              }
-            }
-          }
-        }
+      .delete(url, httpOptions)
+      .subscribe(() => {
+        const index = this.projectDocs.findIndex(a => a.id === attachmentId);
+        this.projectDocs.splice(index, 1);
       });
-  }*/
+  }
 
 }
