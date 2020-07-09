@@ -182,7 +182,7 @@ export class SectionsComponent
     private data: DataService,
     private cdr: ChangeDetectorRef,
     private attributeService: AttributeService,
-    public amountValidator:AmountValidator
+    public amountValidator: AmountValidator
   ) {
     this.colors = new Colors();
 
@@ -630,7 +630,7 @@ export class SectionsComponent
               wf.assignments === this.appComp.loggedInUser.id
           ).length > 0 &&
           this.appComp.loggedInUser.organization.organizationType !==
-            "GRANTEE" &&
+          "GRANTEE" &&
           this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
           this.currentGrant.grantStatus.internalStatus !== "CLOSED"
         ) {
@@ -682,8 +682,8 @@ export class SectionsComponent
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-        ",select[required]:not(:disabled):not([readonly])" +
-        ",textarea[required]:not(:disabled):not([readonly])"
+      ",select[required]:not(:disabled):not([readonly])" +
+      ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (let elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -894,11 +894,11 @@ export class SectionsComponent
         this.appComp.selectedTemplate = info.grant.grantTemplate;
         this.router.navigate([
           "grant/section/" +
-            this.getCleanText(
-              info.grant.grantDetails.sections.filter(
-                (a) => a.id === info.sectionId
-              )[0]
-            ),
+          this.getCleanText(
+            info.grant.grantDetails.sections.filter(
+              (a) => a.id === info.sectionId
+            )[0]
+          ),
         ]);
       },
       (error) => {
@@ -2104,9 +2104,9 @@ export class SectionsComponent
     if (fileExistsCheck.status) {
       alert(
         "Document " +
-          event.option.value.name +
-          " is already attached under " +
-          fileExistsCheck.message
+        event.option.value.name +
+        " is already attached under " +
+        fileExistsCheck.message
       );
       return;
     }
@@ -2161,10 +2161,16 @@ export class SectionsComponent
           this.elem.nativeElement.querySelector(
             '[id^="attachments_download_' + attribId + '"]'
           ).disabled = false;
+          this.elem.nativeElement.querySelector(
+            '[id^="attachments_delete_' + attribId + '"]'
+          ).disabled = false;
           return;
         }
         this.elem.nativeElement.querySelector(
           '[id^="attachments_download_' + attribId + '"]'
+        ).disabled = true;
+        this.elem.nativeElement.querySelector(
+          '[id^="attachments_delete_' + attribId + '"]'
         ).disabled = true;
       }
     }
@@ -2203,6 +2209,37 @@ export class SectionsComponent
           saveAs(data, this.currentGrant.name + ".zip");
         });
     }
+  }
+
+  deleteSelection(attribId) {
+
+    const dReg = this.dialog.open(FieldDialogComponent, {
+      data: { title: 'Are you sure you want to delete the selected document(s)?' },
+      panelClass: 'center-class'
+    });
+
+    dReg.afterClosed().subscribe(result => {
+      if (result) {
+        const elems = this.elem.nativeElement.querySelectorAll(
+          '[id^="attriute_' + attribId + '_attachment_"]'
+        );
+        const selectedAttachments = new AttachmentDownloadRequest();
+        if (elems.length > 0) {
+          selectedAttachments.attachmentIds = [];
+          for (let singleElem of elems) {
+            if (singleElem.checked) {
+              selectedAttachments.attachmentIds.push(singleElem.id.split("_")[3]);
+            }
+          }
+        }
+        for (let item of selectedAttachments.attachmentIds) {
+          this.deleteAttachment(attribId, item);
+        }
+      } else {
+        dReg.close();
+      }
+    });
+
   }
 
   deleteAttachment(attributeId, attachmentId) {
@@ -2289,9 +2326,9 @@ export class SectionsComponent
       if (fileExistsCheck.status) {
         alert(
           "Document " +
-            files.item(i).name +
-            " is already attached under " +
-            fileExistsCheck.message
+          files.item(i).name +
+          " is already attached under " +
+          fileExistsCheck.message
         );
         event.target.value = "";
         return;

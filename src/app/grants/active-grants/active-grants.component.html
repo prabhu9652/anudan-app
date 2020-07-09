@@ -3,8 +3,7 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <button *ngIf="appComponent.loggedInUser.organization.organizationType==='GRANTER'"
-                        class="btn btn-sm btn-green float-right"
-                        (click)="createGrant()">New Grant
+                    class="btn btn-sm btn-green float-right" (click)="createGrant()">New Grant
                 </button>
             </div>
         </div>
@@ -13,7 +12,7 @@
                 <div>
                     <div *ngIf="!hasTenant">
                         <img src="./assets/img/loader.gif" style="width:10%;">
-                        <p style="color: black" > Loading grants... </p>
+                        <p style="color: black"> Loading grants... </p>
                     </div>
 
                     <div *ngIf="hasTenant">
@@ -22,31 +21,41 @@
 
 
 
-                                <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;" *ngFor="let grant of grantsActive; let i = index"
-                                          (click)="manageGrant(grant)">
-                                   
+                        <div [ngClass]="(grant.currentAssignment[0].user.id===appComponent.loggedInUser.id)?['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section owner-highlight']:['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']"
+                            style="border-radius: 8px;cursor: pointer;"
+                            *ngFor="let grant of grantsActive; let i = index" (click)="manageGrant(grant)">
 
-                                    <div class="col-10 text-left">
-                                        
-                                        <p *ngIf="!grant.referenceNo"style="font-size: 18px;"><b>{{grant.name}}</b></p>
-                                        <p *ngIf="grant.referenceNo"style="font-size: 18px;"><b>{{grant.referenceNo}}</b> | <b>{{grant.name}}</b></p>
-                                        <p class="mb-0">₹ <span class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
-                                        <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <span *ngIf="grant.organization">{{grant.organization?grant.organization.name:null}}</span>
-                                            </div>
-                                            <div class="col-6 text-left">
-                                                <p><mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.startDate | date:'dd-MMM-yyyy'}}
-                                                <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
-                                                <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>{{grant.endDate | date:'dd-MMM-yyyy'}}</p>
-                                            </div>
-                                        </div>
+
+                            <div class="col-10 text-left">
+
+                                <p *ngIf="!grant.referenceNo" style="font-size: 18px;"><b>{{grant.name}}</b></p>
+                                <p *ngIf="grant.referenceNo" style="font-size: 18px;"><b>{{grant.referenceNo}}</b> |
+                                    <b>{{grant.name}}</b></p>
+                                <p class="mb-0">₹ <span
+                                        class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
+                                <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
+                                <div class="row">
+                                    <div class="col-6 text-subheader">
+                                        <span
+                                            *ngIf="grant.organization">{{grant.organization?grant.organization.name:null}}</span>
                                     </div>
-                                    <div class="col-2">
-                                        <span [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()" style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
+                                    <div class="col-6 text-left text-subheader">
+                                        <p>
+                                            <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>
+                                            {{grant.startDate | date:'dd-MMM-yyyy'}}
+                                            <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
+                                            <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>
+                                            {{grant.endDate | date:'dd-MMM-yyyy'}}
+                                        </p>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-2">
+                                <span
+                                    [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()"
+                                    style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
+                            </div>
+                        </div>
 
 
                     </div>

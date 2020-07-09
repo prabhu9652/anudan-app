@@ -267,6 +267,7 @@ export class Grant {
   canManage: boolean;
   approvedReportsDisbursements: TableData[];
   referenceNo: string;
+  hasOngoingDisbursement: boolean;
 }
 
 export class GrantSnapshot {

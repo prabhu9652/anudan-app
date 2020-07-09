@@ -492,9 +492,9 @@ export class ReportSectionsComponent implements OnInit {
     if (fileExistsCheck.status) {
       alert(
         "Document " +
-          event.option.value.name +
-          " is already attached under " +
-          fileExistsCheck.message
+        event.option.value.name +
+        " is already attached under " +
+        fileExistsCheck.message
       );
       return;
     }
@@ -596,9 +596,9 @@ export class ReportSectionsComponent implements OnInit {
       if (fileExistsCheck.status) {
         alert(
           "Document " +
-            files.item(i).name +
-            " is already attached under " +
-            fileExistsCheck.message
+          files.item(i).name +
+          " is already attached under " +
+          fileExistsCheck.message
         );
         event.target.value = "";
         return;
@@ -674,11 +674,11 @@ export class ReportSectionsComponent implements OnInit {
           //  this.appComp.selectedTemplate = info.report.template;
           this.router.navigate([
             "report/section/" +
-              this.getCleanText(
-                info.report.reportDetails.sections.filter(
-                  (a) => a.id === info.sectionId
-                )[0]
-              ),
+            this.getCleanText(
+              info.report.reportDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
           ]);
         },
         (error) => {
@@ -879,7 +879,7 @@ export class ReportSectionsComponent implements OnInit {
       },
       "100",
       "linear",
-      function () {}
+      function () { }
     );
   }
 
@@ -890,7 +890,7 @@ export class ReportSectionsComponent implements OnInit {
       },
       "100",
       "linear",
-      function () {}
+      function () { }
     );
   }
 
@@ -919,10 +919,16 @@ export class ReportSectionsComponent implements OnInit {
           this.elem.nativeElement.querySelector(
             '[id^="attachments_download_' + attribId + '"]'
           ).disabled = false;
+          this.elem.nativeElement.querySelector(
+            '[id^="attachments_delete_' + attribId + '"]'
+          ).disabled = false;
           return;
         }
         this.elem.nativeElement.querySelector(
           '[id^="attachments_download_' + attribId + '"]'
+        ).disabled = true;
+        this.elem.nativeElement.querySelector(
+          '[id^="attachments_delete_' + attribId + '"]'
         ).disabled = true;
       }
     }
@@ -961,12 +967,43 @@ export class ReportSectionsComponent implements OnInit {
           saveAs(
             data,
             this.currentReport.grant.name +
-              "_" +
-              this.currentReport.name +
-              ".zip"
+            "_" +
+            this.currentReport.name +
+            ".zip"
           );
         });
     }
+  }
+
+  deleteSelection(attribId) {
+
+    const dReg = this.dialog.open(FieldDialogComponent, {
+      data: { title: 'Are you sure you want to delete the selected document(s)?' },
+      panelClass: 'center-class'
+    });
+
+    dReg.afterClosed().subscribe(result => {
+      if (result) {
+        const elems = this.elem.nativeElement.querySelectorAll(
+          '[id^="attriute_' + attribId + '_attachment_"]'
+        );
+        const selectedAttachments = new AttachmentDownloadRequest();
+        if (elems.length > 0) {
+          selectedAttachments.attachmentIds = [];
+          for (let singleElem of elems) {
+            if (singleElem.checked) {
+              selectedAttachments.attachmentIds.push(singleElem.id.split("_")[3]);
+            }
+          }
+        }
+        for (let item of selectedAttachments.attachmentIds) {
+          this.deleteAttachment(attribId, item);
+        }
+      } else {
+        dReg.close();
+      }
+    });
+
   }
 
   deleteAttachment(attributeId, attachmentId) {
@@ -1154,8 +1191,8 @@ export class ReportSectionsComponent implements OnInit {
           if (i === idx) {
             total +=
               col.value !== undefined &&
-              col.value !== null &&
-              col.value !== "null"
+                col.value !== null &&
+                col.value !== "null"
                 ? Number(col.value)
                 : 0;
           }
@@ -1169,8 +1206,8 @@ export class ReportSectionsComponent implements OnInit {
         if (i === idx) {
           total +=
             col.value !== undefined &&
-            col.value !== null &&
-            col.value !== "null"
+              col.value !== null &&
+              col.value !== "null"
               ? Number(col.value)
               : 0;
         }
@@ -1189,8 +1226,8 @@ export class ReportSectionsComponent implements OnInit {
         if (i === 2) {
           total +=
             col.value !== undefined &&
-            col.value !== null &&
-            col.value !== "null"
+              col.value !== null &&
+              col.value !== "null"
               ? Number(col.value)
               : 0;
         }
