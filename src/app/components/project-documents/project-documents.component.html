@@ -1,0 +1,68 @@
+<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="onNoClick()">
+  <mat-icon>close</mat-icon>
+</span>
+<h1 mat-dialog-title class="text-header" style="font-weight: normal;">{{message.title}}</h1>
+
+
+<div class="row mb-4 mt-2" style="
+                        border: 1px solid #ececec;
+                        border-radius: 4px;
+                        padding: 20px;
+                        background: #fcfcfc;
+                      ">
+  <ng-container class="mb-2">
+    <div class="col-sm-4 col-lg-8">
+      <label>Field Name:</label>
+      <p class="anu-input">Project Documentation</p>
+    </div>
+
+    <div class="col-sm-4 col-lg-4 text-left">
+      <label>Field Type:</label>
+      <p class="anu-input">Document</p>
+    </div>
+
+    <div class="col-sm-12 col-lg-12 text-left">
+      <div style="display: flex; align-items: baseline;" class="attachments-wrapper">
+        <div class="col-4 pl-0">
+          <label for="projectDocument" class="btn btn-sm btn-green w-100 ml-0"><img src="./assets/img/computer.svg"
+              class="w-10 mr-2" style="width: 24px;" />Browse from system</label>
+          <input id="projectDocument" type="file" style="height: 0; visibility: hidden;" multiple (change)="
+                                  processSelectedFiles($event)
+                                " accept=".pdf,.xls,.xlsx,.doc,.docx" />
+        </div>
+      </div>
+      <mat-nav-list>
+        <ng-container *ngFor="let attachment of projectDocs">
+          <mat-list-item>
+            <p [id] mat-line style="
+                                    border-bottom: 1px solid #d4d4d4;
+                                    padding-left: 0;font-size: 14px;
+                                  ">
+              {{ attachment.name + "." + attachment.extension }}
+            </p>
+            <input id='attachment_{{attachment.id}}' mat-list-icon class="attachment-checkbox" type="checkbox" (change)="
+                                    handleSelection(attachment.id)
+                                  " style="width: 18px;" />
+          </mat-list-item>
+        </ng-container>
+        <mat-list-item *ngIf="
+                               projectDocs &&
+                               projectDocs.length > 0
+                              ">
+          <button id="downloadBtn" class="btn btn-sm btn-blue" disabled (click)="downloadSelection()">
+            <mat-icon style="cursor: pointer;top: 5px; font-size: 13px; margin-right: 3px;">
+              system_update_alt
+            </mat-icon>
+            Download Selected Documents
+          </button>
+
+          <button id="deleteBtn" class="btn btn-sm btn-blue ml-4" disabled (click)="deleteSelection()">
+            <img src="./assets/img/trash.svg"
+              style="width: 16px; opacity: 1; position: absolute; left: 0; margin-left: 5px; top: 5px;" />Delete
+            Selected Documents
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </ng-container>
+</div>

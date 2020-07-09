@@ -33,7 +33,6 @@ import {
     MatCheckboxModule,
     MatCardModule,
     MatBottomSheetModule,
-    MatListModule,
     MatBadgeModule,
     MatChipsModule,
     MatSidenavModule,
@@ -42,7 +41,8 @@ import {
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     MatMenuModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatListModule
 } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import { WelcomePopupComponent } from '../../components/welcome-popup/welcome-popup.component';
@@ -114,9 +114,9 @@ import { DisbursementNotesComponent } from 'app/components/disbursementNotes/dis
         MatCheckboxModule,
         MatCardModule,
         MatBottomSheetModule,
-        MatListModule,
         MatBadgeModule,
         MatChipsModule,
+        MatListModule,
         MatSidenavModule,
         MatRadioModule,
         MatTableModule,

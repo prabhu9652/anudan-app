@@ -84,6 +84,7 @@ import { MatSelectChange } from "@angular/material/select";
 import * as inf from "indian-number-format";
 import { AttributeService } from "app/attribute-validation-service";
 import { AmountValidator } from "app/amount-validator";
+import { ProjectDocumentsComponent } from "app/components/project-documents/project-documents.component";
 
 @Component({
   selector: "app-sections",
@@ -2531,5 +2532,12 @@ export class SectionsComponent
     ev.preventDefault();
     ev.stopPropagation();
     return false;
+  }
+
+  showProjectDocuments() {
+    const dgRef = this.dialog.open(ProjectDocumentsComponent, {
+      data: { title: 'Project Documents', loggedInUser: this.appComp.loggedInUser, currentGrant: this.currentGrant },
+      panelClass: 'wf-assignment-class'
+    });
   }
 }
