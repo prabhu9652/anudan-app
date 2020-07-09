@@ -1348,15 +1348,6 @@
                           <mat-nav-list>
                             <ng-container *ngFor="let attachment of attribute.attachments">
                               <mat-list-item>
-                                <a>
-                                  <img src="./assets/img/trash.svg" (click)="
-                                      deleteAttachment(
-                                        attribute.id,
-                                        attachment.id
-                                      )
-                                    " style="width: 16px; opacity: 0.75;" />
-                                </a>
-
                                 <p id="fileAttachment_{{ attachment.id }}" mat-line style="
                                     border-bottom: 1px solid #d4d4d4;
                                     padding-left: 0;
