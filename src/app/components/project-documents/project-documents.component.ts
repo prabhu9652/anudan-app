@@ -110,7 +110,7 @@ export class ProjectDocumentsComponent implements OnInit {
     }
   }
 
-  downloadSelection() {
+  /*downloadSelection() {
     const elems = this.elem.nativeElement.querySelectorAll(
       '[id^="attachment_"]'
     );
@@ -140,12 +140,12 @@ export class ProjectDocumentsComponent implements OnInit {
       this.http
         .post(url, selectedAttachments, httpOptions)
         .subscribe((data) => {
-          saveAs(data, this.currentGrant.name + ".zip");
+          //saveAs(data, this.currentGrant.name + ".zip");
         });
     }
-  }
+  }*/
 
-  deleteSelection(attribId) {
+  /*deleteSelection(attribId) {
 
     const dReg = this.dialog.open(FieldDialogComponent, {
       data: { title: 'Are you sure you want to delete the selected document(s)?' },
@@ -174,9 +174,9 @@ export class ProjectDocumentsComponent implements OnInit {
       }
     });
 
-  }
+  }*/
 
-  deleteAttachment(attributeId, attachmentId) {
+  /*deleteAttachment(attributeId, attachmentId) {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
@@ -215,6 +215,6 @@ export class ProjectDocumentsComponent implements OnInit {
           }
         }
       });
-  }
+  }*/
 
 }
