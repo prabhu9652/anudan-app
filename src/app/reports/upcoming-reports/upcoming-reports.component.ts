@@ -260,7 +260,7 @@ export class UpcomingReportsComponent implements OnInit {
             if (result) {
                 this.reportService.deleteReport(report)
                     .then(() => {
-                        const index = this.reportsToSetupData.findIndex(r => r.id = report.id);
+                        const index = this.reportsToSetupData.findIndex(r => r.id === report.id);
                         this.reportsToSetupData.splice(index, 1);
                         this.deleteReportsClicked = false;
                     })
