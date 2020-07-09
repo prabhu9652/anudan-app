@@ -38,7 +38,7 @@ import { GoogleLoginProvider, LinkedinLoginProvider } from 'ng-social-login-modu
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ToastrModule } from 'ngx-toastr';
-import { MatBottomSheet, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatExpansionModule, MatBadgeModule, MatMenuModule, MatSelectModule } from '@angular/material';
+import { MatBottomSheet, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatExpansionModule, MatBadgeModule, MatMenuModule, MatSelectModule, MatListModule } from '@angular/material';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Colors } from './model/app-config';
@@ -47,6 +47,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FieldDialogComponent } from './components/field-dialog/field-dialog.component';
 import { OwnersPopupComponent } from './components/owners-popup/owners-popup.component';
+import { ProjectDocumentsComponent } from './components/project-documents/project-documents.component';
 
 export class AnudanErrorHandler implements ErrorHandler {
   constructor() { }
@@ -89,6 +90,7 @@ export function provideConfig() {
     GranthistoryComponent,
     MessagingComponent,
     FieldDialogComponent,
+    ProjectDocumentsComponent,
     OwnersPopupComponent,
     NotificationspopupComponent
   ],
@@ -101,6 +103,7 @@ export function provideConfig() {
     RouterModule,
     MatTooltipModule,
     MatExpansionModule,
+    MatListModule,
     MatBadgeModule,
     AppRoutingModule,
     MatSelectModule,
@@ -144,13 +147,14 @@ export function provideConfig() {
     MatSnackBarModule,
     MatBadgeModule,
     MatIconModule,
+    MatListModule,
     MatTooltipModule,
     DatePipe,
     Colors,
     MatMenuModule,
     { provide: ErrorHandler, useClass: AnudanErrorHandler }
   ],
-  entryComponents: [WfassignmentComponent, GranthistoryComponent, NotificationspopupComponent, MessagingComponent, FieldDialogComponent, OwnersPopupComponent],
+  entryComponents: [WfassignmentComponent, GranthistoryComponent, NotificationspopupComponent, MessagingComponent, FieldDialogComponent, OwnersPopupComponent, ProjectDocumentsComponent],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
