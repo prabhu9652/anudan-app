@@ -1,3 +1,7 @@
+<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="onNoClick()"
+  (scroll)="redrawOnScroll()">
+  <mat-icon>close</mat-icon>
+</span>
 <h1 mat-dialog-title class="text-header" style="font-weight: normal;">{{message.title}}</h1>
 
 
@@ -62,20 +66,4 @@
       </mat-nav-list>
     </div>
   </ng-container>
-</div>
-
-
-<div mat-dialog-actions *ngIf="message.btnSecondary===undefined && message.btnMain===undefined">
-  <button *ngIf='!message.type' mat-button mat-flat-button (click)="onNoClick()"
-    class="btn btn-sm btn-outline">No</button>
-  <button *ngIf='!message.type' mat-raised-button color="primary" (click)="onYesClick()"
-    class="btn btn-sm btn-primary">Yes</button>
-  <button *ngIf='message.type' mat-button mat-raised-button color="primary" (click)="onNoClick()"
-    class="btn btn-sm btn-primary" style="margin:0 auto;">Okay</button>
-</div>
-<div mat-dialog-actions *ngIf="message.btnSecondary!==undefined && message.btnMain!==undefined">
-  <button *ngIf='!message.type' mat-button mat-flat-button (click)="onNoClick()"
-    class="btn btn-sm btn-outline">{{message.btnSecondary}}</button>
-  <button *ngIf='!message.type' mat-raised-button color="primary" (click)="onYesClick()"
-    class="btn btn-sm btn-primary">{{message.btnMain}}</button>
 </div>

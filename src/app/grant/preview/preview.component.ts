@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild,OnDestroy} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -9,38 +9,38 @@ import {
   QuantitiaveKpisubmission,
   Section,
   Submission,
-  SubmissionStatus, Template,TableData, TemplateLibrary,WorkflowStatus, WorkflowAssignmentModel, WorkflowAssignment,SectionInfo
+  SubmissionStatus, Template, TableData, TemplateLibrary, WorkflowStatus, WorkflowAssignmentModel, WorkflowAssignment, SectionInfo
 } from '../../model/dahsboard';
-import {Report} from '../../model/report';
-import {GrantDataService} from '../../grant.data.service';
-import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppComponent} from '../../app.component';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ToastrService,IndividualConfig} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
-import {DatePipe,TitleCasePipe} from '@angular/common';
-import {Colors,Configuration} from '../../model/app-config';
-import {User} from '../../model/user';
-import {SidebarComponent} from '../../components/sidebar/sidebar.component';
-import {interval, Subject} from 'rxjs';
-import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
-import {InviteDialogComponent} from '../../components/invite-dialog/invite-dialog.component';
-import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
-import {WfassignmentComponent} from '../../components/wfassignment/wfassignment.component';
-import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
-import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
-import {GrantNotesComponent} from '../../components/grantNotes/grantNotes.component';
-import {PdfDocument} from "../../model/pdf-document";
-import {TemplateDialogComponent} from '../../components/template-dialog/template-dialog.component';
+import { Report } from '../../model/report';
+import { GrantDataService } from '../../grant.data.service';
+import { SubmissionDataService } from '../../submission.data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from '../../app.component';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { ToastrService, IndividualConfig } from 'ngx-toastr';
+import { MatBottomSheet, MatDatepickerInputEvent, MatDialog } from '@angular/material';
+import { DatePipe, TitleCasePipe } from '@angular/common';
+import { Colors, Configuration } from '../../model/app-config';
+import { User } from '../../model/user';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { interval, Subject } from 'rxjs';
+import { FieldDialogComponent } from '../../components/field-dialog/field-dialog.component';
+import { InviteDialogComponent } from '../../components/invite-dialog/invite-dialog.component';
+import { BottomsheetComponent } from '../../components/bottomsheet/bottomsheet.component';
+import { WfassignmentComponent } from '../../components/wfassignment/wfassignment.component';
+import { BottomsheetAttachmentsComponent } from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
+import { BottomsheetNotesComponent } from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import { GrantNotesComponent } from '../../components/grantNotes/grantNotes.component';
+import { PdfDocument } from "../../model/pdf-document";
+import { TemplateDialogComponent } from '../../components/template-dialog/template-dialog.component';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import html2canvas from 'html2canvas';
 import html2pdf from 'html2pdf.js';
 import { PDFExportComponent } from '@progress/kendo-angular-pdf-export'
 import { PDFMarginComponent } from '@progress/kendo-angular-pdf-export'
-import {AdminLayoutComponent} from '../../layouts/admin-layout/admin-layout.component'
+import { AdminLayoutComponent } from '../../layouts/admin-layout/admin-layout.component'
 import { saveAs } from 'file-saver';
-import {GrantComponent} from '../grant.component'
+import { GrantComponent } from '../grant.component'
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
 import { Subscription } from 'rxjs/Subscription';
@@ -49,13 +49,14 @@ import { GrantValidationService } from 'app/grant-validation-service';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { WorkflowValidationService } from 'app/workflow-validation-service';
 import { CurrencyService } from 'app/currency-service';
+import { ProjectDocumentsComponent } from 'app/components/project-documents/project-documents.component';
 
 
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
-  providers:[SidebarComponent, PDFExportComponent, GrantComponent,TitleCasePipe],
+  providers: [SidebarComponent, PDFExportComponent, GrantComponent, TitleCasePipe],
   styles: [`
     ::ng-deep .cdk-global-overlay-wrapper {
     justify-content:center !important;
@@ -83,10 +84,10 @@ export class PreviewComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   action: string;
-  logoUrl:string;
+  logoUrl: string;
   tenantUsers: User[];
   docsUpdated = false;
-  grantWorkflowStatuses:WorkflowStatus[];
+  grantWorkflowStatuses: WorkflowStatus[];
   dialogSubscription: Subscription;
   private ngUnsubscribe = new Subject();
   approvedReports: Report[];
@@ -113,66 +114,66 @@ export class PreviewComponent implements OnInit {
   @ViewChild('pdf') pdf;
 
   constructor(private grantData: GrantDataService
-      , private submissionData: SubmissionDataService
-      , private route: ActivatedRoute
-      , private router: Router
-      , private submissionDataService: SubmissionDataService
-      , public appComp: AppComponent
-      , private adminComp: AdminLayoutComponent
-      , private http: HttpClient
-      , private toastr: ToastrService
-      , private dialog: MatDialog
-      , private _bottomSheet: MatBottomSheet
-      , private elem: ElementRef
-      , private datepipe: DatePipe
-      , public colors: Colors
-      , private sidebar: SidebarComponent
-      , public grantComponent: GrantComponent
-      , private titlecasePipe:TitleCasePipe
-      , private grantValidationService: GrantValidationService
-      , private workflowValidationService: WorkflowValidationService,
-      public currencyService: CurrencyService) {
+    , private submissionData: SubmissionDataService
+    , private route: ActivatedRoute
+    , private router: Router
+    , private submissionDataService: SubmissionDataService
+    , public appComp: AppComponent
+    , private adminComp: AdminLayoutComponent
+    , private http: HttpClient
+    , private toastr: ToastrService
+    , private dialog: MatDialog
+    , private _bottomSheet: MatBottomSheet
+    , private elem: ElementRef
+    , private datepipe: DatePipe
+    , public colors: Colors
+    , private sidebar: SidebarComponent
+    , public grantComponent: GrantComponent
+    , private titlecasePipe: TitleCasePipe
+    , private grantValidationService: GrantValidationService
+    , private workflowValidationService: WorkflowValidationService,
+    public currencyService: CurrencyService) {
     this.colors = new Colors();
 
-     this.grantData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(grant => this.currentGrant = grant);
-     if(!this.currentGrant){
-        this.router.navigate(['dashboard']);
-     }
+    this.grantData.currentMessage.pipe(takeUntil(this.ngUnsubscribe)).subscribe(grant => this.currentGrant = grant);
+    if (!this.currentGrant) {
+      this.router.navigate(['dashboard']);
+    }
 
     const httpOptions = {
-                headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-                })
-            };
-            let url = '/api/app/config/grant/'+this.currentGrant.id;
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    let url = '/api/app/config/grant/' + this.currentGrant.id;
 
-             this.http.get(url,httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((config:Configuration) =>{
-                this.grantWorkflowStatuses = config.grantWorkflowStatuses;
-                this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
-                this.tenantUsers = config.tenantUsers;
-                this.appComp.tenantUsers = config.tenantUsers;
-            });
+    this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((config: Configuration) => {
+      this.grantWorkflowStatuses = config.grantWorkflowStatuses;
+      this.appComp.grantWorkflowStatuses = config.grantWorkflowStatuses;
+      this.tenantUsers = config.tenantUsers;
+      this.appComp.tenantUsers = config.tenantUsers;
+    });
 
-     this.getApprovedReports();
+    this.getApprovedReports();
   }
 
   ngOnInit() {
 
-  this.appComp.sectionUpdated = false;
+    this.appComp.sectionUpdated = false;
 
-   this.appComp.createNewSection.pipe(takeUntil(this.ngUnsubscribe)).subscribe((val) =>{
-        if(val){
-            $('.modal-backdrop').remove();
+    this.appComp.createNewSection.pipe(takeUntil(this.ngUnsubscribe)).subscribe((val) => {
+      if (val) {
+        $('.modal-backdrop').remove();
 
-            this.addNewSection();
-            this.appComp.createNewSection.next(false);
-        }
+        this.addNewSection();
+        this.appComp.createNewSection.next(false);
+      }
     });
 
-  const tenantCode = localStorage.getItem('X-TENANT-CODE');
-  this.logoUrl = "/api/public/images/"+this.currentGrant.grantorOrganization.code+"/logo";
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoUrl = "/api/public/images/" + this.currentGrant.grantorOrganization.code + "/logo";
 
     /*interval(3000).pipe(takeUntil(this.ngUnsubscribe)).subscribe(t => {
 
@@ -188,36 +189,36 @@ export class PreviewComponent implements OnInit {
 
 
 
-    if(this.currentGrant.startDate && this.currentGrant.endDate){
+    if (this.currentGrant.startDate && this.currentGrant.endDate) {
       var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
       time = time + 86400001;
-      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
-    }else{
+      this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true });
+    } else {
       this.currentGrant.duration = 'Not set';
     }
 
-    for(let section of this.currentGrant.grantDetails.sections){
-    if(section.attributes){
-      for(let attribute of section.attributes){
-        if(attribute.fieldType ==='document'){
-          let docs;
-          try {
-            docs = JSON.parse(attribute.fieldValue);
-          } catch(e){
-            docs = [];
-          }
-          if(docs.length > 0){
-            attribute.docs = new Array<TemplateLibrary>();
-            for(let i=0; i< docs.length; i++){
-              attribute.docs.push(docs[i]);
+    for (let section of this.currentGrant.grantDetails.sections) {
+      if (section.attributes) {
+        for (let attribute of section.attributes) {
+          if (attribute.fieldType === 'document') {
+            let docs;
+            try {
+              docs = JSON.parse(attribute.fieldValue);
+            } catch (e) {
+              docs = [];
+            }
+            if (docs.length > 0) {
+              attribute.docs = new Array<TemplateLibrary>();
+              for (let i = 0; i < docs.length; i++) {
+                attribute.docs.push(docs[i]);
+              }
             }
           }
-        }
         }
       }
     }
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
@@ -244,19 +245,19 @@ export class PreviewComponent implements OnInit {
   }
 
   getDocumentName(val: string): any[] {
-    if(this.docsUpdated){
-        return;
+    if (this.docsUpdated) {
+      return;
     }
     this.docsUpdated = true;
     let obj;
-    if(val!==""){
-        obj = JSON.parse(val);
+    if (val !== "") {
+      obj = JSON.parse(val);
     }
     return obj;
   }
 
   private checkGrantPermissions() {
-    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
+    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -320,11 +321,11 @@ export class PreviewComponent implements OnInit {
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: {title:title},
+      data: { title: title },
       panelClass: 'center-class'
     });
 
-     dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
       if (result) {
         switch (func) {
           case 'field':
@@ -360,7 +361,7 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  saveTemplate(templateId: number, templateName: string){
+  saveTemplate(templateId: number, templateName: string) {
   }
 
   deleteKpi(kpiId: number) {
@@ -420,7 +421,7 @@ export class PreviewComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+            this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
           }
         }
       }
@@ -469,37 +470,37 @@ export class PreviewComponent implements OnInit {
       })
     };
 
-    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id;
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
 
-     this.http.put(url, this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          if((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')){
-              grant.canManage=true;
-          }else{
-              grant.canManage=false;
-          }
-          this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          //this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
+    this.http.put(url, this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+      this.originalGrant = JSON.parse(JSON.stringify(grant));
+      if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED')) {
+        grant.canManage = true;
+      } else {
+        grant.canManage = false;
+      }
+      this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+      this.currentGrant = grant;
+      this._setEditMode(false);
+      this.currentSubmission = null;
+      //this.checkGrantPermissions();
+      this.checkCurrentSubmission();
+      this.appComp.autosave = false;
+    },
+      error => {
+        const errorMsg = error as HttpErrorResponse;
+        console.log(error);
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true
         });
+      });
     // }
   }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
-        ',select[required]:not(:disabled):not([readonly])' +
-        ',textarea[required]:not(:disabled):not([readonly])');
+      ',select[required]:not(:disabled):not([readonly])' +
+      ',textarea[required]:not(:disabled):not([readonly])');
     for (let elem of containerFormLements) {
       if (elem.value.trim() === '') {
         this.erroredElement = elem;
@@ -607,7 +608,7 @@ export class PreviewComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -615,62 +616,62 @@ export class PreviewComponent implements OnInit {
 
 
   addNewSection() {
-      this.appComp.sectionInModification = true;
-      const createSectionModal = this.createSectionModal.nativeElement;
-      const titleElem = $(createSectionModal).find('#createSectionLabel');
-      $(titleElem).html('Add new section');
-      $(createSectionModal).modal('show');
+    this.appComp.sectionInModification = true;
+    const createSectionModal = this.createSectionModal.nativeElement;
+    const titleElem = $(createSectionModal).find('#createSectionLabel');
+    $(titleElem).html('Add new section');
+    $(createSectionModal).modal('show');
+  }
+
+
+  saveSection() {
+    const sectionName = $('#sectionTitleInput');
+    if (sectionName.val().trim() === '') {
+      this.toastr.warning('Section name cannot be left blank', 'Warning');
+      sectionName.focus();
+      return;
     }
 
+    const createSectionModal = this.createSectionModal.nativeElement;
 
-    saveSection() {
-      const sectionName = $('#sectionTitleInput');
-      if (sectionName.val().trim() === '') {
-        this.toastr.warning('Section name cannot be left blank', 'Warning');
-        sectionName.focus();
-        return;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+
+    const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/' + this.currentGrant.templateId + '/section/' + sectionName.val();
+
+    this.http.post<SectionInfo>(url, this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((info: SectionInfo) => {
+      this.grantData.changeMessage(info.grant, this.appComp.loggedInUser.id);
+
+      sectionName.val('');
+      //$('#section_' + newSection.id).css('display', 'block');
+      this._setEditMode(true);
+      $(createSectionModal).modal('hide');
+      this.appComp.sectionAdded = true;
+      this.sidebar.buildSectionsSideNav(null);
+      this.appComp.sectionInModification = false;
+      this.appComp.selectedTemplate = info.grant.grantTemplate;
+
+      this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id === info.sectionId)[0])]);
+    }, error => {
+      const errorMsg = error as HttpErrorResponse;
+      console.log(error);
+      const x = { 'enableHtml': true, 'preventDuplicates': true } as Partial<IndividualConfig>;
+      const config: Partial<IndividualConfig> = x;
+      if (errorMsg.error.message === 'Token Expired') {
+        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+        setTimeout(() => { this.appComp.logout(); }, 4000);
+      } else {
+        this.toastr.error(errorMsg.error.message, "6 We encountered an error", config);
       }
 
-      const createSectionModal = this.createSectionModal.nativeElement;
 
-      const httpOptions = {
-          headers: new HttpHeaders({
-              'Content-Type': 'application/json',
-              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-              'Authorization': localStorage.getItem('AUTH_TOKEN')
-          })
-      };
-
-      const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/'+this.currentGrant.templateId+'/section/'+sectionName.val();
-
-       this.http.post<SectionInfo>(url,this.currentGrant, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((info: SectionInfo) => {
-           this.grantData.changeMessage(info.grant,this.appComp.loggedInUser.id);
-
-          sectionName.val('');
-          //$('#section_' + newSection.id).css('display', 'block');
-          this._setEditMode(true);
-          $(createSectionModal).modal('hide');
-          this.appComp.sectionAdded = true;
-          this.sidebar.buildSectionsSideNav(null);
-          this.appComp.sectionInModification = false;
-          this.appComp.selectedTemplate = info.grant.grantTemplate;
-
-          this.router.navigate(['grant/section/' + this.getCleanText(info.grant.grantDetails.sections.filter((a) => a.id===info.sectionId)[0])]);
-      },error => {
-                                const errorMsg = error as HttpErrorResponse;
-                                console.log(error);
-                                const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                const config: Partial<IndividualConfig> = x;
-                                if(errorMsg.error.message==='Token Expired'){
-                                 this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                 setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                } else {
-                                 this.toastr.error(errorMsg.error.message,"6 We encountered an error", config);
-                                }
-
-
-                              });
-    }
+    });
+  }
 
   saveSectionAndAddNew() {
 
@@ -690,7 +691,7 @@ export class PreviewComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -770,7 +771,7 @@ export class PreviewComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -820,7 +821,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -843,160 +844,160 @@ export class PreviewComponent implements OnInit {
 
   submitGrant(toStateId: number) {
 
-    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.grantValidationService.checkIfHeaderHasMissingEntries(this.currentGrant)){
-      const dialogRef = this.dialog.open(MessagingComponent,{
+    if (this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus === 'ACTIVE' && this.grantValidationService.checkIfHeaderHasMissingEntries(this.currentGrant)) {
+      const dialogRef = this.dialog.open(MessagingComponent, {
         data: "Grant has missing header information.",
         panelClass: 'center-class'
       });
       return;
     }
 
-    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && (this.getGrantPlannedDisbursementTotals()> this.currentGrant.amount)){
-      const dialogRef = this.dialog.open(MessagingComponent,{
+    if (this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus === 'ACTIVE' && (this.getGrantPlannedDisbursementTotals() > this.currentGrant.amount)) {
+      const dialogRef = this.dialog.open(MessagingComponent, {
         data: "Planned Project Funds cannot be greater than Grant Amount of " + this.currencyService.getFormattedAmount(this.currentGrant.amount),
         panelClass: 'center-class'
       });
       return;
     }
 
-    if(this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus==='ACTIVE' && this.getGrantPlannedDisbursementTotals()===0){
-      const dialogRef = this.dialog.open(MessagingComponent,{
+    if (this.workflowValidationService.getStatusByStatusIdForGrant(toStateId, this.appComp).internalStatus === 'ACTIVE' && this.getGrantPlannedDisbursementTotals() === 0) {
+      const dialogRef = this.dialog.open(MessagingComponent, {
         data: "There are no Planned Funds for this project",
         panelClass: 'center-class'
       });
       return;
     }
 
-    for(let assignment of this.currentGrant.workflowAssignment){
-        const status1 = this.appComp.appConfig.workflowStatuses.filter((status) => status.id===assignment.stateId);
-        if(assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0 && !status1[0].terminal){
-           this.confirm(toStateId, 0, [], 0, 'wfassignment', 'Would you like carry out Workflow assignments?')
-            return;
-        }
+    for (let assignment of this.currentGrant.workflowAssignment) {
+      const status1 = this.appComp.appConfig.workflowStatuses.filter((status) => status.id === assignment.stateId);
+      if (assignment.assignments === null || assignment.assignments === undefined || assignment.assignments === 0 && !status1[0].terminal) {
+        this.confirm(toStateId, 0, [], 0, 'wfassignment', 'Would you like carry out Workflow assignments?')
+        return;
+      }
     }
 
 
-    const statusTransition = this.appComp.appConfig.transitions.filter((transition) => transition.fromStateId===this.currentGrant.grantStatus.id && transition.toStateId===toStateId);
+    const statusTransition = this.appComp.appConfig.transitions.filter((transition) => transition.fromStateId === this.currentGrant.grantStatus.id && transition.toStateId === toStateId);
 
-    if(statusTransition && statusTransition[0].noteRequired){
-        this.openBottomSheetForGrantNotes(toStateId);
-        this.wfDisabled = true;
+    if (statusTransition && statusTransition[0].noteRequired) {
+      this.openBottomSheetForGrantNotes(toStateId);
+      this.wfDisabled = true;
     }
   }
 
-  submitAndSaveGrant(toStateId:number, message:String){
+  submitAndSaveGrant(toStateId: number, message: String) {
 
-  this.wfDisabled = true;
-  if(!message){
-    message='';
-  }
-  const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-          'Authorization': localStorage.getItem('AUTH_TOKEN')
-        })
-      };
-
-      const origStatus = this.currentGrant.grantStatus.name;
-      let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-          + this.currentGrant.id + '/flow/'
-          + this.currentGrant.grantStatus.id + '/' + toStateId;
-       this.http.post(url, {grant: this.currentGrant,note:message}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-
-
-        this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-        this.wfDisabled = false;
-        if(this.currentGrant.startDate && this.currentGrant.endDate){
-          var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
-          time = time + 86400001;
-          this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
-        }else{
-          this.currentGrant.duration = 'No end date';
-        }
-
-        if(grant.grantStatus.internalStatus==='ACTIVE'){
-            this.appComp.subMenu = {name:'Active Grants',action:'ag'};
-        }else if(grant.grantStatus.internalStatus==='CLOSED'){
-            this.appComp.subMenu = {name:'Closed Grants',action:'cg'};
-        }
-
-        if(!grant.grantTemplate.published){
-            const dialogRef = this.dialog.open(TemplateDialogComponent, {
-              data: this.currentGrant.grantTemplate.name,
-              panelClass: 'grant-notes-class'
-            });
-
-          dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-               if (result.result) {
-                 let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                      this.http.put(url, {description:result.desc,publish:true,privateToGrant:false}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-                      this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-                      this.appComp.selectedTemplate = grant.grantTemplate;
-                      this.fetchCurrentGrant();
-                     });
-
-               } else {
-                 let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'+this.currentGrant.id+'/template/'+this.currentGrant.templateId+'/'+result.name;
-                   this.http.put(url, {description:result.desc,publish:true,privateToGrant:true}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-                   this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-                   this.appComp.selectedTemplate = grant.grantTemplate;
-                   dialogRef.close();
-                   this.fetchCurrentGrant();
-                   });
-
-               }
-             });
-        }else{
-            this.fetchCurrentGrant();
-        }
-
-      },error => {
-                        const errorMsg = error as HttpErrorResponse;
-                        console.log(error);
-                        const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                        const config: Partial<IndividualConfig> = x;
-                        if(errorMsg.error.message==='Token Expired'){
-                         this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                         setTimeout( () => { this.appComp.logout(); }, 4000 );
-                        } else {
-                         this.toastr.error(errorMsg.error.message,"7 We encountered an error", config);
-                        }
-
-
-                      });
-  }
-
-  fetchCurrentGrant(){
-
-  const httpOptions = {
+    this.wfDisabled = true;
+    if (!message) {
+      message = '';
+    }
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
         'Authorization': localStorage.getItem('AUTH_TOKEN')
       })
     };
-    
+
+    const origStatus = this.currentGrant.grantStatus.name;
+    let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+      + this.currentGrant.id + '/flow/'
+      + this.currentGrant.grantStatus.id + '/' + toStateId;
+    this.http.post(url, { grant: this.currentGrant, note: message }, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+
+
+      this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+      this.wfDisabled = false;
+      if (this.currentGrant.startDate && this.currentGrant.endDate) {
+        var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+        time = time + 86400001;
+        this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true });
+      } else {
+        this.currentGrant.duration = 'No end date';
+      }
+
+      if (grant.grantStatus.internalStatus === 'ACTIVE') {
+        this.appComp.subMenu = { name: 'Active Grants', action: 'ag' };
+      } else if (grant.grantStatus.internalStatus === 'CLOSED') {
+        this.appComp.subMenu = { name: 'Closed Grants', action: 'cg' };
+      }
+
+      if (!grant.grantTemplate.published) {
+        const dialogRef = this.dialog.open(TemplateDialogComponent, {
+          data: this.currentGrant.grantTemplate.name,
+          panelClass: 'grant-notes-class'
+        });
+
+        dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.result) {
+            let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/' + this.currentGrant.templateId + '/' + result.name;
+            this.http.put(url, { description: result.desc, publish: true, privateToGrant: false }, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+              this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+              this.appComp.selectedTemplate = grant.grantTemplate;
+              this.fetchCurrentGrant();
+            });
+
+          } else {
+            let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id + '/template/' + this.currentGrant.templateId + '/' + result.name;
+            this.http.put(url, { description: result.desc, publish: true, privateToGrant: true }, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+              this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+              this.appComp.selectedTemplate = grant.grantTemplate;
+              dialogRef.close();
+              this.fetchCurrentGrant();
+            });
+
+          }
+        });
+      } else {
+        this.fetchCurrentGrant();
+      }
+
+    }, error => {
+      const errorMsg = error as HttpErrorResponse;
+      console.log(error);
+      const x = { 'enableHtml': true, 'preventDuplicates': true } as Partial<IndividualConfig>;
+      const config: Partial<IndividualConfig> = x;
+      if (errorMsg.error.message === 'Token Expired') {
+        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+        setTimeout(() => { this.appComp.logout(); }, 4000);
+      } else {
+        this.toastr.error(errorMsg.error.message, "7 We encountered an error", config);
+      }
+
+
+    });
+  }
+
+  fetchCurrentGrant() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
-       this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
-        this.currentGrant = updatedGrant;
-        if(this.currentGrant.startDate && this.currentGrant.endDate){
-          var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
-          time = time + 86400001;
-          this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true});
-        }else{
-          this.currentGrant.duration = 'No end date';
-        }
+    this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((updatedGrant: Grant) => {
+      this.grantData.changeMessage(updatedGrant, this.appComp.loggedInUser.id);
+      this.currentGrant = updatedGrant;
+      if (this.currentGrant.startDate && this.currentGrant.endDate) {
+        var time = new Date(this.currentGrant.endDate).getTime() - new Date(this.currentGrant.startDate).getTime();
+        time = time + 86400001;
+        this.currentGrant.duration = this.humanizer.humanize(time, { largest: 2, units: ['y', 'mo'], round: true });
+      } else {
+        this.currentGrant.duration = 'No end date';
+      }
 
-        if(this.currentGrant.workflowAssignment.filter((a) => a.assignments===this.appComp.loggedInUser.id && a.anchor).length===0){
-            this.appComp.currentView = 'grants';
-            this.router.navigate(['grants/draft']);
-        }
+      if (this.currentGrant.workflowAssignment.filter((a) => a.assignments === this.appComp.loggedInUser.id && a.anchor).length === 0) {
+        this.appComp.currentView = 'grants';
+        this.router.navigate(['grants/draft']);
+      }
 
-        //this.checkGrantPermissions();
-        // this.router.navigate(['grant']);
-      });
+      //this.checkGrantPermissions();
+      // this.router.navigate(['grant']);
+    });
   }
 
 
@@ -1077,7 +1078,7 @@ export class PreviewComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -1134,7 +1135,7 @@ export class PreviewComponent implements OnInit {
     }*/
 
     this.currentGrant = grant
-    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
     this.router.navigate(['grant']);
   }
 
@@ -1235,14 +1236,14 @@ export class PreviewComponent implements OnInit {
 
     const _bSheet = this.dialog.open(GrantNotesComponent, {
       hasBackdrop: false,
-      data: {canManage:true,currentGrant: this.currentGrant, originalGrant: this.appComp.originalGrant},
+      data: { canManage: true, currentGrant: this.currentGrant, originalGrant: this.appComp.originalGrant },
       panelClass: 'grant-notes-class'
     });
 
     _bSheet.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-      if(result.result){
-        this.submitAndSaveGrant(toStateId,result.message);
-      }else{
+      if (result.result) {
+        this.submitAndSaveGrant(toStateId, result.message);
+      } else {
         this.wfDisabled = false;
       }
     });
@@ -1338,244 +1339,252 @@ export class PreviewComponent implements OnInit {
   }
 
 
-    saveAs(filename){
-        this.pdf.saveAs(filename);
-    }
+  saveAs(filename) {
+    this.pdf.saveAs(filename);
+  }
 
-    getTabularData(elemId: number, data: TableData[]){
-      let html = '<table width="100%" border="1"><tr>';
-      const tabData = data;
-      html += '<td>&nbsp;</td>'; 
-      for(let i=0; i< tabData[0].columns.length;i++){
-       
-          
-          //if(tabData[0].columns[i].name.trim() !== ''){
-            html+='<td style="padding:5px;font-weight:600px;">' + tabData[0].columns[i].name + '</td>';
-          //}
+  getTabularData(elemId: number, data: TableData[]) {
+    let html = '<table width="100%" border="1"><tr>';
+    const tabData = data;
+    html += '<td>&nbsp;</td>';
+    for (let i = 0; i < tabData[0].columns.length; i++) {
+
+
+      //if(tabData[0].columns[i].name.trim() !== ''){
+      html += '<td style="padding:5px;font-weight:600px;">' + tabData[0].columns[i].name + '</td>';
+      //}
+    }
+    html += '</tr>';
+    for (let i = 0; i < tabData.length; i++) {
+
+      html += '<tr><td style="padding:5px;">' + tabData[i].name + '</td>';
+      for (let j = 0; j < tabData[i].columns.length; j++) {
+        //if(tabData[i].columns[j].name.trim() !== ''){
+        html += '<td style="padding:5px;">' + tabData[i].columns[j].value + '</td>';
+        //}
       }
       html += '</tr>';
-      for(let i=0; i< tabData.length;i++){
-       
-          html += '<tr><td style="padding:5px;">' + tabData[i].name + '</td>';
-          for(let j=0; j < tabData[i].columns.length; j++){
-            //if(tabData[i].columns[j].name.trim() !== ''){
-              html+='<td style="padding:5px;">' + tabData[i].columns[j].value + '</td>';
-            //}
-          }
-          html += '</tr>';
-      }
-
-      html += '</table>'
-      //document.getElementById('attribute_' + elemId).innerHTML = '';
-      //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
-      return html;
     }
 
-    datePickerSelected(event:Event){
-        console.log(event);
-    }
+    html += '</table>'
+    //document.getElementById('attribute_' + elemId).innerHTML = '';
+    //document.getElementById('attribute_' + elemId).append('<H1>Hello</H1>');
+    return html;
+  }
 
-    showWorkflowAssigments(toStateId){
-       const wfModel = new WorkflowAssignmentModel();
-       wfModel.users = this.appComp.appConfig.tenantUsers;
-       wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
-       wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
-       wfModel.type=this.appComp.currentView;
-       wfModel.grant = this.currentGrant;
-       wfModel.canManage = this.appComp.loggedInUser.organization.organizationType==='GRANTEE'?false:(this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED');
-        const dialogRef = this.dialog.open(WfassignmentComponent, {
-              data: {model:wfModel,userId:this.appComp.loggedInUser.id},
-              panelClass: 'wf-assignment-class'
-            });
+  datePickerSelected(event: Event) {
+    console.log(event);
+  }
 
-            dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-              if (result.result) {
-                const ass:WorkflowAssignment[] = [];
-                for(let data of result.data){
-                    const wa = new WorkflowAssignment();
-                    wa.id=data.id;
-                    wa.assignments = data.userId;
-                    wa.stateId = data.stateId;
-                    ass.push(wa);
-                }
+  showWorkflowAssigments(toStateId) {
+    const wfModel = new WorkflowAssignmentModel();
+    wfModel.users = this.appComp.appConfig.tenantUsers;
+    wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
+    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+    wfModel.type = this.appComp.currentView;
+    wfModel.grant = this.currentGrant;
+    wfModel.canManage = this.appComp.loggedInUser.organization.organizationType === 'GRANTEE' ? false : (this.currentGrant.workflowAssignment.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED');
+    const dialogRef = this.dialog.open(WfassignmentComponent, {
+      data: { model: wfModel, userId: this.appComp.loggedInUser.id },
+      panelClass: 'wf-assignment-class'
+    });
 
-                const httpOptions = {
-                            headers: new HttpHeaders({
-                                'Content-Type': 'application/json',
-                                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                                'Authorization': localStorage.getItem('AUTH_TOKEN')
-                            })
-                        };
-
-                        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-                            + this.currentGrant.id + '/assignment';
-                         this.http.post(url, {grant:this.currentGrant,assignments:ass}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-                            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-                            this.currentGrant = grant;
-                            this.submitGrant(toStateId);
-                        },
-                                  error => {
-                                    const errorMsg = error as HttpErrorResponse;
-                                    console.log(error);
-                                    this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                                      enableHtml: true
-                                    });
-                                    dialogRef.close(false);
-                                  });
-              } else {
-                dialogRef.close();
-              }
-              });
-      }
-
-getCleanText(section:Section): string{
-      if(section.sectionName === ''){
-          return String(section.id);
-      }
-      return section.sectionName.replace(/[^_0-9a-z]/gi, '');
-    }
-
-    showHistory(type,obj){
-        this.adminComp.showHistory(type,obj);
-    }
-
-    showWFAssigments(){
-        this.adminComp.showWorkflowAssigments();
-    }
-
-    inviteGrantee(){
-        const dialogRef = this.dialog.open(InviteDialogComponent, {
-            data: "hello"
-        });
-
-        dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-            if (result.result) {
-                const httpOptions = {
-                    headers: new HttpHeaders({
-                        'Content-Type': 'application/json',
-                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                        'Authorization': localStorage.getItem('AUTH_TOKEN')
-                    })
-                };
-
-                let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-                    + this.currentGrant.id + '/invite';
-                 this.http.post(url, {grant:this.currentGrant,invites:result.value}, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
-
-                });
-            }
-        });
-    }
-
-    downloadAttachment(grantId:number,fileId:number, docName:string,docType:string){
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (result.result) {
+        const ass: WorkflowAssignment[] = [];
+        for (let data of result.data) {
+          const wa = new WorkflowAssignment();
+          wa.id = data.id;
+          wa.assignments = data.userId;
+          wa.stateId = data.stateId;
+          ass.push(wa);
+        }
 
         const httpOptions = {
-            responseType: 'blob' as 'json',
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
         };
 
         let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-                        + grantId + '/file/'+fileId;
+          + this.currentGrant.id + '/assignment';
+        this.http.post(url, { grant: this.currentGrant, assignments: ass }, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+          this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+          this.currentGrant = grant;
+          this.submitGrant(toStateId);
+        },
+          error => {
+            const errorMsg = error as HttpErrorResponse;
+            console.log(error);
+            this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+              enableHtml: true
+            });
+            dialogRef.close(false);
+          });
+      } else {
+        dialogRef.close();
+      }
+    });
+  }
 
-         this.http.get(url,httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) =>{
-            saveAs(data,docName+"."+docType);
+  getCleanText(section: Section): string {
+    if (section.sectionName === '') {
+      return String(section.id);
+    }
+    return section.sectionName.replace(/[^_0-9a-z]/gi, '');
+  }
+
+  showHistory(type, obj) {
+    this.adminComp.showHistory(type, obj);
+  }
+
+  showWFAssigments() {
+    this.adminComp.showWorkflowAssigments();
+  }
+
+  inviteGrantee() {
+    const dialogRef = this.dialog.open(InviteDialogComponent, {
+      data: "hello"
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+      if (result.result) {
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+            'Authorization': localStorage.getItem('AUTH_TOKEN')
+          })
+        };
+
+        let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+          + this.currentGrant.id + '/invite';
+        this.http.post(url, { grant: this.currentGrant, invites: result.value }, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((grant: Grant) => {
+
         });
+      }
+    });
+  }
 
+  downloadAttachment(grantId: number, fileId: number, docName: string, docType: string) {
+
+    const httpOptions = {
+      responseType: 'blob' as 'json',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+
+    let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
+      + grantId + '/file/' + fileId;
+
+    this.http.get(url, httpOptions).pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
+      saveAs(data, docName + "." + docType);
+    });
+
+  }
+
+
+  showActiveReports(grant: Grant) {
+    this.grantComponent.showActiveReports(grant, this.approvedReports);
+  }
+
+  getGrantAmountInWords(amount: number) {
+    let amtInWords = 'Not set';
+    if (amount) {
+      amtInWords = indianCurrencyInWords(amount).replace("Rupees", "").replace("Paisa", "");
+      return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
     }
+    return amtInWords;
+  }
 
+  getFormattedCurrency(amount: number): string {
+    return inf.format(!amount ? 0 : amount, 2);
+  }
 
-    showActiveReports(grant: Grant){
-        this.grantComponent.showActiveReports(grant,this.approvedReports);
-    }
+  copyGrant(grantId: number) {
+    this.grantComponent.copyGrant(grantId);
+  }
 
-    getGrantAmountInWords(amount:number){
-        let amtInWords = 'Not set';
-        if(amount){
-            amtInWords = indianCurrencyInWords(amount).replace("Rupees","").replace("Paisa","");
-            return 'Rs. ' + this.titlecasePipe.transform(amtInWords);
+  getTotals(idx: number, fieldTableValue: TableData[]): string {
+    let total = 0;
+    for (let row of fieldTableValue) {
+      let i = 0;
+      for (let col of row.columns) {
+        if (i === idx) {
+          total += Number(col.value);
         }
-        return amtInWords;
+        i++;
+      }
     }
+    return '₹ ' + String(inf.format(total, 2));
+  }
 
-    getFormattedCurrency(amount: number):string{
-        return inf.format(!amount?0:amount,2);
-    }
-
-    copyGrant(grantId: number){
-        this.grantComponent.copyGrant(grantId);
-    }
-
-    getTotals(idx:number,fieldTableValue:TableData[]):string{
-        let total = 0;
-        for(let row of fieldTableValue){
-            let i=0;
-            for(let col of row.columns){
-                if(i===idx){
-                    total+=Number(col.value);
+  getGrantPlannedDisbursementTotals(): number {
+    if (this.currentGrant.grantDetails.sections) {
+      for (let sec of this.currentGrant.grantDetails.sections) {
+        if (sec.attributes) {
+          for (let attr of sec.attributes) {
+            if (attr.fieldType === 'disbursement') {
+              let total = 0;
+              for (let row of attr.fieldTableValue) {
+                let i = 0;
+                for (let col of row.columns) {
+                  if (i === 1) {
+                    total += Number(col.value);
+                  }
+                  i++;
                 }
-                i++;
-            }
-        }
-        return '₹ ' + String(inf.format(total,2));
-    }
-
-    getGrantPlannedDisbursementTotals():number{
-      if(this.currentGrant.grantDetails.sections){
-        for(let sec of this.currentGrant.grantDetails.sections){
-          if(sec.attributes){
-            for(let attr of sec.attributes){
-              if(attr.fieldType==='disbursement'){
-                let total = 0;
-                for(let row of attr.fieldTableValue){
-                    let i=0;
-                    for(let col of row.columns){
-                        if(i===1){
-                            total+=Number(col.value);
-                        }
-                        i++;
-                    }
-                }
-                return total;
               }
+              return total;
             }
           }
         }
       }
-      return 0;
+    }
+    return 0;
   }
 
-    trackChange(ev:Event){
-        console.log(ev);
-    }
+  trackChange(ev: Event) {
+    console.log(ev);
+  }
 
-    ngOnDestroy() {
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
-    }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
 
-    public getApprovedReports(){
-        console.log(this);
-        const httpOptions = {
-          headers: new HttpHeaders({
-              'Content-Type': 'application/json',
-              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-              'Authorization': localStorage.getItem('AUTH_TOKEN')
-          })};
+  public getApprovedReports() {
+    console.log(this);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
 
-        const user = JSON.parse(localStorage.getItem('USER'));
-        const url = '/api/user/' + user.id + '/report/'+this.currentGrant.id+'/approved';
-        this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
-          reports.sort((a,b) => a.endDate>b.endDate?1:-1);
+    const user = JSON.parse(localStorage.getItem('USER'));
+    const url = '/api/user/' + user.id + '/report/' + this.currentGrant.id + '/approved';
+    this.http.get<Report[]>(url, httpOptions).subscribe((reports: Report[]) => {
+      reports.sort((a, b) => a.endDate > b.endDate ? 1 : -1);
 
-          this.approvedReports = reports.filter(a => a.status.internalStatus=='CLOSED');
-          if(this.approvedReports && this.approvedReports.length>0){
-            this.hasApprovedReports = true;
-          }
-        });
-    }
+      this.approvedReports = reports.filter(a => a.status.internalStatus == 'CLOSED');
+      if (this.approvedReports && this.approvedReports.length > 0) {
+        this.hasApprovedReports = true;
+      }
+    });
+  }
+
+  showProjectDocuments() {
+    const dgRef = this.dialog.open(ProjectDocumentsComponent, {
+      data: { title: 'Project Documents', loggedInUser: this.appComp.loggedInUser, currentGrant: this.currentGrant },
+      panelClass: 'wf-assignment-class'
+    });
+  }
 }
