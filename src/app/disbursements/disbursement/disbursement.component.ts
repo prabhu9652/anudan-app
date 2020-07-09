@@ -117,4 +117,9 @@ export class DisbursementComponent implements OnInit, OnDestroy {
   manageGrant() {
     this.adminComp.manageGrant(null, this.currentDisbursement.grant.id);
   }
+
+  getGrantAmountAvailable() {
+
+    return this.currencyService.getFormattedAmount(this.currentDisbursement.grant.amount - this.disbursementService.getActualDisbursementsTotal(this.currentDisbursement));
+  }
 }

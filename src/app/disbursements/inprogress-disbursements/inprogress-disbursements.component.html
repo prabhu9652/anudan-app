@@ -3,45 +3,59 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <button *ngIf="appComponent.loggedInUser.organization.organizationType==='GRANTER'"
-                class="btn btn-sm btn-green float-right"
-                (click)="showOwnedActiveGrants()">Create New Disbursement Request
+                    class="btn btn-sm btn-green float-right" (click)="showOwnedActiveGrants()">Create New Disbursement
+                    Request
                 </button>
             </div>
         </div>
-       
+
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div>
                     <div *ngIf="!disbursements">
                         <img src="./assets/img/loader.gif" style="width:10%;">
-                        <p style="color: black" > Loading Disbursements... </p>
+                        <p style="color: black"> Loading Disbursements... </p>
                     </div>
 
                     <div *ngIf="disbursements && disbursements.length===0">
                         <h5 class="mt-5">No Draft/In-progress Approval Requests were found</h5>
                     </div>
                     <div *ngIf="disbursements && disbursements.length>0">
-                        <div class="row w-100 p-3 mb-2 mx-0 grants-section" style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;" *ngFor="let disbursement of disbursements; let i = index">
-                            <div class="col-12 mb-1"><p class="text-subheader text-left mb-0" (click)="manageDisbursement(disbursement)">
-                                Grant Name: <b>{{(disbursement.grant.referenceNo?disbursement.grant.referenceNo+' | ':'') + disbursement.grant.name}}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
-                                Grantee Organization: <b>{{disbursement.grant.organization?disbursement.grant.organization.name:''}}</b><br>
-                                Grant Amount: <b>{{currencyService.getFormattedAmount(disbursement.grant.amount)}} </b>
-                                &nbsp;&nbsp;<span>{{currencyService.getAmountInWords(disbursement.grant.amount)}}</span>
-                            </p>
+                        <div [ngClass]="(disbursement.canManage)?['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section','owner-highlight']:['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']"
+                            style="cursor: pointer;" *ngFor="let disbursement of disbursements; let i = index">
+                            <div class="col-12 mb-1">
+                                <p class="text-subheader text-left mb-0" (click)="manageDisbursement(disbursement)">
+                                    Grant Name:
+                                    <b>{{(disbursement.grant.referenceNo?disbursement.grant.referenceNo+' | ':'') + disbursement.grant.name}}</b>
+                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                    Grantee Organization:
+                                    <b>{{disbursement.grant.organization?disbursement.grant.organization.name:''}}</b><br>
+                                    Grant Amount: <b>{{currencyService.getFormattedAmount(disbursement.grant.amount)}}
+                                    </b>
+                                    &nbsp;&nbsp;<span>{{currencyService.getAmountInWords(disbursement.grant.amount)}}</span>
+                                </p>
                             </div>
                             <div class="col-10 text-left pt-3" (click)="manageDisbursement(disbursement)">
                                 <p class="text-subheader mb-0">Requested Amount:</p>
-                                <p class="text-header text-left m-0" >{{currencyService.getFormattedAmount(disbursement.requestedAmount)}}    <span class="text-subheader ml-3"> {{currencyService.getAmountInWords(disbursement.requestedAmount)}}</span></p>
-                                
+                                <p class="text-header text-left m-0">
+                                    {{currencyService.getFormattedAmount(disbursement.requestedAmount)}} <span
+                                        class="text-subheader ml-3">
+                                        {{currencyService.getAmountInWords(disbursement.requestedAmount)}}</span></p>
+
                             </div>
                             <div class="col-2">
-                                
+
                                 <div class="row">
-                                    <div class="col-12"><span [class]="'badge state-' + disbursement.status.internalStatus.toLowerCase()" style="color:#000 !important;">{{disbursement.status.displayName}}</span></div>
-                                    <div class="col-12" style="display: flex; align-items: center;justify-content: center;">
-                                        <button *ngIf="disbursement.canManage && disbursement.status.internalStatus==='DRAFT'"
-                                                class="btn btn-sm btn-red mt-5 mx-0"
-                                                (click)="deleteDisbursement(disbursement)">Delete
+                                    <div class="col-12"><span
+                                            [class]="'badge state-' + disbursement.status.internalStatus.toLowerCase()"
+                                            style="color:#000 !important;">{{disbursement.status.displayName}}</span>
+                                    </div>
+                                    <div class="col-12"
+                                        style="display: flex; align-items: center;justify-content: center;">
+                                        <button
+                                            *ngIf="disbursement.canManage && disbursement.status.internalStatus==='DRAFT'"
+                                            class="btn btn-sm btn-red mt-5 mx-0"
+                                            (click)="deleteDisbursement(disbursement)">Delete
                                         </button>
                                     </div>
                                 </div>
@@ -50,6 +64,6 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
