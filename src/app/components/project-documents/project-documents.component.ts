@@ -199,7 +199,7 @@ export class ProjectDocumentsComponent implements OnInit {
     this.http
       .delete(url, httpOptions)
       .subscribe(() => {
-        const index = this.projectDocs.findIndex(a => a.id === attachmentId);
+        const index = this.projectDocs.findIndex(a => a.id === Number(attachmentId));
         this.projectDocs.splice(index, 1);
       });
   }
