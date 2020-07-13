@@ -1,36 +1,36 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@angular/core';
-import {AppComponent} from '../../app.component';
-import {Router, ActivatedRoute} from '@angular/router';
-import {GrantDataService} from '../../grant.data.service';
-import {SingleReportDataService} from '../../single.report.data.service';
-import {Grant, Notifications} from '../../model/dahsboard';
-import {Report} from '../../model/report';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { AppComponent } from '../../app.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GrantDataService } from '../../grant.data.service';
+import { SingleReportDataService } from '../../single.report.data.service';
+import { Grant, Notifications } from '../../model/dahsboard';
+import { Report } from '../../model/report';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
-import {CdkDragDrop,CdkDragStart, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatDialog,MatExpansionPanel,MatDivider} from '@angular/material';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import { CdkDragDrop, CdkDragStart, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatDialog, MatExpansionPanel, MatDivider } from '@angular/material';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 
 
 declare const $: any;
 declare interface RouteInfo {
-    path: string;
-    title: string;
-    icon: string;
-    class: string;
-    divide: boolean;
+  path: string;
+  title: string;
+  icon: string;
+  class: string;
+  divide: boolean;
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard.svg', class: '',divide:false  },
-  { path: '/rfps', title: 'RFPs',  icon: 'rfp.svg', class: '',divide:false },
-  { path: '/applications', title: 'Applications',  icon: 'proposal.svg', class: '',divide:false },
-  { path: '/grants', title: 'Grants',  icon: 'grant.svg', class: '',divide:false },
-  { path: '/reports', title: 'Reports',  icon: 'report.svg', class: '',divide:false },
-  { path: '/disbursements', title: 'Disbursements',  icon: 'grant.svg', class: '',divide:false },
+  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard.svg', class: '', divide: false },
+  { path: '/rfps', title: 'RFPs', icon: 'rfp.svg', class: '', divide: false },
+  { path: '/applications', title: 'Applications', icon: 'proposal.svg', class: '', divide: false },
+  { path: '/grants', title: 'Grants', icon: 'grant.svg', class: '', divide: false },
+  { path: '/reports', title: 'Reports', icon: 'report.svg', class: '', divide: false },
+  { path: '/disbursements', title: 'Disbursements', icon: 'grant.svg', class: '', divide: false },
   /*{ path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '',divide:false },*/
-  { path: '/organization', title: 'Organization',  icon: 'organization.svg', class: '',divide:true }
+  { path: '/organization', title: 'Organization', icon: 'organization.svg', class: '', divide: true }
   /*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
@@ -42,55 +42,55 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 export const GRANT_ROUTES: RouteInfo[] = [
-    { path: '/grant/basic-details', title: 'Grant Header',  icon: 'grant.svg', class: '',divide:false },
-    { path: '/grant/sections', title: 'Grant Details',  icon: 'view_agenda', class: '',divide:false },
-    { path: '/grant/preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/grant/basic-details', title: 'Grant Header', icon: 'grant.svg', class: '', divide: false },
+  { path: '/grant/sections', title: 'Grant Details', icon: 'view_agenda', class: '', divide: false },
+  { path: '/grant/preview', title: 'Preview & Submit', icon: 'preview.svg', class: '', divide: false }
 ];
 
 export const SINGLE_REPORT_ROUTES: RouteInfo[] = [
-    { path: '/report/report-header', title: 'Report Header',  icon: 'grant.svg', class: '',divide:false },
-    { path: '/report/report-sections', title: 'Report Details',  icon: 'view_agenda', class: '',divide:false },
-    { path: '/report/report-preview', title: 'Preview & Submit',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/report/report-header', title: 'Report Header', icon: 'grant.svg', class: '', divide: false },
+  { path: '/report/report-sections', title: 'Report Details', icon: 'view_agenda', class: '', divide: false },
+  { path: '/report/report-preview', title: 'Preview & Submit', icon: 'preview.svg', class: '', divide: false }
 ];
 
 export const REPORT_ROUTES: RouteInfo[] = [
-    { path: '/reports/upcoming', title: 'Upcoming',  icon: 'grant.svg', class: '',divide:false },
-    { path: '/reports/submitted', title: 'Submitted',  icon: 'view_agenda', class: '',divide:false },
-    { path: '/reports/approved', title: 'Approved',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/reports/upcoming', title: 'Upcoming', icon: 'grant.svg', class: '', divide: false },
+  { path: '/reports/submitted', title: 'Submitted', icon: 'view_agenda', class: '', divide: false },
+  { path: '/reports/approved', title: 'Approved', icon: 'preview.svg', class: '', divide: false }
 ];
 
 export const GRANT_SUB_ROUTES: RouteInfo[] = [
-    { path: '/grants/draft', title: 'In-progress',  icon: 'grant.svg', class: '',divide:false },
-    { path: '/grants/active', title: 'Active',  icon: 'view_agenda', class: '',divide:false },
-    { path: '/grants/closed', title: 'Closed',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/grants/draft', title: 'In-progress', icon: 'grant.svg', class: '', divide: false },
+  { path: '/grants/active', title: 'Active', icon: 'view_agenda', class: '', divide: false },
+  { path: '/grants/closed', title: 'Closed', icon: 'preview.svg', class: '', divide: false }
 ];
 
 export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursements/in-progress', title: 'Approvals In-progress',  icon: 'grant.svg', class: '',divide:false },
-  { path: '/disbursements/approved', title: 'Approvals Active',  icon: 'view_agenda', class: '',divide:false },
-  { path: '/disbursements/closed', title: 'Approvals Disbursed',  icon: 'preview.svg', class: '',divide:false }
+  { path: '/disbursements/in-progress', title: 'Requests', icon: 'grant.svg', class: '', divide: false },
+  { path: '/disbursements/approved', title: 'Approved', icon: 'view_agenda', class: '', divide: false },
+  { path: '/disbursements/closed', title: 'Disbursed', icon: 'preview.svg', class: '', divide: false }
 ];
 
 export const SINGLE_DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursement/approval-request', title: 'Approval Request Note',  icon: 'grant.svg', class: '',divide:false },
-  { path: '/disbursement/preview', title: 'Preview & Submit',  icon: 'grant.svg', class: '',divide:false}
+  { path: '/disbursement/approval-request', title: 'Approval Request Note', icon: 'grant.svg', class: '', divide: false },
+  { path: '/disbursement/preview', title: 'Preview & Submit', icon: 'grant.svg', class: '', divide: false }
 ];
 
 export const PLATFORM_ROUTES: RouteInfo[] = [
-    { path: '/admin/tenants', title: 'Tenants',  icon: 'grant.svg', class: '',divide:false },
-    { path: '/admin/settings', title: 'Settings',  icon: 'grant.svg', class: '',divide:false }
+  { path: '/admin/tenants', title: 'Tenants', icon: 'grant.svg', class: '', divide: false },
+  { path: '/admin/settings', title: 'Settings', icon: 'grant.svg', class: '', divide: false }
 ];
 
 
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
-  { path: '/organization/details', title: 'Details',  icon: 'stop', class: '',divide:false },
-  { path: '/organization/administration', title: 'Administration',  icon: 'stop', class: '',divide:false },
+  { path: '/organization/details', title: 'Details', icon: 'stop', class: '', divide: false },
+  { path: '/organization/administration', title: 'Administration', icon: 'stop', class: '', divide: false },
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
 export let REPORT_SECTION_ROUTES: RouteInfo[] = [];
 
 export const ADMIN_ROUTES: RouteInfo[] = [
-    { path: '/workflow-management', title: 'Manage Workflows',  icon:'person', class: '',divide:false }
+  { path: '/workflow-management', title: 'Manage Workflows', icon: 'person', class: '', divide: false }
 ];
 
 @Component({
@@ -141,54 +141,54 @@ export class SidebarComponent implements OnInit {
 
 
   constructor(public appComponent: AppComponent,
-  private router: Router,
-  private activatedRoute: ActivatedRoute,
-  private grantData: GrantDataService,
-  private singleReportDataService: SingleReportDataService,
-  private ref:ChangeDetectorRef,
-  private elRef: ElementRef,
-  private dialog: MatDialog,
-  private http: HttpClient,
-  private disbursementDataService:DisbursementDataService) {
-  if(!this.appComponent.loggedInUser){
-    this.appComponent.logout();
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private grantData: GrantDataService,
+    private singleReportDataService: SingleReportDataService,
+    private ref: ChangeDetectorRef,
+    private elRef: ElementRef,
+    private dialog: MatDialog,
+    private http: HttpClient,
+    private disbursementDataService: DisbursementDataService) {
+    if (!this.appComponent.loggedInUser) {
+      this.appComponent.logout();
+    }
+
+    this.canManageOrg = this.appComponent.loggedInUser.userRoles.filter((ur) => ur.role.name === 'Admin').length > 0;
   }
 
-  this.canManageOrg = this.appComponent.loggedInUser.userRoles.filter((ur) => ur.role.name==='Admin').length > 0;
-  }
+  drop(event: CdkDragDrop<string[]>) {
 
-drop(event: CdkDragDrop<string[]>) {
-
-    if(this.appComponent.currentView === 'grant' && this.currentGrant){
-        moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
-        event.item.element.nativeElement.classList.remove('section-dragging');
-        for(let i=0; i<this.sectionMenuItems.length;i++){
-            for(let section of this.currentGrant.grantDetails.sections){
-                if(section.sectionName === this.sectionMenuItems[i].title){
-                    section.order = i+1;
-                }
-            }
+    if (this.appComponent.currentView === 'grant' && this.currentGrant) {
+      moveItemInArray(this.sectionMenuItems, event.previousIndex, event.currentIndex);
+      event.item.element.nativeElement.classList.remove('section-dragging');
+      for (let i = 0; i < this.sectionMenuItems.length; i++) {
+        for (let section of this.currentGrant.grantDetails.sections) {
+          if (section.sectionName === this.sectionMenuItems[i].title) {
+            section.order = i + 1;
+          }
         }
-        this.grantData.changeMessage(this.currentGrant,this.appComponent.loggedInUser.id);
+      }
+      this.grantData.changeMessage(this.currentGrant, this.appComponent.loggedInUser.id);
     }
-    if(this.appComponent.currentView === 'report' && this.currentReport){
-        moveItemInArray(this.reportSectionMenuItems, event.previousIndex, event.currentIndex);
-        event.item.element.nativeElement.classList.remove('section-dragging');
-        for(let i=0; i<this.reportSectionMenuItems.length;i++){
-            for(let section of this.currentReport.reportDetails.sections){
-                if(section.sectionName === this.reportSectionMenuItems[i].title){
-                    section.order = i+1;
-                }
-            }
+    if (this.appComponent.currentView === 'report' && this.currentReport) {
+      moveItemInArray(this.reportSectionMenuItems, event.previousIndex, event.currentIndex);
+      event.item.element.nativeElement.classList.remove('section-dragging');
+      for (let i = 0; i < this.reportSectionMenuItems.length; i++) {
+        for (let section of this.currentReport.reportDetails.sections) {
+          if (section.sectionName === this.reportSectionMenuItems[i].title) {
+            section.order = i + 1;
+          }
         }
-        this.singleReportDataService.changeMessage(this.currentReport);
+      }
+      this.singleReportDataService.changeMessage(this.currentReport);
     }
 
 
   }
-    dragStarted(event: CdkDragStart<String[]>){
-       event.source.element.nativeElement.style.zIndex='1070';
-    }
+  dragStarted(event: CdkDragStart<String[]>) {
+    event.source.element.nativeElement.style.zIndex = '1070';
+  }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -209,19 +209,19 @@ drop(event: CdkDragDrop<string[]>) {
     });
 
     this.singleReportDataService.currentMessage.subscribe((report) => {
-          this.currentReport = report;
-          this.buildSectionsSideNav(null);
+      this.currentReport = report;
+      this.buildSectionsSideNav(null);
     });
-    this.disbursementDataService.currentMessage.subscribe((d) => this.currentDisbursement=d);
+    this.disbursementDataService.currentMessage.subscribe((d) => this.currentDisbursement = d);
 
     const tenantCode = localStorage.getItem('X-TENANT-CODE');
-    this.logoUrl = "/api/public/images/"+tenantCode+"/logo";
+    this.logoUrl = "/api/public/images/" + tenantCode + "/logo";
 
 
     /*if(this.currentGrant && (this.currentGrant.grantStatus.internalStatus=='ACTIVE' || this.currentGrant.grantStatus.internalStatus=='CLOSED')){
       this.appComponent.action = 'preview';
     }*/
-    
+
   }
 
 
@@ -232,73 +232,73 @@ drop(event: CdkDragDrop<string[]>) {
   }
 
   manageGrant(notification: Notifications, grantId: number) {
-          const httpOptions = {
-              headers: new HttpHeaders({
-                  'Content-Type': 'application/json',
-                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                  'Authorization': localStorage.getItem('AUTH_TOKEN')
-              })
-          };
-     let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
-                            + notification.id;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    let url = '/api/user/' + this.appComponent.loggedInUser.id + '/notifications/markread/'
+      + notification.id;
 
-      this.http.put<Notifications>(url,{},httpOptions).subscribe((notif: Notifications) => {
-          notification = notif;
-          const httpOptions = {
-              headers: new HttpHeaders({
-                  'Content-Type': 'application/json',
-                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                  'Authorization': localStorage.getItem('AUTH_TOKEN')
-              })
-          };
+    this.http.put<Notifications>(url, {}, httpOptions).subscribe((notif: Notifications) => {
+      notification = notif;
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        })
+      };
 
-          url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
-          this.http.get(url,httpOptions).subscribe((grant:Grant) =>{
-          let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id=grantId)[0];
-          if(localgrant){
+      url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/' + grantId;
+      this.http.get(url, httpOptions).subscribe((grant: Grant) => {
+        let localgrant = this.appComponent.currentTenant.grants.filter(g => g.id = grantId)[0];
+        if (localgrant) {
           localgrant = grant;
-          }else{
-              this.appComponent.currentTenant.grants.push(grant);
-          }
-            this.grantData.changeMessage(grant,this.appComponent.loggedInUser.id);
-            this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
-            this.appComponent.currentView = 'grant';
+        } else {
+          this.appComponent.currentTenant.grants.push(grant);
+        }
+        this.grantData.changeMessage(grant, this.appComponent.loggedInUser.id);
+        this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));;
+        this.appComponent.currentView = 'grant';
 
-                    this.appComponent.selectedTemplate = grant.grantTemplate;
+        this.appComponent.selectedTemplate = grant.grantTemplate;
 
-            if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
-                grant.canManage=true;
-            }else{
-                grant.canManage=false;
-            }
-             if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-                this.router.navigate(['grant/basic-details']);
-            } else{
-                this.appComponent.action = 'preview';
-                this.router.navigate(['grant/preview']);
-            }
-            $("#messagepopover").css('display','none');
-          });
+        if ((grant.workflowAssignment.filter(wf => wf.stateId === grant.grantStatus.id && wf.assignments === this.appComponent.loggedInUser.id).length > 0) && this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE' && (grant.grantStatus.internalStatus !== 'ACTIVE' && grant.grantStatus.internalStatus !== 'CLOSED')) {
+          grant.canManage = true;
+        } else {
+          grant.canManage = false;
+        }
+        if (grant.canManage && grant.grantStatus.internalStatus != 'ACTIVE' && grant.grantStatus.internalStatus != 'CLOSED') {
+          this.router.navigate(['grant/basic-details']);
+        } else {
+          this.appComponent.action = 'preview';
+          this.router.navigate(['grant/preview']);
+        }
+        $("#messagepopover").css('display', 'none');
       });
-}
+    });
+  }
 
   buildSectionsSideNav(ev: Event): string {
-  this.manageMenutItemsDisplay(ev);
-  console.log('>>>>>>>>> ' + this.appComponent.currentView);
-  this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
-  this.singleReportDataService.currentMessage.subscribe(report => this.currentReport = report);
+    this.manageMenutItemsDisplay(ev);
+    console.log('>>>>>>>>> ' + this.appComponent.currentView);
+    this.grantData.currentMessage.subscribe(grant => this.currentGrant = grant);
+    this.singleReportDataService.currentMessage.subscribe(report => this.currentReport = report);
 
-  SECTION_ROUTES = [];
-  REPORT_SECTION_ROUTES = [];
-    if(this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
+    SECTION_ROUTES = [];
+    REPORT_SECTION_ROUTES = [];
+    if (this.appComponent.currentView === 'grant' && this.currentGrant && (SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)) {
       this.sectionMenuItems = [];
       SECTION_ROUTES = [];
       this.currentGrant.grantDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
-      for (let section of this.currentGrant.grantDetails.sections){
-        if(section.sectionName!=='' && section.sectionName!=='_'){
-            SECTION_ROUTES.push({path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:'',divide:false});
-        }else{
-            SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:'',divide:false});
+      for (let section of this.currentGrant.grantDetails.sections) {
+        if (section.sectionName !== '' && section.sectionName !== '_') {
+          SECTION_ROUTES.push({ path: '/grant/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''), title: section.sectionName, icon: 'stop', class: '', divide: false });
+        } else {
+          SECTION_ROUTES.push({ path: '/grant/section/' + section.id, title: '_', icon: 'stop', class: '', divide: false });
         }
       }
 
@@ -307,30 +307,30 @@ drop(event: CdkDragDrop<string[]>) {
       return SECTION_ROUTES[0].path;
     }
 
-    if(this.appComponent.currentView === 'report' && this.currentReport && (REPORT_SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)){
-          this.reportSectionMenuItems = [];
-          REPORT_SECTION_ROUTES = [];
-          this.currentReport.reportDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
-          for (let section of this.currentReport.reportDetails.sections){
-            if(section.sectionName!=='' && section.sectionName!=='_'){
-                REPORT_SECTION_ROUTES.push({path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''),title: section.sectionName, icon: 'stop', class:'',divide:false});
-            }else{
-                REPORT_SECTION_ROUTES.push({path: '/grant/section/'+section.id,title: '_', icon: 'stop', class:'',divide:false});
-            }
-          }
-
-          this.reportSectionMenuItems = REPORT_SECTION_ROUTES.filter(menuItem => menuItem);
-          this.appComponent.sectionAdded = false;
-          return REPORT_SECTION_ROUTES[0].path;
+    if (this.appComponent.currentView === 'report' && this.currentReport && (REPORT_SECTION_ROUTES.length === 0 || this.appComponent.sectionAdded === true || this.appComponent.sectionUpdated === true)) {
+      this.reportSectionMenuItems = [];
+      REPORT_SECTION_ROUTES = [];
+      this.currentReport.reportDetails.sections.sort((a, b) => (a.order > b.order) ? 1 : -1)
+      for (let section of this.currentReport.reportDetails.sections) {
+        if (section.sectionName !== '' && section.sectionName !== '_') {
+          REPORT_SECTION_ROUTES.push({ path: '/report/section/' + section.sectionName.replace(/[^0-9a-z]/gi, ''), title: section.sectionName, icon: 'stop', class: '', divide: false });
+        } else {
+          REPORT_SECTION_ROUTES.push({ path: '/grant/section/' + section.id, title: '_', icon: 'stop', class: '', divide: false });
         }
+      }
+
+      this.reportSectionMenuItems = REPORT_SECTION_ROUTES.filter(menuItem => menuItem);
+      this.appComponent.sectionAdded = false;
+      return REPORT_SECTION_ROUTES[0].path;
+    }
   }
 
 
   isMobileMenu() {
-      if ($(window).width() > 6000) {
-          return false;
-      }
-      return true;
+    if ($(window).width() > 6000) {
+      return false;
+    }
+    return true;
   };
 
   showProfile() {
@@ -338,46 +338,46 @@ drop(event: CdkDragDrop<string[]>) {
     this.router.navigate(['user-profile']);
   }
 
-  createNewSection(){
+  createNewSection() {
     this.appComponent.createNewSection.next(true);
   }
 
-  createNewReportSection(){
+  createNewReportSection() {
     this.appComponent.createNewReportSection.next(true);
   }
 
-  manageMenutItemsDisplay(evt: Event){
-    if(evt===undefined || evt===null){
-        return;
+  manageMenutItemsDisplay(evt: Event) {
+    if (evt === undefined || evt === null) {
+      return;
     }
     const submenu = $(evt.srcElement).closest('.mat-expansion-panel');
-    if(submenu.length > 0){
-        const thisMenu = $(submenu[0]).attr('id');
-        if(thisMenu==='organization'){
-            this.reportsElem.close();
-            this.grantsElem.close();
-        } else if(thisMenu==='reports'){
-           if(this.organizationElem){
-               this.organizationElem.close();
-           }
-           this.grantsElem.close();
-           if(this.disbursementsElem){
-            this.disbursementsElem.close();
-           }
-       }else if(thisMenu==='grants'){
-            if(this.organizationElem){
-                this.organizationElem.close();
-            }
-           this.reportsElem.close();
-           if(this.disbursementsElem){
-            this.disbursementsElem.close();
-           }
-       }else if(thisMenu==='disbursements'){
-          if(this.organizationElem){
-              this.organizationElem.close();
-          }
-            this.reportsElem.close();
-            this.grantsElem.close();
+    if (submenu.length > 0) {
+      const thisMenu = $(submenu[0]).attr('id');
+      if (thisMenu === 'organization') {
+        this.reportsElem.close();
+        this.grantsElem.close();
+      } else if (thisMenu === 'reports') {
+        if (this.organizationElem) {
+          this.organizationElem.close();
+        }
+        this.grantsElem.close();
+        if (this.disbursementsElem) {
+          this.disbursementsElem.close();
+        }
+      } else if (thisMenu === 'grants') {
+        if (this.organizationElem) {
+          this.organizationElem.close();
+        }
+        this.reportsElem.close();
+        if (this.disbursementsElem) {
+          this.disbursementsElem.close();
+        }
+      } else if (thisMenu === 'disbursements') {
+        if (this.organizationElem) {
+          this.organizationElem.close();
+        }
+        this.reportsElem.close();
+        this.grantsElem.close();
       }
     }
   }

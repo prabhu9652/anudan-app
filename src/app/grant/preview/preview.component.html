@@ -27,8 +27,9 @@
                     <button mat-menu-item (click)="showWFAssigments()">
                         <mat-icon class="ml-1">assignment</mat-icon>Assignments
                     </button>
-                    <hr>
-                    <button mat-menu-item (click)="showProjectDocuments()">
+                    <hr *ngIf="this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'">
+                    <button *ngIf="this.appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item
+                        (click)="showProjectDocuments()">
                         <mat-icon class="ml-1">assignment</mat-icon>Project Documents
                     </button>
                     <hr
