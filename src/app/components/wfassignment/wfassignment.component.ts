@@ -106,13 +106,16 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                         this.renderer.setAttribute(nodeOwner, 'style', 'max-width: 240px;');
                         const currentUserAssignment = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments === JSON.parse(localStorage.getItem('USER')).id && assignment.stateId === this.data.model.grant.grantStatus.id);
                         const ownerUser = this.data.model.workflowAssignment.filter((assignment) => assignment.assignments === JSON.parse(localStorage.getItem('USER')).id && assignment.anchor);
-                        if ((currentUserAssignment.length > 0 || (ownerUser.length > 0)) && this.data.model.grant.grantStatus.internalStatus !== 'ACTIVE' && this.data.model.grant.grantStatus.internalStatus !== 'CLOSED') {
+
+                        const roles: UserRole[] = JSON.parse(localStorage.getItem('USER')).userRoles;
+                        let isAdminRole: boolean = false;
+                        if (roles.filter(a => a.role.name === 'Admin').length > 0) {
+                            isAdminRole = true;
+                        }
+
+                        if (((currentUserAssignment.length > 0 || (ownerUser.length > 0) || isAdminRole) && this.data.model.grant.grantStatus.internalStatus !== 'ACTIVE' && this.data.model.grant.grantStatus.internalStatus !== 'CLOSED')) {
                         } else {
-                            const roles: UserRole[] = JSON.parse(localStorage.getItem('USER')).userRoles;
-                            let isAdminRole: boolean = false;
-                            if (roles.filter(a => a.role.name === 'Admin')) {
-                                isAdminRole = true;
-                            }
+
 
                             this.canManage = false;
                             this.renderer.setAttribute(nodeOwner, 'disabled', 'disabled');
@@ -475,13 +478,16 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                         this.renderer.addClass(nodeOwner, 'anu-select');
                         const currentUserAssignment = this.data.model.workflowAssignments.filter((assignment) => assignment.owner === JSON.parse(localStorage.getItem('USER')).id && assignment.stateId === this.data.model.disbursement.status.id);
                         const ownerUser = this.data.model.workflowAssignments.filter((assignment) => assignment.owner === JSON.parse(localStorage.getItem('USER')).id && assignment.anchor);
-                        if ((currentUserAssignment.length > 0 || (ownerUser.length > 0)) && this.data.model.disbursement.status.internalStatus !== 'ACTIVE' && this.data.model.disbursement.status.internalStatus !== 'CLOSED') {
+
+                        const roles: UserRole[] = JSON.parse(localStorage.getItem('USER')).userRoles;
+                        let isAdminRole: boolean = false;
+                        if (roles.filter(a => a.role.name === 'Admin')) {
+                            isAdminRole = true;
+                        }
+
+                        if (((currentUserAssignment.length > 0 || (ownerUser.length > 0)) && this.data.model.disbursement.status.internalStatus !== 'ACTIVE' && this.data.model.disbursement.status.internalStatus !== 'CLOSED') || isAdminRole) {
                         } else {
-                            const roles: UserRole[] = JSON.parse(localStorage.getItem('USER')).userRoles;
-                            let isAdminRole: boolean = false;
-                            if (roles.filter(a => a.role.name === 'Admin')) {
-                                isAdminRole = true;
-                            }
+
 
                             this.canManage = false;
                             this.renderer.setAttribute(nodeOwner, 'disabled', 'disabled');
