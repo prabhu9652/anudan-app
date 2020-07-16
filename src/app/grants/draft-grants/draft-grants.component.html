@@ -19,7 +19,7 @@
 
 
 
-                        <div [ngClass]="(grant.currentAssignment[0].user.id===appComponent.loggedInUser.id)?['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section owner-highlight']:['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']"
+                        <div [ngClass]="(grant.currentAssignment[0].user!==undefined && grant.currentAssignment[0].user.id===appComponent.loggedInUser.id)?['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section owner-highlight']:['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']"
                             style="cursor: pointer;" *ngFor="let grant of grantsDraft; let i = index">
 
 
