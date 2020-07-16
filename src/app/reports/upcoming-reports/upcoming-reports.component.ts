@@ -31,6 +31,7 @@ export class UpcomingReportsComponent implements OnInit {
     reportsToSetup: Report[];
     reportsToSetupData: Report[];
     reportsReadyToSubmit: Report[];
+    allReports: Report[];
     addnlReports: Report[];
     futureReportsToSetup: Report[];
     subscribers: any = {};
@@ -98,6 +99,20 @@ export class UpcomingReportsComponent implements OnInit {
         this.http.get<Report[]>(url, httpOptions2).subscribe((reports: Report[]) => {
             //this.processReports(reports);
             this.reportsReadyToSubmit = reports;
+        });
+
+        const queryParams3 = new HttpParams().set('q', 'upcoming-future');
+        const httpOptions3 = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            }),
+            params: queryParams3
+        };
+        this.http.get<Report[]>(url, httpOptions3).subscribe((reports: Report[]) => {
+            //this.processReports(reports);
+            this.allReports = reports;
         });
     }
 
