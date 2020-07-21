@@ -815,6 +815,9 @@ kendo-pdf-export {
   visibility: hidden !important;
 }
 
+.mat-list-base .mat-list-item {
+  font-size: 14px;
+}
 .mat-list-item {
   border: 1px 1px #d4d4d4;
 }
