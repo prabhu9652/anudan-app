@@ -1,27 +1,46 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {User, Role, UserRole} from '../../model/user'
-import {AppComponent} from '../../app.component'
-import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
-import {MatDialog} from '@angular/material';
-import {Observable} from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { AdminService } from './../../admin.service';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { User, Role, UserRole } from '../../model/user'
+import { AppComponent } from '../../app.component'
+import { FieldDialogComponent } from '../../components/field-dialog/field-dialog.component';
+import { MatDialog } from '@angular/material';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss'],
+    styles: [
+        `
+        ::ng-deep .user-edit-class .mat-form-field-wrapper {
+          padding-bottom: 0 !important;
+        },
+      `,
+        `
+        ::ng-deep .user-edit-class .mat-form-field-infix {
+            border-top: 0 !important;
+          }
+        `,
+        `
+        ::ng-deep .user-list-item-class .mat-list-item-content {
+            padding: 0 !important;
+          }
+        `
+    ],
+
 })
 export class UsersComponent implements OnInit {
 
-    users: User[];
+    @Input("users") users: User[];
     newEmail: string;
     newRole: Role;
-    focusField:any;
+    focusField: any;
     roles: Role[];
     filteredOptions: Observable<Role[]>;
     userFilteredOptions: Observable<Role[]>;
@@ -35,36 +54,23 @@ export class UsersComponent implements OnInit {
     @ViewChild('roleInput') roleInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-    constructor(private appComponent: AppComponent, private http: HttpClient, private dialog: MatDialog) { }
+    constructor(private appComponent: AppComponent, private http: HttpClient, private dialog: MatDialog, private adminService: AdminService) { }
 
     ngOnInit() {
         this.myControl = new FormControl();
         this.myNewControl = new FormControl();
-        this.fetchOrgUsers();
+        //this.fetchOrgUsers();
         this.fetchRolesForUserOrg();
 
 
     }
 
-    fetchOrgUsers(){
+    fetchOrgUsers() {
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
-        const user = this.appComponent.loggedInUser;
-        const url = 'api/admin/user/'+user.id+'/user';
 
-        this.http.get(url,httpOptions).subscribe((users:User[]) => {
-            this.users = users;
-
-        });
     }
 
-    createNewUser(){
+    createNewUser() {
 
         const newUser = new User();
         newUser.emailId = this.newEmail;
@@ -75,7 +81,7 @@ export class UsersComponent implements OnInit {
         userRole.role = this.newRole;
         userRoles.push(userRole);
 
-        newUser.userRoles=userRoles;
+        newUser.userRoles = userRoles;
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -85,12 +91,12 @@ export class UsersComponent implements OnInit {
             })
         };
         const user = this.appComponent.loggedInUser;
-        const url = 'api/admin/user/'+this.appComponent.loggedInUser.id+'/user';
-        this.http.post(url,newUser,httpOptions).subscribe((user:User) =>{
+        const url = 'api/admin/user/' + this.appComponent.loggedInUser.id + '/user';
+        this.http.post(url, newUser, httpOptions).subscribe((user: User) => {
             this.users.unshift(user);
             this.toggleCreateUser();
-            this.newEmail=undefined;
-            this.newRole=undefined;
+            this.newEmail = undefined;
+            this.newRole = undefined;
         });
 
         /*if(!this.users){
@@ -107,30 +113,21 @@ export class UsersComponent implements OnInit {
 
 
 
-    deleteUser(user){
+    deleteUser(user) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: {title:'Are you sure you want to delete role ' + user.emailId}
+            data: { title: 'Are you sure you want to delete user ' + user.firsNamr + ' ' + user.lastName }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                const httpOptions = {
-                    headers: new HttpHeaders({
-                        'Content-Type': 'application/json',
-                        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                        'Authorization': localStorage.getItem('AUTH_TOKEN')
-                    })
-                };
-                const user = this.appComponent.loggedInUser;
-                const url = 'api/admin/user/'+this.appComponent.loggedInUser.id+'/user/'+user.id;
-                this.http.delete(url,httpOptions).subscribe((updatedList:User[]) =>{
-                    this.users = updatedList;
+                this.adminService.deleteUser(user, this.appComponent.loggedInUser).then((data: User[]) => {
+                    this.users = data;
                 });
             }
         });
     }
 
-    saveUser(user: User){
+    saveUser(user: User) {
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -139,22 +136,25 @@ export class UsersComponent implements OnInit {
                 'Authorization': localStorage.getItem('AUTH_TOKEN')
             })
         };
-        const url = 'api/admin/user/'+this.appComponent.loggedInUser+'/user';
-        this.http.put(url,user,httpOptions).subscribe((userReturned:User) =>{
+        const url = 'api/admin/user/' + this.appComponent.loggedInUser.id + '/user';
+        this.http.put(url, user, httpOptions).subscribe((userReturned: User) => {
             user = userReturned;
+            user.editMode = false;
+            const index = this.users.findIndex(u => u.id === user.id);
+            this.users[index] = user;
         });
     }
 
-    toggleCreateUser(){
+    toggleCreateUser() {
         const createRoleButton = this.createRoleBtn.nativeElement;
-        if(createRoleButton.disabled){
-            createRoleButton.disabled=false;
-        }else if(!createRoleButton.disabled){
-          createRoleButton.disabled=true;
-      }
+        if (createRoleButton.disabled) {
+            createRoleButton.disabled = false;
+        } else if (!createRoleButton.disabled) {
+            createRoleButton.disabled = true;
+        }
     }
 
-    fetchRolesForUserOrg(){
+    fetchRolesForUserOrg() {
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -164,28 +164,28 @@ export class UsersComponent implements OnInit {
             })
         };
         const user = this.appComponent.loggedInUser;
-        const url = 'api/admin/user/'+user.id+'/role';
+        const url = 'api/admin/user/' + user.id + '/role';
 
-        this.http.get(url,httpOptions).subscribe((roles:Role[]) => {
+        this.http.get(url, httpOptions).subscribe((roles: Role[]) => {
             this.roles = roles;
 
 
             const roles1 = this.roles.slice();
             this.filteredOptions = this.myControl.valueChanges
-            .pipe(
-                startWith(''),
-                map(value => typeof value === 'string' ? value : value),
-                map(name => name ? this._filter(name) : roles1)
-            );
+                .pipe(
+                    startWith(''),
+                    map(value => typeof value === 'string' ? value : value),
+                    map(name => name ? this._filter(name) : roles1)
+                );
 
         });
     }
 
     private _filter(value: any): Role[] {
         let filterValue;
-        if(typeof value==='string'){
+        if (typeof value === 'string') {
             filterValue = value.toLowerCase();
-        }else {
+        } else {
             filterValue = value.name;
         }
 
@@ -196,50 +196,75 @@ export class UsersComponent implements OnInit {
     }
 
 
-    canSendInvite(){
-        if((this.newEmail!==undefined && this.newEmail.trim()!=='') && (this.newRole!==undefined)){
+    canSendInvite() {
+        if ((this.newEmail !== undefined && this.newEmail.trim() !== '') && (this.newRole !== undefined)) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    getRoles(user:User){
-        const roles=[];
-        for(let userRole of user.userRoles){
+    getRoles(user: User) {
+        const roles = [];
+        for (let userRole of user.userRoles) {
             roles.push(userRole.role);
         }
-        if (roles.length===0){
+        if (roles.length === 0) {
+            return null;
+        }
+        return roles;
+    }
+
+    getRoleId(user: User) {
+        const roles = [];
+        for (let userRole of user.userRoles) {
+            roles.push(userRole.role);
+        }
+        if (roles.length === 0) {
             return null;
         }
         return roles[0].id;
     }
 
-    getRolesArray(user:User){
-        const roles=[];
-        for(let userRole of user.userRoles){
+    getRolesArray(user: User) {
+        const roles = [];
+        for (let userRole of user.userRoles) {
             roles.push(userRole.role.name);
         }
         return roles[0];
     }
 
-    editUserRoles(user:User, evt:Event){
+    editUserRoles(user: User, evt: Event) {
         user.editMode = true;
 
         const roles1 = [];
-        for(let role of user.userRoles){
+        for (let role of user.userRoles) {
             roles1.push(role);
         }
         this.userFilteredOptions = this.myNewControl.valueChanges
-        .pipe(
-            startWith(''),
-            map(value => typeof value === 'string' ? value : value),
-            map(name => name ? this._filter(name) : roles1)
-        );
+            .pipe(
+                startWith(''),
+                map(value => typeof value === 'string' ? value : value),
+                map(name => name ? this._filter(name) : roles1)
+            );
     }
 
-    cancelUserUpdate(user:User){
+    cancelUserUpdate(user: User) {
         user.editMode = false;
     }
 
+    editUser(user: User, ev) {
+        user.editMode = true;
+    }
+
+    cancelEdit(user: User) {
+        user.editMode = false;
+    }
+
+    setNewRole(user: User, ev) {
+        console.log(ev);
+        const newRole: Role = this.roles.filter(r => r.id === Number(ev.value))[0];
+        user.userRoles[0].role = newRole;
+
+    }
 }

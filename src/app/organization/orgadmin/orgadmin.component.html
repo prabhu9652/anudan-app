@@ -1,16 +1,16 @@
 <div class="">
     <div class="container-fluid">
 
-        <mat-tab-group>
+        <mat-tab-group (focusChange)="tabSelected($event)">
             <mat-tab label="Roles">
-                    <div class="anu-container text-left mx-0">
-                        <app-roles></app-roles>
+                <div class="anu-container text-left mx-0">
+                    <app-roles [roles]="roles"></app-roles>
 
-                    </div>
+                </div>
             </mat-tab>
             <mat-tab label="Users">
                 <div class="anu-container text-left mx-0">
-                    <app-users></app-users>
+                    <app-users [users]="users"></app-users>
 
                 </div>
             </mat-tab>
