@@ -40,11 +40,11 @@
 
                     <div class=" col-1 pl-0 text-right"
                         style="display: flex;flex-direction: row-reverse;align-items: center;">
-                        <mat-icon *ngIf="user.active" (click)="deleteUser(user)">delete_outline
+                        <mat-icon *ngIf="user.active" (click)="deleteUser(user)" style="cursor: pointer;">delete_outline
                         </mat-icon>
 
                         <img *ngIf="user.active" class="mr-2" src="./assets/img/edit.svg"
-                            (click)="editUser(user,$event)">
+                            (click)="editUser(user,$event)" style="cursor: pointer;">
 
                         <small style="min-width:125px;"><b *ngIf="!user.active" class="text-danger">Not
                                 Registered</b></small>
