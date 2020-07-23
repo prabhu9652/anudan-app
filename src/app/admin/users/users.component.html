@@ -24,44 +24,69 @@
 
     </div>
 
-    <div class="col-12">
+    <div class="col-12 px-0">
         <mat-list style="background:#fff;">
-            <mat-list-item>
-                <div class="row mb-1 w-100">
-                    <div class="col-3 pl-0"><b>Name</b></div>
-                    <div class="col-3 pl-0"><b>Email Id</b></div>
-                    <div class="col-3 pl-0"><b>Organization Roles</b></div>
-                    <div class="col-1 pl-0"><b>Is Admin?</b></div>
-                    <div class="col-2 pl-0 text-right"><b>Actions</b></div>
-                    <div class="col-12">
-                        <mat-divider></mat-divider>
-                    </div>
-                </div>
-            </mat-list-item>
-            <mat-list-item id="user_{{user.id}}" *ngFor="let user of users"
+
+            <mat-list-item class="user-list-item-class" id="user_{{user.id}}" *ngFor="let user of users"
                 style="min-height:48px;height:auto;padding:8px 0;">
-                <div class="row mb-2 w-100" style="text-transform:none !important;">
-                    <div class="col-3 pl-0">{{user.firstName}} {{user.lastName}}</div>
-                    <div class="col-3 pl-0">{{user.emailId}}</div>
-                    <div *ngIf="!user.editMode" class="col-3">
-                        <mat-select [value]="getRoles(user)">
-                            <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
-                        </mat-select>
-                    </div>
-                    <div class="col-1 pl-0">
-                        <input type="checkbox" [checked]="user.admin">
+                <div *ngIf="!user.editMode" class="row mb-2 w-100 mx-0" style="text-transform:none !important;">
+                    <div class="col-3">{{user.firstName}} {{user.lastName}}</div>
+                    <div class="col-4 pl-0">{{user.emailId}}</div>
+                    <div class="col-4">
+                        <p *ngFor="let role of getRoles(user)">{{role.name}}<ng-container *ngIf="user.admin">/Admin
+                            </ng-container>
+                        </p>
                     </div>
 
-                    <div class="col-2  pl-0 text-right">
-                        <mat-icon *ngIf="user.active && !user.editMode" (click)="deleteUser(user)">delete_outline
+                    <div class=" col-1 pl-0 text-right"
+                        style="display: flex;flex-direction: row-reverse;align-items: center;">
+                        <mat-icon *ngIf="user.active" (click)="deleteUser(user)">delete_outline
                         </mat-icon>
 
-                        <img *ngIf="user.active && !user.editMode" class="ml-5" src="./assets/img/edit.svg"
-                            (click)="editRole(role,$event)">
+                        <img *ngIf="user.active" class="mr-2" src="./assets/img/edit.svg"
+                            (click)="editUser(user,$event)">
 
-                        <small style="min-width:125px;"><b *ngIf="!user.active && !user.editMode"
-                                class="text-danger">Not Registered</b></small>
+                        <small style="min-width:125px;"><b *ngIf="!user.active" class="text-danger">Not
+                                Registered</b></small>
                     </div>
+                </div>
+                <div *ngIf="user.editMode" class="row mb-2 w-100 user-edit-class mx-0"
+                    style="text-transform:none !important;background-color: #f1f1f1;">
+
+                    <div class="col-2">
+                        <mat-form-field>
+                            <input class="anu-input" matInput [(ngModel)]="user.firstName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2 pl-0">
+                        <mat-form-field>
+                            <input class="anu-input" matInput [(ngModel)]="user.lastName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3 pl-0">
+                        <mat-form-field>
+                            <input class="anu-input" matInput [(ngModel)]="user.emailId">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field>
+                            <mat-select class="anu-input" [value]="getRoleId(user)"
+                                (selectionChange)="setNewRole(user,$event)">
+                                <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-1 pl-0 text-center" style="display: flex;align-items: center;">
+                        <mat-checkbox type="checkbox" [(ngModel)]="user.admin">Admin?</mat-checkbox>
+                    </div>
+                    <div class="col-12">
+                        <div matLine *ngIf="user.editMode"
+                            style="display: flex;align-items: center;justify-content: flex-end;">
+                            <button class="btn btn-sm btn-link" (click)="cancelEdit(user)">Cancel</button>
+                            <button class="btn btn-sm bg-green" (click)="saveUser(user)">Save</button>
+                        </div>
+                    </div>
+
                 </div>
             </mat-list-item>
         </mat-list>

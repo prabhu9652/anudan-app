@@ -1598,7 +1598,7 @@ export class SectionsComponent
       }
     }
 
-    const httpOptions = {
+    /* const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
@@ -1655,7 +1655,7 @@ export class SectionsComponent
             );
           }
         }
-      );
+      ); */
   }
 
   addColumn(attr: Attribute) {
