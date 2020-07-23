@@ -47,6 +47,7 @@ export class UsersComponent implements OnInit {
     myControl: FormControl;
     myNewControl: FormControl;
     separatorKeysCodes: number[] = [ENTER, COMMA];
+    existingUser: boolean = false;
 
 
     @ViewChild('createRoleBtn') createRoleBtn: ElementRef;
@@ -115,7 +116,7 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to delete user ' + user.firsNamr + ' ' + user.lastName }
+            data: { title: 'Are you sure you want to delete user ' + user.firstName + ' ' + user.lastName }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -197,7 +198,7 @@ export class UsersComponent implements OnInit {
 
 
     canSendInvite() {
-        if ((this.newEmail !== undefined && this.newEmail.trim() !== '') && (this.newRole !== undefined)) {
+        if ((this.newEmail !== undefined && this.newEmail.trim() !== '') && (this.newRole !== undefined) && !this.existingUser) {
             return false;
         } else {
             return true;
@@ -266,5 +267,25 @@ export class UsersComponent implements OnInit {
         const newRole: Role = this.roles.filter(r => r.id === Number(ev.value))[0];
         user.userRoles[0].role = newRole;
 
+    }
+
+    validateEmail(ev) {
+        const emailId = ev.target.value;
+        if (emailId === undefined || emailId === null || (emailId !== null && emailId.trim() === '')) {
+            return;
+        }
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/' + user.id + '/validate/' + emailId;
+
+        this.http.get(url, httpOptions).subscribe((result: any) => {
+            this.existingUser = result.exists;
+        });
     }
 }
