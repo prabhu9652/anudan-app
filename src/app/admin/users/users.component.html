@@ -34,24 +34,25 @@
             <mat-list-item class="user-list-item-class" id="user_{{user.id}}" *ngFor="let user of users"
                 style="min-height:48px;height:auto;padding:8px 0;">
                 <div *ngIf="!user.editMode" class="row mb-2 w-100 mx-0" style="text-transform:none !important;">
-                    <div class="col-3">{{user.firstName}} {{user.lastName}}</div>
+                    <div *ngIf="user.active" class="col-3">{{user.firstName}} {{user.lastName}}</div>
+                    <div *ngIf="!user.active" class="col-3"><small class="text-danger" style="min-width:125px;">Not
+                            Registered</small></div>
                     <div class="col-4 pl-0">{{user.emailId}}</div>
-                    <div class="col-4">
+                    <div [ngClass]="user.active?'col-4':'col-2'">
                         <p *ngFor="let role of getRoles(user)">{{role.name}}<ng-container *ngIf="user.admin">/Admin
                             </ng-container>
                         </p>
                     </div>
 
-                    <div class=" col-1 pl-0 text-right"
-                        style="display: flex;flex-direction: row-reverse;align-items: center;">
-                        <mat-icon *ngIf="user.active" (click)="deleteUser(user)" style="cursor: pointer;">delete_outline
+                    <div [ngClass]="user.active?'col-1 pl-0 text-right':'col-3 pl-0 text-right'"
+                        style="display: flex;flex-direction: row-reverse;align-items: center;color:#9f9f9f">
+                        <mat-icon (click)="deleteUser(user)" style="cursor: pointer;">delete_outline
                         </mat-icon>
 
                         <img *ngIf="user.active" class="mr-2" src="./assets/img/edit.svg"
                             (click)="editUser(user,$event)" style="cursor: pointer;">
-
-                        <small style="min-width:125px;"><b *ngIf="!user.active" class="text-danger">Not
-                                Registered</b></small>
+                        <button (click)="reInviteUser(user,$event)" class="btn btn-sm btn-green"
+                            *ngIf="!user.active">Re-Invite User</button>
                     </div>
                 </div>
                 <div *ngIf="user.editMode" class="row mb-2 w-100 user-edit-class mx-0"

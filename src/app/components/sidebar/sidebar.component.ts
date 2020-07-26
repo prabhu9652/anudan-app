@@ -23,12 +23,12 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard.svg', class: '', divide: false },
+  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard-white-18dp.svg', class: '', divide: false },
   { path: '/rfps', title: 'RFPs', icon: 'rfp.svg', class: '', divide: false },
   { path: '/applications', title: 'Applications', icon: 'proposal.svg', class: '', divide: false },
   { path: '/grants', title: 'Grants', icon: 'grant.svg', class: '', divide: false },
   { path: '/reports', title: 'Reports', icon: 'report.svg', class: '', divide: false },
-  { path: '/disbursements', title: 'Disbursements', icon: 'grant.svg', class: '', divide: false },
+  { path: '/disbursements', title: 'Disbursements', icon: 'disbursement.svg', class: '', divide: false },
   /*{ path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '',divide:false },*/
   { path: '/organization', title: 'Organization', icon: 'organization.svg', class: '', divide: true }
   /*,
@@ -66,7 +66,7 @@ export const GRANT_SUB_ROUTES: RouteInfo[] = [
 ];
 
 export const DISBURSEMENT_SUB_ROUTES: RouteInfo[] = [
-  { path: '/disbursements/in-progress', title: 'Requests', icon: 'grant.svg', class: '', divide: false },
+  { path: '/disbursements/in-progress', title: 'Requests', icon: 'disbursement.svg', class: '', divide: false },
   { path: '/disbursements/approved', title: 'Approved', icon: 'view_agenda', class: '', divide: false },
   { path: '/disbursements/closed', title: 'Disbursed', icon: 'preview.svg', class: '', divide: false }
 ];

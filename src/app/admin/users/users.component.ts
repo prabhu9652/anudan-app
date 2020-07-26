@@ -1,3 +1,4 @@
+import { MessagingComponent } from './../../components/messaging/messaging.component';
 import { AdminService } from './../../admin.service';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -41,7 +42,7 @@ export class UsersComponent implements OnInit {
     newEmail: string;
     newRole: Role;
     focusField: any;
-    roles: Role[];
+    @Input("roles") roles: Role[];
     filteredOptions: Observable<Role[]>;
     userFilteredOptions: Observable<Role[]>;
     myControl: FormControl;
@@ -116,7 +117,7 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to delete user ' + user.firstName + ' ' + user.lastName }
+            data: { title: 'Are you sure you want to delete ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : '') }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -157,29 +158,7 @@ export class UsersComponent implements OnInit {
 
     fetchRolesForUserOrg() {
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            })
-        };
-        const user = this.appComponent.loggedInUser;
-        const url = 'api/admin/user/' + user.id + '/role';
 
-        this.http.get(url, httpOptions).subscribe((roles: Role[]) => {
-            this.roles = roles;
-
-
-            const roles1 = this.roles.slice();
-            this.filteredOptions = this.myControl.valueChanges
-                .pipe(
-                    startWith(''),
-                    map(value => typeof value === 'string' ? value : value),
-                    map(name => name ? this._filter(name) : roles1)
-                );
-
-        });
     }
 
     private _filter(value: any): Role[] {
@@ -286,6 +265,24 @@ export class UsersComponent implements OnInit {
 
         this.http.get(url, httpOptions).subscribe((result: any) => {
             this.existingUser = result.exists;
+        });
+    }
+
+    reInviteUser(user: User, ev) {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const url = 'api/admin/user/' + this.appComponent.loggedInUser.id + '/reinvite/' + user.id;
+
+        this.http.get(url, httpOptions).subscribe((result: any) => {
+            this.dialog.open(MessagingComponent, {
+                data: 'This user has been re-invited to register with ' + user.organization.name,
+                panelClass: 'center-class'
+            });
         });
     }
 }

@@ -14,6 +14,10 @@ export class RolesComponent implements OnInit {
 
     @Input('roles') roles: Role[];
     focusField: any;
+    roleName: string;
+    roleDescription: string;
+    roleExists: boolean = false;
+    existingRole: Role;
 
 
     @ViewChild('createRoleBtn') createRoleBtn: ElementRef;
@@ -77,7 +81,16 @@ export class RolesComponent implements OnInit {
         });
     }
 
-    saveRole(role: Role) {
+    saveRole() {
+        if (!this.roles) {
+            this.roles = [];
+        }
+        let role = new Role();
+        role.id = 0;
+        role.name = this.roleName;
+        role.description = this.roleDescription;
+        role.editMode = true;
+        role.hasUsers = false;
         role.editMode = false;
 
         const httpOptions = {
@@ -91,6 +104,9 @@ export class RolesComponent implements OnInit {
         const url = 'api/admin/user/' + user.id + '/role';
         this.http.put(url, role, httpOptions).subscribe((roleReturned: Role) => {
             role = roleReturned;
+            this.roles.unshift(role);
+            this.roleName = undefined;
+            this.roleDescription = undefined;
         });
     }
 
@@ -101,5 +117,34 @@ export class RolesComponent implements OnInit {
         } else if (!createRoleButton.disabled) {
             createRoleButton.disabled = true;
         }
+    }
+
+    canCreateRole() {
+        if ((this.roleName !== undefined && this.roleName.trim() !== '') && !this.existingRole) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    validateRole(ev) {
+        const role = ev.target.value;
+        if (role === undefined || role === null || (role !== null && role.trim() === '')) {
+            return;
+        }
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/' + user.id + '/role/validate';
+
+        this.http.post(url, { roleName: role }, httpOptions).subscribe((result: any) => {
+            this.existingRole = result.exists;
+        });
     }
 }
