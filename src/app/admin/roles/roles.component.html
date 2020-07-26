@@ -1,14 +1,35 @@
 <div class="row mt-0 mx-0 py-4">
 
     <div class="col-9">
-        <h5 style="font-weight:bold;">Manage Roles</h5>
+        <h5 style="font-weight:bold;">Add Role</h5>
     </div>
-    <div class="col-3 text-right">
-        <button #createRoleBtn class="btn btn-sm btn-green float-right" (click)="createNewRole()">Create a Role
-            +</button>
+    <div class="col-12">
+        <div class="row" style="background:#f6f6f6;">
+            <div class="col-6 pt-3">
+                <mat-form-field>
+                    <input class="anu-input" [(ngModel)]="roleName" matInput type="text"
+                        placeholder="Enter a role name..." (blur)="validateRole($event)">
+                    <small class="text-danger" *ngIf="existingRole">Role with same name already exists</small>
+                </mat-form-field>
+            </div>
+            <div class="col-6 pt-3">
+                <mat-form-field>
+                    <input class="anu-input" [(ngModel)]="roleDescription" matInput type="text"
+                        placeholder="Enter description...">
+                </mat-form-field>
+            </div>
+            <div class="col-12 text-right">
+                <button class="btn btn-sm btn-green float-right" [disabled]="canCreateRole()" (click)="saveRole()">Save
+                    Role</button>
+            </div>
+        </div>
+
     </div>
     <div class="col-12">
         <hr />
+    </div>
+    <div class="col-12">
+        <h5 style="font-weight:bold;">Manage Roles</h5>
     </div>
     <div class="col-12">
         <mat-list style="background:#fff;">
@@ -25,7 +46,8 @@
                         style="font-size:14px;white-space: normal;">{{role.description}}</small></p>
                 <img *ngIf="!role.editMode" class="ml-5" src="./assets/img/edit.svg" (click)="editRole(role,$event)"
                     style="cursor: pointer;">
-                <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers" style="cursor: pointer;">
+                <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers"
+                    [ngStyle]="role.hasUsers?{'cursor': 'pointer','color':'#dee2e6'}:{'cursor': 'pointer','color':'#9f9f9f'}">
                     <mat-icon (click)="deleteRole(role)">delete_outline</mat-icon>
                 </button>
                 <mat-form-field *ngIf="role.editMode" matLine>
