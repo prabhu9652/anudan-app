@@ -117,7 +117,7 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user) {
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to delete ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : '') }
+            data: { title: 'Are you sure you want to disable ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : '') }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -126,6 +126,13 @@ export class UsersComponent implements OnInit {
                     this.users = data;
                 });
             }
+        });
+    }
+
+    unDeleteUser(user) {
+
+        this.adminService.unDeleteUser(user, this.appComponent.loggedInUser).then((data: User[]) => {
+            this.users = data;
         });
     }
 
