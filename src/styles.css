@@ -658,6 +658,12 @@ font-white {
   left: 150px !important;
 }
 
+.screen-center-class {
+  max-width: calc(100%) !important;
+  position: relative !important;
+  left: 0 !important;
+}
+
 .center-class-long {
   max-width: calc(90% - 200px) !important;
   position: relative !important;
