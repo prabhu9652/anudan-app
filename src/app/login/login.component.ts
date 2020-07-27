@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
   });
 
   @ViewChild('reCaptcha') reCaptcha: RecaptchaComponent;
+  cookieEnabled: boolean;
 
   constructor(private http: HttpClient,
     private router: Router,
@@ -52,6 +53,12 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService) {
+
+
+    this.cookieEnabled = navigator.cookieEnabled;
+    if (!this.cookieEnabled) {
+      this.router.navigate(['/nocookie']);
+    }
 
     this.host = localStorage.getItem('X-TENANT-CODE');
     this.activatedRoute.queryParams.subscribe(params => {

@@ -128,14 +128,7 @@ export class AppComponent implements AfterViewChecked {
 
     this.cookieEnabled = navigator.cookieEnabled;
     if (!this.cookieEnabled) {
-      const dgReg = this.dialog.open(MessagingComponent, {
-        data: "<p>Anudan relies on Cookies to function.</p> Please change your browser settings to accept 3rd Party cookies.",
-        panelClass: 'screen-center-class'
-      });
-
-      dgReg.afterClosed().subscribe(result => {
-        this.router.navigate(['/nocookie']);
-      });
+      this.router.navigate(['/nocookie']);
     }
     this.loggedIn = localStorage.getItem('AUTH_TOKEN') === null ? false : true;
 

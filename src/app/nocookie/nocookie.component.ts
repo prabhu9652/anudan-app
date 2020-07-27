@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NocookieComponent implements OnInit {
 
+  logoUrl = "/api/public/images/ANUDAN/logo";
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -15,7 +16,8 @@ export class NocookieComponent implements OnInit {
   }
 
   goToLogin() {
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
+    window.location.href = "/";
   }
 
 }
