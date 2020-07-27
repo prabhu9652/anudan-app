@@ -24,7 +24,8 @@
                     <a class="nav-link" [routerLink]="[menuItem.path]">
                         <!--<i class="material-icons">{{menuItem.icon}}</i>-->
                         <p><img src="./assets/img/{{menuItem.icon}}"
-                                [ngClass]="menuItem.title==='Dashboard'?'mr-2 ml-1':'mr-2'">{{menuItem.title}}</p>
+                                [ngClass]="menuItem.title==='Dashboard'?'mr-2':'mr-2'"
+                                [ngStyle]="menuItem.title==='Dashboard'?{'width':'24px'}:{}">{{menuItem.title}}</p>
                     </a>
                 </li>
 

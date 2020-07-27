@@ -1,19 +1,20 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {Role, User} from '../model/user';
-import {AppComponent} from '../app.component';
-import {AccessCredentials} from '../model/access-credentials';
+import { Role, User } from '../model/user';
+import { AppComponent } from '../app.component';
+import { AccessCredentials } from '../model/access-credentials';
 
-import {AuthService} from 'ng-social-login-module';
-import {GoogleLoginProvider, LinkedinLoginProvider} from 'ng-social-login-module';
-import {SocialUser} from 'ng-social-login-module';
-import {ToastrService} from 'ngx-toastr';
-import {Notifications} from '../model/dahsboard'
-import {interval} from 'rxjs';
+import { AuthService } from 'ng-social-login-module';
+import { GoogleLoginProvider, LinkedinLoginProvider } from 'ng-social-login-module';
+import { SocialUser } from 'ng-social-login-module';
+import { ToastrService } from 'ngx-toastr';
+import { Notifications } from '../model/dahsboard'
+import { interval } from 'rxjs';
 import { RecaptchaComponent } from 'ng-recaptcha';
+
 
 @Component({
   selector: 'app-login',
@@ -29,14 +30,14 @@ export class LoginComponent implements OnInit {
   headers: HttpHeaders;
   loggedIn: boolean;
   parameters: any;
-  logoURL:string;
+  logoURL: string;
   host: string;
-  currentEmail:string='';
+  currentEmail: string = '';
   orgName: string;
   canSignIn: boolean = false;
   reCaptchaResolved: boolean = false;
   showPassword: boolean = false;
-  recaptchaToken:string;
+  recaptchaToken: string;
   //recaptchaVisible = false;
   loginForm = new FormGroup({
     emailId: new FormControl('', Validators.email),
@@ -44,27 +45,34 @@ export class LoginComponent implements OnInit {
   });
 
   @ViewChild('reCaptcha') reCaptcha: RecaptchaComponent;
+  cookieEnabled: boolean;
 
   constructor(private http: HttpClient,
-              private router: Router,
-              public appComponent: AppComponent,
-              private authService: AuthService,
-              private activatedRoute: ActivatedRoute,
-              private toastr: ToastrService) {
+    private router: Router,
+    public appComponent: AppComponent,
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService) {
 
-              this.host = localStorage.getItem('X-TENANT-CODE');
-              this.activatedRoute.queryParams.subscribe(params => {
-                  this.parameters = params;
-              });
-              const tenantCode = localStorage.getItem('X-TENANT-CODE');
-              this.logoURL = "/api/public/images/"+tenantCode+"/logo";
 
-              const url = '/api/public/tenant/' + tenantCode;
-              this.http.get(url,{responseType: 'text'}).subscribe((orgName) => {
-                localStorage.setItem('ORG-NAME',orgName);
-                this.orgName = localStorage.getItem('ORG-NAME');
-              },error =>{
-              });
+    this.cookieEnabled = navigator.cookieEnabled;
+    if (!this.cookieEnabled) {
+      this.router.navigate(['/nocookie']);
+    }
+
+    this.host = localStorage.getItem('X-TENANT-CODE');
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.parameters = params;
+    });
+    const tenantCode = localStorage.getItem('X-TENANT-CODE');
+    this.logoURL = "/api/public/images/" + tenantCode + "/logo";
+
+    const url = '/api/public/tenant/' + tenantCode;
+    this.http.get(url, { responseType: 'text' }).subscribe((orgName) => {
+      localStorage.setItem('ORG-NAME', orgName);
+      this.orgName = localStorage.getItem('ORG-NAME');
+    }, error => {
+    });
   }
 
   signInWithGoogle(): void {
@@ -78,7 +86,7 @@ export class LoginComponent implements OnInit {
         password: '',
         provider: this.provider,
         role: 'user',
-        recaptchaToken:''
+        recaptchaToken: ''
       };
       this.signIn(user);
     });
@@ -90,20 +98,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
-  if(this.appComponent.loggedInUser){
-    this.appComponent.logout();
-  }
-  this.loginForm.valueChanges.subscribe(data => {
-    if(data.emailId===null || data.password===null || data.emailId.trim()==="" || data.password.trim()===""){
-    this.reCaptchaResolved = false;
+    if (this.appComponent.loggedInUser) {
+      this.appComponent.logout();
     }
-  });
+    this.loginForm.valueChanges.subscribe(data => {
+      if (data.emailId === null || data.password === null || data.emailId.trim() === "" || data.password.trim() === "") {
+        this.reCaptchaResolved = false;
+      }
+    });
 
-    
-    if(this.parameters.email){
-        this.currentEmail=this.parameters.email;
+
+    if (this.parameters.email) {
+      this.currentEmail = this.parameters.email;
     }
-    
+
 
   }
 
@@ -114,7 +122,7 @@ export class LoginComponent implements OnInit {
         return;
     }*/
     console.warn(this.loginForm.value);
-    const email = (this.emailId.value!==null && this.emailId.value!=="")?this.emailId.value:(this.currentEmail!==null && this.currentEmail!=="")?this.currentEmail:"";
+    const email = (this.emailId.value !== null && this.emailId.value !== "") ? this.emailId.value : (this.currentEmail !== null && this.currentEmail !== "") ? this.currentEmail : "";
     const user: AccessCredentials = {
       username: email,
       password: this.password.value,
@@ -147,35 +155,35 @@ export class LoginComponent implements OnInit {
 
     this.http.post<HttpResponse<User>>(url, user, httpOptions).subscribe(resp => {
 
-        const keys = resp.headers.keys();
-        // console.log(keys);
-        this.user = resp.body;
+      const keys = resp.headers.keys();
+      // console.log(keys);
+      this.user = resp.body;
 
 
-        localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
+      localStorage.setItem('AUTH_TOKEN', resp.headers.get('Authorization'));
 
-        this.user.permissions = new Array();
-        for (const userRole of this.user.userRoles) {
-          if (userRole.role.permissions) {
-            for (const perm of userRole.role.permissions) {
-              this.user.permissions.push(perm.permission);
-            }
+      this.user.permissions = new Array();
+      for (const userRole of this.user.userRoles) {
+        if (userRole.role.permissions) {
+          for (const perm of userRole.role.permissions) {
+            this.user.permissions.push(perm.permission);
           }
         }
-          localStorage.setItem('USER', '' + JSON.stringify(this.user));
-          this.appComponent.loggedInUser = this.user;
-        console.log(this.user);
+      }
+      localStorage.setItem('USER', '' + JSON.stringify(this.user));
+      this.appComponent.loggedInUser = this.user;
+      console.log(this.user);
 
-        if (this.user.organization.type === 'GRANTEE' || this.user.organization.type === 'GRANTER') {
-          if(this.parameters.g || this.parameters.r || this.parameters.d){
-            this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r,d:this.parameters.d, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
-          }else{
-            this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g,r: this.parameters.r,d:this.parameters.d, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'d' } });
-          }
+      if (this.user.organization.type === 'GRANTEE' || this.user.organization.type === 'GRANTER') {
+        if (this.parameters.g || this.parameters.r || this.parameters.d) {
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, r: this.parameters.r, d: this.parameters.d, email: this.parameters.email, org: this.parameters.org, type: this.parameters.type, status: 'e' } });
         } else {
-          this.router.navigate(['/admin/tenants'], { queryParams: { g: this.parameters.g,r: this.parameters.r,d:this.parameters.d, email: this.parameters.email,org:this.parameters.org,type:this.parameters.type,status:'e' } });
+          this.router.navigate(['/dashboard'], { queryParams: { g: this.parameters.g, r: this.parameters.r, d: this.parameters.d, email: this.parameters.email, org: this.parameters.org, type: this.parameters.type, status: 'd' } });
         }
-      },
+      } else {
+        this.router.navigate(['/admin/tenants'], { queryParams: { g: this.parameters.g, r: this.parameters.r, d: this.parameters.d, email: this.parameters.email, org: this.parameters.org, type: this.parameters.type, status: 'e' } });
+      }
+    },
       error => {
 
         const errorMsg = error as HttpErrorResponse;
@@ -195,32 +203,32 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['registration'])
   }
 
-  resolved(evt){
+  resolved(evt) {
     this.recaptchaToken = evt;
-    if(evt!=null){
-        this.reCaptchaResolved = true;
-    }else{
-        this.reCaptchaResolved = false;
+    if (evt != null) {
+      this.reCaptchaResolved = true;
+    } else {
+      this.reCaptchaResolved = false;
     }
   }
 
-    togglePassword(action:string){
-        if(action==='show'){
-            this.showPassword = true;
-        }else if(action==='hide'){
-            this.showPassword = false;
-        }
+  togglePassword(action: string) {
+    if (action === 'show') {
+      this.showPassword = true;
+    } else if (action === 'hide') {
+      this.showPassword = false;
     }
+  }
 
 
-    public noWhitespaceValidator(control: FormControl) {
-        let isWhitespace = (control.value || '').trim().length === 0;
-        let isValid = !isWhitespace;
-        return isValid ? null : { 'whitespace': true }
-    }
+  public noWhitespaceValidator(control: FormControl) {
+    let isWhitespace = (control.value || '').trim().length === 0;
+    let isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true }
+  }
 
-    requestPasswordReset(){
-        this.router.navigate(['/passwordreset'], { queryParams: { mail: this.loginForm.get('emailId').value} });
-    }
+  requestPasswordReset() {
+    this.router.navigate(['/passwordreset'], { queryParams: { mail: this.loginForm.get('emailId').value } });
+  }
 
 }

@@ -48,6 +48,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { FieldDialogComponent } from './components/field-dialog/field-dialog.component';
 import { OwnersPopupComponent } from './components/owners-popup/owners-popup.component';
 import { ProjectDocumentsComponent } from './components/project-documents/project-documents.component';
+import { NocookieComponent } from './nocookie/nocookie.component';
 
 export class AnudanErrorHandler implements ErrorHandler {
   constructor() { }
@@ -92,7 +93,8 @@ export function provideConfig() {
     FieldDialogComponent,
     ProjectDocumentsComponent,
     OwnersPopupComponent,
-    NotificationspopupComponent
+    NotificationspopupComponent,
+    NocookieComponent
   ],
   imports: [
     BrowserAnimationsModule,
