@@ -96,6 +96,7 @@ export class UsersComponent implements OnInit {
         const url = 'api/admin/user/' + this.appComponent.loggedInUser.id + '/user';
         this.http.post(url, newUser, httpOptions).subscribe((user: User) => {
             this.users.unshift(user);
+            this.appComponent.tenantUsers = this.users;
             this.toggleCreateUser();
             this.newEmail = undefined;
             this.newRole = undefined;
@@ -124,6 +125,7 @@ export class UsersComponent implements OnInit {
             if (result) {
                 this.adminService.deleteUser(user, this.appComponent.loggedInUser).then((data: User[]) => {
                     this.users = data;
+                    this.appComponent.tenantUsers = this.users;
                 });
             }
         });
@@ -133,6 +135,7 @@ export class UsersComponent implements OnInit {
 
         this.adminService.unDeleteUser(user, this.appComponent.loggedInUser).then((data: User[]) => {
             this.users = data;
+            this.appComponent.tenantUsers = this.users;
         });
     }
 
@@ -151,6 +154,7 @@ export class UsersComponent implements OnInit {
             user.editMode = false;
             const index = this.users.findIndex(u => u.id === user.id);
             this.users[index] = user;
+            this.appComponent.tenantUsers = this.users;
         });
     }
 

@@ -6,9 +6,29 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div>
-                    <div>Applications</div>
+            <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'"
+                class="col-lg-12 col-md-12 col-sm-12">
+                <p class="text-left"><span class="text-header">Applications</span>
+                    <small> (Coming soon)</small>
+                </p>
+                <div class="text-left py-3" style="border-radius: 4px;">
+                    <div>The Applications functionality allows for intake of structured responses to RFPs in the form of
+                        applications from grant seeking organizations. It enables easy collection of documents,
+                        clarifications with the grant seekers and implements the grant making organization’s business
+                        workflow for acceptance or rejection of the applications.</div>
+                </div>
+            </div>
+
+            <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTEE'"
+                class="col-lg-12 col-md-12 col-sm-12">
+                <p class="text-left"><span class="text-header">Applications</span>
+                    <small> (Coming soon)</small>
+                </p>
+                <div class="text-left py-3" style="border-radius: 4px;">
+                    <div>The Applications functionality allows for submission of grant seeking applications to grant
+                        makers. It enables easy submission of documents, clarifications with the grant makers and
+                        implements the grant making organization’s business workflow for acceptance or rejection of the
+                        applications.</div>
                 </div>
             </div>
         </div>

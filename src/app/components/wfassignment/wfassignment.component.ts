@@ -49,6 +49,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         if (this.data.model.users) {
+            this.data.model.users = this.data.model.users.filter(u => u.active);
             this.data.model.users.sort(function (a, b) { return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0); });
         }
         if (this.data.model.granteeUsers) {
@@ -873,7 +874,11 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 if (usr.length > 0 && usr[0].deleted && child.value === assignmentElems[i].value) {
                     console.log(assignmentElems[i]);
                     assignmentElems[i].style.textDecoration = 'line-through';
+                } else if (usr.length > 0 && !usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'none';
                 }
+
                 if (arr.includes(child.value)) {
                     child.setAttribute('disabled', 'disabled');
                 } else {
@@ -889,9 +894,9 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     }
 
     updateReportUsers() {
-        if (!environment.production) {
+        /* if (!environment.production) {
             return;
-        }
+        } */
         const assignmentElems = $('[id^="assignment_"]');
         for (let i = 2; i < assignmentElems.length; i++) {
             console.log(assignmentElems[i].getAttribute('data-counter'));
@@ -904,10 +909,22 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
             arr.push(next);
 
             for (let child of assignmentElems[i].children) {
+
+                const usr = this.data.model.users.filter(u => u.id === Number(child.value));
+                if (usr.length > 0 && usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'line-through';
+                } else if (usr.length > 0 && !usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'none';
+                }
+
                 if (arr.includes(child.value)) {
                     child.setAttribute('disabled', 'disabled');
                 } else {
-                    child.removeAttribute('disabled');
+                    if (usr.length > 0 && !usr[0].deleted) {
+                        child.removeAttribute('disabled');
+                    }
                 }
             }
 
@@ -954,10 +971,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 const assTokens = ass.id.split("_");
                 const assId = assTokens[1];
                 const orgAss = this.data.model.workflowAssignment.filter(a => a.id === Number(assId))[0];
-                if (orgAss.assignments == undefined) {
+                if (orgAss && orgAss.assignments == undefined) {
                     orgAss.assignments = 0;
                 }
-                if (orgAss.assignments !== undefined && orgAss.assignments !== Number(ass.value)) {
+                if (orgAss && orgAss.assignments !== undefined && orgAss.assignments !== Number(ass.value)) {
                     return true;
                 }
             }
