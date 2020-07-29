@@ -178,7 +178,7 @@ export class AdminLayoutComponent implements OnInit {
                         }
                     }
 
-                    for (let notif of notifications) {
+                    /* for (let notif of notifications) {
                         const plain = notif.message.match(/<a [^>]+>([^<]+)<\/a>/);
                         if (plain !== null) {
                             if (notif.notificationFor === "DISBURSEMENT") {
@@ -189,7 +189,7 @@ export class AdminLayoutComponent implements OnInit {
                                 notif.message = notif.message.replace(/<a[\s]+([^>]+)>((?:.(?!\<\/a\>))*.)<\/a>/g, " Click on <i>< GO TO REPORT > </i> button below to review");
                             }
                         }
-                    }
+                    } */
                     this.appComponent.notifications = notifications;
                     this.appComponent.unreadMessages = 0;
                     for (let notice of this.appComponent.notifications) {
@@ -566,6 +566,8 @@ export class AdminLayoutComponent implements OnInit {
                 } else {
                     if (disbursement.status.internalStatus === 'ACTIVE') {
                         this.appComponent.subMenu = { name: 'Approvals Active', action: 'ad' };
+                    } else if (disbursement.status.internalStatus === 'REVIEW') {
+                        this.appComponent.subMenu = { name: 'Approvals In-progress', action: 'id' };
                     } else if (disbursement.status.internalStatus === 'CLOSED') {
                         this.appComponent.subMenu = { name: 'Approvals Closed', action: 'cd' };
                     }
