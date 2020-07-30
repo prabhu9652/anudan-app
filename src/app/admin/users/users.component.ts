@@ -255,6 +255,9 @@ export class UsersComponent implements OnInit {
     setNewRole(user: User, ev) {
         console.log(ev);
         const newRole: Role = this.roles.filter(r => r.id === Number(ev.value))[0];
+        if (user.userRoles.length === 0) {
+            user.userRoles.push(new UserRole());
+        }
         user.userRoles[0].role = newRole;
 
     }
