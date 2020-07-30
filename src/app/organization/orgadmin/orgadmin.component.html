@@ -14,14 +14,14 @@
 
                 </div>
             </mat-tab>
-            <mat-tab label="Workflow">
+            <mat-tab label="Workflow" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
                 <div class="row text-left">
                     <div class="col-12 text-left">
                         <app-workflow-management></app-workflow-management>
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Templates">
+            <mat-tab label="Templates" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
                 <div class="row text-left">
                     <div class="col-12 text-left">
                         <app-templates></app-templates>
@@ -35,7 +35,7 @@
                 </div>
             </mat-tab>
 
-            <mat-tab label="App Configurations">
+            <mat-tab label="App Configurations" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
                 <div class="row text-left">
                     <div class="col-12">
                         <app-settings></app-settings>

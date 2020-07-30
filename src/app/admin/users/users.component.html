@@ -34,22 +34,28 @@
             <mat-list-item class="user-list-item-class" id="user_{{user.id}}" *ngFor="let user of users"
                 style="min-height:48px;height:auto;padding:8px 0;">
                 <div *ngIf="!user.editMode" class="row mb-2 w-100 mx-0" style="text-transform:none !important;">
-                    <div *ngIf="user.active" class="col-3">{{user.firstName}} {{user.lastName}}</div>
+                    <div *ngIf="user.active" class="col-3">
+                        {{user.firstName}} {{user.lastName}}
+                    </div>
                     <div *ngIf="!user.active" class="col-3"><small class="text-danger" style="min-width:125px;">Not
                             Registered</small></div>
-                    <div class="col-4 pl-0">{{user.emailId}}</div>
-                    <div [ngClass]="user.active?'col-4':'col-2'">
-                        <p *ngFor="let role of getRoles(user)">{{role.name}}<ng-container *ngIf="user.admin">/Admin
+                    <div class="col-3 pl-0">{{user.emailId}}</div>
+                    <div [ngClass]="user.active?'col-3':'col-2'">
+                        <p *ngFor="let role of getRoles(user)">{{role.name}}<ng-container *ngIf="user.admin"> [Admin]
                             </ng-container>
                         </p>
                     </div>
 
-                    <div [ngClass]="user.active?'col-1 pl-0 text-right':'col-3 pl-0 text-right'"
+                    <div [ngClass]="user.active?'col-3 pl-0 text-right':'col-4 pl-0 text-right'"
                         style="display: flex;flex-direction: row-reverse;align-items: center;color:#9f9f9f">
-                        <mat-icon (click)="deleteUser(user)" style="cursor: pointer;">delete_outline
-                        </mat-icon>
-
-                        <img *ngIf="user.active" class="mr-2" src="./assets/img/edit.svg"
+                        <!-- <mat-icon *ngIf="!user.deleted" (click)="deleteUser(user)" style="cursor: pointer;">
+                            delete_outline
+                        </mat-icon> -->
+                        <button *ngIf="!user.deleted" class="btn btn-sm btn-red" (click)="deleteUser(user)"><i
+                                class="fas fa-user-slash mr-2 text-red" style="cursor: pointer;"></i>Disable</button>
+                        <button *ngIf="user.deleted" class="btn btn-sm btn-green" (click)="unDeleteUser(user)"><i
+                                class=" fas fa-user-check mr-2 text-green" style="cursor: pointer;"></i>Enable</button>
+                        <img *ngIf="user.active && !user.deleted" class="mr-2" src="./assets/img/edit.svg"
                             (click)="editUser(user,$event)" style="cursor: pointer;">
                         <button (click)="reInviteUser(user,$event)" class="btn btn-sm btn-green"
                             *ngIf="!user.active">Re-Invite User</button>

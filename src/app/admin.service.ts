@@ -54,4 +54,18 @@ export class AdminService {
     });
   }
 
+  public unDeleteUser(user: User, loggedInUser: User): Promise<User[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + loggedInUser.id + '/user/' + user.id + '/undelete';
+    return this.http.get(url, httpOptions).toPromise().then<User[]>().catch(err => {
+      return Promise.reject('Could not undelete user');
+    });
+  }
+
 }

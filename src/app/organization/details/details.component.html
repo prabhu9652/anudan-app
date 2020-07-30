@@ -7,8 +7,27 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div>
-                    <div>Organization Details</div>
+                <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'"
+                    class="col-lg-12 col-md-12 col-sm-12">
+                    <p class="text-left"><span class="text-header">About
+                            {{appComp.loggedInUser.organization.name}}</span>
+                        <small> (Coming soon)</small>
+                    </p>
+                    <div class="text-left py-3" style="border-radius: 4px;">
+                        <div>This is placeholder to briefly describe the Organization, its purpose and objectives as a
+                            grant making organization.</div>
+                    </div>
+                </div>
+                <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTEE'"
+                    class="col-lg-12 col-md-12 col-sm-12">
+                    <p class="text-left"><span class="text-header">About
+                            {{appComp.loggedInUser.organization.name}}</span>
+                        <small> (Coming soon)</small>
+                    </p>
+                    <div class=" bg-white text-left p-3" style="border-radius: 4px;">
+                        <div>This is placeholder to briefly describe the Organization, its purpose, objectives and the
+                            causes it supports as a grant seeking organization.</div>
+                    </div>
                 </div>
             </div>
         </div>

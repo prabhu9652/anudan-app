@@ -49,6 +49,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         if (this.data.model.users) {
+            this.data.model.users = this.data.model.users.filter(u => u.active);
             this.data.model.users.sort(function (a, b) { return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0); });
         }
         if (this.data.model.granteeUsers) {
@@ -154,6 +155,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                             }
                             let username = option.firstName + ' ' + option.lastName + this.getRoles(option);
 
+                            if (option.deleted) {
+                                username = '[Disabled] ' + username;
+                                this.renderer.setAttribute(nodeOwnerOptions, 'disabled', 'disabled');
+                            }
                             this.renderer.appendChild(nodeOwnerOptions, document.createTextNode(username));
                             this.renderer.appendChild(nodeOwner, nodeOwnerOptions);
 
@@ -324,6 +329,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                                 }
                                 let username = option.firstName + ' ' + option.lastName + this.getRoles(option);
 
+                                if (option.deleted) {
+                                    username = '[Disabled] ' + username;
+                                    this.renderer.setAttribute(nodeOwnerOptions, 'disabled', 'disabled');
+                                }
                                 this.renderer.appendChild(nodeOwnerOptions, document.createTextNode(username));
                                 this.renderer.appendChild(nodeOwner, nodeOwnerOptions);
 
@@ -347,7 +356,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                                             this.renderer.setAttribute(nodeOwnerOptions, 'selected', 'selected');
                                         }
                                         let username = (!option.active ? ('Unregistered: ' + option.emailId) : option.firstName + ' ' + option.lastName) + ' [' + option.organization.name + ']';
-
+                                        if (option.deleted) {
+                                            username = '[Disabled] ' + username;
+                                            this.renderer.setAttribute(nodeOwnerOptions, 'disabled', 'disabled');
+                                        }
                                         this.renderer.appendChild(nodeOwnerOptions, document.createTextNode(username));
                                         this.renderer.appendChild(nodeOwner, nodeOwnerOptions);
                                     }
@@ -361,7 +373,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                                             this.renderer.setAttribute(nodeOwnerOptions, 'selected', 'selected');
                                         }
                                         let username = (!option.active ? ('Unregistered: ' + option.emailId) : option.firstName + ' ' + option.lastName) + ' [' + option.organization.name + ']';
-
+                                        if (option.deleted) {
+                                            username = '[Disabled] ' + username;
+                                            this.renderer.setAttribute(nodeOwnerOptions, 'disabled', 'disabled');
+                                        }
                                         this.renderer.appendChild(nodeOwnerOptions, document.createTextNode(username));
                                         this.renderer.appendChild(nodeOwner, nodeOwnerOptions);
                                     }
@@ -528,6 +543,11 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
 
                             let username = option.firstName + ' ' + option.lastName + this.getRoles(option);
 
+                            if (option.deleted) {
+                                username = '[Disabled] ' + username;
+                                this.renderer.setAttribute(nodeOwnerOptions, 'disabled', 'disabled');
+                            }
+
                             this.renderer.appendChild(nodeOwnerOptions, document.createTextNode(username));
                             this.renderer.appendChild(nodeOwner, nodeOwnerOptions);
 
@@ -603,39 +623,39 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     handleSelection(event: any): boolean | void {
 
         this.updateGrantAndDisbursementUsers();
-        if (!environment.production) {
+        /* if (!environment.production) {
             return;
-        }
+        } */
 
-        const options = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
-        const previousOptions = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
+        // const options = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
+        // const previousOptions = (<HTMLOptionElement>event.currentTarget).parentElement.parentElement.previousElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild;
 
-        if (previousOptions !== null && previousOptions.children.length > 0) {
-            for (var i = 0; i < previousOptions.children.length; i++) {
-                if (event.currentTarget.value === (<HTMLOptionElement>previousOptions[i]).value && event.currentTarget.value !== "0") {
-                    previousOptions[i].setAttribute("disabled", "disabled");
-                    //options[i].setAttribute("selected", "selected");
-                } /* else {
-                    previousOptions[i].removeAttribute("disabled");
-                } */
+        // if (previousOptions !== null && previousOptions.children.length > 0) {
+        //     for (var i = 0; i < previousOptions.children.length; i++) {
+        //         if (event.currentTarget.value === (<HTMLOptionElement>previousOptions[i]).value && event.currentTarget.value !== "0") {
+        //             previousOptions[i].setAttribute("disabled", "disabled");
+        //             //options[i].setAttribute("selected", "selected");
+        //         } /* else {
+        //             previousOptions[i].removeAttribute("disabled");
+        //         } */
 
-            }
-        }
+        //     }
+        // }
 
-        if (options !== null && options.children.length > 0) {
-            for (var i = 0; i < options.children.length; i++) {
-                if (event.currentTarget.value === (<HTMLOptionElement>options[i]).value && event.currentTarget.value !== "0") {
-                    options[i].setAttribute("disabled", "disabled");
-                    //options[i].setAttribute("selected", "selected");
-                    /* if (event.currentTarget.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.value === event.currentTarget.value) {
-                        event.currentTarget.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.value = "0";
-                    } */
+        // if (options !== null && options.children.length > 0) {
+        //     for (var i = 0; i < options.children.length; i++) {
+        //         if (event.currentTarget.value === (<HTMLOptionElement>options[i]).value && event.currentTarget.value !== "0") {
+        //             options[i].setAttribute("disabled", "disabled");
+        //             //options[i].setAttribute("selected", "selected");
+        //             /* if (event.currentTarget.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.value === event.currentTarget.value) {
+        //                 event.currentTarget.parentElement.parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.value = "0";
+        //             } */
 
-                } else {
-                    options[i].removeAttribute("disabled");
-                }
-            }
-        }
+        //         } else {
+        //             options[i].removeAttribute("disabled");
+        //         }
+        //     }
+        // }
     }
 
     ngOnDestroy() {
@@ -835,9 +855,9 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     }
 
     updateGrantAndDisbursementUsers() {
-        if (!environment.production) {
+        /* if (!environment.production) {
             return;
-        }
+        } */
         const assignmentElems = $('[id^="assignment_"]');
         for (let i = 0; i < assignmentElems.length; i++) {
             console.log(assignmentElems[i].getAttribute('data-counter'));
@@ -850,10 +870,23 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
             arr.push(next);
 
             for (let child of assignmentElems[i].children) {
+                const usr = this.data.model.users.filter(u => u.id === Number(child.value));
+                if (usr.length > 0 && usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'line-through';
+                } else if (usr.length > 0 && !usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'none';
+                }
+
                 if (arr.includes(child.value)) {
                     child.setAttribute('disabled', 'disabled');
                 } else {
-                    child.removeAttribute('disabled');
+
+                    if (usr.length > 0 && !usr[0].deleted) {
+                        child.removeAttribute('disabled');
+                    }
+                    //child.removeAttribute('disabled');
                 }
             }
 
@@ -861,9 +894,9 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     }
 
     updateReportUsers() {
-        if (!environment.production) {
+        /* if (!environment.production) {
             return;
-        }
+        } */
         const assignmentElems = $('[id^="assignment_"]');
         for (let i = 2; i < assignmentElems.length; i++) {
             console.log(assignmentElems[i].getAttribute('data-counter'));
@@ -876,10 +909,22 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
             arr.push(next);
 
             for (let child of assignmentElems[i].children) {
+
+                const usr = this.data.model.users.filter(u => u.id === Number(child.value));
+                if (usr.length > 0 && usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'line-through';
+                } else if (usr.length > 0 && !usr[0].deleted && child.value === assignmentElems[i].value) {
+                    console.log(assignmentElems[i]);
+                    assignmentElems[i].style.textDecoration = 'none';
+                }
+
                 if (arr.includes(child.value)) {
                     child.setAttribute('disabled', 'disabled');
                 } else {
-                    child.removeAttribute('disabled');
+                    if (usr.length > 0 && !usr[0].deleted) {
+                        child.removeAttribute('disabled');
+                    }
                 }
             }
 
@@ -926,10 +971,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 const assTokens = ass.id.split("_");
                 const assId = assTokens[1];
                 const orgAss = this.data.model.workflowAssignment.filter(a => a.id === Number(assId))[0];
-                if (orgAss.assignments == undefined) {
+                if (orgAss && orgAss.assignments == undefined) {
                     orgAss.assignments = 0;
                 }
-                if (orgAss.assignments !== undefined && orgAss.assignments !== Number(ass.value)) {
+                if (orgAss && orgAss.assignments !== undefined && orgAss.assignments !== Number(ass.value)) {
                     return true;
                 }
             }
