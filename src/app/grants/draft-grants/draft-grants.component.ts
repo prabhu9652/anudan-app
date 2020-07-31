@@ -1,3 +1,4 @@
+import { CurrencyService } from './../../currency-service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { User } from '../../model/user';
@@ -17,6 +18,10 @@ import { FieldDialogComponent } from '../../components/field-dialog/field-dialog
 import { TitleCasePipe } from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
+import {
+  HumanizeDurationLanguage,
+  HumanizeDuration,
+} from "humanize-duration-ts";
 
 @Component({
   selector: 'app-draft-grants',
@@ -57,6 +62,9 @@ export class DraftGrantsComponent implements OnInit {
   grantsActive = [];
   grantsClosed = [];
   logoURL: string;
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+  deleteGrantEvent: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -69,7 +77,8 @@ export class DraftGrantsComponent implements OnInit {
     private dataService: DataService,
     private grantUpdateService: GrantUpdateService,
     private dialog: MatDialog,
-    private titlecasePipe: TitleCasePipe) {
+    private titlecasePipe: TitleCasePipe,
+    private currencyService: CurrencyService) {
   }
 
   ngOnInit() {
@@ -213,6 +222,9 @@ export class DraftGrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
+    if (this.deleteGrantEvent) {
+      return;
+    }
     if ((grant.workflowAssignment.filter(wf => wf.stateId === grant.grantStatus.id && wf.assignments === this.appComponent.loggedInUser.id).length > 0) && this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE' && (grant.grantStatus.internalStatus !== 'ACTIVE' && grant.grantStatus.internalStatus !== 'CLOSED')) {
       grant.canManage = true;
     } else {
@@ -234,12 +246,14 @@ export class DraftGrantsComponent implements OnInit {
   }
 
   deleteGrant(grant: Grant) {
+    this.deleteGrantEvent = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: "Are you sure you want to delete this grant?" },
       panelClass: 'center-class'
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.deleteGrantEvent = false;
       if (result) {
         const httpOptions = {
           headers: new HttpHeaders({
@@ -322,4 +336,5 @@ export class DraftGrantsComponent implements OnInit {
   getFormattedGrantAmount(amount: number): string {
     return inf.format(amount, 2);
   }
+
 }

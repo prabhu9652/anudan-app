@@ -23,32 +23,68 @@
                             style="border-bottom:1px solid #d4d4d4 ;border-radius: 8px;cursor: pointer;"
                             *ngFor="let grant of grantsClosed; let i = index" (click)="manageGrant(grant)">
                             <div class="col-10 text-left">
-
-                                <p *ngIf="!grant.referenceNo" style="font-size: 18px;"><b>{{grant.name}}</b></p>
-                                <p *ngIf="grant.referenceNo" style="font-size: 18px;"><b>{{grant.referenceNo}}</b> |
+                                <p class="text-header" *ngIf="!grant.referenceNo" style="font-size: 18px;">
+                                    {{grant.name}}</p>
+                                <p class="text-header" *ngIf="grant.referenceNo" style="font-size: 18px;">
+                                    {{grant.referenceNo}} |
                                     <b>{{grant.name}}</b></p>
-                                <p class="mb-0">₹ <span
-                                        class="text-header">{{getFormattedGrantAmount(grant.amount)}}</span></p>
-                                <p class="text-subheader"> {{getGrantAmountInWords(grant.amount)}}</p>
+                            </div>
+                            <div class="col-2 text-right">
+                                <div><span
+                                        [class]="'badge text-white state-' + grant.grantStatus.internalStatus.toLowerCase()"
+                                        style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-5 text-left" style="border-right:1px solid #d4d4d4">
                                 <div class="row">
-                                    <div class="col-6 text-subheader">
-                                        {{grant.organization?grant.organization.name:null}}
-                                    </div>
-                                    <div class="col-6 text-left text-subheader">
-                                        <p>
-                                            <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>
-                                            {{grant.startDate | date:'dd-MMM-yyyy'}}
-                                            <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
-                                            <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>
-                                            {{grant.endDate | date:'dd-MMM-yyyy'}}
+                                    <div class=col-12>
+                                        <p class="mb-0">
+                                            ₹ <span
+                                                class="text-header mr-4">{{getFormattedGrantAmount(grant.amount)}}</span>
+                                            <small class="mb-0">{{getGrantAmountInWords(grant.amount)}}</small>
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <span
-                                    [class]="'badge text-white pull-right state-' + grant.grantStatus.internalStatus.toLowerCase()"
-                                    style="color:#000 !important;">{{grant.grantStatus.displayName}}</span>
+                            <div class="col-6 text-left">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-0 text-subheader">
+                                            <mat-icon [inline]=" true" class="mr-1">calendar_today</mat-icon>
+                                            {{grant.startDate | date:'dd-MMM-yyyy'}}
+                                            <mat-icon [inline]="true" class="mx-2">keyboard_arrow_right</mat-icon>
+                                            <mat-icon [inline]="true" class="mr-1">calendar_today</mat-icon>
+                                            {{grant.endDate | date:'dd-MMM-yyyy'}}
+                                            <small class="ml-2">({{data.getDateDuration(grant)}})</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2 text-left">
+                                <div class="row">
+                                    <div class="col-5 text-subheader" style="border-right:1px solid #d4d4d4">Disbursed
+                                        <small>(till
+                                            date)</small>:<strong>
+                                            {{grant.approvedDisbursementsTotal===0?'none':currencyService.getFormattedAmount(grant.approvedDisbursementsTotal)}}</strong>
+                                        <small class="ml-2"
+                                            *ngIf="grant.approvedDisbursementsTotal>0">{{currencyService.getAmountInWords(grant.approvedDisbursementsTotal)}}</small>
+                                    </div>
+                                    <div class="col-3 text-subheader" style="border-right:1px solid #d4d4d4">Project
+                                        Documents:<strong>
+                                            {{grant.projectDocumentsCount===0?'none':grant.projectDocumentsCount}}</strong>
+                                    </div>
+                                    <div class="col-4 text-left">
+                                        <div class=" text-subheader">
+                                            {{grant.organization?grant.organization.name:null}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-2" style="display: flex;align-items: center;justify-content: flex-end;">
+                                <button *ngIf="grant.canManage && grant.grantStatus.internalStatus==='DRAFT'"
+                                    class="btn btn-sm btn-red mx-0" (click)="deleteGrant(grant)">Delete</button>
                             </div>
                         </div>
                     </div>

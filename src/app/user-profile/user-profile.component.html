@@ -52,7 +52,7 @@
               </label>
               <label for="profilePic" style="cursor: pointer;">
                 <img style="max-width: 120px;" *ngIf="user.userProfile===undefined || user.userProfile===null"
-                  (click)="loadImage()" class="img-fluid" src="./assets/img/profile-placeholder.jpg" style="width:60%;">
+                  (click)="loadImage()" class="img-fluid" src="./assets/img/avatar.svg" style="width:60%;">
               </label>
               <input id="profilePic" type="file" accept="image/x-png" (change)="processProfilePic($event)"
                 style="visibility: hidden;">
