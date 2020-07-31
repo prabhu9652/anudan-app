@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {User} from '../model/user';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ErrorMessage} from '../model/error-message';
-import {AppComponent} from '../app.component';
-import {ToastrService,IndividualConfig} from 'ngx-toastr';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { User } from '../model/user';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { ErrorMessage } from '../model/error-message';
+import { AppComponent } from '../app.component';
+import { ToastrService, IndividualConfig } from 'ngx-toastr';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 declare var $: any;
 
@@ -12,7 +12,7 @@ declare var $: any;
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
-  styles:[`
+  styles: [`
         ::ng-deep .mat-tooltip  {
             white-space: pre-line    !important;
             text-align: left;
@@ -23,7 +23,7 @@ declare var $: any;
 export class UserProfileComponent implements OnInit {
 
   user: User;
-  constructor(private http: HttpClient, private elem: ElementRef,private router: Router, private appComp: AppComponent,private toastr: ToastrService) {}
+  constructor(private http: HttpClient, private elem: ElementRef, private router: Router, private appComp: AppComponent, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('USER'));
@@ -52,9 +52,9 @@ export class UserProfileComponent implements OnInit {
       return;
     }
     const pattern: RegExp = /(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[\@#\$%].*).{8,}/;
-    if(!pattern.test(newPwdElem.value) || !pattern.test(repeatPwdElem.value)){
-        alert('Your new and repeat passwords do not match the allowed pattern');
-        return;
+    if (!pattern.test(newPwdElem.value) || !pattern.test(repeatPwdElem.value)) {
+      alert('Your new and repeat passwords do not match the allowed pattern');
+      return;
     }
     const httpOptions = {
       headers: new HttpHeaders({
@@ -70,45 +70,45 @@ export class UserProfileComponent implements OnInit {
         alert(result.message);
       } else {
         url = '/api/users/' + this.user.id + '/pwd';
-        this.http.post(url, [oldPwdElem.value,newPwdElem.value,repeatPwdElem.value], httpOptions).subscribe((user: User) => {
+        this.http.post(url, [oldPwdElem.value, newPwdElem.value, repeatPwdElem.value], httpOptions).subscribe((user: User) => {
           localStorage.removeItem('USER');
           localStorage.setItem('USER', JSON.stringify(user));
           this.appComp.loggedInUser = user;
           const changePwdModalElem = this.elem.nativeElement.querySelector('#changePwdModal');
-          oldPwdElem.value='';
-          newPwdElem.value='';
-          repeatPwdElem.value='';
+          oldPwdElem.value = '';
+          newPwdElem.value = '';
+          repeatPwdElem.value = '';
           $(changePwdModalElem).modal('hide');
           this.appComp.logout();
-        },error => {
-                                      const errorMsg = error as HttpErrorResponse;
-                                      console.log(error);
-                                      const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                      const config: Partial<IndividualConfig> = x;
-                                      if(errorMsg.error.message==='Token Expired'){
-                                       this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                       setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                      } else {
-                                       this.toastr.error(errorMsg.error.message,"Error", config);
-                                      }
+        }, error => {
+          const errorMsg = error as HttpErrorResponse;
+          console.log(error);
+          const x = { 'enableHtml': true, 'preventDuplicates': true } as Partial<IndividualConfig>;
+          const config: Partial<IndividualConfig> = x;
+          if (errorMsg.error.message === 'Token Expired') {
+            this.toastr.error("Your session has expired", 'Logging you out now...', config);
+            setTimeout(() => { this.appComp.logout(); }, 4000);
+          } else {
+            this.toastr.error(errorMsg.error.message, "Error", config);
+          }
 
 
-                                    });
+        });
       }
-    },error => {
-                                  const errorMsg = error as HttpErrorResponse;
-                                  console.log(error);
-                                  const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                                  const config: Partial<IndividualConfig> = x;
-                                  if(errorMsg.error.message==='Token Expired'){
-                                   this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                                   setTimeout( () => { this.appComp.logout(); }, 4000 );
-                                  } else {
-                                   this.toastr.error(errorMsg.error.message,"20 We encountered an error", config);
-                                  }
+    }, error => {
+      const errorMsg = error as HttpErrorResponse;
+      console.log(error);
+      const x = { 'enableHtml': true, 'preventDuplicates': true } as Partial<IndividualConfig>;
+      const config: Partial<IndividualConfig> = x;
+      if (errorMsg.error.message === 'Token Expired') {
+        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+        setTimeout(() => { this.appComp.logout(); }, 4000);
+      } else {
+        this.toastr.error(errorMsg.error.message, "20 We encountered an error", config);
+      }
 
 
-                                });
+    });
   }
 
 
@@ -122,44 +122,58 @@ export class UserProfileComponent implements OnInit {
       })
     };
 
-    const url = '/api/users/'+this.user.id;
+    const url = '/api/users/' + this.user.id;
     this.http.put(url, this.user, httpOptions).subscribe((user: User) => {
       localStorage.removeItem('USER');
 
       user.permissions = new Array();
-              for (const userRole of user.userRoles) {
-                if (userRole.role.permissions) {
-                  for (const perm of userRole.role.permissions) {
-                    user.permissions.push(perm.permission);
-                  }
-                }
-              }
+      for (const userRole of user.userRoles) {
+        if (userRole.role.permissions) {
+          for (const perm of userRole.role.permissions) {
+            user.permissions.push(perm.permission);
+          }
+        }
+      }
       this.appComp.loggedInUser = user;
       localStorage.setItem('USER', JSON.stringify(user));
-    },error => {
-                             const errorMsg = error as HttpErrorResponse;
-                             console.log(error);
-                             const x = {'enableHtml': true,'preventDuplicates': true} as Partial<IndividualConfig>;
-                             const config: Partial<IndividualConfig> = x;
-                             if(errorMsg.error.message==='Token Expired'){
-                              this.toastr.error("Your session has expired", 'Logging you out now...', config);
-                              setTimeout( () => { this.appComp.logout(); }, 4000 );
-                             } else {
-                              this.toastr.error(errorMsg.error.message,"21 We encountered an error", config);
-                             }
+    }, error => {
+      const errorMsg = error as HttpErrorResponse;
+      console.log(error);
+      const x = { 'enableHtml': true, 'preventDuplicates': true } as Partial<IndividualConfig>;
+      const config: Partial<IndividualConfig> = x;
+      if (errorMsg.error.message === 'Token Expired') {
+        this.toastr.error("Your session has expired", 'Logging you out now...', config);
+        setTimeout(() => { this.appComp.logout(); }, 4000);
+      } else {
+        this.toastr.error(errorMsg.error.message, "21 We encountered an error", config);
+      }
 
 
-                           });
+    });
   }
 
-  getStringFromHtml(text){
-        const html = text;
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        return div.textContent || div.innerText || '';
+  getStringFromHtml(text) {
+    const html = text;
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
   }
 
-  loadImage(){
+  loadImage() {
     console.log("image selection");
+  }
+
+  processProfilePic(ev) {
+    const file: File = ev.target.files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.user.userProfile = reader.result.toString();
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+
   }
 }
