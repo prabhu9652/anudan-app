@@ -267,14 +267,15 @@
                                       " class="anu-input" />
                                   </mat-form-field>
                                 </td>
-                                <ng-container *ngFor="
+                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                  <ng-container *ngFor="
                                     let column of attribute.fieldTableValue[0]
                                       .columns;
                                     let i = index
                                   ">
-                                  <td style="border: 1px solid #e4e4e4;">
-                                    <mat-form-field>
-                                      <mat-icon *ngIf="
+                                    <td style="border: 1px solid #e4e4e4;">
+                                      <mat-form-field>
+                                        <mat-icon *ngIf="
                                           attribute.fieldTableValue[0].columns
                                             .length > 1
                                         " (click)="
@@ -294,14 +295,15 @@
                                           cursor: pointer;
                                           top: 3px;
                                         " aria-label="Example home icon" inline="false" title="Delete this column">
-                                        delete_outline
-                                      </mat-icon>
-                                      <label>Column Label</label>
-                                      <input id="column_{{ column.id }}" matInput [(ngModel)]="column.name"
-                                        class="anu-input" [ngModelOptions]="{ standAlone: true }"
-                                        (ngModelChange)="checkGrant()" />
-                                    </mat-form-field>
-                                  </td>
+                                          delete_outline
+                                        </mat-icon>
+                                        <label>Column Label</label>
+                                        <input id="column_{{ column.id }}" matInput [(ngModel)]="column.name"
+                                          class="anu-input" [ngModelOptions]="{ standAlone: true }"
+                                          (ngModelChange)="checkGrant()" />
+                                      </mat-form-field>
+                                    </td>
+                                  </ng-container>
                                 </ng-container>
                               </tr>
                               <ng-container *ngFor="
@@ -378,17 +380,19 @@
                                   ">
                                   <label class="m-0"><span>Planned Installment #</span></label>
                                 </td>
-                                <ng-container *ngFor="
+                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                  <ng-container *ngFor="
                                     let column of attribute.fieldTableValue[0]
                                       .columns;
                                     let i = index
                                   ">
-                                  <td align="center" [width]="
+                                    <td align="center" [width]="
                                       column.name === 'Notes' ? '' : '15%'
                                     " valign="middle" style="border: 1px solid #e4e4e4;">
-                                    <label class="m-0 text-center p-2"
-                                      style="font-weight: 400; font-size: 14px;">{{ column.name }}</label>
-                                  </td>
+                                      <label class="m-0 text-center p-2"
+                                        style="font-weight: 400; font-size: 14px;">{{ column.name }}</label>
+                                    </td>
+                                  </ng-container>
                                 </ng-container>
                               </tr>
                               <ng-container *ngFor="
@@ -484,33 +488,37 @@
                                 <td align="center" class="py-2">
                                   <b>TOTALS:</b>
                                 </td>
-                                <td *ngFor="
+                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                  <td *ngFor="
                                     let column of attribute.fieldTableValue[0]
                                       .columns;
                                     let j = index
                                   " valign="middle">
-                                  <p class="text-right pr-3 my-0" *ngIf="column.dataType === 'currency'">
-                                    <b>{{
+                                    <p class="text-right pr-3 my-0" *ngIf="column.dataType === 'currency'">
+                                      <b>{{
                                       getTotals(j, attribute.fieldTableValue)
                                     }}</b>
-                                  </p>
-                                </td>
+                                    </p>
+                                  </td>
+                                </ng-container>
                               </tr>
                               <tr *ngIf="attribute.fieldTableValue.length > 1" style="background: #f9f9f9;">
                                 <td align="center">
                                   <b style="color: #949494;">Planned Project Fund:</b>
                                 </td>
-                                <td *ngFor="
+                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                  <td *ngFor="
                                     let column of attribute.fieldTableValue[0]
                                       .columns;
                                     let j = index
                                   " valign="middle">
-                                  <p class="text-right pr-3 my-0" *ngIf="column.dataType === 'currency'">
-                                    <b style="color: #949494;">{{
+                                    <p class="text-right pr-3 my-0" *ngIf="column.dataType === 'currency'">
+                                      <b style="color: #949494;">{{
                                       getCommittedGrantTotals(j)
                                     }}</b>
-                                  </p>
-                                </td>
+                                    </p>
+                                  </td>
+                                </ng-container>
                               </tr>
                             </table>
                           </div>
