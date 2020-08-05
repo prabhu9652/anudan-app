@@ -444,6 +444,7 @@ export class TemplateLibrary {
   location: string;
   version: number;
   granterId: number;
+  editMode: boolean = false;
 }
 
 export class FieldInfo {

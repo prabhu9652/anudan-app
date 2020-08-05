@@ -2,63 +2,79 @@
 
 
 <div class="row m-0 h-100" style="background:#F1F1F4;">
-    <div class="col-12" style="height: 90px; background: #424652; display: flex; align-items: center;">
-        <img [src]="logoURL" alt="logo" class="img-fluid" style="height: 80%; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;">
-        <span style="color:#fff; font-weight: 400;font-size: 25px;">{{orgName}}
-      </span>
-    </div>
+  <div class="col-12" style="height: 90px; background: #424652; display: flex; align-items: center;">
+    <img [src]="logoURL" alt="logo" class="img-fluid"
+      style="height: 80%; background: #fff; padding: 5px; margin: 5px 3px; border-radius: 2px;">
+    <span style="color:#fff; font-weight: 400;font-size: 25px;">{{orgName}}
+    </span>
+  </div>
   <div class="col-lg-7 col-md-12">
-    <img src="./assets/img/landing.svg">
+    <img src="./assets/img/landing2.svg" class="w-75 mt-4">
   </div>
   <div class="col-lg-5 col-md-12">
     <div style="display:flex;align-items:center;justify-content:center;">
 
-      <div *ngIf="sentStatus==='notsent'" class="card-body mx-lg-5 my-lg-5 bg-white" style="display:flex;flex-direction:column;">
+      <div *ngIf="sentStatus==='notsent'" class="card-body mx-lg-5 my-lg-5 bg-white"
+        style="display:flex;flex-direction:column;">
 
-          <!-- <label for="emailId">Email Id</label> -->
-          <form id="formRegistration" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-              <div class="my-2">
-                <input formControlName="emailId" required type="text" class="anu-input mb-3 w-100" id="emailId"
-                       placeholder="Email Id" >
-              </div>
-              <div class="row">
-                <div class="col-6 my-2">
-                  <input formControlName="firstName" required type="text" class="anu-input mb-3" id="firstName"
-                         placeholder="First Name">
-                </div>
-                <div class="col-6 my-2">
-                  <input formControlName="lastName" required type="text" class="anu-input mb-3" id="lastName"
-                         placeholder="Last Name">
-                </div>
-              </div>
-              <!-- <label for="password">Password</label> -->
-              <div class="input-group input-group-alternative form-group-email">
-                <input formControlName="pwd1" type="password" class="anu-input mb-3 w-100" id="password"
-                       placeholder="Password"  [matTooltipClass]="'tooltip-class'" matTooltip="Password must contain:&#13;- At least one digit,&#13;- One lowercase character,&#13;- One uppercase character,&#13;- One special symbols in the list @#$%, and &#13;- between 6-20 characters" matTooltipPosition="left">
+        <!-- <label for="emailId">Email Id</label> -->
+        <form id="formRegistration" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+          <div class="my-2">
+            <input formControlName="emailId" required type="text" class="anu-input mb-3 w-100" id="emailId"
+              placeholder="Email Id">
+          </div>
+          <div class="row">
+            <div class="col-6 my-2">
+              <input formControlName="firstName" required type="text" class="anu-input mb-3" id="firstName"
+                placeholder="First Name">
+            </div>
+            <div class="col-6 my-2">
+              <input formControlName="lastName" required type="text" class="anu-input mb-3" id="lastName"
+                placeholder="Last Name">
+            </div>
+          </div>
+          <!-- <label for="password">Password</label> -->
+          <div class="input-group input-group-alternative form-group-email">
+            <input formControlName="pwd1" type="password" class="anu-input mb-3 w-100" id="password"
+              placeholder="Password" [matTooltipClass]="'tooltip-class'"
+              matTooltip="Password must contain:&#13;- At least one digit,&#13;- One lowercase character,&#13;- One uppercase character,&#13;- One special symbols in the list @#$%, and &#13;- between 6-20 characters"
+              matTooltipPosition="left">
 
-              </div>
-              <div class="input-group input-group-alternative form-group-email">
-                <input formControlName="pwd2" type="password" class="anu-input mb-4 w-100" id="confirmPassword"
-                       placeholder="Confirm Password"  [matTooltipClass]="'tooltip-class'" matTooltip="Password must contain:&#13;- At least one digit,&#13;- One lowercase character,&#13;- One uppercase character,&#13;- One special symbols in the list @#$%, and &#13;- between 6-20 characters" matTooltipPosition="left">
+          </div>
+          <div class="input-group input-group-alternative form-group-email">
+            <input formControlName="pwd2" type="password" class="anu-input mb-4 w-100" id="confirmPassword"
+              placeholder="Confirm Password" [matTooltipClass]="'tooltip-class'"
+              matTooltip="Password must contain:&#13;- At least one digit,&#13;- One lowercase character,&#13;- One uppercase character,&#13;- One special symbols in the list @#$%, and &#13;- between 6-20 characters"
+              matTooltipPosition="left">
 
-              </div>
-              <re-captcha *ngIf="registrationForm.valid && passwordsMatch" (resolved)="resolved($event)" type="image" siteKey="6LdUFvYUAAAAADIq0DlLpSJgrbuCKtR7H7FcpnFn"></re-captcha>
-              <button [disabled]="!(registrationForm.valid && reCaptchaResolved)" class="btn anu-btn w-100 mx-0 mt-3" style="position: relative;background: #4DC252 !important;" type="submit" (click)="submit()">Register
-              </button>
-          </form>
+          </div>
+          <re-captcha *ngIf="registrationForm.valid && passwordsMatch" (resolved)="resolved($event)" type="image"
+            siteKey="6LdUFvYUAAAAADIq0DlLpSJgrbuCKtR7H7FcpnFn"></re-captcha>
+          <button [disabled]="!(registrationForm.valid && reCaptchaResolved)" class="btn anu-btn w-100 mx-0 mt-3"
+            style="position: relative;background: #4DC252 !important;" type="submit" (click)="submit()">Register
+          </button>
+        </form>
       </div>
-        <div *ngIf="sentStatus==='sending'" class="card-body mx-lg-5 mt-5 bg-white" style="min-height: 227px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
-            <img src="./assets/img/loader.gif" style="width:10%;">
-            Validating Request
-        </div>
-        <div *ngIf="sentStatus==='sent'" class="card-body mx-lg-5 mt-5 bg-white" style="min-height: 227px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
-            {{registrationStatusMessage}}
-            Please Sign back in.
-            <button class='btn anu-btn mt-4' (click)="goBackToLogin()" style="background: #4DC252 !important;">Back to Sign In</button>
-        </div>
+      <div *ngIf="sentStatus==='sending'" class="card-body mx-lg-5 mt-5 bg-white"
+        style="min-height: 227px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+        <img src="./assets/img/loader.gif" style="width:10%;">
+        Validating Request
+      </div>
+      <div *ngIf="sentStatus==='sent'" class="card-body mx-lg-5 mt-5 bg-white"
+        style="min-height: 227px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+        {{registrationStatusMessage}}
+        Please Sign back in.
+        <button class='btn anu-btn mt-4' (click)="goBackToLogin()" style="background: #4DC252 !important;">Back to Sign
+          In</button>
+      </div>
     </div>
-      <div class="text-center f-12">
-          <div class="w-100"><p style="color:#7d7d7d;font-size: 16px;"><small class="">Powered by Social Alpha <img src="./assets/img/avatar.png" alt="logo" class="img-fluid" style="width: 32px; padding: 5px; margin: 5px 0 0 0px; border-radius: 2px;">
-              <p style="color:#7d7d7d;font-size: 16px;"><small class="">{{appComponent.releaseVersion}}</small></p></small></p></div>
+    <div class="text-center f-12">
+      <div class="w-100">
+        <p style="color:#7d7d7d;font-size: 16px;"><small class="">Powered by Social Alpha <img
+              src="./assets/img/avatar.png" alt="logo" class="img-fluid"
+              style="width: 32px; padding: 5px; margin: 5px 0 0 0px; border-radius: 2px;">
+            <p style="color:#7d7d7d;font-size: 16px;"><small class="">{{appComponent.releaseVersion}}</small></p>
+          </small></p>
       </div>
-</div>
+    </div>
+  </div>

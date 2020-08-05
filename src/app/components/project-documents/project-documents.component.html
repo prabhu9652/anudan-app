@@ -22,8 +22,13 @@
     </div>
 
     <div class="col-sm-12 col-lg-12 text-left">
-      <div style="display: flex; align-items: baseline;" class="attachments-wrapper">
-        <div class="col-8 pl-0 pr-2">
+      <div class="row">
+        <div class="col-6">
+          <button class="btn btn-sm btn-green w-100" disabled>
+            <img src="./assets/img/library.svg" class="w-10 mr-2" style="width: 24px;" />Browse from library
+          </button>
+        </div>
+        <div class="col-6 pl-0 pr-2">
           <label for="projectDocument" class="btn btn-sm btn-green w-100 ml-0"><img src="./assets/img/computer.svg"
               class="w-10 mr-2" style="width: 24px;" />Browse from system</label>
           <input id="projectDocument" type="file" style="height: 0; visibility: hidden;" multiple (change)="

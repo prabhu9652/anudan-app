@@ -1,3 +1,4 @@
+import { TemplateLibrary, AttachmentDownloadRequest } from './model/dahsboard';
 import { User, Role } from './model/user';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -37,6 +38,66 @@ export class AdminService {
 
     return this.http.get(url, httpOptions).toPromise().then<User[]>().catch(err => {
       return Promise.reject('Could not retreive users');
+    });
+  }
+
+  public getLibraryDocs(user: User): Promise<TemplateLibrary[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/document-library';
+
+    return this.http.get(url, httpOptions).toPromise().then<TemplateLibrary[]>().catch(err => {
+      return Promise.reject('Could not retreive library docs');
+    });
+  }
+
+  public saveLibraryDoc(user: User, formData: any): Promise<TemplateLibrary> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/document-library';
+
+    return this.http.post(url, formData, httpOptions).toPromise().then<TemplateLibrary>().catch(err => {
+      return Promise.reject('Could not retreive library docs');
+    });
+  }
+
+  public downloadSelectedLibraryDocs(user: User, selectedAttachments: AttachmentDownloadRequest): Promise<void> {
+    const httpOptions = {
+      responseType: "blob" as "json",
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/document-library/download';
+
+    return this.http.post(url, selectedAttachments, httpOptions).toPromise().then<void>().catch(err => {
+      return Promise.reject('Could not retreive library docs');
+    });
+  }
+
+  public deleteSelectedLibraryDocs(user: User, selectedAttachments: AttachmentDownloadRequest): Promise<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/document-library/delete';
+
+    return this.http.post(url, selectedAttachments, httpOptions).toPromise().then<void>().catch(err => {
+      return Promise.reject('Could not retreive library docs');
     });
   }
 

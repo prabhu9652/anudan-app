@@ -87,6 +87,7 @@ import { ReportPreviewComponent } from '../../reports/report/report-preview/repo
 import { TemplatesComponent } from '../../admin/templates/templates.component';
 import { RolesComponent } from '../../admin/roles/roles.component';
 import { UsersComponent } from '../../admin/users/users.component';
+import { DocumentLibraryComponent } from '../../admin/document-library/document-library.component';
 import { InprogressDisbursementsComponent } from '../../disbursements/inprogress-disbursements/inprogress-disbursements.component'
 import { ApprovedDisbursementsComponent } from 'app/disbursements/approved-disbursements/approved-disbursements.component';
 import { ClosedDisbursementsComponent } from 'app/disbursements/closed-disbursements/closed-disbursements.component';
@@ -183,6 +184,7 @@ import { DisbursementNotesComponent } from 'app/components/disbursementNotes/dis
         TemplatesComponent,
         RolesComponent,
         UsersComponent,
+        DocumentLibraryComponent,
         InprogressDisbursementsComponent,
         ApprovedDisbursementsComponent,
         ClosedDisbursementsComponent,
