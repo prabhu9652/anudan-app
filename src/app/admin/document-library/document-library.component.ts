@@ -105,7 +105,7 @@ export class DocumentLibraryComponent implements OnInit {
 
           this.adminService.deleteSelectedLibraryDocs(this.appComponent.loggedInUser, selectedAttachments).then(() => {
             for (let a of selectedAttachments.attachmentIds) {
-              const index = this.docs.findIndex(d => d.id === a);
+              const index = this.docs.findIndex(d => d.id === Number(a));
               this.docs.splice(index, 1);
             }
           });
