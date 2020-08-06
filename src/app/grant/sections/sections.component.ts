@@ -1,3 +1,4 @@
+import { AdminService } from './../../admin.service';
 import {
   Component,
   ElementRef,
@@ -183,7 +184,8 @@ export class SectionsComponent
     private data: DataService,
     private cdr: ChangeDetectorRef,
     private attributeService: AttributeService,
-    public amountValidator: AmountValidator
+    public amountValidator: AmountValidator,
+    private adminService: AdminService
   ) {
     this.colors = new Colors();
 
@@ -215,6 +217,16 @@ export class SectionsComponent
       this.tenantUsers = config.tenantUsers;
       this.appComp.tenantUsers = config.tenantUsers;
     });
+
+    this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
+      this.options = data;
+      const docs = this.options ? this.options.slice() : [];
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(""),
+        map((value) => (typeof value === "string" ? value : value)),
+        map((name) => (name ? this._filter(name) : docs))
+      );
+    });
   }
 
   ngOnDestroy() {
@@ -239,16 +251,6 @@ export class SectionsComponent
     });
 
     this.myControl = new FormControl();
-
-    this.options = this.appComp.currentTenant.templateLibrary;
-
-    const docs = this.options ? this.options.slice() : [];
-    /*this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value),
-        map(name => name ? this._filter(name) : docs)
-      );*/
 
     this.subscribers.name = this.router.events.subscribe((val) => {
       if (val instanceof NavigationStart && val.url === "/grant/preview") {
@@ -290,11 +292,6 @@ export class SectionsComponent
       }
     }
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(""),
-      map((value) => (typeof value === "string" ? value : value)),
-      map((name) => (name ? this._filter(name) : docs))
-    );
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(

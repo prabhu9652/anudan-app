@@ -5,7 +5,9 @@
       <h4 class="col-11 text-left my-3 section-header">
         <div *ngIf="currentReport.canManage" style="display:flex;">
           <div *ngFor="let flow of currentReport.flowAuthorities">
-            <button [disabled]="wfDisabled" mat-stroked-button (click)="submitReport(flow.toStateId)" id="{{flow.action}}" [class]="flow.seqOrder===0?'mr-1 btn btn-sm btn-green-primary':'mr-1 btn btn-sm btn-green'">{{flow.action}}</button>
+            <button [disabled]="wfDisabled" mat-stroked-button (click)="submitReport(flow.toStateId)"
+              id="{{flow.action}}"
+              [class]="flow.seqOrder===0?'mr-1 btn btn-sm btn-green-primary':'mr-1 btn btn-sm btn-green'">{{flow.action}}</button>
           </div>
         </div>
       </h4>
@@ -14,12 +16,19 @@
           <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
         <mat-icon mat-button [matMenuTriggerFor]="menu" class="float-right" style="cursor:pointer;">more_vert</mat-icon>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="saveAs(currentReport.name+'.pdf')"><mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF</button>
-          <button mat-menu-item (click)="showHistory('report',currentReport)"><mat-icon class="ml-1">comment</mat-icon>Notes</button>
-          <button mat-menu-item (click)="showWFAssigments()"><mat-icon class="ml-1">assignment</mat-icon>Assignments</button>
+          <button mat-menu-item (click)="saveAs(currentReport.name+'.pdf')">
+            <mat-icon class="ml-1">picture_as_pdf</mat-icon>Export PDF
+          </button>
+          <button mat-menu-item (click)="showHistory('report',currentReport)">
+            <mat-icon class="ml-1">comment</mat-icon>Notes
+          </button>
+          <button mat-menu-item (click)="showWFAssigments()">
+            <mat-icon class="ml-1">assignment</mat-icon>Assignments
+          </button>
           <ng-container>
             <hr>
-            <button mat-menu-item (click)="manageGrant()"><img class="ml-2 mr-3" style="width:20px;height:20px;" src="./assets/img/dp.svg">View Grant</button>
+            <button mat-menu-item (click)="manageGrant()"><img class="ml-2 mr-3" style="width:20px;height:20px;"
+                src="./assets/img/dp.svg">View Grant</button>
           </ng-container>
         </mat-menu>
       </div>
@@ -34,12 +43,14 @@
 
       <!--MANAGEMENT SECTION-->
 
-      <kendo-pdf-export #pdf paperSize="A4" forcePageBreak=".page-break" [margin]="{top: '2cm', bottom: '3cm', right: '2cm', left: '2cm'}" [imageResolution]="200" [scale]="0.7" [repeatHeaders]="true">
+      <kendo-pdf-export #pdf paperSize="A4" forcePageBreak=".page-break"
+        [margin]="{top: '2cm', bottom: '3cm', right: '2cm', left: '2cm'}" [imageResolution]="200" [scale]="0.7"
+        [repeatHeaders]="true">
         <div class="row w-100" id="reportSummary">
           <div class="col-11 mb-2 pb-2" style="border-bottom: 3px solid #a6a6a6">
             <div class="row">
               <div class="col-3">
-                <img [src]="logoUrl" alt="logo" class="img-fluid"/>
+                <img [src]="logoUrl" alt="logo" class="img-fluid" />
               </div>
               <div class="col-9 text-left pl-3" style="display: flex;align-items: center;">
                 <div class="row">
@@ -47,7 +58,9 @@
                     <h4 class="m-0" type="text" autocomplete="off"><b>{{currentReport.name}}</b></h4>
                   </div>
                   <div class="col-12 text-left">
-                    <span data-html2canvas-ignore [class]="'badge state-' + currentReport.status.internalStatus.toLowerCase()" style="color:#000 !important;" matBadgeSize="medium">{{currentReport.status.displayName}}</span>
+                    <span data-html2canvas-ignore
+                      [class]="'badge state-' + currentReport.status.internalStatus.toLowerCase()"
+                      style="color:#000 !important;" matBadgeSize="medium">{{currentReport.status.displayName}}</span>
                   </div>
                 </div>
 
@@ -59,7 +72,9 @@
             <div class="row">
               <div class="col-12 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Name:</span>
-                <div class="ml-0 mb-3"><b>{{(currentReport.grant.referenceNo?currentReport.grant.referenceNo+' | ':'') + currentReport.grant.name}}</b></div>
+                <div class="ml-0 mb-3">
+                  <b>{{(currentReport.grant.referenceNo?currentReport.grant.referenceNo+' | ':'') + currentReport.grant.name}}</b>
+                </div>
               </div>
               <div class="col-3 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Start Date:</span>
@@ -71,16 +86,19 @@
               </div>
               <div class="col-6 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization:</span>
-                <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3"><b>{{currentReport.grant.organization.name}}</b></div>
+                <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3">
+                  <b>{{currentReport.grant.organization.name}}</b></div>
               </div>
               <div class="col-4 mb-2">
-                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization Representative:</span>
+                <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grantee Organization
+                  Representative:</span>
                 <div class="ml-0 mb-3"><b>{{currentReport.grant.representative}}</b></div>
               </div>
               <div class="col-7 mb-2">
                 <span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Amount:</span>
-                <div class="ml-0 mb-3" style="display: flex; align-items: center;"><b><img src="./assets/img/rupee.png" style="width:9px;">{{getFormattedGrantAmount(currentReport.grant.amount)}}&nbsp;&nbsp;&nbsp;
-                  <small>{{getGrantAmountInWords(currentReport.grant.amount)}}</small></b>
+                <div class="ml-0 mb-3" style="display: flex; align-items: center;"><b><img src="./assets/img/rupee.png"
+                      style="width:9px;">{{getFormattedGrantAmount(currentReport.grant.amount)}}&nbsp;&nbsp;&nbsp;
+                    <small>{{getGrantAmountInWords(currentReport.grant.amount)}}</small></b>
                 </div>
               </div>
 
@@ -108,20 +126,23 @@
           <div class="col-12">
 
             <ng-container *ngFor="let section of currentReport.reportDetails.sections">
-              <hr/>
+              <hr />
               <h5>
-                <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{section.sectionName.toLocaleUpperCase()}}</span>
+                <span
+                  style="color: #929292;font-size: 13px;font-family:Roboto;">{{section.sectionName.toLocaleUpperCase()}}</span>
               </h5>
 
               <div>
                 <div class="row mb-2 mt-2">
                   <ng-container *ngFor="let attribute of section.attributes">
 
-                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"  class="mb-2">
+                    <ng-container *ngIf="attribute.fieldType==='multiline' || attribute.fieldType==='text'"
+                      class="mb-2">
 
                       <div class="col-sm-12 col-lg-12 text-left mb-3 text-justify">
                         <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
-                        <pre class="mt-1 text-justify"><b><p style="font-size:14px;" [innerHtml]="attribute.fieldValue"></p></b></pre>
+                        <pre
+                          class="mt-1 text-justify"><b><p style="font-size:14px;" [innerHtml]="attribute.fieldValue"></p></b></pre>
                       </div>
 
                     </ng-container>
@@ -134,31 +155,54 @@
                             <td colspan="5" style="padding: 5px">KPI</td>
                           </tr>
                           <tr>
-                            <td width="40%" style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{attribute.fieldName}}</b></td>
+                            <td width="40%" style="padding:5px;font-size: 14px;font-family:Roboto;">
+                              <b>{{attribute.fieldName}}</b></td>
                             <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
-                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level Goal:</span></td></tr>
-                                <tr><td><b>{{!attribute.grantLevelTarget?'Not Set':attribute.grantLevelTarget}}</b></td></tr>
-                              </table>
-                              </td>
-                            <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
-                              <table>
-                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Report Level Goal:</span></td></tr>
-                                <tr><td><b>{{attribute.target}}</b></td></tr>
+                                <tr>
+                                  <td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Grant Level
+                                      Goal:</span></td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{!attribute.grantLevelTarget?'Not Set':attribute.grantLevelTarget}}</b></td>
+                                </tr>
                               </table>
                             </td>
                             <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
                               <table>
-                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;" >Actual Goal Achieved:</span></td></tr>
-                                <tr><td><b>{{attribute.actualTarget}}</b></td></tr>
+                                <tr>
+                                  <td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Report Level
+                                      Goal:</span></td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{attribute.target}}</b></td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td style="font-size: 14px;font-family:Roboto;padding: 5px" valign="top">
+                              <table>
+                                <tr>
+                                  <td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Actual Goal
+                                      Achieved:</span></td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{attribute.actualTarget}}</b></td>
+                                </tr>
                               </table>
                             </td>
                             <td width="10%" style="font-size: 14px;font-family:Roboto;padding:5px;" valign="top">
                               <table>
-                                <tr><td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Frequency:</span></td></tr>
-                                <tr><td><b><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency==='adhoc'?'N/A':attribute.frequency | titlecase}}</b></b></td></tr>
+                                <tr>
+                                  <td><span style="color: #929292;font-size: 13px;font-family:Roboto;">Frequency:</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <b><b>{{attribute.frequency==='Half-yearly'?'Half-Yearly':attribute.frequency==='adhoc'?'N/A':attribute.frequency | titlecase}}</b></b>
+                                  </td>
+                                </tr>
                               </table>
-                              </td>
+                            </td>
                           </tr>
                         </table>
                         <!--<div class="row mx-2">
@@ -177,21 +221,22 @@
                     </ng-container>
                     <ng-container *ngIf="attribute.fieldType==='document'">
                       <div class="col-sm-12 col-lg-12 mb-3">
-                        <span  style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                        <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
                         <ul>
                           <li *ngFor="let doc of getDocumentName(attribute.fieldValue)" style="list-style-type:none;">
 
-                            <p class="m-0"  style="font-family:Roboto;font-size:14px;"><b>
-                              <ng-container *ngIf="doc.type === 'pdf'">
-                                <img src="./assets/img/pdf.png" style="width:20px;">
-                              </ng-container>
-                              <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                <img src="./assets/img/msexcel.png" style="width:20px;">
-                              </ng-container>
-                              <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                <img src="./assets/img/msword.png" style="width:20px;">
-                              </ng-container>
-                              {{doc.name}}</b></p>
+                            <p class="m-0" style="font-family:Roboto;font-size:14px;"><b>
+                                <ng-container *ngIf="doc.type === 'pdf'">
+                                  <img src="./assets/img/pdf.png" style="width:20px;">
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                  <img src="./assets/img/msexcel.png" style="width:20px;">
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                  <img src="./assets/img/msword.png" style="width:20px;">
+                                </ng-container>
+                                {{doc.name}}
+                              </b></p>
                           </li>
                         </ul>
                       </div>
@@ -199,15 +244,19 @@
                     </ng-container>
                     <ng-container *ngIf="attribute.fieldType=='table'">
                       <div class="col-sm-12 col-lg-12 mb-3">
-                        <span  style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                        <span style="color: #929292;font-size: 13px;font-family:Roboto;">{{attribute.fieldName}}</span>
                         <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
                           <tr>
                             <td>&nbsp;</td>
-                            <td  style="font-size: 14px;font-family:Roboto;padding:5px;text-align:center;" *ngFor="let col of attribute.fieldTableValue[0].columns"><b>{{col.name}}</b></td>
+                            <ng-container *ngIf="attribute.fieldTableValue[0]">
+                              <td style="font-size: 14px;font-family:Roboto;padding:5px;text-align:center;"
+                                *ngFor="let col of attribute.fieldTableValue[0].columns"><b>{{col.name}}</b></td>
+                            </ng-container>
                           </tr>
                           <tr *ngFor="let row of attribute.fieldTableValue">
-                            <td  style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{row.name}}</b></td>
-                            <td style="padding:5px;font-size: 14px;font-family:Roboto;" *ngFor="let rowVal of row.columns">
+                            <td style="padding:5px;font-size: 14px;font-family:Roboto;"><b>{{row.name}}</b></td>
+                            <td style="padding:5px;font-size: 14px;font-family:Roboto;"
+                              *ngFor="let rowVal of row.columns">
                               <b>{{rowVal.value}}</b>
                             </td>
                           </tr>
@@ -217,50 +266,62 @@
                     </ng-container>
 
                     <div class="col-sm-12 col-lg-12 mb-3" *ngIf="attribute.fieldType=='disbursement'">
-                      <span  style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
+                      <span style="color: #929292;font-size: 15px;font-family:Roboto;">{{attribute.fieldName}}</span>
                       <table width="100%" border="1" class="mb-3" style="font-family:Roboto;">
                         <tr>
                           <ng-container *ngIf="attribute.fieldTableValue">
-                          <td align="center" valign="middle" width="15%" style="padding:5px;font-size: 16px;font-family:Roboto;">
-                            <b>#</b>
-                          </td>
-                        </ng-container>
-                          <ng-container *ngIf="attribute.fieldTableValue">
-                          <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
-
-                            <td class="pl-2" style="padding:5px;font-size: 16px;font-family:Roboto;" align="center">
-                              <b>{{column.name}}</b>
+                            <td align="center" valign="middle" width="15%"
+                              style="padding:5px;font-size: 16px;font-family:Roboto;">
+                              <b>#</b>
                             </td>
                           </ng-container>
+                          <ng-container *ngIf="attribute.fieldTableValue[0]">
+                            <ng-container *ngFor="let column of attribute.fieldTableValue[0].columns, let i = index">
+
+                              <td class="pl-2" style="padding:5px;font-size: 16px;font-family:Roboto;" align="center">
+                                <b>{{column.name}}</b>
+                              </td>
+                            </ng-container>
                           </ng-container>
                         </tr>
                         <ng-container *ngIf="attribute.fieldTableValue">
-                        <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
-                          <tr>
-                            <td style="padding:5px;font-size: 16px;font-family:Roboto;" align="center">
-                              {{row.name}}
-                            </td>
-                            <ng-container *ngFor="let column of row.columns,let j = index">
-                              <td align="right" *ngIf="j===1 || j===2" style="min-width:150px;padding:5px;font-size: 16px;font-family:Roboto;" >
-                                <ng-container *ngIf="column.dataType==='currency'">{{getFormattedCurrency(column.value)}}</ng-container>
+                          <ng-container *ngFor="let row of attribute.fieldTableValue, let i = index">
+                            <tr>
+                              <td style="padding:5px;font-size: 16px;font-family:Roboto;" align="center">
+                                {{row.name}}
                               </td>
-                              <td *ngIf="j!==1 && j!==2 && column.name!=='Notes'" style="padding:5px;font-size: 16px;font-family:Roboto;" >
-                                <ng-container>{{column.value}}</ng-container>
-                              </td>
-                              <td *ngIf="j!==1 && j!==2 && column.name==='Notes'" width="35%" style="padding:5px;font-size: 16px;font-family:Roboto;" >
-                                <ng-container>{{column.value}}</ng-container>
+                              <ng-container *ngFor="let column of row.columns,let j = index">
+                                <td align="right" *ngIf="j===1 || j===2"
+                                  style="min-width:150px;padding:5px;font-size: 16px;font-family:Roboto;">
+                                  <ng-container *ngIf="column.dataType==='currency'">
+                                    {{getFormattedCurrency(column.value)}}</ng-container>
+                                </td>
+                                <td *ngIf="j!==1 && j!==2 && column.name!=='Notes'"
+                                  style="padding:5px;font-size: 16px;font-family:Roboto;">
+                                  <ng-container>{{column.value}}</ng-container>
+                                </td>
+                                <td *ngIf="j!==1 && j!==2 && column.name==='Notes'" width="35%"
+                                  style="padding:5px;font-size: 16px;font-family:Roboto;">
+                                  <ng-container>{{column.value}}</ng-container>
+                                </td>
+                              </ng-container>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="attribute.fieldTableValue">
+                          <tr
+                            *ngIf="attribute.fieldTableValue.length>1 || currentReport.grant.approvedReportsDisbursements.length >1"
+                            style="background:#f4f4f4;">
+                            <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Totals:</b></td>
+                            <ng-container *ngIf="attribute.fieldTableValue[0]">
+                              <td align="right" style="padding:5px;font-size: 16px;font-family:Roboto;"
+                                *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index"
+                                valign="middle">
+                                <b
+                                  *ngIf="column.dataType==='currency'">{{getDisbursementTotals(j,attribute.fieldTableValue)}}</b>
                               </td>
                             </ng-container>
                           </tr>
-                        </ng-container>
-                        </ng-container>
-                        <ng-container *ngIf="attribute.fieldTableValue">
-                        <tr *ngIf="attribute.fieldTableValue.length>1 || currentReport.grant.approvedReportsDisbursements.length >1" style="background:#f4f4f4;">
-                          <td style="padding:5px;font-size: 16px;font-family:Roboto;"><b>Totals:</b></td>
-                          <td align="right" style="padding:5px;font-size: 16px;font-family:Roboto;" *ngFor="let column of attribute.fieldTableValue[0].columns,let j = index" valign="middle">
-                            <b *ngIf="column.dataType==='currency'">{{getDisbursementTotals(j,attribute.fieldTableValue)}}</b>
-                          </td>
-                        </tr>
                         </ng-container>
                       </table>
                     </div>
@@ -271,7 +332,7 @@
             </ng-container>
           </div>
           <div data-html2canvas-ignore class="col-12">
-            <hr/>
+            <hr />
             <h5>
               ATTACHMENTS
             </h5>
@@ -285,17 +346,18 @@
                       <div class="col-sm-12 col-lg-12 mb-3">
                         <ng-container *ngFor="let doc of getDocumentName(attribute.fieldValue)">
                           <a (click)="downloadAttachment(currentReport.id,doc.id,doc.name,doc.type)">
-                                                <span class="ml-3">
-                                                    <ng-container *ngIf="doc.type === 'pdf'">
-                                                        <img src="./assets/img/pdf.png" style="width:20px;">
-                                                    </ng-container>
-                                                    <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                                        <img src="./assets/img/msexcel.png" style="width:20px;">
-                                                    </ng-container>
-                                                    <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                                        <img src="./assets/img/msword.png" style="width:20px;">
-                                                    </ng-container>
-                                                    {{doc.name}}</span></a><br>
+                            <span class="ml-3">
+                              <ng-container *ngIf="doc.type === 'pdf'">
+                                <img src="./assets/img/pdf.png" style="width:20px;">
+                              </ng-container>
+                              <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
+                                <img src="./assets/img/msexcel.png" style="width:20px;">
+                              </ng-container>
+                              <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
+                                <img src="./assets/img/msword.png" style="width:20px;">
+                              </ng-container>
+                              {{doc.name}}
+                            </span></a><br>
                         </ng-container>
                       </div>
 
@@ -410,7 +472,7 @@
 
 
 <div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -426,8 +488,7 @@
         </div>
       </div>
       <div class="">
-        <button type="button" class="btn btn-primary pull-right"
-                (click)="saveSection()">Done
+        <button type="button" class="btn btn-primary pull-right" (click)="saveSection()">Done
         </button>
         <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Close</button>
 

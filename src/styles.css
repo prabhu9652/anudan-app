@@ -4,7 +4,7 @@ html,
 body {
   height: 100%;
   background-color: #fff;
-  font-size: 0.95em;
+  font-size: 14px;
   -webkit-font-smoothing: subpixel-antialiased;
 }
 
@@ -243,7 +243,7 @@ body {
 
 .mat-form-field {
   font-family: "Lato", sans-serif;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .mat-form-field-label {
@@ -436,12 +436,12 @@ font-white {
   color: #3f51b5 !important;
 }
 .text-header {
-  font-size: 18px !important;
+  font-size: 14px !important;
   font-weight: bold;
 }
 
 .text-header-light {
-  font-size: 18px !important;
+  font-size: 14px !important;
   font-weight: bold;
   color: #757575;
 }
@@ -641,7 +641,7 @@ font-white {
 
 .section-header {
   font-weight: bold;
-  font-size: 28px;
+  font-size: 16px;
   color: #0e100e;
 }
 

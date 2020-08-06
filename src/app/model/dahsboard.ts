@@ -268,6 +268,8 @@ export class Grant {
   approvedReportsDisbursements: TableData[];
   referenceNo: string;
   hasOngoingDisbursement: boolean;
+  projectDocumentsCount: number;
+  approvedDisbursementsTotal: number;
 }
 
 export class GrantSnapshot {
@@ -442,6 +444,7 @@ export class TemplateLibrary {
   location: string;
   version: number;
   granterId: number;
+  editMode: boolean = false;
 }
 
 export class FieldInfo {

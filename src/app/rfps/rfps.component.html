@@ -5,17 +5,26 @@
 
             </div>
         </div>
-        <div class="row">
+        <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'" class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <p class="text-left"><span class="text-header">Request for Proposals</span>
                     <small> (Coming soon)</small>
                 </p>
                 <div class="text-left py-3" style="border-radius: 4px;">
-                    <div>The Request for Proposals functionality allows grant making organizations the ability to
-                        create
-                        open or time bound proposals based on agreed purpose and criteria and help improve the
-                        quality
+                    <div>The Request for Proposals functionality allows grant making organizations the ability to create
+                        open or time bound proposals based on agreed purpose and criteria and help improve the quality
                         of the grant applications.</div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTEE'" class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <p class="text-left"><span class="text-header">Request for Proposals</span>
+                    <small> (Coming soon)</small>
+                </p>
+                <div class="text-left py-3" style="border-radius: 4px;">
+                    <div>The Request for Proposals area allows the ability to see all active request for proposals from
+                        multiple grant making organizations using Anudan.</div>
                 </div>
             </div>
         </div>

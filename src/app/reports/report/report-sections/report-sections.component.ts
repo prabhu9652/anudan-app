@@ -1,3 +1,4 @@
+import { AdminService } from './../../../admin.service';
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   ActivatedRoute,
@@ -156,7 +157,8 @@ export class ReportSectionsComponent implements OnInit {
     private attributeService: AttributeService,
     private currencyService: CurrencyService,
     public amountValidator: AmountValidator,
-    private disbursementService: DisbursementDataService
+    private disbursementService: DisbursementDataService,
+    private adminService: AdminService
   ) {
     this.route.params.subscribe((p) => {
       this.action = p["action"];
@@ -187,18 +189,24 @@ export class ReportSectionsComponent implements OnInit {
       this.appComp.tenantUsers = config.tenantUsers;
       this.appComp.reportTransitions = config.reportTransitions;
     });
+
+    this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
+      this.options = data;
+
+      const docs = this.options.slice();
+
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(""),
+        map((value) => (typeof value === "string" ? value : value)),
+        map((name) => (name ? this._filter(name) : docs))
+      );
+    });
   }
 
   ngOnInit() {
     this.myControl = new FormControl();
-    this.options = this.appComp.appConfig.templateLibrary;
-    const docs = this.options.slice();
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(""),
-      map((value) => (typeof value === "string" ? value : value)),
-      map((name) => (name ? this._filter(name) : docs))
-    );
+
 
     this.appComp.createNewReportSection.subscribe((val) => {
       if (val) {
