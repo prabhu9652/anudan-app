@@ -43,6 +43,7 @@ export class OrgadminComponent implements OnInit {
         } else if (ev.tab.textLabel === 'Library') {
             this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
                 this.docs = data;
+                this.appComp.currentTenant.templateLibrary = this.docs;
             });
         }
     }

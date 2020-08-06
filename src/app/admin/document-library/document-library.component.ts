@@ -107,6 +107,7 @@ export class DocumentLibraryComponent implements OnInit {
             for (let a of selectedAttachments.attachmentIds) {
               const index = this.docs.findIndex(d => d.id === Number(a));
               this.docs.splice(index, 1);
+              this.appComponent.currentTenant.templateLibrary = this.docs;
             }
           });
         }
@@ -160,6 +161,7 @@ export class DocumentLibraryComponent implements OnInit {
 
     this.adminService.saveLibraryDoc(this.appComponent.loggedInUser, formData).then((result: TemplateLibrary) => {
       this.docs.unshift(result);
+      this.appComponent.currentTenant.templateLibrary = this.docs;
     });
 
   }
