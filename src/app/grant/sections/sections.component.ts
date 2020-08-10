@@ -218,6 +218,7 @@ export class SectionsComponent
       this.appComp.tenantUsers = config.tenantUsers;
     });
 
+    this.myControl = new FormControl();
     this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
       this.options = data;
       const docs = this.options ? this.options.slice() : [];
@@ -250,7 +251,7 @@ export class SectionsComponent
       }
     });
 
-    this.myControl = new FormControl();
+
 
     this.subscribers.name = this.router.events.subscribe((val) => {
       if (val instanceof NavigationStart && val.url === "/grant/preview") {
@@ -1595,7 +1596,7 @@ export class SectionsComponent
       }
     }
 
-    /* const httpOptions = {
+    const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
@@ -1652,7 +1653,7 @@ export class SectionsComponent
             );
           }
         }
-      ); */
+      );
   }
 
   addColumn(attr: Attribute) {

@@ -486,20 +486,18 @@
                         </div>
                         <div class="col-sm-12 col-lg-12 text-left" *ngIf="attribute.fieldType === 'disbursement'">
                           <div id="tableArea" class="row" style="padding-left: 15px; padding-right: 15px;">
-                            <ng-container *ngIf="getGrantDisbursementAttribute()">
-                              <p class="text-header">Planned Project Funds</p>
-                              <table id="tablePlaceholderX" width="100%">
-                                <tr style="background: #f9f9f9;">
-                                  <td align="center" valign="middle" width="10%" style="border: 1px solid #e4e4e4;">
-                                    <label class="m-0"><span>Planned Installment #</span></label>
-                                  </td>
-                                  <ng-container *ngIf="getGrantDisbursementAttribute().fieldTableValue[0]">
-                                    <ng-container *ngFor="
+                            <p class="text-header">Planned Project Funds</p>
+                            <table id="tablePlaceholderX" width="100%">
+                              <tr style="background: #f9f9f9;">
+                                <td align="center" valign="middle" width="10%" style="border: 1px solid #e4e4e4;">
+                                  <label class="m-0"><span>Planned Installment #</span></label>
+                                </td>
+                                <ng-container *ngFor="
                                       let column of getGrantDisbursementAttribute()
                                         .fieldTableValue[0].columns;
                                       let i = index
                                     ">
-                                      <td align="center" valign="middle" [ngStyle]="
+                                  <td align="center" valign="middle" [ngStyle]="
                                         column.name ===
                                         'Funds from other Sources'
                                           ? {
@@ -508,32 +506,31 @@
                                             }
                                           : { border: '1px solid #e4e4e4' }
                                       " width="10%">
-                                        <label class="m-0 text-center p-2 m-0" style="
+                                    <label class="m-0 text-center p-2 m-0" style="
                                           font-weight: 400;
                                           font-size: 14px;
                                         ">{{ column.name }}</label>
-                                      </td>
-                                    </ng-container>
-                                  </ng-container>
-                                </tr>
-                                <ng-container *ngFor="
+                                  </td>
+                                </ng-container>
+                              </tr>
+                              <ng-container *ngFor="
                                     let row of getGrantDisbursementAttribute()
                                       .fieldTableValue;
                                     let i = index
                                   ">
-                                  <tr>
-                                    <td width="10%">
-                                      <p class="anu-input m-0 text-center" style="background: #f4f4f4 !important;">
-                                        <label class="w-100 m-0">{{
+                                <tr>
+                                  <td width="10%">
+                                    <p class="anu-input m-0 text-center" style="background: #f4f4f4 !important;">
+                                      <label class="w-100 m-0">{{
                                           row.name
                                         }}</label>
-                                      </p>
-                                    </td>
-                                    <ng-container *ngFor="
+                                    </p>
+                                  </td>
+                                  <ng-container *ngFor="
                                         let column of row.columns;
                                         let j = index
                                       ">
-                                      <td [width]="
+                                    <td [width]="
                                           column.name === 'Notes'
                                             ? '20%'
                                             : '12%'
@@ -543,59 +540,57 @@
                                             ? { background: 'transparent' }
                                             : {}
                                         ">
-                                        <p *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="
+                                      <p *ngIf="!column.dataType" class="anu-input m-0 w-100 m-0" style="
                                             background: #f4f4f4 !important;
                                           ">
-                                          {{ column.value }}
-                                        </p>
-                                        <p *ngIf="column.dataType === 'currency'" class="anu-input w-100 text-right m-0"
-                                          style="
+                                        {{ column.value }}
+                                      </p>
+                                      <p *ngIf="column.dataType === 'currency'" class="anu-input w-100 text-right m-0"
+                                        style="
                                             background: #f4f4f4 !important;
                                           ">
-                                          {{
+                                        {{
                                             getFormattedCurrency(column.value)
                                           }}
-                                        </p>
-                                      </td>
-                                    </ng-container>
-                                  </tr>
-                                </ng-container>
-                                <tr *ngIf="
+                                      </p>
+                                    </td>
+                                  </ng-container>
+                                </tr>
+                              </ng-container>
+                              <tr *ngIf="
                                     getGrantDisbursementAttribute()
                                       .fieldTableValue.length > 1
                                   " style="background: #f4f4f4;">
-                                  <td class="py-2" align="center" style="
+                                <td class="py-2" align="center" style="
                                       position: sticky;
                                       left: 0;
                                       z-index: 1;
                                     ">
-                                    <label class="w-100" style="font-weight: 600;">TOTAL:</label>
-                                  </td>
-                                  <ng-container *ngIf="getGrantDisbursementAttribute().fieldTableValue[0]">
-                                    <td *ngFor="
+                                  <label class="w-100" style="font-weight: 600;">TOTAL:</label>
+                                </td>
+                                <ng-container *ngIf="getGrantDisbursementAttribute().fieldTableValue[0]">
+                                  <td *ngFor="
                                       let column of getGrantDisbursementAttribute()
                                         .fieldTableValue[0].columns;
                                       let j = index
                                     " valign="middle">
-                                      <label class="text-right pr-3 my-0 w-100"
-                                        *ngIf="column.dataType === 'currency'"><b>{{
+                                    <label class="text-right pr-3 my-0 w-100" *ngIf="column.dataType === 'currency'"><b>{{
                                         getTotals(
                                           j,
                                           getGrantDisbursementAttribute()
                                             .fieldTableValue
                                         )
                                       }}</b></label>
-                                    </td>
-                                  </ng-container>
-                                </tr>
-                                <!--tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
+                                  </td>
+                                </ng-container>
+                              </tr>
+                              <!--tr *ngIf="getGrantDisbursementAttribute().fieldTableValue.length>1" style="background:#f4f4f4;">
                                   <td align="center" style="position: sticky; left: 0; z-index: 1;"><b>Committed Grant Amount:</b></td>
                                   <td *ngFor="let column of getGrantDisbursementAttribute().fieldTableValue[0].columns,let j = index" valign="middle">
                                     <p class="text-right pr-3 my-0" *ngIf="column.dataType==='currency'"><b>{{getCommittedGrantTotals(j)}}</b></p>
                                   </td>
                                 </tr-->
-                              </table>
-                            </ng-container>
+                            </table>
                           </div>
 
                           <div id="tableArea" class="row dibursements-class mt-4"
@@ -618,7 +613,7 @@
                                     <label class="m-0">#</label>
                                   </td>
                                 </ng-container>
-                                <ng-container *ngIf="attribute.fieldTableValue[0]">
+                                <ng-container *ngIf="attribute.fieldTableValue && attribute.fieldTableValue[0]">
                                   <ng-container *ngFor="
                                       let column of attribute.fieldTableValue[0]
                                         .columns;
@@ -641,7 +636,7 @@
                                   </ng-container>
                                 </ng-container>
                               </tr>
-                              <ng-container *ngIf="attribute.fieldTableValue">
+                              <ng-container *ngIf="attribute.fieldTableValue && attribute.fieldTableValue.length>0">
                                 <ng-container *ngFor="
                                     let row of attribute.fieldTableValue;
                                     let i = index
