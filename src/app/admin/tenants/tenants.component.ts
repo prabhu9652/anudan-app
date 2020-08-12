@@ -1,3 +1,5 @@
+import { Organization } from './../../model/dahsboard';
+import { AdminService } from './../../admin.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AppComponent } from '../../app.component';
@@ -10,6 +12,7 @@ import { AppComponent } from '../../app.component';
 export class TenantsComponent implements OnInit {
 
   tenant: string;
+  referenceOrgs: Organization[];
 
   @ViewChild("tenantName") tenantNameElem: ElementRef;
   @ViewChild("tenantAdmin") tenantAdminElem: ElementRef;
@@ -18,8 +21,19 @@ export class TenantsComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private appComp: AppComponent
-  ) { }
+    private appComp: AppComponent,
+    private adminService: AdminService
+  ) {
+
+    adminService.getReferenceOrgs(appComp.loggedInUser).then((orgs: Organization[]) => {
+      this.referenceOrgs = orgs;
+      for (let i = 0; i < this.referenceOrgs.length; i++) {
+        if (this.referenceOrgs[i] === null) {
+          this.referenceOrgs.splice(i, 1);
+        }
+      }
+    });
+  }
 
   ngOnInit() { }
 
