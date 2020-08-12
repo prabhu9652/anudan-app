@@ -1,4 +1,4 @@
-import { TemplateLibrary, AttachmentDownloadRequest } from './model/dahsboard';
+import { TemplateLibrary, AttachmentDownloadRequest, Organization } from './model/dahsboard';
 import { User, Role } from './model/user';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -129,4 +129,18 @@ export class AdminService {
     });
   }
 
+  public getReferenceOrgs(user: User): Promise<Organization[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/reference-orgs';
+
+    return this.http.get(url, httpOptions).toPromise().then<Organization[]>().catch(err => {
+      return Promise.reject('Could not retreive reference orgs');
+    });
+  }
 }

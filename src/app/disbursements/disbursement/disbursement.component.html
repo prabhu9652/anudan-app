@@ -252,7 +252,7 @@
                   placeholder="Disbursement Amount Requested:" [(ngModel)]="currentDisbursement.requestedAmount"
                   type="number" (keypress)="amountValidator.validatePositive($event)" />
                 <p #disbursementAmountFormatted (click)="showAmountInput($event)" class="anu-input w-100 text-right"
-                  style="position: absolute; top: 7px; cursor: text;" [innerHtml]="
+                  style="position: absolute; top: 5px; cursor: text;" [innerHtml]="
                     currencyService.getFormattedAmount(
                       currentDisbursement.requestedAmount
                     )

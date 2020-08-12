@@ -178,7 +178,7 @@
                 [ngModelOptions]="{ standAlone: true }" (ngModelChange)="checkGrant()" placeholder="Enter grant amount"
                 autocomplete="false" (keypress)="amountValidator.validatePositive($event)" />
               <p #grantAmountFormatted (click)="showGrantAmountInput($event)" class="anu-input w-100"
-                style="position: absolute; top: 7px; cursor: text;"
+                style="position: absolute; top: 5px; cursor: text;"
                 [innerHtml]="getFormattedGrantAmount(currentGrant.amount)"></p>
             </mat-form-field>
           </div>
