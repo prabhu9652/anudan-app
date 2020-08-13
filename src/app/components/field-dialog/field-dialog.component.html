@@ -1,16 +1,15 @@
 <h1 mat-dialog-title class="text-header" style="font-weight: normal;">{{message.title}}</h1>
 <pre *ngIf="message.content" [innerHtml]="message.content"></pre>
-<div mat-dialog-actions *ngIf="message.btnSecondary===undefined && message.btnMain===undefined">
-  <button *ngIf='!message.type' mat-button mat-flat-button (click)="onNoClick()"
-    class="btn btn-sm btn-outline">No</button>
-  <button *ngIf='!message.type' mat-raised-button color="primary" (click)="onYesClick()"
-    class="btn btn-sm btn-primary">Yes</button>
-  <button *ngIf='message.type' mat-button mat-raised-button color="primary" (click)="onNoClick()"
-    class="btn btn-sm btn-primary" style="margin:0 auto;">Okay</button>
+<div mat-dialog-actions class="row px-3" *ngIf="message.btnSecondary===undefined && message.btnMain===undefined">
+
+  <button *ngIf='!message.type' (click)="onYesClick()" class="btn btn-sm btn-green-primary">Yes</button>
+  <button *ngIf='!message.type' (click)="onNoClick()" class="btn btn-sm btn-green">No</button>
+
+  <button *ngIf='message.type' (click)="onNoClick()" class="btn btn-sm btn-green-primary"
+    style="margin:0 auto;">Okay</button>
 </div>
-<div mat-dialog-actions *ngIf="message.btnSecondary!==undefined && message.btnMain!==undefined">
-  <button *ngIf='!message.type' mat-button mat-flat-button (click)="onNoClick()"
-    class="btn btn-sm btn-outline">{{message.btnSecondary}}</button>
-  <button *ngIf='!message.type' mat-raised-button color="primary" (click)="onYesClick()"
-    class="btn btn-sm btn-primary">{{message.btnMain}}</button>
+<div mat-dialog-actions class="row px-3" *ngIf="message.btnSecondary!==undefined && message.btnMain!==undefined">
+  <button *ngIf='!message.type' (click)="onYesClick()" class="btn btn-sm btn-green-primary">{{message.btnMain}}</button>
+  <button *ngIf='!message.type' (click)="onNoClick()" class="btn btn-sm btn-green">{{message.btnSecondary}}</button>
+
 </div>

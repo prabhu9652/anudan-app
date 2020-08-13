@@ -1,6 +1,7 @@
-
 <mat-card-title>Note</mat-card-title>
-<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="close(false)"><mat-icon>close</mat-icon></span>
+<span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="close(false)">
+  <mat-icon>close</mat-icon>
+</span>
 
 <ng-container>
 
@@ -16,16 +17,26 @@
     <div *ngIf="disbursementDiff" style="background:#fff;padding:5px;max-height:200px;min-width:600px;overflow:scroll;">
       <div *ngIf="disbursementDiff.oldRequestedAmount || disbursementDiff.newRequestedAmount" class="mb-2 change-box">
         <span class="change-title">Requested Amount changed</span>
-        <div class="change-new" *ngIf="disbursementDiff.newRequestedAmount">{{currencyService.getFormattedAmount(disbursementDiff.newRequestedAmount)}}</div><div *ngIf="disbursementDiff.newRequestedAmount && !disbursementDiff.oldRequestedAmount" class="text-danger"><i><small>No value</small></i></div>
-          <div class="change-old" *ngIf="disbursementDiff.oldRequestedAmount">{{currencyService.getFormattedAmount(disbursementDiff.oldRequestedAmount)}}</div><div *ngIf="disbursementDiff.oldRequestedAmount && !disbursementDiff.newRequestedAmount" class="text-white"><i><small>Previously had no value</small></i></div>
+        <div class="change-new" *ngIf="disbursementDiff.newRequestedAmount">
+          {{currencyService.getFormattedAmount(disbursementDiff.newRequestedAmount)}}</div>
+        <div *ngIf="disbursementDiff.newRequestedAmount && !disbursementDiff.oldRequestedAmount" class="text-danger">
+          <i><small>No value</small></i></div>
+        <div class="change-old" *ngIf="disbursementDiff.oldRequestedAmount">
+          {{currencyService.getFormattedAmount(disbursementDiff.oldRequestedAmount)}}</div>
+        <div *ngIf="disbursementDiff.oldRequestedAmount && !disbursementDiff.newRequestedAmount" class="text-white">
+          <i><small>Previously had no value</small></i></div>
       </div>
       <div *ngIf="disbursementDiff.oldReason || disbursementDiff.newReason" class="mb-2 change-box">
         <span class="change-title">Approval Request Commentary changed</span>
-        <div class="change-new" *ngIf="disbursementDiff.newReason">{{disbursementDiff.newReason}}</div><div *ngIf="!disbursementDiff.newReason && disbursementDiff.oldReason" class="text-danger"><i><small>No value</small></i></div>
-        <div class="change-old" *ngIf="disbursementDiff.oldReason">{{disbursementDiff.oldReason}}</div><div *ngIf="!disbursementDiff.oldReason && disbursementDiff.newReason" class="text-white"><i><small>Previously had no value</small></i></div>
+        <div class="change-new" *ngIf="disbursementDiff.newReason">{{disbursementDiff.newReason}}</div>
+        <div *ngIf="!disbursementDiff.newReason && disbursementDiff.oldReason" class="text-danger"><i><small>No
+              value</small></i></div>
+        <div class="change-old" *ngIf="disbursementDiff.oldReason">{{disbursementDiff.oldReason}}</div>
+        <div *ngIf="!disbursementDiff.oldReason && disbursementDiff.newReason" class="text-white"><i><small>Previously
+              had no value</small></i></div>
       </div>
     </div>
   </mat-expansion-panel>
 
-  <button mat-raised-button color="primary" (click)="close(true)">Proceed</button>
+  <button class="btn btn-sm btn-green-primary" (click)="close(true)">Proceed</button>
 </ng-container>

@@ -10,8 +10,8 @@
 			<span style="position: absolute; right: 54px; top: 14px; font-size: 12px; font-style: italic;"
 				*ngIf="grant.hasOngoingDisbursement">Disbursement Approval Request in progress</span>
 			<mat-card-title style="font-size:14px;">{{(grant.referenceNo?grant.referenceNo+' | ':'') + grant.name}}
-				<mat-checkbox class="template-checkbox float-right" (change)="setSelectedGrant(grant.id,$event)"
-					[disabled]="grant.hasOngoingDisbursement">
+				<mat-checkbox [checked]="grant.id===selected" class="template-checkbox float-right"
+					(change)="setSelectedGrant(grant.id,$event)" [disabled]="grant.hasOngoingDisbursement">
 				</mat-checkbox>
 
 
@@ -24,6 +24,6 @@
 </mat-select>-->
 <hr>
 <div mat-dialog-actions>
-	<button mat-button mat-flat-button (click)="onNoClick()">Cancel</button>
-	<button [disabled]="selected===0" mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
+	<button [disabled]="selected===0" class="btn btn-sm btn-green-primary" (click)="onYesClick()">Continue</button>
+	<button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
 </div>

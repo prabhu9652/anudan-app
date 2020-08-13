@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {Grant} from '../../model/dahsboard';
-import {MatCheckboxChange} from '@angular/material/checkbox';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule} from '@angular/material';
+import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Grant } from '../../model/dahsboard';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule } from '@angular/material';
 
 @Component({
   selector: 'app-grant-selection-dialog',
@@ -16,13 +16,13 @@ export class GrantSelectionDialogComponent implements OnInit {
   selectedGrant: Grant;
 
   constructor(public dialogRef: MatDialogRef<GrantSelectionDialogComponent>
-      , @Inject(MAT_DIALOG_DATA) public grants: Grant[]) {
+    , @Inject(MAT_DIALOG_DATA) public grants: Grant[]) {
     this.dialogRef.disableClose = true;
   }
 
   ngOnInit() {
-    this.selected = this.grants[0].id;
-    this.selectedGrant = this.grants[0];
+    this.selected = 0;
+    //this.selectedGrant = this.grants[0];
   }
 
   onNoClick(): void {
@@ -30,27 +30,27 @@ export class GrantSelectionDialogComponent implements OnInit {
   }
 
   onYesClick(): void {
-  let selectedGrant;
-    for(let grant of this.grants){
-        if(grant.id === Number(this.selected)){
-            selectedGrant = grant;
-            break;
-        }
+    let selectedGrant;
+    for (let grant of this.grants) {
+      if (grant.id === Number(this.selected)) {
+        selectedGrant = grant;
+        break;
+      }
     }
-    this.dialogRef.close({result:true,selectedGrant:selectedGrant});
+    this.dialogRef.close({ result: true, selectedGrant: selectedGrant });
   }
 
-  showDesc(){
+  showDesc() {
     console.log('here');
   }
 
-  setSelectedGrant(id,ev: MatCheckboxChange){
-    if(ev.checked){
-        this.selected = id;
-        this.selectedGrant = this.grants.filter(g => g.id===id)[0];
-    }else{
-        this.selected = 0;
-        this.selectedGrant = null;
+  setSelectedGrant(id, ev: MatCheckboxChange) {
+    if (ev.checked) {
+      this.selected = id;
+      this.selectedGrant = this.grants.filter(g => g.id === id)[0];
+    } else {
+      this.selected = 0;
+      this.selectedGrant = null;
     }
 
   }
