@@ -1,9 +1,11 @@
 <h1 mat-dialog-title class="mb-0">Select a Grant Template</h1>
 <p class="mt-0 mb-2">Selected Template: <b>{{this.selectedTemplate.name}}</b></p>
 <div class="grant-template-dialog-class">
-	<mat-card *ngFor="let template of templates" value="{{template.id}}" style="background:#E5E5E5;max-width:none;" class="mb-3">
+	<mat-card *ngFor="let template of templates" value="{{template.id}}" style="background:#E5E5E5;max-width:none;"
+		class="mb-3">
 		<mat-card-title style="font-size:14px;">{{template.name}}
-			<mat-checkbox class="template-checkbox float-right" [checked]="template.id===selected" (change)="setSelectedTemplate(template.id,$event)"></mat-checkbox>
+			<mat-checkbox class="template-checkbox float-right" [checked]="template.id===selected"
+				(change)="setSelectedTemplate(template.id,$event)"></mat-checkbox>
 		</mat-card-title>
 		<mat-card-content style="background:#fff;padding:10px;">{{template.description}}</mat-card-content>
 	</mat-card>
@@ -13,6 +15,6 @@
 </mat-select>-->
 <hr>
 <div mat-dialog-actions>
-  <button mat-button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onYesClick()">Continue</button>
+	<button class="btn btn-sm btn-green-primary" (click)="onYesClick()">Continue</button>
+	<button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
 </div>

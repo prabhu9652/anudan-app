@@ -685,8 +685,8 @@ font-white {
 }
 
 .wf-assignment-class {
-  min-width: calc(100% - 300px) !important;
-  max-width: calc(100% - 300px) !important;
+  min-width: calc(100% - 360px) !important;
+  max-width: calc(100% - 360px) !important;
   position: relative !important;
   left: 150px !important;
   overflow: hidden !important;

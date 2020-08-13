@@ -745,10 +745,10 @@
   </div>
 </div>
 
-<div #createFieldModal class="modal fade" id="createFieldModal" tabindex="-1" role="dialog"
+<div #createFieldModal class="modal fade mt-5" id="createFieldModal" tabindex="-1" role="dialog"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
   <input type="text" id="sectionIdHolder" />
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog center-class mt-5" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="createFieldLabel"></h5>
@@ -768,10 +768,10 @@
         </select>
       </div>
       <div class="">
-        <button type="button" class="btn btn-primary pull-right" (click)="addField()">
-          Okay
+        <button type="button" class="btn btn-sm btn-green-primary" (click)="addField()">
+          Done
         </button>
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">
+        <button type="button" class="btn btn-sm btn-green" data-dismiss="modal">
           Close
         </button>
       </div>
@@ -779,9 +779,9 @@
   </div>
 </div>
 
-<div #createSectionModal class="modal fade" id="createSectionModal" tabindex="-1" role="dialog"
+<div #createSectionModal class="modal fade mt-5" id="createSectionModal" tabindex="-1" role="dialog"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog center-class mt-5" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="createSectionLabel"></h5>
@@ -794,15 +794,16 @@
           <label for="fieldTitleInput" class="mat-form-field-label pull-left">Section Name:</label>
           <input id="sectionTitleInput" class="form-control" value="" />
         </div>
+        <div class="row px-3">
+          <button type="button" class="btn btn-sm btn-green-primary" (click)="saveSection()">
+            Done
+          </button>
+          <button type="button" class="btn btn-sm btn-green" data-dismiss="modal">
+            Close
+          </button>
+        </div>
       </div>
-      <div class="">
-        <button type="button" class="btn btn-primary pull-right" (click)="saveSection()">
-          Done
-        </button>
-        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">
-          Close
-        </button>
-      </div>
+
     </div>
   </div>
 </div>
