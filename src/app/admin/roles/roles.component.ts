@@ -110,6 +110,30 @@ export class RolesComponent implements OnInit {
         });
     }
 
+    updateRole(role: Role) {
+        if (!this.roles) {
+            this.roles = [];
+        }
+
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+        const user = this.appComponent.loggedInUser;
+        const url = 'api/admin/user/' + user.id + '/role';
+        this.http.put(url, role, httpOptions).subscribe((roleReturned: Role) => {
+            role = roleReturned;
+            role.editMode = false;
+            const index = this.roles.findIndex(r => r.id === roleReturned.id);
+            this.roles[index] = role;
+            this.roleName = undefined;
+            this.roleDescription = undefined;
+        });
+    }
     toggleCreateRole() {
         const createRoleButton = this.createRoleBtn.nativeElement;
         if (createRoleButton.disabled) {
