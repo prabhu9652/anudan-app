@@ -1,5 +1,5 @@
 import { CurrencyService } from './../../currency-service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, AfterViewChecked } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { User } from '../../model/user';
 import { SerializationHelper, Tenant, Tenants } from '../../model/dahsboard';
@@ -22,6 +22,18 @@ import {
   HumanizeDurationLanguage,
   HumanizeDuration,
 } from "humanize-duration-ts";
+
+
+class Timer {
+  readonly start = performance.now();
+
+  constructor(private readonly name: string) { }
+
+  stop() {
+    const time = performance.now() - this.start;
+    console.log('Timer:', this.name, 'finished in', Math.round(time), 'ms');
+  }
+}
 
 @Component({
   selector: 'app-draft-grants',
@@ -65,6 +77,7 @@ export class DraftGrantsComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   deleteGrantEvent: boolean = false;
+  private t: Timer;
 
   constructor(
     private http: HttpClient,
@@ -80,6 +93,7 @@ export class DraftGrantsComponent implements OnInit {
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService) {
   }
+
 
   ngOnInit() {
     this.appComponent.subMenu = { name: 'In-progress Grants', action: 'dg' };
@@ -140,12 +154,11 @@ export class DraftGrantsComponent implements OnInit {
 
 
   fetchDashboard(userId: string, grant: Grant) {
-
     // grant = null;
     if (grant) {
       this.saveGrant(grant);
     } else {
-      console.log('dashboard');
+      console.log('>>>>GRANT RETRIEVAL INITIATED>>>>' + (new Date()));
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -157,11 +170,12 @@ export class DraftGrantsComponent implements OnInit {
       this.appComponent.loggedIn = true;
 
       const url = '/api/users/' + userId + '/dashboard';
+
       this.http.get<Tenants>(url, httpOptions).subscribe((tenants: Tenants) => {
 
         // this.tenants = new Tenants();
         this.tenants = tenants;
-        console.log(this.tenants);
+        console.log('>>>>  GRANT RETRIEVAL END  >>>>' + (new Date()));
         // this.tenants = tenants;
         if (this.tenants && this.tenants.tenants && this.tenants.tenants.length > 0) {
           this.currentTenant = this.tenants.tenants[0];
