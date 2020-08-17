@@ -1,3 +1,4 @@
+import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { AdminService } from './../../admin.service';
 import {
   Component,
@@ -404,6 +405,14 @@ export class SectionsComponent
     title: string
   ) {
     this.appComp.sectionInModification = true;
+
+    if (func === 'section' && this.currentGrant.grantDetails.sections.length === 1) {
+      const dg = this.dialog.open(MessagingComponent, {
+        data: "<p>At least one section is required for a grant.</p><p><small>Please rename the current section or create an additional section before deleteing this one.</small></p>",
+        panelClass: "center-class"
+      });
+      return;
+    }
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title },
       panelClass: "center-class",
@@ -888,9 +897,9 @@ export class SectionsComponent
         this._setEditMode(true);
         $(createSectionModal).modal("hide");
         this.appComp.sectionAdded = true;
-        this.sidebar.buildSectionsSideNav(null);
         this.appComp.sectionInModification = false;
         this.appComp.selectedTemplate = info.grant.grantTemplate;
+
         this.router.navigate([
           "grant/section/" +
           this.getCleanText(
@@ -899,6 +908,7 @@ export class SectionsComponent
             )[0]
           ),
         ]);
+        this.sidebar.buildSectionsSideNav(null);
       },
       (error) => {
         const errorMsg = error as HttpErrorResponse;
@@ -1895,6 +1905,7 @@ export class SectionsComponent
   }
 
   deleteSection(secId: number) {
+
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
