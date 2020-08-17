@@ -34,6 +34,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
+  HttpEventType,
 } from "@angular/common/http";
 import { ToastrService, IndividualConfig } from "ngx-toastr";
 import { DatePipe } from "@angular/common";
@@ -620,6 +621,7 @@ export class ReportSectionsComponent implements OnInit {
         "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
         Authorization: localStorage.getItem("AUTH_TOKEN"),
       }),
+      reportProgress: true,
     };
 
     this.http

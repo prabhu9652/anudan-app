@@ -111,6 +111,9 @@
                           <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
                             <i class="fas fa-file-word text-primary"></i>
                           </ng-container>
+                          <ng-container *ngIf="doc.type === 'ppt' || doc.type === 'pptx'">
+                            <i class="fas fa-file-powerpoint text-primary"></i>
+                          </ng-container>
                           {{ doc.name }}
                         </span>
                       </ng-container>
@@ -1346,7 +1349,7 @@
                                     attribute,
                                     $event
                                   )
-                                " accept=".pdf,.xls,.xlsx,.doc,.docx" />
+                                " accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx" />
                             </div>
                           </div>
                           <mat-nav-list>

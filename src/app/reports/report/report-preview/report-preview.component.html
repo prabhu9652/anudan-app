@@ -227,13 +227,16 @@
 
                             <p class="m-0" style="font-family:Roboto;font-size:14px;"><b>
                                 <ng-container *ngIf="doc.type === 'pdf'">
-                                  <img src="./assets/img/pdf.png" style="width:20px;">
+                                  <i class="far fa-file-pdf text-danger ml-1"></i>
                                 </ng-container>
                                 <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                  <img src="./assets/img/msexcel.png" style="width:20px;">
+                                  <i class="far fa-file-excel text-success ml-1"></i>
                                 </ng-container>
                                 <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                  <img src="./assets/img/msword.png" style="width:20px;">
+                                  <i class="far fa-file-word text-primary ml-1"></i>
+                                </ng-container>
+                                <ng-container *ngIf="doc.type === 'ppt' || doc.type === 'pptx'">
+                                  <i class="far fa-file-powerpoint text-danger ml-1"></i>
                                 </ng-container>
                                 {{doc.name}}
                               </b></p>
@@ -334,7 +337,7 @@
           <div data-html2canvas-ignore class="col-12">
             <hr />
             <h5>
-              ATTACHMENTS
+              ATTACHMENTS <small>(Click to download)</small>
             </h5>
             <ng-container *ngFor="let section of currentReport.reportDetails.sections">
 
@@ -348,13 +351,16 @@
                           <a (click)="downloadAttachment(currentReport.id,doc.id,doc.name,doc.type)">
                             <span class="ml-3">
                               <ng-container *ngIf="doc.type === 'pdf'">
-                                <img src="./assets/img/pdf.png" style="width:20px;">
+                                <i class="far fa-file-pdf text-danger ml-1"></i>
                               </ng-container>
                               <ng-container *ngIf="doc.type === 'xls' || doc.type === 'xlsx'">
-                                <img src="./assets/img/msexcel.png" style="width:20px;">
+                                <i class="far fa-file-excel text-success ml-1"></i>
                               </ng-container>
                               <ng-container *ngIf="doc.type === 'doc' || doc.type === 'docx'">
-                                <img src="./assets/img/msword.png" style="width:20px;">
+                                <i class="far fa-file-word text-primary ml-1"></i>
+                              </ng-container>
+                              <ng-container *ngIf="doc.type === 'ppt' || doc.type === 'pptx'">
+                                <i class="far fa-file-powerpoint text-danger ml-1"></i>
                               </ng-container>
                               {{doc.name}}
                             </span></a><br>
