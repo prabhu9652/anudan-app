@@ -1,3 +1,4 @@
+import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { AdminService } from './../../../admin.service';
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
@@ -734,6 +735,15 @@ export class ReportSectionsComponent implements OnInit {
   }
 
   deleteSection(secId: number, title: string) {
+
+    if (this.currentReport.reportDetails.sections.length === 1) {
+      const dg = this.dialog.open(MessagingComponent, {
+        data: "<p>At least one section is required for a report.</p><p><small>Please rename the current section or create an additional section before deleteing this one.</small></p>",
+        panelClass: "center-class"
+      });
+      return;
+    }
+
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title },
       panelClass: "center-class",
