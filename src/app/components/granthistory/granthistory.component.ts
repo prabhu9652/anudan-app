@@ -71,7 +71,7 @@ export class GranthistoryComponent implements OnInit {
     this.dialogRef.close(false);
   }
   ngAfterViewInit() {
-    //Added new comment
+    //Added new comment again
   }
 
 }
