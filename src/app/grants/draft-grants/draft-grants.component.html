@@ -141,22 +141,7 @@
                     style="border-right: 1px solid #d4d4d4"
                   >
                     Disbursed <small>(till date)</small>:<strong>
-                      {{
-                        grant.approvedDisbursementsTotal === 0
-                          ? "none"
-                          : currencyService.getFormattedAmount(
-                              grant.approvedDisbursementsTotal
-                            )
-                      }}</strong
-                    >
-                    <small
-                      class="ml-2"
-                      *ngIf="grant.approvedDisbursementsTotal > 0"
-                      >{{
-                        currencyService.getAmountInWords(
-                          grant.approvedDisbursementsTotal
-                        )
-                      }}</small
+                      Appliable to Active grants only</strong
                     >
                   </div>
                   <div class="col-6 text-subheader" style="">
@@ -166,6 +151,15 @@
                           ? "none"
                           : grant.projectDocumentsCount
                       }}</strong
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mt-2 text-left">
+                <div class="row">
+                  <div class="col-6 text-subheader" style="">
+                    Approved Reports :<strong>
+                      Applicable to Active grants only</strong
                     >
                   </div>
                 </div>
