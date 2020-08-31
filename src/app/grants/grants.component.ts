@@ -252,6 +252,10 @@ export class GrantsComponent implements OnInit {
 
   saveGrant(grant: Grant) {
 
+    if (!grant.canManage) {
+      return;
+    }
+
           this.appComponent.autosaveDisplay = 'Saving changes...     ';
           /*const errors = this.validateFields();
           if (errors) {
