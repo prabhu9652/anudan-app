@@ -353,6 +353,10 @@ export class GrantComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     saveGrant(grantToSave: Grant) {
 
+        if (!grantToSave.canManage) {
+            return;
+        }
+
         this.appComp.autosaveDisplay = 'Saving changes...     ';
         /*const errors = this.validateFields();
         if (errors) {

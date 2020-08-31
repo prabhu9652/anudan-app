@@ -270,6 +270,7 @@ export class Grant {
   hasOngoingDisbursement: boolean;
   projectDocumentsCount: number;
   approvedDisbursementsTotal: number;
+  approvedReportsForGrant: number;
 }
 
 export class GrantSnapshot {
@@ -331,7 +332,7 @@ export class WorkflowAssignment {
   assignmentUser: User;
   anchor: boolean;
   history: any[];
-  constructor() { }
+  constructor() {}
 }
 export class GrantTemplate {
   id: number;
@@ -471,7 +472,7 @@ export class WorkflowAssignmentModel {
   grant: Grant;
   type: string;
   canManage: boolean;
-  constructor() { }
+  constructor() {}
 }
 
 export class AttachmentDownloadRequest {

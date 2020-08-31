@@ -311,6 +311,9 @@ export class ReportingComponent implements OnInit {
   }
 
   saveGrant() {
+    if (!this.grantToUpdate.canManage) {
+      return;
+    }
 
     /*const errors = this.validateFields();
     if (errors) {

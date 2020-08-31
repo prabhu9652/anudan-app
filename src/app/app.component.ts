@@ -200,9 +200,9 @@ export class AppComponent implements AfterViewChecked {
       const arr = hostName.split('.');
       if (arr.length === 4) {
         subDomain = arr[0];
-      } else if (arr.length === 3 && (arr[0] === 'dev' || arr[0] === 'qa' || arr[0] === 'uat')) {
+      } else if (arr.length === 3 && (arr[0] === 'dev' || arr[0] === 'qa' || arr[0] === 'uat' || arr[0] === 'hotfix')) {
         subDomain = arr[1];
-      } else if (arr.length === 3 && (arr[0] !== 'dev' && arr[0] !== 'qa' && arr[0] !== 'uat')) {
+      } else if (arr.length === 3 && (arr[0] !== 'dev' && arr[0] !== 'qa' && arr[0] !== 'uat' && arr[0] !== 'hotfix')) {
         subDomain = arr[0];
       }
     }

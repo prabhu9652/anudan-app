@@ -14,7 +14,7 @@ import {
 import { Report } from '../../model/report';
 import { GrantDataService } from '../../grant.data.service';
 import { SubmissionDataService } from '../../submission.data.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AppComponent } from '../../app.component';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
@@ -93,6 +93,7 @@ export class PreviewComponent implements OnInit {
   approvedReports: Report[];
   hasApprovedReports: boolean;
   wfDisabled: boolean = false;
+  subscribers: any = {};
 
   public pdfExport: PDFExportComponent;
 
@@ -139,6 +140,26 @@ export class PreviewComponent implements OnInit {
     if (!this.currentGrant) {
       this.router.navigate(['dashboard']);
     }
+
+    this.subscribers.name = this.router.events.subscribe((val) => {
+      if (val instanceof NavigationStart && val.url === "/grant/preview") {
+        this.appComp.action = "preview";
+      } else if (
+        val instanceof NavigationStart &&
+        val.url !== "/grant/preview"
+      ) {
+        this.appComp.action = "";
+      }
+
+      if (
+        val instanceof NavigationStart &&
+        this.currentGrant &&
+        !this.appComp.grantSaved
+      ) {
+        this.saveGrant();
+        this.appComp.grantSaved = false;
+      }
+    });
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -456,6 +477,10 @@ export class PreviewComponent implements OnInit {
   }
 
   saveGrant() {
+
+    if (!this.currentGrant.canManage) {
+      return;
+    }
 
     /*const errors = this.validateFields();
     if (errors) {
@@ -887,6 +912,9 @@ export class PreviewComponent implements OnInit {
 
   submitAndSaveGrant(toStateId: number, message: String) {
 
+    if (!this.currentGrant.canManage) {
+            return;
+        }
     this.wfDisabled = true;
     if (!message) {
       message = '';
@@ -1378,7 +1406,7 @@ export class PreviewComponent implements OnInit {
 
   showWorkflowAssigments(toStateId) {
     const wfModel = new WorkflowAssignmentModel();
-    wfModel.users = this.appComp.appConfig.tenantUsers;
+    wfModel.users = this.appComp.tenantUsers;
     wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
     wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
     wfModel.type = this.appComp.currentView;
@@ -1556,7 +1584,9 @@ export class PreviewComponent implements OnInit {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.subscribers.name.unsubscribe();
   }
+
 
 
   public getApprovedReports() {
