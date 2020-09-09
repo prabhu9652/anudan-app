@@ -1,5 +1,5 @@
-import { MessagingComponent } from 'app/components/messaging/messaging.component';
-import { AdminService } from './../../admin.service';
+import { MessagingComponent } from "app/components/messaging/messaging.component";
+import { AdminService } from "./../../admin.service";
 import {
   Component,
   ElementRef,
@@ -220,15 +220,17 @@ export class SectionsComponent
     });
 
     this.myControl = new FormControl();
-    this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
-      this.options = data;
-      const docs = this.options ? this.options.slice() : [];
-      this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(""),
-        map((value) => (typeof value === "string" ? value : value)),
-        map((name) => (name ? this._filter(name) : docs))
-      );
-    });
+    this.adminService
+      .getLibraryDocs(this.appComp.loggedInUser)
+      .then((data: TemplateLibrary[]) => {
+        this.options = data;
+        const docs = this.options ? this.options.slice() : [];
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(""),
+          map((value) => (typeof value === "string" ? value : value)),
+          map((name) => (name ? this._filter(name) : docs))
+        );
+      });
   }
 
   ngOnDestroy() {
@@ -251,8 +253,6 @@ export class SectionsComponent
         this.appComp.createNewSection.next(false);
       }
     });
-
-
 
     this.subscribers.name = this.router.events.subscribe((val) => {
       if (val instanceof NavigationStart && val.url === "/grant/preview") {
@@ -293,7 +293,6 @@ export class SectionsComponent
         }
       }
     }
-
 
     this.originalGrant = JSON.parse(JSON.stringify(this.currentGrant));
     this.submissionData.currentMessage.subscribe(
@@ -406,10 +405,14 @@ export class SectionsComponent
   ) {
     this.appComp.sectionInModification = true;
 
-    if (func === 'section' && this.currentGrant.grantDetails.sections.length === 1) {
+    if (
+      func === "section" &&
+      this.currentGrant.grantDetails.sections.length === 1
+    ) {
       const dg = this.dialog.open(MessagingComponent, {
-        data: "<p>At least one section is required for a grant.</p><p><small>Please rename the current section or create an additional section before deleteing this one.</small></p>",
-        panelClass: "center-class"
+        data:
+          "<p>At least one section is required for a grant.</p><p><small>Please rename the current section or create an additional section before deleteing this one.</small></p>",
+        panelClass: "center-class",
       });
       return;
     }
@@ -638,7 +641,7 @@ export class SectionsComponent
               wf.assignments === this.appComp.loggedInUser.id
           ).length > 0 &&
           this.appComp.loggedInUser.organization.organizationType !==
-          "GRANTEE" &&
+            "GRANTEE" &&
           this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
           this.currentGrant.grantStatus.internalStatus !== "CLOSED"
         ) {
@@ -690,8 +693,8 @@ export class SectionsComponent
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-      ",select[required]:not(:disabled):not([readonly])" +
-      ",textarea[required]:not(:disabled):not([readonly])"
+        ",select[required]:not(:disabled):not([readonly])" +
+        ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (let elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -902,11 +905,11 @@ export class SectionsComponent
 
         this.router.navigate([
           "grant/section/" +
-          this.getCleanText(
-            info.grant.grantDetails.sections.filter(
-              (a) => a.id === info.sectionId
-            )[0]
-          ),
+            this.getCleanText(
+              info.grant.grantDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
         ]);
         this.sidebar.buildSectionsSideNav(null);
       },
@@ -1905,7 +1908,6 @@ export class SectionsComponent
   }
 
   deleteSection(secId: number) {
-
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
@@ -2114,9 +2116,9 @@ export class SectionsComponent
     if (fileExistsCheck.status) {
       alert(
         "Document " +
-        event.option.value.name +
-        " is already attached under " +
-        fileExistsCheck.message
+          event.option.value.name +
+          " is already attached under " +
+          fileExistsCheck.message
       );
       return;
     }
@@ -2222,13 +2224,14 @@ export class SectionsComponent
   }
 
   deleteSelection(attribId) {
-
     const dReg = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete the selected document(s)?' },
-      panelClass: 'center-class'
+      data: {
+        title: "Are you sure you want to delete the selected document(s)?",
+      },
+      panelClass: "center-class",
     });
 
-    dReg.afterClosed().subscribe(result => {
+    dReg.afterClosed().subscribe((result) => {
       if (result) {
         const elems = this.elem.nativeElement.querySelectorAll(
           '[id^="attriute_' + attribId + '_attachment_"]'
@@ -2238,7 +2241,9 @@ export class SectionsComponent
           selectedAttachments.attachmentIds = [];
           for (let singleElem of elems) {
             if (singleElem.checked) {
-              selectedAttachments.attachmentIds.push(singleElem.id.split("_")[3]);
+              selectedAttachments.attachmentIds.push(
+                singleElem.id.split("_")[3]
+              );
             }
           }
         }
@@ -2249,7 +2254,6 @@ export class SectionsComponent
         dReg.close();
       }
     });
-
   }
 
   deleteAttachment(attributeId, attachmentId) {
@@ -2336,9 +2340,9 @@ export class SectionsComponent
       if (fileExistsCheck.status) {
         alert(
           "Document " +
-          files.item(i).name +
-          " is already attached under " +
-          fileExistsCheck.message
+            files.item(i).name +
+            " is already attached under " +
+            fileExistsCheck.message
         );
         event.target.value = "";
         return;
@@ -2507,7 +2511,7 @@ export class SectionsComponent
       let i = 0;
       for (let col of row.columns) {
         if (i === idx) {
-          total += Number(col.value);
+          total += col.value ? Number(col.value) : 0;
         }
         i++;
       }
@@ -2545,8 +2549,12 @@ export class SectionsComponent
 
   showProjectDocuments() {
     const dgRef = this.dialog.open(ProjectDocumentsComponent, {
-      data: { title: 'Project Documents', loggedInUser: this.appComp.loggedInUser, currentGrant: this.currentGrant },
-      panelClass: 'wf-assignment-class'
+      data: {
+        title: "Project Documents",
+        loggedInUser: this.appComp.loggedInUser,
+        currentGrant: this.currentGrant,
+      },
+      panelClass: "wf-assignment-class",
     });
   }
 }
