@@ -97,6 +97,11 @@ import { ProjectDocumentsComponent } from "app/components/project-documents/proj
       ::ng-deep .cdk-global-overlay-wrapper {
         justify-content: center !important;
       }
+
+      .k-pdf-export .bolded {
+        border: 2px dashed #aaa;
+        padding: 10px;
+      }
     `,
   ],
 })
@@ -150,6 +155,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild("previewarea") previewArea: ElementRef;
   @ViewChild("pdf") pdf;
   @ViewChild("pdf2") pdf2;
+  //@ViewChild("pdf2Content") pdf2Content: ElementRef;
 
   constructor(
     private grantData: GrantDataService,
@@ -1671,7 +1677,9 @@ export class PreviewComponent implements OnInit {
   }
 
   saveAsPrintable(filename) {
+    //this.pdf2Content.nativeElement.style.display = "block";
     this.pdf2.saveAs(filename);
+    //this.pdf2Content.nativeElement.style.display = "none";
   }
 
   getTabularData(elemId: number, data: TableData[]) {
