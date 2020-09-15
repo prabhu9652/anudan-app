@@ -34,8 +34,6 @@
         class="col-1 text-right"
         style="display: flex; align-items: center; justify-content: flex-start"
       >
-        <!--<button *ngIf="canManage" class="btn btn-sm btn-green float-right">
-                  <i class="fas fa-plus-square mr-2"></i>Add new Section</button>-->
         <mat-icon
           mat-button
           [matMenuTriggerFor]="menu"
@@ -298,7 +296,7 @@
                         >
                         <pre
                           class="mt-1 text-justify"
-                        ><b><p style="font-size:16px;" [innerHtml]="attribute.fieldValue"></p></b></pre>
+                        ><b><p style="font-size:16px;text-align:justify;" [innerHtml]="attribute.fieldValue"></p></b></pre>
                       </div>
                     </ng-container>
 
@@ -940,7 +938,7 @@
                   </h5>
 
                   <div>
-                    <div class="row mb-2 mt-2">
+                    <div class="row mb-1 mt-2">
                       <ng-container
                         *ngFor="let attribute of section.attributes"
                       >
@@ -949,10 +947,10 @@
                             attribute.fieldType === 'multiline' ||
                             attribute.fieldType === 'text'
                           "
-                          class="mb-2"
+                          class=""
                         >
                           <div
-                            class="col-sm-12 col-lg-12 text-left mb-3 text-justify"
+                            class="col-sm-12 col-lg-12 text-left text-justify"
                           >
                             <span
                               style="
@@ -966,7 +964,7 @@
                             >
                             <pre
                               class="mt-1 text-justify"
-                            ><b><p style="font-size:15px;font-weight: 400;" [innerHtml]="attribute.fieldValue"></p></b></pre>
+                            ><b><p style="font-size:15px;font-weight: 400;text-align:justify;" class="mb-0" [innerHtml]="attribute.fieldValue"></p></b></pre>
                           </div>
                         </ng-container>
 
