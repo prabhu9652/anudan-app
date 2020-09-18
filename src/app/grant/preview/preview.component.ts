@@ -1992,4 +1992,12 @@ export class PreviewComponent implements OnInit {
       panelClass: "wf-assignment-class",
     });
   }
+
+  amendGrant(grantId: number) {
+    this.grantComponent.amendGrant(grantId);
+  }
+
+  manageGrant() {
+    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
+  }
 }

@@ -82,6 +82,14 @@
           >
             <mat-icon class="ml-1">assignment</mat-icon>View Project Documents
           </button>
+          <button
+            *ngIf="currentGrant.origGrantId"
+            mat-menu-item
+            (click)="manageGrant()"
+          >
+            <mat-icon class="ml-1">assignment</mat-icon>View Previous Active
+            Grant
+          </button>
           <hr
             *ngIf="
               currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
@@ -132,6 +140,22 @@
               style="width: 20px; height: 20px"
               src="./assets/img/dp.svg"
             />Make a Similar Grant
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="
+              currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
+              this.appComp.loggedInUser.organization.organizationType !==
+                'GRANTEE'
+            "
+            (click)="amendGrant(currentGrant.id)"
+            [disabled]="currentGrant.amendGrantId"
+          >
+            <img
+              class="ml-2 mr-3"
+              style="width: 20px; height: 20px"
+              src="./assets/img/dp.svg"
+            />Amend Current Active Grant
           </button>
         </mat-menu>
       </div>

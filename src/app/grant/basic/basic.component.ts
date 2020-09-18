@@ -547,7 +547,7 @@ export class BasicComponent implements OnInit {
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-            "GRANTEE" &&
+              "GRANTEE" &&
             this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
             this.currentGrant.grantStatus.internalStatus !== "CLOSED"
           ) {
@@ -603,8 +603,8 @@ export class BasicComponent implements OnInit {
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-      ",select[required]:not(:disabled):not([readonly])" +
-      ",textarea[required]:not(:disabled):not([readonly])"
+        ",select[required]:not(:disabled):not([readonly])" +
+        ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (const elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -768,11 +768,11 @@ export class BasicComponent implements OnInit {
 
         this.router.navigate([
           "grant/section/" +
-          this.getCleanText(
-            info.grant.grantDetails.sections.filter(
-              (a) => a.id === info.sectionId
-            )[0]
-          ),
+            this.getCleanText(
+              info.grant.grantDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
         ]);
       },
       (error) => {
@@ -1672,6 +1672,9 @@ export class BasicComponent implements OnInit {
   }
 
   clearStartDate() {
+    if (this.currentGrant.origGrantId) {
+      return;
+    }
     this.currentGrant.startDate = null;
     this.currentGrant.stDate = "";
     this.setDateDuration();
@@ -1703,8 +1706,16 @@ export class BasicComponent implements OnInit {
 
   showProjectDocuments() {
     const dgRef = this.dialog.open(ProjectDocumentsComponent, {
-      data: { title: 'Project Documents', loggedInUser: this.appComp.loggedInUser, currentGrant: this.currentGrant },
-      panelClass: 'wf-assignment-class'
+      data: {
+        title: "Project Documents",
+        loggedInUser: this.appComp.loggedInUser,
+        currentGrant: this.currentGrant,
+      },
+      panelClass: "wf-assignment-class",
     });
+  }
+
+  manageGrant() {
+    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
   }
 }

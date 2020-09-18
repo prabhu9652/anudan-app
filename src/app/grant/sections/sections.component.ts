@@ -2557,4 +2557,8 @@ export class SectionsComponent
       panelClass: "wf-assignment-class",
     });
   }
+
+  manageGrant() {
+    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
+  }
 }

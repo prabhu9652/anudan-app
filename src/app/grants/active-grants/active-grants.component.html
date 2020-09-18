@@ -48,6 +48,15 @@
                   style="font-size: 18px"
                 >
                   {{ grant.name }}
+                  <span
+                    class="text-red ml-3"
+                    *ngIf="
+                      grant.grantStatus.internalStatus === 'ACTIVE' &&
+                      grant.amendGrantId
+                    "
+                  >
+                    <small>Amendment in-progress</small>
+                  </span>
                 </p>
                 <p
                   class="text-header mb-1"

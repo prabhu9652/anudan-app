@@ -48,6 +48,27 @@
                   *ngIf="!grant.referenceNo"
                   style="font-size: 18px"
                 >
+                  <span
+                    class="text-red mr-2 pl-0"
+                    style="
+                      position: absolute;
+                      top: -14px;
+                      color: d84830;
+                      padding: 1px 5px;
+                      line-height: 15px;
+                      font-size: 1em;
+                    "
+                    *ngIf="
+                      (grant.grantStatus.internalStatus === 'DRAFT' ||
+                        grant.grantStatus.internalStatus === 'REVIEW') &&
+                      grant.origGrantId
+                    "
+                  >
+                    <small
+                      >Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
+                      >]</small
+                    >
+                  </span>
                   {{ grant.name }}
                 </p>
                 <p
@@ -55,7 +76,28 @@
                   *ngIf="grant.referenceNo"
                   style="font-size: 18px"
                 >
-                  {{ grant.referenceNo }} | <b>{{ grant.name }}</b>
+                  <span
+                    class="text-red mr-2 pl-0"
+                    style="
+                      position: absolute;
+                      top: -14px;
+                      color: d84830;
+                      padding: 1px 5px;
+                      line-height: 15px;
+                      font-size: 1em;
+                    "
+                    *ngIf="
+                      (grant.grantStatus.internalStatus === 'DRAFT' ||
+                        grant.grantStatus.internalStatus === 'REVIEW') &&
+                      grant.origGrantId
+                    "
+                  >
+                    <small
+                      >Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
+                      >]</small
+                    >
+                  </span>
+                  <b>{{ grant.name }}</b>
                 </p>
               </div>
               <div class="col-2 text-right">
@@ -93,7 +135,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6 text-left">
+              <div class="col-4 text-left">
                 <div class="row">
                   <div class="col-12">
                     <p class="mb-0 text-subheader">
