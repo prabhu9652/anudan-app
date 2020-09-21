@@ -49,25 +49,16 @@
                   style="font-size: 18px"
                 >
                   <span
-                    class="text-red mr-2 pl-0"
-                    style="
-                      position: absolute;
-                      top: -14px;
-                      color: d84830;
-                      padding: 1px 5px;
-                      line-height: 15px;
-                      font-size: 1em;
-                    "
+                    class="text-red pl-0"
+                    style="font-size: 10px; font-weight: normal"
                     *ngIf="
                       (grant.grantStatus.internalStatus === 'DRAFT' ||
                         grant.grantStatus.internalStatus === 'REVIEW') &&
                       grant.origGrantId
                     "
                   >
-                    <small
-                      >Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
-                      >]</small
-                    >
+                    Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
+                    >]
                   </span>
                   {{ grant.name }}
                 </p>
@@ -77,25 +68,16 @@
                   style="font-size: 18px"
                 >
                   <span
-                    class="text-red mr-2 pl-0"
-                    style="
-                      position: absolute;
-                      top: -14px;
-                      color: d84830;
-                      padding: 1px 5px;
-                      line-height: 15px;
-                      font-size: 1em;
-                    "
+                    class="text-red pl-0"
+                    style="font-size: 10px; font-weight: normal"
                     *ngIf="
                       (grant.grantStatus.internalStatus === 'DRAFT' ||
                         grant.grantStatus.internalStatus === 'REVIEW') &&
                       grant.origGrantId
                     "
                   >
-                    <small
-                      >Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
-                      >]</small
-                    >
+                    Amendment in-progress [<b>{{ grant.origGrantRefNo }}</b
+                    >]
                   </span>
                   <b>{{ grant.name }}</b>
                 </p>
