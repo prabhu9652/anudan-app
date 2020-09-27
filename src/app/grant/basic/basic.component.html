@@ -42,7 +42,8 @@
             mat-menu-item
             (click)="manageGrant()"
           >
-            <mat-icon class="ml-1">assignment</mat-icon>View Previous Active Grant
+            <mat-icon class="ml-1">assignment</mat-icon>View Previous Active
+            Grant
           </button>
         </mat-menu>
       </div>
@@ -92,7 +93,10 @@
               <mat-label>Grant Name</mat-label>
               <input
                 matInput
-                [disabled]="currentGrant.origGrantId"
+                [disabled]="
+                  currentGrant.origGrantId !== undefined &&
+                  currentGrant.origGrantId !== null
+                "
                 id="grantName"
                 [(ngModel)]="currentGrant.name"
                 [ngModelOptions]="{ standAlone: true }"
@@ -126,12 +130,18 @@
                     placeholder="Select grant start date"
                     type="text"
                     readonly
-                    [disabled]="currentGrant.origGrantId"
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     [matDatepickerFilter]="startDateFilter"
                   />
                   <mat-datepicker #pickerStart></mat-datepicker>
                   <mat-icon
-                    [disabled]="currentGrant.origGrantId"
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     *ngIf="
                       currentGrant.stDate !== undefined &&
                       currentGrant.stDate !== null &&
@@ -149,7 +159,10 @@
                     >clear</mat-icon
                   >
                   <mat-icon
-                    [disabled]="currentGrant.origGrantId"
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     (click)="pickerStart.open()"
                     [ngStyle]="
                       currentGrant.stDate !== undefined &&

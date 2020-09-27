@@ -254,6 +254,9 @@ export class BasicComponent implements OnInit {
     );
 
     this.myControl = new FormControl(this.currentGrant.organization);
+    if (this.currentGrant.origGrantId) {
+      this.myControl.disable();
+    }
 
     this.options = this.appComp.appConfig.granteeOrgs;
 
