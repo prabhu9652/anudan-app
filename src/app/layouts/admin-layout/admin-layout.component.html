@@ -173,21 +173,8 @@
       <span style="color: #f4f4f4"> > </span>
       <ng-container *ngIf="currentGrant">
         <div class="ml-1" style="color: #fff; max-width: 500px">
-          <span *ngIf="currentGrant.referenceNo"
-            >{{ currentGrant.referenceNo }} | </span
-          >{{ currentGrant.name }}
-
           <span
             class="text-red mr-2"
-            style="
-              position: absolute;
-              top: -2px;
-              background: #fff;
-              padding: 1px 5px;
-              line-height: 14px;
-              font-size: 1em;
-              left: 200px;
-            "
             *ngIf="
               (currentGrant.grantStatus.internalStatus === 'DRAFT' ||
                 currentGrant.grantStatus.internalStatus === 'REVIEW') &&
@@ -199,6 +186,9 @@
               >]</small
             >
           </span>
+          <span *ngIf="currentGrant.referenceNo"
+            >{{ currentGrant.referenceNo }} | </span
+          >{{ currentGrant.name }}
         </div>
         <p
           *ngIf="appComponent.showSaving"

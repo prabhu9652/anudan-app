@@ -53,9 +53,12 @@
               >
                 <div class="col-12 mb-1">
                   <p class="text-subheader text-left mb-0">
-                    <span *ngIf="report.disabledByAmendment"
+                    <span
+                      *ngIf="report.disabledByAmendment"
+                      class="mb-0 text-red"
                       >Reference Grant has been amended or closed</span
-                    >Grant Name:
+                    >
+                    Grant Name:
                     <b>{{
                       (report.grant.referenceNo
                         ? report.grant.referenceNo + " | "
@@ -134,8 +137,9 @@
                     >
                       <button
                         *ngIf="
-                          report.canManage &&
-                          report.status.internalStatus === 'DRAFT'
+                          (report.canManage &&
+                            report.status.internalStatus === 'DRAFT') ||
+                          (!report.canManage && report.disabledByAmendment)
                         "
                         class="btn btn-sm btn-red mt-3 mb-3 mx-0"
                         (click)="deleteReport(report)"
