@@ -1,36 +1,61 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="anu-container" style="padding: 40px;">
-      <button *ngIf="appComp.loggedInUser.organization.organizationType === 'GRANTER'" class="btn btn-sm btn-green"
-        style="position: absolute; right: 94px; z-index: 2;" (click)="selectReportTemplate()">
+    <div class="anu-container" style="padding: 40px">
+      <button
+        *ngIf="appComp.loggedInUser.organization.organizationType === 'GRANTER'"
+        class="btn btn-sm btn-green"
+        style="position: absolute; right: 94px; z-index: 2"
+        (click)="selectReportTemplate()"
+      >
         Create Ad Hoc Report
       </button>
 
       <div class="row">
         <div class="col-12">
           <mat-tab-group>
-            <mat-tab *ngIf="
+            <mat-tab
+              *ngIf="
                 appComp.loggedInUser.organization.organizationType === 'GRANTER'
-              " label="Reports Due Now ({{
+              "
+              label="Reports Due Now ({{
                 reportsToSetup ? reportsToSetup.length : 0
-              }})">
+              }})"
+            >
               <!--div *ngIf=reportsToSetupData>
                                 <input class=" anu-input my-1" style="line-height: 100% !important; position: relative; max-height: 25px; min-height: 25px; float: right;font-size: 11px !important;color: #7f7f7f;" placeholder="Search..." [(ngModel)]="upcomingSearchCriteria" (keyup)="startFilter('upcoming',$event)" >
                             </div-->
               <div *ngIf="!reportsToSetupData">
-                <img src="./assets/img/loader.gif" style="width: 10%;" />
-                <p style="color: black;">Loading upcoming reports...</p>
-              </div>
-              <div *ngIf="reportsToSetupData && reportsToSetupData.length === 0">
-                <p style="color: black;">No reports found</p>
+                <img src="./assets/img/loader.gif" style="width: 10%" />
+                <p style="color: black">Loading upcoming reports...</p>
               </div>
               <div
-                [ngClass]="(report.canManage)?['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section','owner-highlight']:['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']"
-                style=" cursor: pointer;" *ngFor="let report of reportsToSetupData; let i = index"
-                (click)="manageReport(report)">
+                *ngIf="reportsToSetupData && reportsToSetupData.length === 0"
+              >
+                <p style="color: black">No reports found</p>
+              </div>
+              <div
+                [ngClass]="
+                  report.canManage
+                    ? [
+                        'row',
+                        'w-100',
+                        'p-3',
+                        'mb-2',
+                        'mx-0',
+                        'grants-section',
+                        'owner-highlight'
+                      ]
+                    : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
+                "
+                style="cursor: pointer"
+                *ngFor="let report of reportsToSetupData; let i = index"
+                (click)="manageReport(report)"
+              >
                 <div class="col-12 mb-1">
                   <p class="text-subheader text-left mb-0">
-                    Grant Name:
+                    <span *ngIf="report.disabledByAmendment"
+                      >Reference Grant has been amended or closed</span
+                    >Grant Name:
                     <b>{{
                       (report.grant.referenceNo
                         ? report.grant.referenceNo + " | "
@@ -41,51 +66,87 @@
                       report.grant.organization
                         ? report.grant.organization.name
                         : ""
-                    }}</b><br />
+                    }}</b
+                    ><br />
                     Grant Amount:
-                    <img src="./assets/img/rupee.png"
-                      style="width: 9px;" /><b>{{ getFormattedGrantAmount(report.grant.amount) }}
+                    <img src="./assets/img/rupee.png" style="width: 9px" /><b
+                      >{{ getFormattedGrantAmount(report.grant.amount) }}
                     </b>
                     &nbsp;&nbsp;<span>{{
                       getGrantAmountInWords(report.grant.amount)
                     }}</span>
                   </p>
                 </div>
-                <div class="col-10" style="display: flex; align-items: center;">
-                  <p class="text-header text-left mr-3" (click)="manageReport(report)">
+                <div class="col-10" style="display: flex; align-items: center">
+                  <p
+                    class="text-header text-left mr-3"
+                    (click)="manageReport(report)"
+                  >
                     {{ report.name }} |
                     {{ report.dueDate | date: "dd-MMM-yyyy" }} |
                   </p>
                   <ng-container *ngIf="report.futureReportsCount" class="col-2">
                     <p>
-                      <small><a (click)="viewAddnlReports(report.id, report.grant.id)" class="text-blue"
-                          (mouseenter)="highlight($event, true)" (mouseleave)="highlight($event, false)">
+                      <small
+                        ><a
+                          (click)="viewAddnlReports(report.id, report.grant.id)"
+                          class="text-blue"
+                          (mouseenter)="highlight($event, true)"
+                          (mouseleave)="highlight($event, false)"
+                        >
                           See additional reports ({{
                             report.futureReportsCount
-                          }})</a></small>
+                          }})</a
+                        ></small
+                      >
                     </p>
                   </ng-container>
-                  <ng-container *ngIf="!report.futureReportsCount" class="col-2">
+                  <ng-container
+                    *ngIf="!report.futureReportsCount"
+                    class="col-2"
+                  >
                     <p>
-                      <small class="ml-3"><a> Additional reports not available</a></small>
+                      <small class="ml-3"
+                        ><a> Additional reports not available</a></small
+                      >
                     </p>
                   </ng-container>
                 </div>
                 <div class="col-2">
                   <div class="row">
-                    <div class="col-12"><span [class]="'badge state-' + report.status.internalStatus.toLowerCase()"
-                        style="color:#000 !important;">{{report.status.displayName}}</span>
+                    <div class="col-12">
+                      <span
+                        [class]="
+                          'badge state-' +
+                          report.status.internalStatus.toLowerCase()
+                        "
+                        style="color: #000 !important"
+                        >{{ report.status.displayName }}</span
+                      >
                     </div>
-                    <div class="col-12" style="display: flex; align-items: center;justify-content: center;">
-                      <button *ngIf="report.canManage && report.status.internalStatus==='DRAFT'"
-                        class="btn btn-sm btn-red mt-3 mb-3 mx-0" (click)="deleteReport(report)">Delete
+                    <div
+                      class="col-12"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <button
+                        *ngIf="
+                          report.canManage &&
+                          report.status.internalStatus === 'DRAFT'
+                        "
+                        class="btn btn-sm btn-red mt-3 mb-3 mx-0"
+                        (click)="deleteReport(report)"
+                      >
+                        Delete
                       </button>
                     </div>
                   </div>
-
                 </div>
 
-                <div class="col-12 p-3" style="background: #f1f1f1;">
+                <div class="col-12 p-3" style="background: #f1f1f1">
                   <div class="row mb-0">
                     <div class="col-2">
                       <p class="mb-0 text-subheader text-left">Report Type:</p>
@@ -111,18 +172,21 @@
                       <div class="row">
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.startDate | date: "dd-MMM-yyyy" }}
                           </p>
                         </div>
                         <div>
-                          <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                          <mat-icon [inline]="true" class="mx-3 my-0"
+                            >arrow_forward
                           </mat-icon>
                         </div>
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.endDate | date: "dd-MMM-yyyy" }}
                           </p>
@@ -138,21 +202,28 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab label="Submissions Due ({{
+            <mat-tab
+              label="Submissions Due ({{
                 reportsReadyToSubmit ? reportsReadyToSubmit.length : 0
-              }})">
+              }})"
+            >
               <div *ngIf="!reportsReadyToSubmit">
-                <img src="./assets/img/loader.gif" style="width: 10%;" />
-                <p style="color: black;">Loading ready to submit reports...</p>
+                <img src="./assets/img/loader.gif" style="width: 10%" />
+                <p style="color: black">Loading ready to submit reports...</p>
               </div>
-              <div *ngIf="
+              <div
+                *ngIf="
                   reportsReadyToSubmit && reportsReadyToSubmit.length === 0
-                ">
-                <p style="color: black;">No reports found</p>
+                "
+              >
+                <p style="color: black">No reports found</p>
               </div>
-              <div class="row w-100 p-3 mb-2 mx-0 grants-section"
-                style="border-bottom: 1px solid #d4d4d4; cursor: pointer;"
-                *ngFor="let report of reportsReadyToSubmit; let i = index" (click)="manageReport(report)">
+              <div
+                class="row w-100 p-3 mb-2 mx-0 grants-section"
+                style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
+                *ngFor="let report of reportsReadyToSubmit; let i = index"
+                (click)="manageReport(report)"
+              >
                 <div class="col-12 mb-1">
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
@@ -166,10 +237,11 @@
                       report.grant.organization
                         ? report.grant.organization.name
                         : ""
-                    }}</b><br />
+                    }}</b
+                    ><br />
                     Grant Amount:
-                    <img src="./assets/img/rupee.png"
-                      style="width: 9px;" /><b>{{ getFormattedGrantAmount(report.grant.amount) }}
+                    <img src="./assets/img/rupee.png" style="width: 9px" /><b
+                      >{{ getFormattedGrantAmount(report.grant.amount) }}
                     </b>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{
                       getGrantAmountInWords(report.grant.amount)
@@ -183,13 +255,17 @@
                   </p>
                 </div>
                 <div class="col-2">
-                  <span [class]="
+                  <span
+                    [class]="
                       'badge pull-right state-' +
                       report.status.internalStatus.toLowerCase()
-                    " style="color: #000 !important;">{{ report.status.displayName }}</span>
+                    "
+                    style="color: #000 !important"
+                    >{{ report.status.displayName }}</span
+                  >
                 </div>
 
-                <div class="col-12 p-3" style="background: #f1f1f1;">
+                <div class="col-12 p-3" style="background: #f1f1f1">
                   <div class="row mb-0">
                     <div class="col-2">
                       <p class="mb-0 text-subheader text-left">Report Type:</p>
@@ -215,18 +291,21 @@
                       <div class="row">
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.startDate | date: "dd-MMM-yyyy" }}
                           </p>
                         </div>
                         <div>
-                          <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                          <mat-icon [inline]="true" class="mx-3 my-0"
+                            >arrow_forward
                           </mat-icon>
                         </div>
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.endDate | date: "dd-MMM-yyyy" }}
                           </p>
@@ -242,72 +321,90 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab label="All Reports ({{
-              allReports ? allReports.length : 0
-            }})">
+            <mat-tab
+              label="All Reports ({{ allReports ? allReports.length : 0 }})"
+            >
               <div *ngIf="!allReports">
-                <img src="./assets/img/loader.gif" style="width: 10%;" />
-                <p style="color: black;">Loading all reports...</p>
+                <img src="./assets/img/loader.gif" style="width: 10%" />
+                <p style="color: black">Loading all reports...</p>
               </div>
-              <div *ngIf="
-                allReports && allReports.length === 0
-              ">
-                <p style="color: black;">No reports found</p>
+              <div *ngIf="allReports && allReports.length === 0">
+                <p style="color: black">No reports found</p>
               </div>
-              <div class="row w-100 p-3 mb-2 mx-0 grants-section"
-                style="border-bottom: 1px solid #d4d4d4; cursor: pointer;"
-                *ngFor="let report of allReports; let i = index" (click)="manageReport(report)">
+              <div
+                class="row w-100 p-3 mb-2 mx-0 grants-section"
+                style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
+                *ngFor="let report of allReports; let i = index"
+                (click)="manageReport(report)"
+              >
                 <div class="col-12 mb-1">
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{
-                    (report.grant.referenceNo
-                      ? report.grant.referenceNo + " | "
-                      : "") + report.grant.name
-                  }}</b>
+                      (report.grant.referenceNo
+                        ? report.grant.referenceNo + " | "
+                        : "") + report.grant.name
+                    }}</b>
                     &nbsp;&nbsp;|&nbsp;&nbsp; Grantee Organization:
                     <b>{{
-                    report.grant.organization
-                      ? report.grant.organization.name
-                      : ""
-                  }}</b><br />
+                      report.grant.organization
+                        ? report.grant.organization.name
+                        : ""
+                    }}</b
+                    ><br />
                     Grant Amount:
-                    <img src="./assets/img/rupee.png"
-                      style="width: 9px;" /><b>{{ getFormattedGrantAmount(report.grant.amount) }}
+                    <img src="./assets/img/rupee.png" style="width: 9px" /><b
+                      >{{ getFormattedGrantAmount(report.grant.amount) }}
                     </b>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{
-                    getGrantAmountInWords(report.grant.amount)
-                  }}</span>
+                      getGrantAmountInWords(report.grant.amount)
+                    }}</span>
                   </p>
                 </div>
-                <div class="col-10" style="display: flex; align-items: center;">
+                <div class="col-10" style="display: flex; align-items: center">
                   <p class="text-header text-left mr-3">
                     {{ report.name }} |
                     {{ report.dueDate | date: "dd-MMM-yyyy" }}
                   </p>
                   <ng-container *ngIf="report.futureReportsCount" class="col-2">
                     <p>
-                      <small><a (click)="viewAddnlReports(report.id, report.grant.id)" class="text-blue"
-                          (mouseenter)="highlight($event, true)" (mouseleave)="highlight($event, false)">
+                      <small
+                        ><a
+                          (click)="viewAddnlReports(report.id, report.grant.id)"
+                          class="text-blue"
+                          (mouseenter)="highlight($event, true)"
+                          (mouseleave)="highlight($event, false)"
+                        >
                           See additional reports ({{
                             report.futureReportsCount
-                          }})</a></small>
+                          }})</a
+                        ></small
+                      >
                     </p>
                   </ng-container>
-                  <ng-container *ngIf="!report.futureReportsCount" class="col-2">
+                  <ng-container
+                    *ngIf="!report.futureReportsCount"
+                    class="col-2"
+                  >
                     <p>
-                      <small class="ml-3"><a> Additional reports not available</a></small>
+                      <small class="ml-3"
+                        ><a> Additional reports not available</a></small
+                      >
                     </p>
                   </ng-container>
                 </div>
                 <div class="col-2">
-                  <span [class]="
-                    'badge pull-right state-' +
-                    report.status.internalStatus.toLowerCase()
-                  " style="color: #000 !important;">{{ report.status.displayName }}</span>
+                  <span
+                    [class]="
+                      'badge pull-right state-' +
+                      report.status.internalStatus.toLowerCase()
+                    "
+                    style="color: #000 !important"
+                    >{{ report.status.displayName }}</span
+                  >
                 </div>
 
-                <div class="col-12 p-3" style="background: #f1f1f1;">
+                <div class="col-12 p-3" style="background: #f1f1f1">
                   <div class="row mb-0">
                     <div class="col-2">
                       <p class="mb-0 text-subheader text-left">Report Type:</p>
@@ -333,18 +430,21 @@
                       <div class="row">
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.startDate | date: "dd-MMM-yyyy" }}
                           </p>
                         </div>
                         <div>
-                          <mat-icon [inline]="true" class="mx-3 my-0">arrow_forward
+                          <mat-icon [inline]="true" class="mx-3 my-0"
+                            >arrow_forward
                           </mat-icon>
                         </div>
                         <div>
                           <p class="text-bold-highlight my-0">
-                            <mat-icon [inline]="true" class="mr-1">calendar_today
+                            <mat-icon [inline]="true" class="mr-1"
+                              >calendar_today
                             </mat-icon>
                             {{ report.endDate | date: "dd-MMM-yyyy" }}
                           </p>

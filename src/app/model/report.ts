@@ -29,6 +29,7 @@ export class Report{
     linkedReports: number;
     forGranteeUse: boolean;
     futureReportsCount: number;
+    disabledByAmendment: boolean;
 }
 
 export class ReportHistory{

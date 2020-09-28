@@ -1266,7 +1266,10 @@ export class PreviewComponent implements OnInit {
   }
 
   fetchCurrentGrant() {
-    const httpOptions = {
+    this.appComp.currentView = "grants";
+    this.router.navigate(["grants/draft"]);
+
+    /* const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
@@ -1313,7 +1316,7 @@ export class PreviewComponent implements OnInit {
 
         //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
-      });
+      }); */
   }
 
   private _setEditMode(state: boolean) {

@@ -1,3 +1,4 @@
+import { MessagingComponent } from "./../../components/messaging/messaging.component";
 import {
   Component,
   ElementRef,
@@ -1540,7 +1541,21 @@ export class BasicComponent implements OnInit {
       this.currentGrant.startDate = std;
       //this.currentGrant.stDate = std.getFullYear() + '-' + std.getMonth() + '-' + std.getDate();
     } else if (type === "end") {
-      this.currentGrant.endDate = new Date(ev.toString());
+      const end = new Date(ev.toString());
+      if (
+        this.currentGrant.minEndEndate &&
+        end < new Date(this.currentGrant.minEndEndate)
+      ) {
+        this.dialog.open(MessagingComponent, {
+          data:
+            "The Grant's end date cannot be lesser than the end date of the most recent approved report of the original grant.",
+          panelClass: "center-class",
+        });
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
+      this.currentGrant.endDate = end;
     }
     this.setDateDuration();
   }
@@ -1702,7 +1717,12 @@ export class BasicComponent implements OnInit {
     const today = new Date();
     const day = d || today;
     if (this.currentGrant.startDate) {
-      return day >= new Date(this.currentGrant.startDate);
+      return (
+        day >=
+        (this.currentGrant.minEndEndate
+          ? new Date(this.currentGrant.minEndEndate)
+          : new Date(this.currentGrant.startDate))
+      );
     }
     return true;
   };
