@@ -427,6 +427,9 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   }
 
   openDate(actual: ActualDisbursement, ev: MouseEvent) {
+    if (this.currentDisbursement.disabledByAmendment) {
+      return;
+    }
     const stDateElem = this.datePicker;
     this.selectedDateField = ev;
     this.selectedField = actual;
@@ -451,6 +454,9 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   }
 
   showAmountInput(evt: any) {
+    if (this.currentDisbursement.disabledByAmendment) {
+      return;
+    }
     evt.currentTarget.style.visibility = "hidden";
     const id = evt.target.attributes.id.value.replace("label_", "");
     const inputElem = this.tablePlaceholder.nativeElement.querySelectorAll(

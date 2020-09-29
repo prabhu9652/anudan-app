@@ -52,12 +52,14 @@
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">
+                  <p
+                    *ngIf="report.disabledByAmendment"
+                    class="mb-0 text-red text-left"
+                    style="font-weight: 600; font-size: 12px"
+                  >
+                    Reference Grant has been amended or closed
+                  </p>
                   <p class="text-subheader text-left mb-0">
-                    <span
-                      *ngIf="report.disabledByAmendment"
-                      class="mb-0 text-red"
-                      >Reference Grant has been amended or closed</span
-                    >
                     Grant Name:
                     <b>{{
                       (report.grant.referenceNo
@@ -229,6 +231,13 @@
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">
+                  <p
+                    *ngIf="report.disabledByAmendment"
+                    class="mb-0 text-red text-left"
+                    style="font-weight: 600; font-size: 12px"
+                  >
+                    Reference Grant has been amended or closed
+                  </p>
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{
@@ -259,14 +268,38 @@
                   </p>
                 </div>
                 <div class="col-2">
-                  <span
-                    [class]="
-                      'badge pull-right state-' +
-                      report.status.internalStatus.toLowerCase()
-                    "
-                    style="color: #000 !important"
-                    >{{ report.status.displayName }}</span
-                  >
+                  <div class="row">
+                    <div class="col-12">
+                      <span
+                        [class]="
+                          'badge state-' +
+                          report.status.internalStatus.toLowerCase()
+                        "
+                        style="color: #000 !important"
+                        >{{ report.status.displayName }}</span
+                      >
+                    </div>
+                    <div
+                      class="col-12"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <button
+                        *ngIf="
+                          (report.canManage &&
+                            report.status.internalStatus === 'DRAFT') ||
+                          (!report.canManage && report.disabledByAmendment)
+                        "
+                        class="btn btn-sm btn-red mt-3 mb-3 mx-0"
+                        (click)="deleteReport(report)"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-12 p-3" style="background: #f1f1f1">
@@ -342,6 +375,13 @@
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">
+                  <p
+                    *ngIf="report.disabledByAmendment"
+                    class="mb-0 text-red text-left"
+                    style="font-weight: 600; font-size: 12px"
+                  >
+                    Reference Grant has been amended or closed
+                  </p>
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{
@@ -398,14 +438,38 @@
                   </ng-container>
                 </div>
                 <div class="col-2">
-                  <span
-                    [class]="
-                      'badge pull-right state-' +
-                      report.status.internalStatus.toLowerCase()
-                    "
-                    style="color: #000 !important"
-                    >{{ report.status.displayName }}</span
-                  >
+                  <div class="row">
+                    <div class="col-12">
+                      <span
+                        [class]="
+                          'badge state-' +
+                          report.status.internalStatus.toLowerCase()
+                        "
+                        style="color: #000 !important"
+                        >{{ report.status.displayName }}</span
+                      >
+                    </div>
+                    <div
+                      class="col-12"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <button
+                        *ngIf="
+                          (report.canManage &&
+                            report.status.internalStatus === 'DRAFT') ||
+                          (!report.canManage && report.disabledByAmendment)
+                        "
+                        class="btn btn-sm btn-red mt-3 mb-3 mx-0"
+                        (click)="deleteReport(report)"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col-12 p-3" style="background: #f1f1f1">

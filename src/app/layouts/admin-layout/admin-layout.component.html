@@ -288,6 +288,7 @@
         >{{ appComponent.subMenu.name }}</span
       >
       <span style="color: #f4f4f4"> > </span>
+
       <ng-container
         *ngIf="
           currentDisbursement &&
@@ -296,6 +297,13 @@
         "
       >
         <div class="m-1" style="color: #fff; max-width: 500px">
+          <p
+            *ngIf="currentDisbursement.disabledByAmendment"
+            class="mb-0 text-red text-left"
+            style="font-weight: 600; font-size: 12px"
+          >
+            Reference Grant has been amended or closed
+          </p>
           Approval Request Note for Grant
           <b>{{ currentDisbursement.grant.name }}</b>
         </div>
@@ -308,6 +316,13 @@
         "
       >
         <div class="m-1" style="color: #fff; max-width: 500px">
+          <p
+            *ngIf="currentDisbursement.disabledByAmendment"
+            class="mb-0 text-red text-left"
+            style="font-weight: 600; font-size: 12px"
+          >
+            Reference Grant has been amended or closed
+          </p>
           Disbursement Record against Approved Note for Grant
           <b>{{ currentDisbursement.grant.name }}</b>
         </div>
