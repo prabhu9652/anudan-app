@@ -1010,6 +1010,8 @@ export class GrantComponent
         title: "Important!",
         content:
           '<p class="m-0"><strong>You are about to create a new grant (&lsquo;Draft&rsquo; state) with most of the contents from the original grant copied over.&nbsp; Please make sure that you review the new Grant for correctness and accuracy.&nbsp;</strong></p> <p class="m-0"><u>Grant Header</u></p> <p class="m-0">A temporary Grant Name with reference to the original Grant Name will appear in the new Grant Header.&nbsp; This will need to be replaced with a new relevant Grant Name.&nbsp; All other information in the Grant Header will be cleared and will need to be added for the new Grant.</p> <p class="m-0"><u>Grant Details</u></p> <p class="m-0">All content in the Grant Details except the Disbursement data will be copied over from the original Grant. &nbsp;Please do check to ensure that these are relevant to the new Grant.</p> <p class="m-0"><u>Workflow Assignments</u></p> <p class="m-0">All assignments from the original Grant will be cleared for this new Grant. The new Grant will be placed in a &lsquo;Draft&rsquo; stage with you as the owner of this state.&nbsp; You will need to add appropriate assignments to progress this Grant through the organizational workflow.</p> <p class="m-0"><u>Project Documents, Notes and History</u></p> <p class="m-0">All project related documents, notes and history from the original Grant will be cleared for this new Grant.</p>',
+        btnMain: "Continue",
+        btnSecondary: "Cancel",
       },
       panelClass: "grant-notes-class",
     });
@@ -1071,7 +1073,9 @@ export class GrantComponent
       data: {
         title: "Important!",
         content:
-          '<p class="m-0"><strong>You are about to amend an active grant.  <br>This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history. The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this amendment-in-progress Grant through the current organizational workflow.  <br>On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  <br>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
+          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this amendment-in-progress Grant through the current organizational workflow.  <br>On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
+        btnMain: "Continue",
+        btnSecondary: "Cancel",
       },
       panelClass: "grant-notes-class",
     });
