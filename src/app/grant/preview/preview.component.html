@@ -42,16 +42,8 @@
           >more_vert
         </mat-icon>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="saveAs(currentGrant.name + '.pdf')">
-            <mat-icon class="ml-1">picture_as_pdf</mat-icon>Export for Offline
-            Viewing
-          </button>
-          <button
-            mat-menu-item
-            (click)="saveAsPrintable(currentGrant.name + '.pdf')"
-          >
-            <mat-icon class="ml-1">picture_as_pdf</mat-icon>Export for
-            Letterhead Printing
+          <button mat-menu-item (click)="showWFAssigments()">
+            <mat-icon class="ml-1">assignment</mat-icon>View Assignments
           </button>
           <button
             *ngIf="
@@ -63,15 +55,7 @@
           >
             <mat-icon class="ml-1">comment</mat-icon>View Notes
           </button>
-          <button mat-menu-item (click)="showWFAssigments()">
-            <mat-icon class="ml-1">assignment</mat-icon>View Assignments
-          </button>
-          <hr
-            *ngIf="
-              this.appComp.loggedInUser.organization.organizationType !==
-              'GRANTEE'
-            "
-          />
+
           <button
             *ngIf="
               this.appComp.loggedInUser.organization.organizationType !==
@@ -80,33 +64,7 @@
             mat-menu-item
             (click)="showProjectDocuments()"
           >
-            <mat-icon class="ml-1">assignment</mat-icon>View Project Documents
-          </button>
-          <button
-            *ngIf="currentGrant.origGrantId"
-            mat-menu-item
-            (click)="manageGrant()"
-          >
-            <mat-icon class="ml-1">assignment</mat-icon>View Previous Active
-            Grant
-          </button>
-          <hr
-            *ngIf="
-              currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
-              this.appComp.loggedInUser.organization.organizationType !==
-                'GRANTEE'
-            "
-          />
-          <button
-            *ngIf="
-              currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
-              this.appComp.loggedInUser.organization.organizationType !==
-                'GRANTEE'
-            "
-            mat-menu-item
-            (click)="inviteGrantee()"
-          >
-            <mat-icon class="ml-1">mail</mat-icon>Invite Grantee
+            <mat-icon class="ml-1">attachment</mat-icon>View Project Documents
           </button>
           <button
             mat-menu-item
@@ -125,6 +83,39 @@
               src="./assets/img/rp.svg"
             />View Approved Reports
           </button>
+          <hr />
+          <button mat-menu-item (click)="saveAs(currentGrant.name + '.pdf')">
+            <mat-icon class="ml-1">picture_as_pdf</mat-icon>Export for Offline
+            Viewing
+          </button>
+          <button
+            mat-menu-item
+            (click)="saveAsPrintable(currentGrant.name + '.pdf')"
+          >
+            <mat-icon class="ml-1">picture_as_pdf</mat-icon>Export for
+            Letterhead Printing
+          </button>
+
+          <hr
+            *ngIf="
+              (currentGrant.grantStatus.internalStatus === 'ACTIVE' ||
+                currentGrant.grantStatus.internalStatus === 'CLOSED') &&
+              this.appComp.loggedInUser.organization.organizationType !==
+                'GRANTEE'
+            "
+          />
+          <button
+            *ngIf="
+              currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
+              this.appComp.loggedInUser.organization.organizationType !==
+                'GRANTEE'
+            "
+            mat-menu-item
+            (click)="inviteGrantee()"
+          >
+            <mat-icon class="ml-1">mail</mat-icon>Invite Grantee
+          </button>
+
           <button
             mat-menu-item
             *ngIf="
@@ -141,6 +132,14 @@
               src="./assets/img/dp.svg"
             />Make a Similar Grant
           </button>
+          <hr
+            *ngIf="
+              currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
+              this.appComp.loggedInUser.organization.organizationType !==
+                'GRANTEE'
+            "
+          />
+
           <button
             mat-menu-item
             *ngIf="
@@ -151,11 +150,16 @@
             (click)="amendGrant(currentGrant.id)"
             [disabled]="currentGrant.amendGrantId"
           >
-            <img
-              class="ml-2 mr-3"
-              style="width: 20px; height: 20px"
-              src="./assets/img/dp.svg"
-            />Amend Current Active Grant
+            <mat-icon class="ml-1">file_copy</mat-icon>Amend Current Active
+            Grant
+          </button>
+
+          <button
+            *ngIf="currentGrant.origGrantId"
+            mat-menu-item
+            (click)="manageGrant()"
+          >
+            <mat-icon class="ml-1">history</mat-icon>View Previous Active Grant
           </button>
         </mat-menu>
       </div>
