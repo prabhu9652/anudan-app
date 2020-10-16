@@ -886,3 +886,11 @@ kendo-pdf-export {
   border: 1px solid #d84830 !important;
   box-shadow: none !important;
 }
+
+.toast-error {
+  background-color: #fff;
+  border: 1px solid #bd362f;
+}
+.toast-container .ngx-toastr {
+  color: #bd362f;
+}
