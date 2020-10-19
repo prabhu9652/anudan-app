@@ -27,7 +27,30 @@ export class SubmittedReportsComponent implements OnInit {
         private http: HttpClient,
         private router: Router,
         private appComp: AppComponent,
-        private titlecasePipe: TitleCasePipe){
+        private titlecasePipe: TitleCasePipe) {
+        
+            this.appComp.reportUpdated.subscribe((statusUpdate) => { 
+                if (statusUpdate.status && statusUpdate.reportId) {
+                    let url =
+                    "/api/user/" + this.appComp.loggedInUser.id + "/report/"+ statusUpdate.reportId;
+                    const httpOptions = {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+                        Authorization: localStorage.getItem("AUTH_TOKEN"),
+                    }),
+                    };
+    
+                    this.http.get(url, httpOptions).subscribe((report:Report) => {
+                        if (report) {
+                            let idx = this.submittedReports.findIndex((x) => x.id === Number(report.id));
+                            if (idx >= 0) {
+                                this.submittedReports[idx] = report;
+                            }
+                        }
+                    });
+                }
+            });
         }
 
   ngOnInit() {

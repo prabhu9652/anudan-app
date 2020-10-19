@@ -78,6 +78,28 @@ export class ReportPreviewComponent implements OnInit {
             this.router.navigate(['dashboard']);
         }
 
+        this.appComp.reportUpdated.subscribe((statusUpdate) => { 
+            if (statusUpdate.status && statusUpdate.reportId) {
+                let url =
+                "/api/user/" + this.appComp.loggedInUser.id + "/report/"+ statusUpdate.reportId;
+                const httpOptions = {
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+                    Authorization: localStorage.getItem("AUTH_TOKEN"),
+                }),
+                };
+
+                this.http.get(url, httpOptions).subscribe((report:Report) => {
+                    if (report) {
+                        if (this.currentReport.id === Number(report.id)) {
+                            this.singleReportDataService.changeMessage(report);
+                        }
+                    }
+                });
+            }
+        });
+
          const httpOptions = {
             headers: new HttpHeaders({
             'Content-Type': 'application/json',

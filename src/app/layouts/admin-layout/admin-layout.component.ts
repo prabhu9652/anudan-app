@@ -227,6 +227,16 @@ export class AdminLayoutComponent implements OnInit {
                         });
                     }
                   }
+
+                }
+              }
+
+              for (let i = 0; i < notifications.length; i++) {
+                if (
+                  !notifications[i].read &&
+                  notifications[i].notificationFor === "REPORT"
+                ) {
+                  this.appComponent.reportUpdated.next({ status: true, reportId: notifications[i].reportId });
                 }
               }
 
