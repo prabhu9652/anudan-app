@@ -890,6 +890,7 @@ kendo-pdf-export {
 .toast-error {
   background-color: #fff;
   border: 1px solid #bd362f;
+  background-image: url(./assets/img/x_mark.png);
 }
 .toast-container .ngx-toastr {
   color: #bd362f;
