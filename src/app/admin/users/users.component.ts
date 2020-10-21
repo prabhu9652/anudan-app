@@ -117,6 +117,11 @@ export class UsersComponent implements OnInit {
 
 
     deleteUser(user) {
+        const adminUsers = this.users.filter(u => (u.admin && !u.deleted));
+        if (adminUsers.length === 1) {
+            alert("At least one active administrator is required");
+            return;
+        }
         const dialogRef = this.dialog.open(FieldDialogComponent, {
             data: { title: 'Are you sure you want to disable ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : '') }
         });
