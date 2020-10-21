@@ -49,6 +49,7 @@ export class DisbursementAssignment {
   stateId: number;
   owner: number;
   anchor: boolean;
+  assignmentUser: User;
 }
 
 export class DisbursementWorkflowAssignmentModel {

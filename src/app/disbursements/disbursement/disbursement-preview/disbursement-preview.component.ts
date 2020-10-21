@@ -324,9 +324,9 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
             (status) => status.id === assignment.stateId
           );
           if (
-            assignment.owner === null ||
+            (assignment.owner === null ||
             assignment.owner === undefined ||
-            (assignment.owner === 0 && !status1[0].terminal)
+            (assignment.owner === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted))
           ) {
             const dialogRef = this.dialog.open(FieldDialogComponent, {
               data: {
