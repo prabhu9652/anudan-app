@@ -34,4 +34,5 @@ export class User {
   userProfile: string;
   editMode: boolean = false;
   admin:boolean;
+  deleted: boolean;
 }

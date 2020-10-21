@@ -1082,9 +1082,9 @@ export class PreviewComponent implements OnInit {
         (status) => status.id === assignment.stateId
       );
       if (
-        assignment.assignments === null ||
+        (assignment.assignments === null ||
         assignment.assignments === undefined ||
-        (assignment.assignments === 0 && !status1[0].terminal)
+        (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
       ) {
         this.confirm(
           toStateId,
