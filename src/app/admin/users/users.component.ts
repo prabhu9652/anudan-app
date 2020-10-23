@@ -118,7 +118,7 @@ export class UsersComponent implements OnInit {
 
     deleteUser(user) {
         const adminUsers = this.users.filter(u => (u.admin && !u.deleted));
-        if (adminUsers.length === 1) {
+        if (user.admin && adminUsers.length === 1) {
             alert("At least one active administrator is required");
             return;
         }
