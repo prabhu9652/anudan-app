@@ -1936,7 +1936,7 @@ export class PreviewComponent implements OnInit {
                 let i = 0;
                 for (let col of row.columns) {
                   if (i === 1) {
-                    total += Number(col.value);
+                    total += !col.value?0:Number(col.value);
                   }
                   i++;
                 }
