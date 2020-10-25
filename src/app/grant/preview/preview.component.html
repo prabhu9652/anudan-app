@@ -132,15 +132,15 @@
               src="./assets/img/dp.svg"
             />Make a Similar Grant
           </button>
-          <hr
+          <!-- <hr
             *ngIf="
               currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
               this.appComp.loggedInUser.organization.organizationType !==
                 'GRANTEE'
             "
-          />
+          /> -->
 
-          <button
+          <!-- <button
             mat-menu-item
             *ngIf="
               currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
@@ -152,7 +152,7 @@
           >
             <mat-icon class="ml-1">file_copy</mat-icon>Amend Current Active
             Grant
-          </button>
+          </button> -->
 
           <button
             *ngIf="currentGrant.origGrantId"
