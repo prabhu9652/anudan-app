@@ -205,28 +205,28 @@ body {
   background-image: none !important;
 }
 
-.anu-select{
-  background: url(./assets/img/DownArrow.jpg) #fff!important;
-    background-size: 5% !important;
-    background-repeat: no-repeat !important;
-    background-position-x: 98% !important;
-    background-position-y: 50% !important;
-    overflow: hidden !important;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding-right: 23px !important;
+.anu-select {
+  background: url(./assets/img/DownArrow.jpg) #fff !important;
+  background-size: 5% !important;
+  background-repeat: no-repeat !important;
+  background-position-x: 98% !important;
+  background-position-y: 50% !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 23px !important;
 }
 
-.anu-select-container{
+.anu-select-container {
   position: absolute;
-    height: 95%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    right: 15px;
-    background: #fff;
-    top: 1px;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  right: 15px;
+  background: #fff;
+  top: 1px;
 }
 
 .anu-input-plain {
@@ -363,6 +363,9 @@ input:-internal-autofill-selected {
   justify-content: center;
 }
 
+.text-red {
+  color: #d84830;
+}
 .btn-green {
   background-color: transparent !important;
   border: 1px solid #39743c !important;
@@ -381,8 +384,8 @@ input:-internal-autofill-selected {
   justify-content: center;
 }
 
-.btn-gray{
-  background:#757575;
+.btn-gray {
+  background: #757575;
 }
 
 .bg-green {
@@ -869,16 +872,26 @@ kendo-pdf-export {
   width: 10%;
 }
 
-.owner-highlight{
+.owner-highlight {
   border: 2px dashed #39743c !important;
 }
 
-.btn-red:not([disabled]):not(.disabled):active, .show>.btn-red.dropdown-toggle {
-  box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+.btn-red:not([disabled]):not(.disabled):active,
+.show > .btn-red.dropdown-toggle {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
   background-color: transparent !important;
 }
 
-.btn-red:focus{
+.btn-red:focus {
   border: 1px solid #d84830 !important;
   box-shadow: none !important;
+}
+
+.toast-error {
+  background-color: #fff;
+  border: 1px solid #bd362f;
+  background-image: url(./assets/img/x_mark.png);
+}
+.toast-container .ngx-toastr {
+  color: #bd362f;
 }

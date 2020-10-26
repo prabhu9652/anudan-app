@@ -49,6 +49,36 @@ export class UpcomingReportsComponent implements OnInit {
         private dialog: MatDialog,
         public reportComponent: ReportComponent,
         private titlecasePipe: TitleCasePipe) {
+        this.appComp.reportUpdated.subscribe((statusUpdate) => { 
+            if (statusUpdate.status && statusUpdate.reportId) {
+                let url =
+                "/api/user/" + this.appComp.loggedInUser.id + "/report/"+ statusUpdate.reportId;
+                const httpOptions = {
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+                    Authorization: localStorage.getItem("AUTH_TOKEN"),
+                }),
+                };
+
+                this.http.get(url, httpOptions).subscribe((report:Report) => {
+                    if (report) {
+                        let idx = this.reportsToSetup.findIndex((x) => x.id === Number(report.id));
+                        if (idx >= 0) {
+                            this.reportsToSetup[idx] = report;
+                        }
+                        idx = this.reportsReadyToSubmit.findIndex((x) => x.id === Number(report.id));
+                        if (idx >= 0) {
+                            this.reportsReadyToSubmit[idx] = report;
+                        }
+                        idx = this.futureReportsToSetup.findIndex((x) => x.id === Number(report.id));
+                        if (idx >= 0) {
+                            this.futureReportsToSetup[idx] = report;
+                        }
+                    }
+                });
+            }
+        });
     }
 
     ngOnInit() {

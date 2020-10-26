@@ -1082,9 +1082,9 @@ export class PreviewComponent implements OnInit {
         (status) => status.id === assignment.stateId
       );
       if (
-        assignment.assignments === null ||
+        (assignment.assignments === null ||
         assignment.assignments === undefined ||
-        (assignment.assignments === 0 && !status1[0].terminal)
+        (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
       ) {
         this.confirm(
           toStateId,
@@ -1266,7 +1266,10 @@ export class PreviewComponent implements OnInit {
   }
 
   fetchCurrentGrant() {
-    const httpOptions = {
+    this.appComp.currentView = "grants";
+    this.router.navigate(["grants/draft"]);
+
+    /* const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
         "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
@@ -1313,7 +1316,7 @@ export class PreviewComponent implements OnInit {
 
         //this.checkGrantPermissions();
         // this.router.navigate(['grant']);
-      });
+      }); */
   }
 
   private _setEditMode(state: boolean) {
@@ -1933,7 +1936,7 @@ export class PreviewComponent implements OnInit {
                 let i = 0;
                 for (let col of row.columns) {
                   if (i === 1) {
-                    total += Number(col.value);
+                    total += !col.value?0:Number(col.value);
                   }
                   i++;
                 }
@@ -1991,5 +1994,13 @@ export class PreviewComponent implements OnInit {
       },
       panelClass: "wf-assignment-class",
     });
+  }
+
+  amendGrant(grantId: number) {
+    this.grantComponent.amendGrant(grantId);
+  }
+
+  manageGrant() {
+    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
   }
 }

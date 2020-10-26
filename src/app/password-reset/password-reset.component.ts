@@ -106,6 +106,9 @@ export class PasswordResetComponent implements OnInit {
             this.sentEmailStatusMessage = result.message;
         }else if(result.status==='unregistered'){
             this.router.navigate(['/registration'], { queryParams: {email: email,org:result.org,type:'join',status:result.status } });
+        } else if (result.status === 'inactive') {
+          this.hasError = true;
+          this.errorMessage = "Inactive user. Please contact your organization's administrator"
         }
     },error =>{
         const errorMsg = error as HttpErrorResponse;

@@ -1,3 +1,4 @@
+import { MessagingComponent } from "./../../components/messaging/messaging.component";
 import {
   Component,
   ElementRef,
@@ -254,6 +255,9 @@ export class BasicComponent implements OnInit {
     );
 
     this.myControl = new FormControl(this.currentGrant.organization);
+    if (this.currentGrant.origGrantId) {
+      this.myControl.disable();
+    }
 
     this.options = this.appComp.appConfig.granteeOrgs;
 
@@ -547,7 +551,7 @@ export class BasicComponent implements OnInit {
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-            "GRANTEE" &&
+              "GRANTEE" &&
             this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
             this.currentGrant.grantStatus.internalStatus !== "CLOSED"
           ) {
@@ -603,8 +607,8 @@ export class BasicComponent implements OnInit {
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-      ",select[required]:not(:disabled):not([readonly])" +
-      ",textarea[required]:not(:disabled):not([readonly])"
+        ",select[required]:not(:disabled):not([readonly])" +
+        ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (const elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -768,11 +772,11 @@ export class BasicComponent implements OnInit {
 
         this.router.navigate([
           "grant/section/" +
-          this.getCleanText(
-            info.grant.grantDetails.sections.filter(
-              (a) => a.id === info.sectionId
-            )[0]
-          ),
+            this.getCleanText(
+              info.grant.grantDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
         ]);
       },
       (error) => {
@@ -1537,7 +1541,21 @@ export class BasicComponent implements OnInit {
       this.currentGrant.startDate = std;
       //this.currentGrant.stDate = std.getFullYear() + '-' + std.getMonth() + '-' + std.getDate();
     } else if (type === "end") {
-      this.currentGrant.endDate = new Date(ev.toString());
+      const end = new Date(ev.toString());
+      if (
+        this.currentGrant.minEndEndate &&
+        end < new Date(this.currentGrant.minEndEndate)
+      ) {
+        this.dialog.open(MessagingComponent, {
+          data:
+            "The Grant's end date cannot be lesser than the end date of the most recent approved report of the original grant.",
+          panelClass: "center-class",
+        });
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
+      this.currentGrant.endDate = end;
     }
     this.setDateDuration();
   }
@@ -1672,6 +1690,9 @@ export class BasicComponent implements OnInit {
   }
 
   clearStartDate() {
+    if (this.currentGrant.origGrantId) {
+      return;
+    }
     this.currentGrant.startDate = null;
     this.currentGrant.stDate = "";
     this.setDateDuration();
@@ -1696,15 +1717,28 @@ export class BasicComponent implements OnInit {
     const today = new Date();
     const day = d || today;
     if (this.currentGrant.startDate) {
-      return day >= new Date(this.currentGrant.startDate);
+      return (
+        day >=
+        (this.currentGrant.minEndEndate
+          ? new Date(this.currentGrant.minEndEndate)
+          : new Date(this.currentGrant.startDate))
+      );
     }
     return true;
   };
 
   showProjectDocuments() {
     const dgRef = this.dialog.open(ProjectDocumentsComponent, {
-      data: { title: 'Project Documents', loggedInUser: this.appComp.loggedInUser, currentGrant: this.currentGrant },
-      panelClass: 'wf-assignment-class'
+      data: {
+        title: "Project Documents",
+        loggedInUser: this.appComp.loggedInUser,
+        currentGrant: this.currentGrant,
+      },
+      panelClass: "wf-assignment-class",
     });
+  }
+
+  manageGrant() {
+    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
   }
 }

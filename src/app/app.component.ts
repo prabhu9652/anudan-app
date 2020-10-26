@@ -89,6 +89,8 @@ export class AppComponent implements AfterViewChecked {
     templateLibrary: []
   };
 
+  reportUpdated = new BehaviorSubject<any>({status:false,reportId:0});
+
   subMenu = {};
 
   org: string;

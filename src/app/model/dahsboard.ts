@@ -271,6 +271,11 @@ export class Grant {
   projectDocumentsCount: number;
   approvedDisbursementsTotal: number;
   approvedReportsForGrant: number;
+  origGrantId: number;
+  amendGrantId: number;
+  amended: boolean;
+  origGrantRefNo: string;
+  minEndEndate: Date;
 }
 
 export class GrantSnapshot {

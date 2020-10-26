@@ -78,6 +78,28 @@ export class ReportPreviewComponent implements OnInit {
             this.router.navigate(['dashboard']);
         }
 
+        this.appComp.reportUpdated.subscribe((statusUpdate) => { 
+            if (statusUpdate.status && statusUpdate.reportId) {
+                let url =
+                "/api/user/" + this.appComp.loggedInUser.id + "/report/"+ statusUpdate.reportId;
+                const httpOptions = {
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                    "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+                    Authorization: localStorage.getItem("AUTH_TOKEN"),
+                }),
+                };
+
+                this.http.get(url, httpOptions).subscribe((report:Report) => {
+                    if (report) {
+                        if (this.currentReport.id === Number(report.id)) {
+                            this.singleReportDataService.changeMessage(report);
+                        }
+                    }
+                });
+            }
+        });
+
          const httpOptions = {
             headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -137,7 +159,7 @@ export class ReportPreviewComponent implements OnInit {
 
         for(let assignment of this.currentReport.workflowAssignments){
             const status1 = this.reportWorkflowStatuses.filter((status) => status.id===assignment.stateId);
-            if(assignment.assignmentId === null || assignment.assignmentId === undefined || assignment.assignmentId === 0 && !status1[0].terminal){
+            if((assignment.assignmentId === null || assignment.assignmentId === undefined || assignment.assignmentId === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted)){
                 const dialogRef = this.dialog.open(FieldDialogComponent, {
                     data: {title:"Would you like to carry out workflow assignments?"},
                     panelClass: 'center-class'

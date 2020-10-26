@@ -1,5 +1,5 @@
+import { User } from 'app/model/user';
 import {Grant, WorkflowStatus,Section,WorkflowAssignment,FlowAuthority,SectionDiff} from './dahsboard';
-import {User} from './user';
 
 export class Report{
     id: number;
@@ -29,6 +29,7 @@ export class Report{
     linkedReports: number;
     forGranteeUse: boolean;
     futureReportsCount: number;
+    disabledByAmendment: boolean;
 }
 
 export class ReportHistory{
@@ -65,6 +66,7 @@ export class ReportAssignment{
     stateId: number;
     assignmentId: number;
     anchor: boolean;
+    assignmentUser: User
     constructor(){}
 }
 

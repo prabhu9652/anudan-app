@@ -20,6 +20,9 @@
           >more_vert
         </mat-icon>
         <mat-menu #menu1="matMenu">
+          <button mat-menu-item (click)="showWorkflowAssigments()">
+            <mat-icon class="ml-1">assignment</mat-icon>View Assignments
+          </button>
           <button
             *ngIf="
               this.appComp.loggedInUser.organization.organizationType !==
@@ -30,12 +33,17 @@
           >
             <mat-icon class="ml-1">comment</mat-icon>View Notes
           </button>
-          <button mat-menu-item (click)="showWorkflowAssigments()">
-            <mat-icon class="ml-1">assignment</mat-icon>View Assignments
-          </button>
-          <hr />
           <button mat-menu-item (click)="showProjectDocuments()">
-            <mat-icon class="ml-1">assignment</mat-icon>View Project Documents
+            <mat-icon class="ml-1">attachment</mat-icon>View Project Documents
+          </button>
+          <hr *ngIf="currentGrant.origGrantId" />
+          <button
+            *ngIf="currentGrant.origGrantId"
+            mat-menu-item
+            (click)="manageGrant()"
+          >
+            <mat-icon class="ml-1">assignment</mat-icon>View Previous Active
+            Grant
           </button>
         </mat-menu>
       </div>
@@ -85,6 +93,10 @@
               <mat-label>Grant Name</mat-label>
               <input
                 matInput
+                [disabled]="
+                  currentGrant.origGrantId !== undefined &&
+                  currentGrant.origGrantId !== null
+                "
                 id="grantName"
                 [(ngModel)]="currentGrant.name"
                 [ngModelOptions]="{ standAlone: true }"
@@ -118,10 +130,18 @@
                     placeholder="Select grant start date"
                     type="text"
                     readonly
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     [matDatepickerFilter]="startDateFilter"
                   />
                   <mat-datepicker #pickerStart></mat-datepicker>
                   <mat-icon
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     *ngIf="
                       currentGrant.stDate !== undefined &&
                       currentGrant.stDate !== null &&
@@ -139,6 +159,10 @@
                     >clear</mat-icon
                   >
                   <mat-icon
+                    [disabled]="
+                      currentGrant.origGrantId !== undefined &&
+                      currentGrant.origGrantId !== null
+                    "
                     (click)="pickerStart.open()"
                     [ngStyle]="
                       currentGrant.stDate !== undefined &&

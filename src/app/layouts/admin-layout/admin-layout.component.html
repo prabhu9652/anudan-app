@@ -1,111 +1,349 @@
 <div class="wrapper">
+  <div
+    class="sidebar"
+    data-color="danger"
+    data-background-color="white"
+    data-image="./assets/img/sidebar-1.jpg"
+  >
+    <app-sidebar></app-sidebar>
+    <div
+      class="sidebar-background"
+      style="background-image: url(./assets/img/sidebar-4.jpg)"
+    ></div>
+  </div>
 
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-        <app-sidebar></app-sidebar>
-        <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+  <div class="main-panel">
+    <div
+      *ngIf="appComponent.notifications.length > 0"
+      style="
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        color: #000;
+        background-color: #fff;
+      "
+    >
+      <div style="position: absolute; right: 20px; z-index: 3">
+        <p
+          style="
+            display: flex;
+            align-items: center;
+            text-align: right !important;
+            justify-content: flex-end;
+          "
+          class="float-right mr-3 mt-3 text-white"
+        >
+          <mat-icon
+            style="cursor: pointer"
+            (click)="showMessages()"
+            *ngIf="msgCount > 0"
+            class="float-left mr-5 text-white"
+            [matBadge]="msgCount"
+            matBadgeColor="warn"
+            >notifications
+          </mat-icon>
+          <mat-icon
+            style="cursor: pointer"
+            (click)="showMessages()"
+            *ngIf="msgCount === 0"
+            class="float-left mr-5 text-white"
+            >notifications</mat-icon
+          >
+          <img
+            *ngIf="appComponent.loggedInUser.userProfile"
+            src="{{ appComponent.loggedInUser.userProfile }}"
+            class="img-fluid w-10 mr-2 rounded-circle"
+            style="width: 35px; max-width: 50px"
+          />
+          <img
+            *ngIf="!appComponent.loggedInUser.userProfile"
+            src="./assets/img/avatar.svg"
+            class="img-fluid w-10 mr-2 rounded-circle"
+            style="width: 35px"
+          />{{ appComponent.loggedInUser.lastName }},
+          {{ appComponent.loggedInUser.firstName }}
+          <mat-icon mat-button [matMenuTriggerFor]="profilemenu"
+            >arrow_drop_down</mat-icon
+          >
+          <mat-menu #profilemenu>
+            <span mat-menu-item (click)="showProfile()">Profile</span>
+            <span mat-menu-item (click)="logout()">Logout</span>
+          </mat-menu>
+        </p>
+      </div>
     </div>
 
+    <div
+      *ngIf="appComponent.notifications.length === 0"
+      style="
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        color: #000;
+        background-color: #fff;
+      "
+    >
+      <div style="position: absolute; right: 20px; z-index: 3">
+        <p
+          style="
+            display: flex;
+            align-items: center;
+            text-align: right !important;
+            justify-content: flex-end;
+          "
+          class="float-right mr-3 mt-3 text-white"
+        >
+          <mat-icon class="float-left mr-5 text-light"
+            >notifications_none</mat-icon
+          >
+          <img
+            *ngIf="appComponent.loggedInUser.userProfile"
+            src="{{ appComponent.loggedInUser.userProfile }}"
+            class="img-fluid w-10 mr-2 rounded-circle"
+            style="width: 35px"
+          />
+          <img
+            *ngIf="!appComponent.loggedInUser.userProfile"
+            src="./assets/img/avatar.svg"
+            class="img-fluid w-10 mr-2 rounded-circle"
+            style="width: 35px"
+          />{{ appComponent.loggedInUser.lastName }},
+          {{ appComponent.loggedInUser.firstName }}
+          <mat-icon mat-button [matMenuTriggerFor]="profilemenu"
+            >arrow_drop_down</mat-icon
+          >
+          <mat-menu #profilemenu="matMenu">
+            <span mat-menu-item (click)="showProfile()">Profile</span>
+            <span mat-menu-item (click)="logout()">Logout</span>
+          </mat-menu>
+        </p>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        appComponent.currentView !== 'grant' &&
+        appComponent.currentView !== 'report' &&
+        appComponent.currentView !== 'disbursement'
+      "
+      class="p-4 text-left"
+      style="
+        width: 100%;
+        min-height: 80px;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        color: #fff;
+        background-color: #424652;
+        color: #4dc251;
+      "
+    >
+      &nbsp;
+    </div>
 
-    <div class="main-panel">
+    <!--<app-navbar></app-navbar>-->
+    <div
+      *ngIf="appComponent.currentView === 'grant'"
+      class="px-4 pt-4 pb-4 text-left"
+      style="
+        position: sticky;
+        top: 0;
+        max-height: 80px;
+        min-height: 80px;
+        z-index: 2;
+        color: #fff;
+        background-color: #424652;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+      "
+    >
+      <a
+        (click)="goToDashboard(currentGrant, 'GRANT')"
+        class="mr-1"
+        style="color: #4dc251"
+        >Home</a
+      >
+      >
+      <span
+        style="color: #4dc251; cursor: pointer"
+        class="ml-1 mr-1"
+        (click)="navigateToGrants(appComponent.subMenu)"
+        >{{ appComponent.subMenu.name }}</span
+      >
+      <span style="color: #f4f4f4"> > </span>
+      <ng-container *ngIf="currentGrant">
+        <div class="ml-1" style="color: #fff; max-width: 500px">
+          <span
+            class="text-red mr-2"
+            *ngIf="
+              (currentGrant.grantStatus.internalStatus === 'DRAFT' ||
+                currentGrant.grantStatus.internalStatus === 'REVIEW') &&
+              currentGrant.origGrantId
+            "
+          >
+            <small
+              >Amendment in-progress [<b>{{ currentGrant.origGrantRefNo }}</b
+              >]</small
+            >
+          </span>
+          <span *ngIf="currentGrant.referenceNo"
+            >{{ currentGrant.referenceNo }} | </span
+          >{{ currentGrant.name }}
+        </div>
+        <p
+          *ngIf="appComponent.showSaving"
+          class="m-0"
+          style="
+            position: absolute;
+            color: #f2f2f2;
+            left: 23px;
+            bottom: 0px;
+            font-weight: normal;
+            font-style: oblique;
+            font-size: 10px;
+          "
+        >
+          {{ appComponent.autosaveDisplay }}
+        </p>
+      </ng-container>
+    </div>
+    <div
+      *ngIf="appComponent.currentView === 'report'"
+      class="px-4 pt-4 pb-4 text-left"
+      style="
+        position: sticky;
+        top: 0;
+        max-height: 80px;
+        min-height: 80px;
+        z-index: 2;
+        color: #fff;
+        background-color: #424652;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+      "
+    >
+      <a
+        (click)="goToDashboard(currentReport, 'REPORT')"
+        class="mr-1"
+        style="color: #4dc251"
+        >Home</a
+      >
+      >
+      <span
+        class="ml-1 mr-1"
+        style="color: #4dc251; cursor: pointer"
+        (click)="navigateToReports(appComponent.subMenu)"
+        >{{ appComponent.subMenu.name }}</span
+      >
+      <span style="color: #f4f4f4"> > </span>
+      <ng-container *ngIf="currentReport">
+        <div class="m-1" style="color: #fff; max-width: 500px">
+          {{ currentReport.name }}
+        </div>
+      </ng-container>
+      <p
+        *ngIf="appComponent.showSaving"
+        class="m-0"
+        style="
+          position: absolute;
+          color: #f2f2f2;
+          left: 23px;
+          bottom: 0px;
+          font-weight: normal;
+          font-style: oblique;
+          font-size: 10px;
+        "
+      >
+        {{ appComponent.autosaveDisplay }}
+      </p>
+    </div>
+    <div
+      *ngIf="appComponent.currentView === 'disbursement'"
+      class="px-4 pt-4 pb-4 text-left"
+      style="
+        position: sticky;
+        top: 0;
+        max-height: 80px;
+        min-height: 80px;
+        z-index: 2;
+        color: #fff;
+        background-color: #424652;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+      "
+    >
+      <a
+        (click)="goToDashboard(currentDisbursement, 'DISBURSEMENT')"
+        class="mr-1"
+        style="color: #4dc251"
+        >Home</a
+      >
+      >
+      <span
+        class="ml-1 mr-1"
+        style="color: #4dc251; cursor: pointer"
+        (click)="navigateToDisbursements(appComponent.subMenu)"
+        >{{ appComponent.subMenu.name }}</span
+      >
+      <span style="color: #f4f4f4"> > </span>
 
-        <div *ngIf="appComponent.notifications.length > 0"
-            style="position: sticky;top:0;z-index: 3;color: #000;background-color:#fff">
-            <div style="position:absolute; right:20px;z-index:3;">
-                <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;"
-                    class="float-right mr-3 mt-3 text-white">
-                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="msgCount>0"
-                        class="float-left mr-5 text-white" [matBadge]="msgCount" matBadgeColor="warn">notifications
-                    </mat-icon>
-                    <mat-icon style="cursor:pointer;" (click)="showMessages()" *ngIf="msgCount===0"
-                        class="float-left mr-5 text-white">notifications</mat-icon>
-                    <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}"
-                        class="img-fluid w-10 mr-2 rounded-circle" style="width:35px;max-width:50px;">
-                    <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg"
-                        class="img-fluid w-10 mr-2 rounded-circle"
-                        style="width:35px;">{{appComponent.loggedInUser.lastName}},
-                    {{appComponent.loggedInUser.firstName}}
-                    <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
-                    <mat-menu #profilemenu>
-                        <span mat-menu-item (click)="showProfile()">Profile</span>
-                        <span mat-menu-item (click)="logout()">Logout</span>
-                    </mat-menu>
-                </p>
-            </div>
+      <ng-container
+        *ngIf="
+          currentDisbursement &&
+          currentDisbursement.status.internalStatus !== 'ACTIVE' &&
+          currentDisbursement.status.internalStatus !== 'CLOSED'
+        "
+      >
+        <div class="m-1" style="color: #fff; max-width: 500px">
+          <p
+            *ngIf="currentDisbursement.disabledByAmendment"
+            class="mb-0 text-red text-left"
+            style="font-weight: 600; font-size: 12px"
+          >
+            Reference Grant has been amended or closed
+          </p>
+          Approval Request Note for Grant
+          <b>{{ currentDisbursement.grant.name }}</b>
         </div>
-
-        <div *ngIf="appComponent.notifications.length === 0"
-            style="position: sticky;top:0;z-index: 3;color: #000;background-color:#fff">
-            <div style="position:absolute; right:20px;z-index:3;">
-                <p style="display: flex; align-items: center; text-align: right !important; justify-content: flex-end;"
-                    class="float-right mr-3 mt-3 text-white">
-                    <mat-icon class="float-left mr-5 text-light">notifications_none</mat-icon>
-                    <img *ngIf="appComponent.loggedInUser.userProfile" src="{{appComponent.loggedInUser.userProfile}}"
-                        class="img-fluid w-10 mr-2 rounded-circle" style="width:35px;">
-                    <img *ngIf="!appComponent.loggedInUser.userProfile" src="./assets/img/avatar.svg"
-                        class="img-fluid w-10 mr-2 rounded-circle"
-                        style="width:35px;">{{appComponent.loggedInUser.lastName}},
-                    {{appComponent.loggedInUser.firstName}}
-                    <mat-icon mat-button [matMenuTriggerFor]="profilemenu">arrow_drop_down</mat-icon>
-                    <mat-menu #profilemenu="matMenu">
-                        <span mat-menu-item (click)="showProfile()">Profile</span>
-                        <span mat-menu-item (click)="logout()">Logout</span>
-                    </mat-menu>
-                </p>
-            </div>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          currentDisbursement &&
+          (currentDisbursement.status.internalStatus === 'ACTIVE' ||
+            currentDisbursement.status.internalStatus === 'CLOSED')
+        "
+      >
+        <div class="m-1" style="color: #fff; max-width: 500px">
+          <p
+            *ngIf="currentDisbursement.disabledByAmendment"
+            class="mb-0 text-red text-left"
+            style="font-weight: 600; font-size: 12px"
+          >
+            Reference Grant has been amended or closed
+          </p>
+          Disbursement Record against Approved Note for Grant
+          <b>{{ currentDisbursement.grant.name }}</b>
         </div>
-        <div *ngIf="appComponent.currentView !== 'grant' && appComponent.currentView !== 'report' && appComponent.currentView !== 'disbursement'"
-            class="p-4 text-left"
-            style="width:100%;min-height:80px;position: sticky;top:0;z-index: 2;color: #fff;background-color:#424652;color:#4DC251;">
-            &nbsp;</div>
-
-        <!--<app-navbar></app-navbar>-->
-        <div *ngIf="appComponent.currentView === 'grant'" class="px-4 pt-4 pb-4 text-left"
-            style="position: sticky;top:0;max-height:80px;min-height:80px;z-index: 2;color: #fff;background-color:#424652;display:flex;flex-direction:row;align-items: flex-start;">
-            <a (click)="goToDashboard(currentGrant,'GRANT')" class="mr-1" style="color:#4DC251;">Home</a> > <span
-                style="color:#4DC251;cursor:pointer;" class="ml-1 mr-1"
-                (click)="navigateToGrants(appComponent.subMenu)">{{appComponent.subMenu.name}}</span> <span
-                style="color:#f4f4f4;"> > </span>
-            <ng-container *ngIf="currentGrant">
-                <div class="ml-1" style="color:#fff;max-width:500px;">{{currentGrant.name}}</div>
-                <p *ngIf="appComponent.showSaving" class="m-0"
-                    style="position: absolute;color: #f2f2f2;left: 23px;bottom: 0px;font-weight: normal;font-style: oblique;font-size: 10px;">
-                    {{appComponent.autosaveDisplay}}</p>
-            </ng-container>
-        </div>
-        <div *ngIf="appComponent.currentView === 'report'" class="px-4 pt-4 pb-4 text-left"
-            style="position: sticky;top:0;max-height:80px;min-height:80px;z-index: 2;color: #fff;background-color:#424652;display:flex;flex-direction:row;align-items: baseline;">
-            <a (click)="goToDashboard(currentReport,'REPORT')" class="mr-1" style="color:#4DC251;">Home</a> > <span
-                class="ml-1 mr-1" style="color:#4DC251;cursor:pointer;"
-                (click)="navigateToReports(appComponent.subMenu)">{{appComponent.subMenu.name}}</span> <span
-                style="color:#f4f4f4;"> > </span>
-            <ng-container *ngIf="currentReport">
-                <div class="m-1" style="color:#fff;max-width:500px;">{{currentReport.name}}</div>
-            </ng-container>
-            <p *ngIf="appComponent.showSaving" class="m-0"
-                style="position: absolute;color: #f2f2f2;left: 23px;bottom: 0px;font-weight: normal;font-style: oblique;font-size: 10px;">
-                {{appComponent.autosaveDisplay}}</p>
-        </div>
-        <div *ngIf="appComponent.currentView === 'disbursement'" class="px-4 pt-4 pb-4 text-left"
-            style="position: sticky;top:0;max-height:80px;min-height:80px;z-index: 2;color: #fff;background-color:#424652;display:flex;flex-direction:row;align-items: baseline;">
-            <a (click)="goToDashboard(currentDisbursement,'DISBURSEMENT')" class="mr-1" style="color:#4DC251;">Home</a>
-            > <span class="ml-1 mr-1" style="color:#4DC251;cursor:pointer;"
-                (click)="navigateToDisbursements(appComponent.subMenu)">{{appComponent.subMenu.name}}</span> <span
-                style="color:#f4f4f4;"> > </span>
-            <ng-container
-                *ngIf="currentDisbursement && currentDisbursement.status.internalStatus!=='ACTIVE' && currentDisbursement.status.internalStatus!=='CLOSED'">
-                <div class="m-1" style="color:#fff;max-width:500px;">Approval Request Note for Grant
-                    <b>{{currentDisbursement.grant.name}}</b></div>
-            </ng-container>
-            <ng-container
-                *ngIf="currentDisbursement && (currentDisbursement.status.internalStatus==='ACTIVE' || currentDisbursement.status.internalStatus==='CLOSED')">
-                <div class="m-1" style="color:#fff;max-width:500px;">Disbursement Record against Approved Note for Grant
-                    <b>{{currentDisbursement.grant.name}}</b></div>
-            </ng-container>
-            <p *ngIf="appComponent.showSaving" class="m-0"
-                style="position: absolute;color: #f2f2f2;left: 23px;bottom: 0px;font-weight: normal;font-style: oblique;font-size: 10px;">
-                {{appComponent.autosaveDisplay}}</p>
-        </div>
-        <!--div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'upcoming' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
+      </ng-container>
+      <p
+        *ngIf="appComponent.showSaving"
+        class="m-0"
+        style="
+          position: absolute;
+          color: #f2f2f2;
+          left: 23px;
+          bottom: 0px;
+          font-weight: normal;
+          font-style: oblique;
+          font-size: 10px;
+        "
+      >
+        {{ appComponent.autosaveDisplay }}
+      </p>
+    </div>
+    <!--div *ngIf="appComponent.currentView !== 'grants' && appComponent.currentView !== 'upcoming' && appComponent.currentView !== 'user-profile'" class="row" style="background: #fff; padding: 10px; margin: 0 30px; position: sticky; top: 67px; z-index: 3;">
             <div class="col-12">
                 <div class="float-right ml-2">
                     <a (click)="showWorkflowAssigments()"><img src="./assets/img/wfassignmnet.svg" style="width:25px;"></a>
@@ -125,10 +363,9 @@
                 </div>
             </div>
         </div>-->
-        <router-outlet></router-outlet>
-        <div *ngIf="isMaps('maps')">
-            <app-footer></app-footer>
-        </div>
+    <router-outlet></router-outlet>
+    <div *ngIf="isMaps('maps')">
+      <app-footer></app-footer>
     </div>
-
+  </div>
 </div>
