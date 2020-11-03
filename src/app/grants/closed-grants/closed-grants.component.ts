@@ -388,4 +388,11 @@ export class ClosedGrantsComponent implements OnInit {
   getFormattedGrantAmount(amount: number): string {
     return inf.format(amount, 2);
   }
+  getCleanClosureNote(grant) {
+    if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
+      return grant.note.substr(grant.note.lastIndexOf('</i>') + 4);
+    } else {
+      return 'This Grant has been closed.'
+    }
+  }
 }

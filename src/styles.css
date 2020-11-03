@@ -785,6 +785,10 @@ kendo-pdf-export {
   font-weight: 800 !important;
 }
 
+li:focus {
+  box-shadow: 2px 2px 4px #d9f829 !important;
+}
+
 .sidebar .nav li:active > a p {
   font-weight: 800 !important;
 }

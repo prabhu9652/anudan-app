@@ -2000,7 +2000,15 @@ export class PreviewComponent implements OnInit {
     this.grantComponent.amendGrant(grantId);
   }
 
-  manageGrant() {
-    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
+  manageGrant(grantId) {
+    this.adminComp.manageGrant(null, grantId);
+  }
+
+  getCleanClosureNote() {
+    if (this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE') {
+      return this.currentGrant.note.substr(this.currentGrant.note.lastIndexOf('</i>') + 4);
+    } else {
+      return 'This grant has been closed.'
+    }
   }
 }
