@@ -129,6 +129,9 @@ export class UpcomingReportsComponent implements OnInit {
         this.http.get<Report[]>(url, httpOptions2).subscribe((reports: Report[]) => {
             //this.processReports(reports);
             this.reportsReadyToSubmit = reports;
+            if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
+                this.reportsReadyToSubmit.sort((a, b) => (a.dueDate <= b.dueDate)?-1:1);
+            }
         });
 
         const queryParams3 = new HttpParams().set('q', 'upcoming-future');
