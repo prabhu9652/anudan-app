@@ -1092,7 +1092,7 @@ export class PreviewComponent implements OnInit {
           [],
           0,
           "wfassignment",
-          "Would you like carry out Workflow assignments?"
+          "Would you like to assign users responsible for this workflow?"
         );
         return;
       }

@@ -161,7 +161,7 @@ export class ReportPreviewComponent implements OnInit {
             const status1 = this.reportWorkflowStatuses.filter((status) => status.id===assignment.stateId);
             if((assignment.assignmentId === null || assignment.assignmentId === undefined || assignment.assignmentId === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted)){
                 const dialogRef = this.dialog.open(FieldDialogComponent, {
-                    data: {title:"Would you like to carry out workflow assignments?"},
+                    data: {title:"Would you like to assign users responsible for this workflow?"},
                     panelClass: 'center-class'
                 });
                 dialogRef.afterClosed().subscribe(result => {

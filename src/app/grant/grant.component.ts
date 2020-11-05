@@ -1073,7 +1073,7 @@ export class GrantComponent
       data: {
         title: "Important!",
         content:
-          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this amendment-in-progress Grant through the current organizational workflow.  <br>On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
+          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this Grant through the current organizational workflow. On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
         btnMain: "Continue",
         btnSecondary: "Cancel",
       },

@@ -728,7 +728,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     onNoClick(): void {
         if (this.verifyChanges()) {
             const d = this.dialog.open(FieldDialogComponent, {
-                data: { title: "Assignments have changed.", btnMain: "Save Assignments", btnSecondary: "Discard Changes" },
+                data: { title: "Assignments have changed.", btnMain: "Assign Users", btnSecondary: "Not Now" },
                 panelClass: "center-class"
             });
 
