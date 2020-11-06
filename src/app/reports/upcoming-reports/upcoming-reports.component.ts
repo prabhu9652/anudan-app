@@ -260,6 +260,21 @@ export class UpcomingReportsComponent implements OnInit {
                 this.manageReport(result.selectedReport);
             } else {
                 this.otherReportsClicked = false;
+                if (result.deleted && result.deleted.length > 0) {
+                    let idx = this.reportsToSetup.findIndex(x => x.id = reportId);
+                    if (idx !== -1) {
+                        this.reportsToSetup[idx].futureReportsCount = this.reportsToSetup[idx].futureReportsCount - 1;
+                    }
+                    
+                    idx = this.reportsReadyToSubmit.findIndex(x => x.id = reportId);
+                    if (idx !== -1) {
+                        this.reportsReadyToSubmit[idx].futureReportsCount = this.reportsReadyToSubmit[idx].futureReportsCount - 1;
+                    }
+                    idx = this.allReports.findIndex(x => x.id = reportId);
+                    if (idx !== -1) {
+                        this.allReports[idx].futureReportsCount = this.allReports[idx].futureReportsCount - 1;
+                    }
+                }
             }
         });
     }

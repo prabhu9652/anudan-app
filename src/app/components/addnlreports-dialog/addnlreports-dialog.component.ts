@@ -1,10 +1,12 @@
+import { ReportDataService } from './../../report.data.service';
+import { FieldDialogComponent } from './../field-dialog/field-dialog.component';
 import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatButtonModule } from '@angular/material';
 import { Report, AdditionReportsModel } from '../../model/report';
 import { Grant } from '../../model/dahsboard';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CurrencyService } from 'app/currency-service';
-
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-addnlreports-dialog',
   templateUrl: './addnlreports-dialog.component.html',
@@ -18,8 +20,9 @@ export class AddnlreportsDialogComponent implements OnInit {
   futureReports: Report[];
   selectedReports: Report[];
   singleGrant: boolean;
+  deletedReports: Report[] = [];
 
-  constructor(public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
+  constructor(private dialog:MatDialog,private reportService: ReportDataService, public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
     , @Inject(MAT_DIALOG_DATA) public data: AdditionReportsModel
     , private http: HttpClient, private currenyService: CurrencyService) {
     this.dialogRef.disableClose = false;
@@ -42,7 +45,7 @@ export class AddnlreportsDialogComponent implements OnInit {
 
 
   onNoClick(): void {
-    this.dialogRef.close({ result: false });
+    this.dialogRef.close({ result: false,deleted:this.deletedReports  });
   }
 
   onYesClick(): void {
@@ -55,7 +58,7 @@ export class AddnlreportsDialogComponent implements OnInit {
   }
 
   manageReport(report: Report) {
-    this.dialogRef.close({ result: true, selectedReport: report });
+    this.dialogRef.close({ result: true, selectedReport: report});
   }
 
   getReportsForSelectedGrant(reportId: number, grantId: number) {
@@ -92,4 +95,27 @@ export class AddnlreportsDialogComponent implements OnInit {
     }
     return amtInWords;
   }
+
+  deleteReport(report: Report) {
+    //this.deleteReportsClicked = true;
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+        data: { title: 'Are you sure you want to delete this report?' },
+        panelClass: 'center-class'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            this.reportService.deleteReport(report)
+              .then(() => {
+                    this.deletedReports.push(report);
+                    const index = this.selectedReports.findIndex(r => r.id === report.id);
+                    this.selectedReports.splice(index, 1);
+                    //this.deleteReportsClicked = false;
+                })
+        } else {
+            //this.deleteReportsClicked = false;
+            dialogRef.close();
+        }
+    });
+}
 }
