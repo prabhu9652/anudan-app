@@ -261,18 +261,26 @@ export class UpcomingReportsComponent implements OnInit {
             } else {
                 this.otherReportsClicked = false;
                 if (result.deleted && result.deleted.length > 0) {
-                    let idx = this.reportsToSetup.findIndex(x => x.id = reportId);
-                    if (idx !== -1) {
-                        this.reportsToSetup[idx].futureReportsCount = this.reportsToSetup[idx].futureReportsCount - 1;
+                    let idx = -1;
+                    if (this.reportsToSetup!==undefined && this.reportsToSetup!==null) {
+                        this.reportsToSetup.findIndex(x => x.id === reportId);
+                        if (idx !== -1) {
+                            this.reportsToSetup[idx].futureReportsCount = this.reportsToSetup[idx].futureReportsCount - 1;
+                        }
                     }
                     
-                    idx = this.reportsReadyToSubmit.findIndex(x => x.id = reportId);
-                    if (idx !== -1) {
-                        this.reportsReadyToSubmit[idx].futureReportsCount = this.reportsReadyToSubmit[idx].futureReportsCount - 1;
+                    if (this.reportsReadyToSubmit !== undefined && this.reportsReadyToSubmit !== null) {
+                        idx = this.reportsReadyToSubmit.findIndex(x => x.id === reportId);
+                        if (idx !== -1) {
+                            this.reportsReadyToSubmit[idx].futureReportsCount = this.reportsReadyToSubmit[idx].futureReportsCount - 1;
+                        }
                     }
-                    idx = this.allReports.findIndex(x => x.id = reportId);
-                    if (idx !== -1) {
-                        this.allReports[idx].futureReportsCount = this.allReports[idx].futureReportsCount - 1;
+
+                    if (this.allReports !== undefined && this.allReports !== null) {
+                        idx = this.allReports.findIndex(x => x.id === reportId);
+                        if (idx !== -1) {
+                            this.allReports[idx].futureReportsCount = this.allReports[idx].futureReportsCount - 1;
+                        }
                     }
                 }
             }
