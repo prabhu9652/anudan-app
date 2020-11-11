@@ -414,10 +414,12 @@ export class PreviewComponent implements OnInit {
     submissios: Submission[],
     kpiId: number,
     func: string,
-    title: string
+    title: string,
+    btnSecondary: string,
+    btnMain:string
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title },
+      data: { title: title,btnMain:btnMain,btnSecondary:btnSecondary },
       panelClass: "center-class",
     });
 
@@ -1092,7 +1094,9 @@ export class PreviewComponent implements OnInit {
           [],
           0,
           "wfassignment",
-          "Would you like to assign users responsible for this workflow?"
+          "Would you like to assign users responsible for this workflow?",
+          "Not Now",
+          "Assign Users"
         );
         return;
       }
@@ -1616,7 +1620,7 @@ export class PreviewComponent implements OnInit {
         );
         break;
       case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions");
+        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions",null,null);
         break;
     }
 

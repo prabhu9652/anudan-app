@@ -331,6 +331,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
             const dialogRef = this.dialog.open(FieldDialogComponent, {
               data: {
                 title: "Would you like to assign users responsible for this workflow?",
+                btnMain: "Assign Users",
+                btnSecondary:"Not Now"
               },
               panelClass: "center-class",
             });
