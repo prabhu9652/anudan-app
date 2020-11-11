@@ -1,29 +1,63 @@
-<h1 mat-dialog-title style="margin-bottom:0px;">Select a Grant</h1>
-<h4 mat-dialog-title *ngIf="this.selectedGrant" style="margin-top: 0; font-size: 16px; font-weight: normal;">
-	{{selectedGrant.name}}</h4>
-<h4 mat-dialog-title *ngIf="!this.selectedGrant" style="margin-top: 0; font-size: 16px; font-weight: normal;">No grant
-	selected</h4>
+<h1 mat-dialog-title style="margin-bottom: 0px">Select a Grant</h1>
+<h4
+  mat-dialog-title
+  *ngIf="this.selectedGrant"
+  style="margin-top: 0; font-size: 16px; font-weight: normal"
+>
+  {{ selectedGrant.name }}
+</h4>
+<h4
+  mat-dialog-title
+  *ngIf="!this.selectedGrant"
+  style="margin-top: 0; font-size: 16px; font-weight: normal"
+>
+  No grant selected
+</h4>
 <div mat-dialog-content>
-	<div>
-		<mat-card *ngFor="let grant of grants" value="{{grant.id}}" style="background:#E5E5E5;max-width:none;"
-			class="mb-3">
-			<span style="position: absolute; right: 54px; top: 14px; font-size: 12px; font-style: italic;"
-				*ngIf="grant.hasOngoingDisbursement">Disbursement Approval Request in progress</span>
-			<mat-card-title style="font-size:14px;">{{(grant.referenceNo?grant.referenceNo+' | ':'') + grant.name}}
-				<mat-checkbox [checked]="grant.id===selected" class="template-checkbox float-right"
-					(change)="setSelectedGrant(grant.id,$event)" [disabled]="grant.hasOngoingDisbursement">
-				</mat-checkbox>
-
-
-			</mat-card-title>
-		</mat-card>
-	</div>
+  <div>
+    <mat-card
+      *ngFor="let grant of grants"
+      value="{{ grant.id }}"
+      style="background: #e5e5e5; max-width: none"
+      class="mb-3"
+    >
+      <mat-checkbox
+        [checked]="grant.id === selected"
+        class="template-checkbox float-right"
+        (change)="setSelectedGrant(grant.id, $event)"
+        [disabled]="grant.hasOngoingDisbursement"
+      >
+      </mat-checkbox>
+      <mat-card-title style="font-size: 14px"
+        >{{ (grant.referenceNo ? grant.referenceNo + " | " : "") + grant.name }}
+      </mat-card-title>
+      <p
+        style="
+          position: absolute;
+          font-size: 12px;
+          font-style: italic;
+          bottom: 0 !important;
+          right: 18px;
+        "
+        *ngIf="grant.hasOngoingDisbursement"
+        class="text-red mt-1 mb-0 text-right"
+      >
+        Disbursement Approval Request in progress
+      </p>
+    </mat-card>
+  </div>
 </div>
 <!--<mat-select [(value)]="selected">
 	<mat-option  matTooltip="{{template.description}}" matTooltipPosition="right" *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</mat-option>
 </mat-select>-->
-<hr>
+<hr />
 <div mat-dialog-actions>
-	<button [disabled]="selected===0" class="btn btn-sm btn-green-primary" (click)="onYesClick()">Continue</button>
-	<button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
+  <button
+    [disabled]="selected === 0"
+    class="btn btn-sm btn-green-primary"
+    (click)="onYesClick()"
+  >
+    Continue
+  </button>
+  <button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
 </div>
