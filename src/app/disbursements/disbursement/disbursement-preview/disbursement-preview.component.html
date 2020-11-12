@@ -741,7 +741,7 @@
                 [disabled]="
                   !disbursementService.checkIfDisbursementHasActualDisbursements(
                     currentDisbursement
-                  )
+                  ) || disableRecordButton
                 "
                 mat-stroked-button
                 (click)="submitDisbursement(flow.toStateId)"

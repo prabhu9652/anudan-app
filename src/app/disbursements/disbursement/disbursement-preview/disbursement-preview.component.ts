@@ -99,6 +99,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   originalDisbursement: any;
   selectedDateField: any;
   selectedField: ActualDisbursement;
+  disableRecordButton = false;
 
   constructor(
     public disbursementService: DisbursementDataService,
@@ -280,6 +281,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   }
 
   submitDisbursement(toState: number) {
+    this.disableRecordButton = true;
     if (this.currentDisbursement.requestedAmount < this.getTotals()) {
       this.dialog.open(FieldDialogComponent, {
         data: {
@@ -292,6 +294,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
         },
         panelClass: "center-class",
       });
+      this.disableRecordButton = false;
       return;
     }
 
@@ -316,6 +319,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
             data: "Approval Request has missing header information.",
             panelClass: "center-class",
           });
+          this.disableRecordButton = false;
           return;
         }
 
@@ -341,6 +345,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
                 this.showWorkflowAssigmentAndSubmit(toState);
               }
             });
+            this.disableRecordButton = false;
             return;
           }
         }
@@ -369,6 +374,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
           ),
         panelClass: "center-class",
       });
+      this.disableRecordButton = false;
       return;
     }
 
@@ -388,6 +394,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       } else {
         this.wfDisabled = false;
       }
+      this.disableRecordButton = false;
     });
   }
 
