@@ -63,17 +63,24 @@ export class UpcomingReportsComponent implements OnInit {
 
                 this.http.get(url, httpOptions).subscribe((report:Report) => {
                     if (report) {
-                        let idx = this.reportsToSetup.findIndex((x) => x.id === Number(report.id));
-                        if (idx >= 0) {
-                            this.reportsToSetup[idx] = report;
+                        let idx = -1;
+                        if (this.reportsToSetup !== undefined && this.reportsToSetup !== null) {
+                            idx = this.reportsToSetup.findIndex((x) => x.id === Number(report.id));
+                            if (idx >= 0) {
+                                this.reportsToSetup[idx] = report;
+                            }
                         }
-                        idx = this.reportsReadyToSubmit.findIndex((x) => x.id === Number(report.id));
-                        if (idx >= 0) {
-                            this.reportsReadyToSubmit[idx] = report;
+                        if (this.reportsReadyToSubmit !== undefined && this.reportsReadyToSubmit !== null) {
+                            idx = this.reportsReadyToSubmit.findIndex((x) => x.id === Number(report.id));
+                            if (idx >= 0) {
+                                this.reportsReadyToSubmit[idx] = report;
+                            }
                         }
-                        idx = this.futureReportsToSetup.findIndex((x) => x.id === Number(report.id));
-                        if (idx >= 0) {
-                            this.futureReportsToSetup[idx] = report;
+                        if (this.futureReportsToSetup !== undefined && this.futureReportsToSetup !== null) {
+                            idx = this.futureReportsToSetup.findIndex((x) => x.id === Number(report.id));
+                            if (idx >= 0) {
+                                this.futureReportsToSetup[idx] = report;
+                            }
                         }
                     }
                 });
@@ -331,8 +338,31 @@ export class UpcomingReportsComponent implements OnInit {
             if (result) {
                 this.reportService.deleteReport(report)
                     .then(() => {
-                        const index = this.reportsToSetupData.findIndex(r => r.id === report.id);
-                        this.reportsToSetupData.splice(index, 1);
+                        let index = -1;
+                        if (this.reportsToSetupData !== undefined && this.reportsToSetupData !== null) {
+                            index = this.reportsToSetupData.findIndex(r => r.id === report.id);
+                            if (index >= 0) {
+                                this.reportsToSetupData.splice(index, 1);
+                            }
+                        }
+                        if (this.reportsToSetup !== undefined && this.reportsToSetup !== null) {
+                            index = this.reportsToSetup.findIndex(r => r.id === report.id);
+                            if (index >= 0) {
+                                this.reportsToSetup.splice(index, 1);
+                            }
+                        }
+                        if (this.reportsReadyToSubmit !== undefined && this.reportsReadyToSubmit !== null) {
+                            index = this.reportsReadyToSubmit.findIndex(r => r.id === report.id);
+                            if (index >= 0) {
+                                this.reportsReadyToSubmit.splice(index, 1);
+                            }
+                        }
+                        if (this.allReports !== undefined && this.allReports !== null) {
+                            index = this.allReports.findIndex(r => r.id === report.id);
+                            if (index >= 0) {
+                                this.allReports.splice(index, 1);
+                            }
+                        }
                         this.deleteReportsClicked = false;
                     })
             } else {
