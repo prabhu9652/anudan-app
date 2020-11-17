@@ -211,7 +211,7 @@ export class AdminLayoutComponent implements OnInit {
                     const idx = this.appComponent.currentTenant.grants.findIndex(
                       (g) => g.id === notifications[i].grantId
                     );
-                    if (idx >= 0) {
+                    if (idx >= 0 && this.appComponent.loggedInUser) {
                       url =
                         "/api/user/" +
                         this.appComponent.loggedInUser.id +

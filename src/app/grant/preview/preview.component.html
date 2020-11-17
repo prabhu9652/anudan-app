@@ -166,7 +166,7 @@
             mat-menu-item
             (click)="manageGrant(currentGrant.amendGrantId)"
           >
-            <mat-icon class="ml-1">history</mat-icon>View Current Active Grant
+            <mat-icon class="ml-1">history</mat-icon>View Amended Grant
           </button>
         </mat-menu>
       </div>
@@ -620,7 +620,11 @@
                                 "
                                 align="center"
                               >
-                                <b>{{ column.name }}</b>
+                                <b>{{
+                                  column.name === "Notes"
+                                    ? "Milestones/Notes"
+                                    : column.name
+                                }}</b>
                               </td>
                             </ng-container>
                           </ng-container>
@@ -1318,7 +1322,11 @@
                                     "
                                     align="center"
                                   >
-                                    <b>{{ column.name }}</b>
+                                    <b>{{
+                                      column.name === "Notes"
+                                        ? "Milestones/Notes"
+                                        : column.name
+                                    }}</b>
                                   </td>
                                 </ng-container>
                               </ng-container>

@@ -1428,4 +1428,12 @@ export class ReportSectionsComponent implements OnInit {
   clearDate(column) {
     column.value = "";
   }
+
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    const day = d || today;
+    return (
+      day <= today && day >= new Date(this.currentReport.grant.startDate)
+    );
+  };
 }

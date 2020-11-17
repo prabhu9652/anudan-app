@@ -654,7 +654,11 @@
                                           font-weight: 400;
                                           font-size: 14px;
                                         "
-                                        >{{ column.name }}</label
+                                        >{{
+                                          column.name === "Notes"
+                                            ? "Milestones/Notes"
+                                            : column.name
+                                        }}</label
                                       >
                                     </td>
                                   </ng-container>
