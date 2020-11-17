@@ -92,7 +92,7 @@ export class ReportPreviewComponent implements OnInit {
 
                 this.http.get(url, httpOptions).subscribe((report:Report) => {
                     if (report) {
-                        if (this.currentReport.id === Number(report.id)) {
+                        if (this.currentReport && this.currentReport.id === Number(report.id)) {
                             this.singleReportDataService.changeMessage(report);
                         }
                     }

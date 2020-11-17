@@ -441,6 +441,7 @@ export class TableData {
   saved: boolean;
   actualDisbursementId: number;
   disbursementId: number;
+  reportId: number;
 }
 
 export class TemplateLibrary {

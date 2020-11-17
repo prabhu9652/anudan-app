@@ -1085,6 +1085,7 @@ export class ReportSectionsComponent implements OnInit {
   addRow(attr: Attribute) {
     const row = new TableData();
     row.name = "";
+    
     row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
     for (let i = 0; i < row.columns.length; i++) {
       row.columns[i].value = "";
