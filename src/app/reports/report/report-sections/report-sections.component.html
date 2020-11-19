@@ -1840,13 +1840,24 @@
                                     >
                                       <p
                                         class="anu-input m-0 text-center"
-                                        style="
-                                          background: #d6d6d6 !important;
-                                          position: relative;
-                                          top: 0;
+                                        [ngStyle]="
+                                          row.enteredByGrantee &&
+                                          currentReport.forGranteeUse
+                                            ? {
+                                                background:
+                                                  '#d6d6d6',
+                                                position: 'relative',
+                                                top: '0'
+                                              }
+                                            : {
+                                                background:
+                                                  '#f4f4f4',
+                                                position: 'relative',
+                                                top: '0'
+                                              }
                                         "
                                       >
-                                        {{ row.name }}
+                                        AAA{{ row.name }}
                                       </p>
                                     </td>
                                     <ng-container
@@ -1891,7 +1902,7 @@
                                             readonly
                                             style="
                                               color: #212529;
-                                              background: #d6d6d6 !important;
+                                              background: #f4f4f4 !important;
                                             "
                                           />
 
