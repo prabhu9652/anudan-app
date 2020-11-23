@@ -414,10 +414,12 @@ export class PreviewComponent implements OnInit {
     submissios: Submission[],
     kpiId: number,
     func: string,
-    title: string
+    title: string,
+    btnSecondary: string,
+    btnMain:string
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title },
+      data: { title: title,btnMain:btnMain,btnSecondary:btnSecondary },
       panelClass: "center-class",
     });
 
@@ -1092,7 +1094,9 @@ export class PreviewComponent implements OnInit {
           [],
           0,
           "wfassignment",
-          "Would you like carry out Workflow assignments?"
+          "Would you like to assign users responsible for this workflow?",
+          "Not Now",
+          "Assign Users"
         );
         return;
       }
@@ -1616,7 +1620,7 @@ export class PreviewComponent implements OnInit {
         );
         break;
       case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions");
+        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions",null,null);
         break;
     }
 
@@ -2000,7 +2004,15 @@ export class PreviewComponent implements OnInit {
     this.grantComponent.amendGrant(grantId);
   }
 
-  manageGrant() {
-    this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
+  manageGrant(grantId) {
+    this.adminComp.manageGrant(null, grantId);
+  }
+
+  getCleanClosureNote() {
+    if (this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE') {
+      return this.currentGrant.note.substr(this.currentGrant.note.lastIndexOf('</i>') + 4);
+    } else {
+      return 'This grant has been closed.'
+    }
   }
 }

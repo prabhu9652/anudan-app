@@ -85,7 +85,7 @@ export class DocumentLibraryComponent implements OnInit {
   deleteSelection() {
 
     const dReg = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete the selected document(s)?' },
+      data: { title: 'Are you sure you want to delete the selected document(s)?',btnMain:"Delete Document(s)",btnSecondary:"Not Now" },
       panelClass: 'center-class'
     });
 

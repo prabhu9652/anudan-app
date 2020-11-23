@@ -728,7 +728,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     onNoClick(): void {
         if (this.verifyChanges()) {
             const d = this.dialog.open(FieldDialogComponent, {
-                data: { title: "Assignments have changed.", btnMain: "Save Assignments", btnSecondary: "Discard Changes" },
+                data: { title: "Would you like to save the assignment changes?", btnMain: "Save Assignments", btnSecondary: "Not Now" },
                 panelClass: "center-class"
             });
 
@@ -953,10 +953,11 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 const assTokens = ass.id.split("_");
                 const assId = assTokens[1];
                 const orgAss = this.data.model.workflowAssignments.filter(a => a.id === Number(assId))[0];
-                if (orgAss.assignmentId == undefined) {
+                if (orgAss!==undefined && orgAss.assignmentId == undefined) {
                     orgAss.assignmentId = 0;
                 }
-                if (orgAss.assignmentId !== undefined && orgAss.assignmentId !== null && orgAss.assignmentId !== Number(ass.value)) {
+                
+                if (orgAss!==undefined && orgAss.assignmentId !== undefined && orgAss.assignmentId !== null && orgAss.assignmentId !== Number(ass.value)) {
                     return true;
                 }
             }

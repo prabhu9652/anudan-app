@@ -123,7 +123,7 @@ export class UsersComponent implements OnInit {
             return;
         }
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to disable ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : '') }
+            data: { title: 'Are you sure you want to disable ' + (user.firstName !== undefined ? user.firstName : 'Unregistered User') + ' ' + (user.lastName !== undefined ? user.lastName : ''),btnMain:"Delete User",btnSecondary:"Not Now" }
         });
 
         dialogRef.afterClosed().subscribe(result => {

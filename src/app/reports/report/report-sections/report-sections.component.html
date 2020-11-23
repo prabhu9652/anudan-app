@@ -202,6 +202,7 @@
             matInput
             [matDatepicker]="datePicker"
             (dateInput)="setDate($event)"
+            [matDatepickerFilter]="dateFilter"
           />
           <mat-datepicker #datePicker></mat-datepicker>
         </mat-form-field>
@@ -860,7 +861,11 @@
                                     <label
                                       class="m-0 text-center p-2 m-0"
                                       style="font-weight: 400; font-size: 14px"
-                                      >{{ column.name }}</label
+                                      >{{
+                                        column.name === "Notes"
+                                          ? "Milestones/Notes"
+                                          : column.name
+                                      }}</label
                                     >
                                   </td>
                                 </ng-container>
@@ -1036,7 +1041,11 @@
                                           font-weight: 400;
                                           font-size: 14px;
                                         "
-                                        >{{ column.name }}</label
+                                        >{{
+                                          column.name === "Notes"
+                                            ? "Milestones/Notes"
+                                            : column.name
+                                        }}</label
                                       >
                                     </td>
                                   </ng-container>
@@ -1054,7 +1063,7 @@
                                     let i = index
                                   "
                                 >
-                                  <tr>
+                                  <tr *ngIf="row.reportId === currentReport.id">
                                     <td
                                       width="10%"
                                       [ngStyle]="
@@ -1076,8 +1085,7 @@
                                           attribute.fieldTableValue.length >
                                             1 &&
                                           currentReport.forGranteeUse &&
-                                          row.enteredByGrantee &&
-                                          row.status
+                                          row.enteredByGrantee
                                         "
                                         (click)="
                                           deleteDisbursementRow(
@@ -1210,7 +1218,7 @@
                                           style="
                                             background: #f4f4f4 !important;
                                             position: relative;
-                                            top: 0px;
+                                            top: -14px;
                                           "
                                         >
                                           {{ row.name }}
@@ -1553,12 +1561,6 @@
                                             matInput
                                             [(ngModel)]="column.value"
                                             class="anu-input"
-                                            readonly
-                                            disabled
-                                            style="
-                                              color: #212529;
-                                              background: #f4f4f4 !important;
-                                            "
                                             [ngModelOptions]="{
                                               standAlone: true
                                             }"
@@ -1574,7 +1576,10 @@
                                             [(ngModel)]="column.value"
                                             class="anu-input"
                                             readonly
-                                            style="cursor: pointer"
+                                            style="
+                                              color: #212529;
+                                              background: #ffffff !important;
+                                            "
                                             [ngModelOptions]="{
                                               standAlone: true
                                             }"
@@ -1591,10 +1596,9 @@
                                             [(ngModel)]="column.value"
                                             class="anu-input"
                                             readonly
-                                            disabled
                                             style="
                                               color: #212529;
-                                              background: #f4f4f4 !important;
+                                              background: #ffffff !important;
                                             "
                                             [ngModelOptions]="{
                                               standAlone: true
@@ -1605,14 +1609,14 @@
                                             *ngIf="
                                               column.dataType === 'date' &&
                                               row.enteredByGrantee &&
-                                              row.status &&
-                                              column.value !== ''
+                                              column.value !== '' &&
+                                              column.value !== undefined
                                             "
                                             (click)="clearDate(column)"
                                             style="
                                               transform: scale(0.65);
                                               position: absolute;
-                                              right: 0;
+                                              right: 15px;
                                               top: 21%;
                                               cursor: pointer;
                                               color: #7f7f7f;
@@ -1622,8 +1626,7 @@
                                           <mat-icon
                                             *ngIf="
                                               column.dataType === 'date' &&
-                                              row.enteredByGrantee &&
-                                              row.status
+                                              row.enteredByGrantee
                                             "
                                             (click)="openDate(column, $event)"
                                             [ngStyle]="
@@ -1635,7 +1638,7 @@
                                                     transform: 'scale(0.55)',
                                                     color: '#7f7f7f',
                                                     position: 'absolute',
-                                                    right: '20px',
+                                                    right: '0',
                                                     top: '21%',
                                                     cursor: 'pointer'
                                                   }
@@ -1807,6 +1810,309 @@
                                               top: -1px;
                                               color: #212529;
                                               background: #f4f4f4 !important;
+                                            "
+                                          >
+                                            {{
+                                              getFormattedCurrency(column.value)
+                                            }}
+                                          </p>
+                                        </mat-form-field>
+                                      </td>
+                                    </ng-container>
+                                  </tr>
+                                  <!--When row belongs to a different report-->
+                                  <tr *ngIf="row.reportId !== currentReport.id">
+                                    <td
+                                      width="10%"
+                                      [ngStyle]="
+                                        row.enteredByGrantee
+                                          ? {
+                                              background: 'transparent',
+                                              padding: '2px 4px',
+                                              border: '1px solid #e4e4e4'
+                                            }
+                                          : {
+                                              background: 'rgb(244,244,244)',
+                                              padding: '2px 4px',
+                                              border: '1px solid #e4e4e4'
+                                            }
+                                      "
+                                    >
+                                      <p
+                                        class="anu-input m-0 text-center"
+                                        [ngStyle]="
+                                          row.enteredByGrantee &&
+                                          currentReport.forGranteeUse
+                                            ? {
+                                                background:
+                                                  '#d6d6d6',
+                                                position: 'relative',
+                                                top: '0'
+                                              }
+                                            : {
+                                                background:
+                                                  '#f4f4f4',
+                                                position: 'relative',
+                                                top: '0'
+                                              }
+                                        "
+                                      >
+                                        {{ row.name }}
+                                      </p>
+                                    </td>
+                                    <ng-container
+                                      *ngFor="
+                                        let column of row.columns;
+                                        let j = index
+                                      "
+                                    >
+                                      <td
+                                        [ngStyle]="
+                                          row.enteredByGrantee
+                                            ? {
+                                                border: '1px solid #d6d6d6',
+                                                'padding-top': '0',
+                                                background: 'transparent'
+                                              }
+                                            : {
+                                                border: '1px solid #e4e4e4',
+                                                'padding-top': '0'
+                                              }
+                                        "
+                                        [width]="
+                                          column.name === 'Notes'
+                                            ? '23%'
+                                            : '12%'
+                                        "
+                                      >
+                                        <mat-form-field
+                                          style="margin-top: 3px"
+                                          *ngIf="!currentReport.forGranteeUse"
+                                        >
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="!column.dataType"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input"
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                            disabled
+                                            readonly
+                                            style="
+                                              color: #212529;
+                                              background: #f4f4f4 !important;
+                                            "
+                                          />
+
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="column.dataType === 'date'"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input"
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                            (click)="openDate(column, $event)"
+                                            disabled
+                                            readonly
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                          />
+
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name !==
+                                                'Funds from Other Sources'
+                                            "
+                                            (blur)="showFormattedAmount($event)"
+                                            #committedAmount
+                                            type="number"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input text-right"
+                                            disabled
+                                            readonly
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                          />
+                                          <p
+                                            [id]="'label_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name !==
+                                                'Funds from Other Sources'
+                                            "
+                                            #amountFormatted
+                                            class="anu-input w-100 text-right"
+                                            style="
+                                              position: absolute;
+                                              top: -1px;
+                                              cursor: text;
+                                              color: #212529;
+                                              background: #f4f4f4 !important;
+                                            "
+                                          >
+                                            {{
+                                              getFormattedCurrency(column.value)
+                                            }}
+                                          </p>
+
+                                          <input
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name ===
+                                                'Funds from Other Sources'
+                                            "
+                                            type="number"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input text-right"
+                                            readonly
+                                            disabled
+                                            style="
+                                              color: #212529;
+                                              background: #f4f4f4 !important;
+                                            "
+                                          />
+                                          <p
+                                            [id]="'label_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name ===
+                                                'Funds from Other Sources'
+                                            "
+                                            class="anu-input w-100 text-right"
+                                            style="
+                                              position: absolute;
+                                              top: -1px;
+                                              background: #f4f4f4 !important;
+                                            "
+                                          >
+                                            {{
+                                              getFormattedCurrency(column.value)
+                                            }}
+                                          </p>
+                                        </mat-form-field>
+                                        <mat-form-field
+                                          style="margin-top: 3px"
+                                          *ngIf="currentReport.forGranteeUse"
+                                        >
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="!column.dataType"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input"
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                            readonly
+                                            disabled
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                          />
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="column.dataType === 'date'"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input"
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                            readonly
+                                            disabled
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                          />
+
+                                          <input
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name !==
+                                                'Funds from Other Sources'
+                                            "
+                                            type="number"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input text-right"
+                                            readonly
+                                            disabled
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                            [ngModelOptions]="{
+                                              standAlone: true
+                                            }"
+                                          />
+                                          <p
+                                            [id]="'label_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name !==
+                                                'Funds from Other Sources'
+                                            "
+                                            class="anu-input w-100 text-right"
+                                            style="
+                                              position: absolute;
+                                              top: -1px;
+                                              cursor: text;
+                                              background: #d6d6d6 !important;
+                                            "
+                                          >
+                                            {{
+                                              getFormattedCurrency(column.value)
+                                            }}
+                                          </p>
+                                          <input
+                                            [id]="'data_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name ===
+                                                'Funds from Other Sources'
+                                            "
+                                            type="number"
+                                            matInput
+                                            [(ngModel)]="column.value"
+                                            class="anu-input text-right"
+                                            readonly
+                                            disabled
+                                            style="
+                                              color: #212529;
+                                              background: #d6d6d6 !important;
+                                            "
+                                          />
+                                          <p
+                                            [id]="'label_' + i + '_' + j"
+                                            *ngIf="
+                                              column.dataType === 'currency' &&
+                                              column.name ===
+                                                'Funds from Other Sources'
+                                            "
+                                            #amountFormatted
+                                            class="anu-input w-100 text-right"
+                                            style="
+                                              position: absolute;
+                                              top: -1px;
+                                              cursor: text;
+                                              background: #d6d6d6 !important;
                                             "
                                           >
                                             {{

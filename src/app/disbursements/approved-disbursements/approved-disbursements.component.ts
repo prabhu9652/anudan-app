@@ -1,3 +1,5 @@
+import { FieldDialogComponent } from './../../components/field-dialog/field-dialog.component';
+import { MatDialog } from '@angular/material';
 import {Component, OnInit} from '@angular/core';
 import { Disbursement } from 'app/model/disbursement';
 import { AppComponent } from 'app/app.component';
@@ -19,7 +21,8 @@ export class ApprovedDisbursementsComponent implements OnInit {
     public appComponent: AppComponent,
     public disbursementDataService: DisbursementDataService,
     private router: Router,
-    public currencyService: CurrencyService
+    public currencyService: CurrencyService,
+    private dialog: MatDialog
   ){}
 
   ngOnInit() {
@@ -38,5 +41,25 @@ export class ApprovedDisbursementsComponent implements OnInit {
   manageDisbursement(disbursement:Disbursement){
     this.disbursementDataService.changeMessage(disbursement);
     this.router.navigate(['disbursement/preview']);
+  }
+
+  deleteDisbursement(disbursement: Disbursement) {
+
+    
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+      data: { title: 'Are you sure you want to delete this disbursement?',btnMain:"Delete Disbursement",btnSecondary:"Not Now" },
+      panelClass: 'center-class'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.disbursementDataService.deleteDisbursement(disbursement)
+          .then(disbs => {
+            this.disbursements = disbs;
+          })
+      } else {
+        dialogRef.close();
+      }
+    });
   }
 }

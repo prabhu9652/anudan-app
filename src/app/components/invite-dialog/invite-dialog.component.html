@@ -2,17 +2,28 @@
 
 <mat-form-field class="example-chip-list">
   <mat-chip-list #chipList aria-label="Fruit selection">
-    <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable" (removed)="remove(fruit)">
-      {{fruit.name}}
+    <mat-chip
+      *ngFor="let fruit of fruits"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="remove(fruit)"
+    >
+      {{ fruit.name }}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
     </mat-chip>
-    <input placeholder="Add grantee email" [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-      (matChipInputTokenEnd)="add($event)" class="anu-input">
+    <input
+      placeholder="Add grantee email"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="add($event)"
+      class="anu-input"
+    />
   </mat-chip-list>
 </mat-form-field>
 <div mat-dialog-actions class="row px-3">
-  <button class="btn btn-sm btn-green-primary" (click)="onYesClick()">Invite Grantee(s)</button>
-  <button class="btn btn-sm btn-green" (click)="onNoClick()">Cancel</button>
-
+  <button class="btn btn-sm btn-green-primary" (click)="onYesClick()">
+    Invite Grantee(s)
+  </button>
+  <button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
 </div>

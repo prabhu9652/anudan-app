@@ -28,9 +28,11 @@
               "
               style="cursor: pointer"
               *ngFor="let disbursement of disbursements; let i = index"
-              (click)="manageDisbursement(disbursement)"
             >
-              <div class="col-10 mb-1">
+              <div
+                class="col-10 mb-1"
+                (click)="manageDisbursement(disbursement)"
+              >
                 <p
                   *ngIf="disbursement.disabledByAmendment"
                   class="mb-0 text-red text-left"
@@ -65,7 +67,7 @@
                   }}</span>
                 </p>
               </div>
-              <div class="col-2">
+              <div class="col-2" (click)="manageDisbursement(disbursement)">
                 <span
                   [class]="
                     'badge state-' +
@@ -94,8 +96,9 @@
               </div>
               <div
                 *ngIf="
-                  disbursement.canManage &&
-                  disbursement.status.internalStatus === 'DRAFT'
+                  (disbursement.canManage &&
+                    disbursement.status.internalStatus === 'DRAFT') ||
+                  disbursement.disabledByAmendment
                 "
                 class="col-2"
                 style="

@@ -132,15 +132,15 @@
               src="./assets/img/dp.svg"
             />Make a Similar Grant
           </button>
-          <!-- <hr
+          <hr
             *ngIf="
               currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
               this.appComp.loggedInUser.organization.organizationType !==
                 'GRANTEE'
             "
-          /> -->
+          />
 
-          <!-- <button
+          <button
             mat-menu-item
             *ngIf="
               currentGrant.grantStatus.internalStatus === 'ACTIVE' &&
@@ -152,14 +152,21 @@
           >
             <mat-icon class="ml-1">file_copy</mat-icon>Amend Current Active
             Grant
-          </button> -->
+          </button>
 
           <button
             *ngIf="currentGrant.origGrantId"
             mat-menu-item
-            (click)="manageGrant()"
+            (click)="manageGrant(currentGrant.origGrantId)"
           >
             <mat-icon class="ml-1">history</mat-icon>View Previous Active Grant
+          </button>
+          <button
+            *ngIf="currentGrant.amendGrantId"
+            mat-menu-item
+            (click)="manageGrant(currentGrant.amendGrantId)"
+          >
+            <mat-icon class="ml-1">history</mat-icon>View Amended Grant
           </button>
         </mat-menu>
       </div>
@@ -194,6 +201,18 @@
                 style="display: flex; align-items: center"
               >
                 <div class="row">
+                  <div
+                    class="col-12"
+                    *ngIf="
+                      currentGrant.amended &&
+                      currentGrant.grantStatus.internalStatus === 'CLOSED'
+                    "
+                    style="display: flex; align-items: center"
+                  >
+                    <strong class="text-left text-red">{{
+                      getCleanClosureNote()
+                    }}</strong>
+                  </div>
                   <div class="col-12">
                     <h4
                       *ngIf="!currentGrant.referenceNo"
@@ -601,7 +620,11 @@
                                 "
                                 align="center"
                               >
-                                <b>{{ column.name }}</b>
+                                <b>{{
+                                  column.name === "Notes"
+                                    ? "Milestones/Notes"
+                                    : column.name
+                                }}</b>
                               </td>
                             </ng-container>
                           </ng-container>
@@ -1299,7 +1322,11 @@
                                     "
                                     align="center"
                                   >
-                                    <b>{{ column.name }}</b>
+                                    <b>{{
+                                      column.name === "Notes"
+                                        ? "Milestones/Notes"
+                                        : column.name
+                                    }}</b>
                                   </td>
                                 </ng-container>
                               </ng-container>

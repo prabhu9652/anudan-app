@@ -137,7 +137,9 @@
                   valign="middle"
                   style="border: 1px solid #e4e4e4"
                 >
-                  {{ column.name }}
+                  {{
+                    column.name === "Notes" ? "Milestones/Notes" : column.name
+                  }}
                 </td>
                 <td
                   *ngIf="column.name === 'Notes'"
@@ -146,7 +148,9 @@
                   valign="middle"
                   style="border: 1px solid #e4e4e4"
                 >
-                  {{ column.name }}
+                  {{
+                    column.name === "Notes" ? "Milestones/Notes" : column.name
+                  }}
                 </td>
               </ng-container>
             </tr>
@@ -263,7 +267,7 @@
                 width="40%"
                 class="p-2"
               >
-                <b>Commentary</b>
+                <b>Milestones/Notes</b>
               </td>
             </tr>
             <ng-container

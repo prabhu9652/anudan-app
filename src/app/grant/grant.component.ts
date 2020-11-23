@@ -266,7 +266,7 @@ export class GrantComponent
       if (result) {
         switch (func) {
           case "field":
-            this.deleteFieldEntry(sectionId, attributeId);
+            this.deleteFieldEntry(sectionId, attributeId,"");
             break;
           case "section":
             this.deleteSection(Number(sectionId));
@@ -285,16 +285,27 @@ export class GrantComponent
     });
   }
 
-  deleteFieldEntry(sectionId: number, attributeId: number) {
-    for (const section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        const index = section.attributes.findIndex(
-          (attr) => attr.id === attributeId
-        );
-        section.attributes.splice(index, 1);
-        this.checkGrant();
+  deleteFieldEntry(sectionId: number, attributeId: number, msg: string) {
+    const dg = this.dialog.open(FieldDialogComponent, {
+      data: { title: msg, btnMain: "Delete Field", btnSecondary: "Not Now" },
+      panelClass:"center-class"
+    });
+    
+    dg.afterClosed().subscribe(result => { 
+      if (result) {
+        for (const section of this.currentGrant.grantDetails.sections) {
+          if (section.id === sectionId) {
+            const index = section.attributes.findIndex(
+              (attr) => attr.id === attributeId
+            );
+            section.attributes.splice(index, 1);
+            this.checkGrant();
+          }
+        }
+      } else {
+        dg.close();
       }
-    }
+    });
   }
 
   deleteKpi(kpiId: number) {
@@ -1073,7 +1084,7 @@ export class GrantComponent
       data: {
         title: "Important!",
         content:
-          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this amendment-in-progress Grant through the current organizational workflow.  <br>On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
+          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this Grant through the current organizational workflow. On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
         btnMain: "Continue",
         btnSecondary: "Cancel",
       },

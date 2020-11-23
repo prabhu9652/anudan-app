@@ -395,111 +395,70 @@ export class SectionsComponent
     $(editFieldModal).modal("show");
   }
 
-  confirm(
-    sectionId: number,
-    attributeId: number,
-    submissios: Submission[],
-    kpiId: number,
-    func: string,
-    title: string
-  ) {
-    this.appComp.sectionInModification = true;
+  
 
-    if (
-      func === "section" &&
-      this.currentGrant.grantDetails.sections.length === 1
-    ) {
-      const dg = this.dialog.open(MessagingComponent, {
-        data:
-          "<p>At least one section is required for a grant.</p><p><small>Please rename the current section or create an additional section before deleteing this one.</small></p>",
-        panelClass: "center-class",
-      });
-      return;
-    }
+  deleteFieldEntry(sectionId: number, attributeId: number, title: string) {
+
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title },
+      data: { title: title, btnMain:"Delete Field", btnSecondary:"Not Now" },
       panelClass: "center-class",
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        switch (func) {
-          case "field":
-            this.deleteFieldEntry(sectionId, attributeId);
-            break;
-          case "section":
-            this.deleteSection(Number(sectionId));
-            break;
-          case "clearSubmissions":
-            this.clearSubmissions();
-            break;
-          case "row":
-            this.deleteRow(sectionId, attributeId, kpiId);
-            break;
-          case "col":
-            this.deleteColumn(sectionId, attributeId, kpiId);
-            break;
-          case "kpi":
-            this.deleteKpi(kpiId);
-            break;
-        }
+        const httpOptions = {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+            "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+            Authorization: localStorage.getItem("AUTH_TOKEN"),
+          }),
+        };
+    
+        const url =
+          "/api/user/" +
+          this.appComp.loggedInUser.id +
+          "/grant/" +
+          this.currentGrant.id +
+          "/section/" +
+          sectionId +
+          "/field/" +
+          attributeId;
+    
+        this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe(
+          (grant: Grant) => {
+            this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+            const path = this.sidebar.buildSectionsSideNav(null);
+            //this.router.navigate([path]);
+          },
+          (error) => {
+            const errorMsg = error as HttpErrorResponse;
+            console.log(error);
+            const x = { enableHtml: true, preventDuplicates: true } as Partial<
+              IndividualConfig
+            >;
+            const config: Partial<IndividualConfig> = x;
+            if (errorMsg.error.message === "Token Expired") {
+              this.toastr.error(
+                "Your session has expired",
+                "Logging you out now...",
+                config
+              );
+              setTimeout(() => {
+                this.appComp.logout();
+              }, 4000);
+            } else {
+              this.toastr.error(
+                errorMsg.error.message,
+                "8 We encountered an error",
+                config
+              );
+            }
+          }
+        );
       } else {
         dialogRef.close();
       }
-      this.appComp.sectionInModification = false;
     });
-  }
-
-  deleteFieldEntry(sectionId: number, attributeId: number) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json",
-        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
-        Authorization: localStorage.getItem("AUTH_TOKEN"),
-      }),
-    };
-
-    const url =
-      "/api/user/" +
-      this.appComp.loggedInUser.id +
-      "/grant/" +
-      this.currentGrant.id +
-      "/section/" +
-      sectionId +
-      "/field/" +
-      attributeId;
-
-    this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe(
-      (grant: Grant) => {
-        this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
-        const path = this.sidebar.buildSectionsSideNav(null);
-        //this.router.navigate([path]);
-      },
-      (error) => {
-        const errorMsg = error as HttpErrorResponse;
-        console.log(error);
-        const x = { enableHtml: true, preventDuplicates: true } as Partial<
-          IndividualConfig
-        >;
-        const config: Partial<IndividualConfig> = x;
-        if (errorMsg.error.message === "Token Expired") {
-          this.toastr.error(
-            "Your session has expired",
-            "Logging you out now...",
-            config
-          );
-          setTimeout(() => {
-            this.appComp.logout();
-          }, 4000);
-        } else {
-          this.toastr.error(
-            errorMsg.error.message,
-            "8 We encountered an error",
-            config
-          );
-        }
-      }
-    );
   }
 
   deleteKpi(kpiId: number) {
@@ -1533,7 +1492,7 @@ export class SectionsComponent
       const dialogRef = this.dialog.open(FieldDialogComponent, {
         data: {
           title:
-            "You will lose all data for " + attr.fieldName + " Are you sure?",
+            "You will lose all data for " + attr.fieldName + " Are you sure?", btnMain:'Change Field Type',btnSecondary:'Not Now'
         },
         panelClass: "center-class",
       });
@@ -1710,8 +1669,16 @@ export class SectionsComponent
     attr.fieldTableValue.push(row);
   }
 
-  deleteRow(sectionId, attributeId, rowIndex) {
-    console.log(sectionId + " " + attributeId + " " + rowIndex);
+  deleteRow(sectionId, attributeId, rowIndex,msg:string) {
+
+    const dg = this.dialog.open(FieldDialogComponent, {
+      data: { title: msg, btnMain: "Delete Row", btnSecondary: "Not Now" },
+      panelClass:"center-class"
+    });
+
+    dg.afterClosed().subscribe((result) => {
+      if (result()) {
+        console.log(sectionId + " " + attributeId + " " + rowIndex);
     for (let section of this.currentGrant.grantDetails.sections) {
       if (section.id === sectionId) {
         for (let attrib of section.attributes) {
@@ -1723,11 +1690,16 @@ export class SectionsComponent
         }
       }
     }
+      } else {
+        dg.close();
+      }
+    });
+    
   }
 
   deleteDisbursementRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete row?" },
+      data: { title: "Delete the selected planned disbursement row?",btnMain:"Delete Planned Disbursement",btnSecondary:"Not Now" },
       panelClass: "center-class",
     });
 
@@ -1753,19 +1725,30 @@ export class SectionsComponent
     });
   }
 
-  deleteColumn(sectionId, attributeId, colIndex) {
-    for (let section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        for (let attrib of section.attributes) {
-          if (attrib.id == attributeId) {
-            console.log(attrib.fieldTableValue);
-            for (let row of attrib.fieldTableValue) {
-              row.columns.splice(colIndex, 1);
+  deleteColumn(sectionId, attributeId, colIndex,msg:string) {
+    const dg = this.dialog.open(FieldDialogComponent,{
+      data: { title: msg, btnMain: "Delete Column", btnSecondary: "Not Now" },
+      panelClass:"center-class"
+    });
+    
+    dg.afterClosed().subscribe((result) => {
+      if (result) {
+        for (let section of this.currentGrant.grantDetails.sections) {
+          if (section.id === sectionId) {
+            for (let attrib of section.attributes) {
+              if (attrib.id == attributeId) {
+                console.log(attrib.fieldTableValue);
+                for (let row of attrib.fieldTableValue) {
+                  row.columns.splice(colIndex, 1);
+                }
+              }
             }
           }
         }
+      } else {
+        dg.close();
       }
-    }
+    });
   }
 
   openBottomSheet(
@@ -1847,49 +1830,6 @@ export class SectionsComponent
     });
   }
 
-  performAction(event: any) {
-    const selectedOption = event.value;
-    switch (selectedOption) {
-      case "1":
-        let newSubmission = this._createNewSubmissionAndReturn(
-          "Submission Title",
-          new Date()
-        );
-        // newSubmission.grant = this.currentGrant;
-        newSubmission = this._addExistingKpisToSubmission(newSubmission);
-        this.currentGrant.submissions.splice(0, 0, newSubmission);
-        this.toastr.info(
-          "New submission period appended to existing list",
-          "Submission Period Added"
-        );
-        break;
-      case "2":
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-          // sub.grant = grant;
-          // sub.actionAuthorities = new ActionAuthorities();
-
-          const mnth = tmpDt.getMonth() + 3 * i;
-          const dt = new Date(tmpDt.getFullYear(), mnth, tmpDt.getDate());
-          let sub = this._createNewSubmissionAndReturn("Quarter" + (i + 1), dt);
-          sub = this._addExistingKpisToSubmission(sub);
-          // sub.grant = grant;
-          this.currentGrant.submissions.push(sub);
-        }
-        this.toastr.info(
-          "Quarterly Submissions added",
-          "Submission Periods Added"
-        );
-        break;
-      case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions");
-        break;
-    }
-
-    this.checkGrant(null);
-    event.source.value = "";
-  }
-
   clearSubmissions() {
     this.currentGrant.submissions = [];
   }
@@ -1907,56 +1847,70 @@ export class SectionsComponent
     console.log(event);
   }
 
-  deleteSection(secId: number) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json",
-        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
-        Authorization: localStorage.getItem("AUTH_TOKEN"),
-      }),
-    };
+  deleteSection(secId: number, title: string) {
 
-    const url =
-      "/api/user/" +
-      this.appComp.loggedInUser.id +
-      "/grant/" +
-      this.currentGrant.id +
-      "/template/" +
-      this.currentGrant.templateId +
-      "/section/" +
-      secId;
+    const dialogRef = this.dialog.open(FieldDialogComponent, {
+      data: { title: title, btnMain: "Delete Section", btnSecondary: "Not Now" },
+      panelClass: "center-class",
+    });
 
-    this.http.put<Grant>(url, this.currentGrant, httpOptions).subscribe(
-      (grant: Grant) => {
-        this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
-        const path = this.sidebar.buildSectionsSideNav(null);
-        this.router.navigate([path]);
-      },
-      (error) => {
-        const errorMsg = error as HttpErrorResponse;
-        console.log(error);
-        const x = { enableHtml: true, preventDuplicates: true } as Partial<
-          IndividualConfig
-        >;
-        const config: Partial<IndividualConfig> = x;
-        if (errorMsg.error.message === "Token Expired") {
-          this.toastr.error(
-            "Your session has expired",
-            "Logging you out now...",
-            config
-          );
-          setTimeout(() => {
-            this.appComp.logout();
-          }, 4000);
-        } else {
-          this.toastr.error(
-            errorMsg.error.message,
-            "14 We encountered an error",
-            config
-          );
-        }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const httpOptions = {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+            "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+            Authorization: localStorage.getItem("AUTH_TOKEN"),
+          }),
+        };
+    
+        const url =
+          "/api/user/" +
+          this.appComp.loggedInUser.id +
+          "/grant/" +
+          this.currentGrant.id +
+          "/template/" +
+          this.currentGrant.templateId +
+          "/section/" +
+          secId;
+    
+        this.http.put<Grant>(url, this.currentGrant, httpOptions).subscribe(
+          (grant: Grant) => {
+            this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+            const path = this.sidebar.buildSectionsSideNav(null);
+            this.router.navigate([path]);
+          },
+          (error) => {
+            const errorMsg = error as HttpErrorResponse;
+            console.log(error);
+            const x = { enableHtml: true, preventDuplicates: true } as Partial<
+              IndividualConfig
+            >;
+            const config: Partial<IndividualConfig> = x;
+            if (errorMsg.error.message === "Token Expired") {
+              this.toastr.error(
+                "Your session has expired",
+                "Logging you out now...",
+                config
+              );
+              setTimeout(() => {
+                this.appComp.logout();
+              }, 4000);
+            } else {
+              this.toastr.error(
+                errorMsg.error.message,
+                "14 We encountered an error",
+                config
+              );
+            }
+          }
+        );
+      } else {
+        dialogRef.close();
       }
-    );
+    });
+  
+    
     /* const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
     this.grantData.changeMessage(this.currentGrant);
@@ -2223,10 +2177,12 @@ export class SectionsComponent
     }
   }
 
-  deleteSelection(attribId) {
+  deleteSelection(attribId,msg:string) {
     const dReg = this.dialog.open(FieldDialogComponent, {
       data: {
         title: "Are you sure you want to delete the selected document(s)?",
+        btnMain: "Delete Document(s)",
+        btnSecondary:"Not Now"
       },
       panelClass: "center-class",
     });

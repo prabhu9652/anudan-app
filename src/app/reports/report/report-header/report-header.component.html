@@ -186,6 +186,7 @@
                         id="reportStartDate"
                         matInput
                         [(ngModel)]="currentReport.stDate"
+                        
                         [matDatepickerFilter]="startDateFilter"
                         class="anu-input"
                         (dateInput)="datePickerSelected($event)"

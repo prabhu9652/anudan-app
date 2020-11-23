@@ -178,6 +178,15 @@
                   </div>
                 </div>
               </div>
+              <div
+                class="col-12"
+                *ngIf="grant.amended"
+                style="display: flex; align-items: center"
+              >
+                <strong class="text-left text-red">{{
+                  getCleanClosureNote(grant)
+                }}</strong>
+              </div>
             </div>
           </div>
         </div>

@@ -264,7 +264,9 @@
                     valign="middle"
                     style="border: 1px solid #e4e4e4"
                   >
-                    {{ column.name }}
+                    {{
+                      column.name === "Notes" ? "Milestones/Notes" : column.name
+                    }}
                   </td>
                   <td
                     *ngIf="column.name === 'Notes'"
@@ -273,7 +275,9 @@
                     valign="middle"
                     style="border: 1px solid #e4e4e4"
                   >
-                    {{ column.name }}
+                    {{
+                      column.name === "Notes" ? "Milestones/Notes" : column.name
+                    }}
                   </td>
                 </ng-container>
               </tr>
@@ -395,7 +399,7 @@
                   align="center"
                   width="40%"
                 >
-                  <b>Commentary</b>
+                  <b>Milestones/Notes</b>
                 </td>
               </tr>
               <ng-container
@@ -575,7 +579,7 @@
                   align="center"
                   width="40%"
                 >
-                  <b>Note</b>
+                  <b>Milestones/Notes</b>
                 </td>
               </tr>
               <ng-container
@@ -741,7 +745,7 @@
                 [disabled]="
                   !disbursementService.checkIfDisbursementHasActualDisbursements(
                     currentDisbursement
-                  )
+                  ) || disableRecordButton
                 "
                 mat-stroked-button
                 (click)="submitDisbursement(flow.toStateId)"

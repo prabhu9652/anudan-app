@@ -51,12 +51,8 @@
               <button
                 mat-menu-item
                 (click)="
-                  confirm(
+                  deleteSection(
                     section.id,
-                    0,
-                    [],
-                    0,
-                    'section',
                     'Delete section ' + section.sectionName + '?'
                   )
                 "
@@ -464,13 +460,11 @@
                                               .length > 1
                                           "
                                           (click)="
-                                            confirm(
+                                            deleteColumn(
                                               section.id,
                                               attribute.id,
-                                              [],
                                               i,
-                                              'col',
-                                              'Delete column?'
+                                              'Delete the selected column?'
                                             )
                                           "
                                           aria-hidden="false"
@@ -528,13 +522,11 @@
                                           attribute.fieldTableValue.length > 1
                                         "
                                         (click)="
-                                          confirm(
+                                          deleteRow(
                                             section.id,
                                             attribute.id,
-                                            [],
                                             i,
-                                            'row',
-                                            'Delete row?'
+                                            'Delete the selected row?'
                                           )
                                         "
                                         aria-hidden="false"
@@ -654,7 +646,11 @@
                                           font-weight: 400;
                                           font-size: 14px;
                                         "
-                                        >{{ column.name }}</label
+                                        >{{
+                                          column.name === "Notes"
+                                            ? "Milestones/Notes"
+                                            : column.name
+                                        }}</label
                                       >
                                     </td>
                                   </ng-container>
@@ -1171,12 +1167,9 @@
                               <img
                                 src="./assets/img/trash.svg"
                                 (click)="
-                                  confirm(
+                                  deleteFieldEntry(
                                     section.id,
                                     attribute.id,
-                                    [],
-                                    0,
-                                    'field',
                                     'Delete field ' + attribute.fieldName + '?'
                                   )
                                 "
