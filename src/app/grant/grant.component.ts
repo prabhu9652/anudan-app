@@ -266,7 +266,7 @@ export class GrantComponent
       if (result) {
         switch (func) {
           case "field":
-            this.deleteFieldEntry(sectionId, attributeId);
+            this.deleteFieldEntry(sectionId, attributeId,"");
             break;
           case "section":
             this.deleteSection(Number(sectionId));
@@ -285,16 +285,27 @@ export class GrantComponent
     });
   }
 
-  deleteFieldEntry(sectionId: number, attributeId: number) {
-    for (const section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        const index = section.attributes.findIndex(
-          (attr) => attr.id === attributeId
-        );
-        section.attributes.splice(index, 1);
-        this.checkGrant();
+  deleteFieldEntry(sectionId: number, attributeId: number, msg: string) {
+    const dg = this.dialog.open(FieldDialogComponent, {
+      data: { title: msg, btnMain: "Delete Field", btnSecondary: "Not Now" },
+      panelClass:"center-class"
+    });
+    
+    dg.afterClosed().subscribe(result => { 
+      if (result) {
+        for (const section of this.currentGrant.grantDetails.sections) {
+          if (section.id === sectionId) {
+            const index = section.attributes.findIndex(
+              (attr) => attr.id === attributeId
+            );
+            section.attributes.splice(index, 1);
+            this.checkGrant();
+          }
+        }
+      } else {
+        dg.close();
       }
-    }
+    });
   }
 
   deleteKpi(kpiId: number) {

@@ -47,7 +47,7 @@ export class ApprovedDisbursementsComponent implements OnInit {
 
     
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete this disbursement?' },
+      data: { title: 'Are you sure you want to delete this disbursement?',btnMain:"Delete Disbursement",btnSecondary:"Not Now" },
       panelClass: 'center-class'
     });
 

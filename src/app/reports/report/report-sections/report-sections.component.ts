@@ -313,6 +313,8 @@ export class ReportSectionsComponent implements OnInit {
         data: {
           title:
             "You will lose all data for " + attr.fieldName + " Are you sure?",
+          btnSecondary: "Not Now",
+          btnMain:"Change Field Type"
         },
         panelClass: "center-class",
       });
@@ -747,7 +749,7 @@ export class ReportSectionsComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title },
+      data: { title: title,btnMain:"Delete Section",btnSecondary:"Not Now" },
       panelClass: "center-class",
     });
 
@@ -833,7 +835,7 @@ export class ReportSectionsComponent implements OnInit {
     attributeName: string
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Are you sure you want to delete " + attributeName },
+      data: { title: "Are you sure you want to delete " + attributeName, btnMain:'Delete Field',btnSecondary:'Not Now' },
       panelClass: "center-class",
     });
 
@@ -998,7 +1000,7 @@ export class ReportSectionsComponent implements OnInit {
   deleteSelection(attribId) {
 
     const dReg = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete the selected document(s)?' },
+      data: { title: 'Are you sure you want to delete the selected document(s)?', btnMain:"Delete Document(s)",btnSecondary:"Not Now" },
       panelClass: 'center-class'
     });
 
@@ -1096,7 +1098,8 @@ export class ReportSectionsComponent implements OnInit {
 
   deleteRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete Row?" },
+      data: { title: "Delete the selected row?", btnMain: "Delete Row", btnSecondary: "Not Now" },
+      panelClass:"center-class"
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1118,7 +1121,8 @@ export class ReportSectionsComponent implements OnInit {
 
   deleteColumn(sectionId, attributeId, colIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete Column?" },
+      data: { title: "Delete the selected column?", btnMain: "Delete Column", btnSecondary: "Not Now" },
+      panelClass:"center-class"
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1260,7 +1264,7 @@ export class ReportSectionsComponent implements OnInit {
 
   deleteDisbursementRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete row?" },
+      data: { title: "Delete selected disbursement row?", btnMain:"Delete Disbursement",btnSecondary:"Not Now" },
       panelClass: "center-class",
     });
 

@@ -411,6 +411,10 @@ export class ReportHeaderComponent implements OnInit {
   endDateFilter = (d: Date | null): boolean => {
     const today = new Date();
     const day = d || today;
+
+    if (day > new Date(this.currentReport.grant.endDate)) {
+      return false;
+    }
     if (this.currentReport.startDate && !this.currentReport.dueDate) {
       return day >= new Date(this.currentReport.startDate);
     } else if (this.currentReport.startDate && this.currentReport.dueDate) {
