@@ -95,7 +95,7 @@
                     <p>
                       <small
                         ><a
-                          (click)="viewAddnlReports(report.id, report.grant.id)"
+                          (click)="viewAddnlReports(report.id, report.grant.id,'upcoming')"
                           class="text-blue"
                           (mouseenter)="highlight($event, true)"
                           (mouseleave)="highlight($event, false)"
@@ -417,7 +417,7 @@
                     <p>
                       <small
                         ><a
-                          (click)="viewAddnlReports(report.id, report.grant.id)"
+                          (click)="viewAddnlReports(report.id, report.grant.id,'all')"
                           class="text-blue"
                           (mouseenter)="highlight($event, true)"
                           (mouseleave)="highlight($event, false)"
