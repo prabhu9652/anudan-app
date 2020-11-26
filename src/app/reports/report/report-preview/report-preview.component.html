@@ -607,7 +607,7 @@
                               let i = index
                             "
                           >
-                            <tr>
+                            <tr *ngIf="row.reportId === currentReport.id">
                               <td
                                 style="
                                   padding: 5px;

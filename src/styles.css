@@ -200,7 +200,7 @@ body {
   line-height: 165% !important;
   font-size: 14px !important;
   padding: 8px 12px !important;
-  background: #fff;
+  background: #fff !important;
   min-height: 41px;
   background-image: none !important;
 }
@@ -898,4 +898,38 @@ li:focus {
 }
 .toast-container .ngx-toastr {
   color: #bd362f;
+}
+
+.light-grey-label {
+  background: #f4f4f4 !important;
+  position: relative;
+  top: 0;
+}
+
+.dark-grey-label {
+  background: #d6d6d6 !important;
+  position: relative;
+  top: 0;
+}
+
+.light-grey-label-abs {
+  background: #f4f4f4 !important;
+  position: absolute;
+  top: -1px;
+}
+
+.dark-grey-label-abs {
+  background: #d6d6d6 !important;
+  position: absolute;
+  top: -1px;
+}
+
+.light-grey-input {
+  color: #212529 !important;
+  background: #f4f4f4 !important;
+}
+
+.dark-grey-input {
+  color: #212529 !important;
+  background: #d6d6d6 !important;
 }

@@ -1840,21 +1840,12 @@
                                     >
                                       <p
                                         class="anu-input m-0 text-center"
-                                        [ngStyle]="
+                                        [ngClass]="
                                           row.enteredByGrantee &&
-                                          currentReport.forGranteeUse
-                                            ? {
-                                                background:
-                                                  '#d6d6d6',
-                                                position: 'relative',
-                                                top: '0'
-                                              }
-                                            : {
-                                                background:
-                                                  '#f4f4f4',
-                                                position: 'relative',
-                                                top: '0'
-                                              }
+                                          currentReport.forGranteeUse &&
+                                          row.status
+                                            ? 'dark-grey-label'
+                                            : 'light-grey-label'
                                         "
                                       >
                                         {{ row.name }}
@@ -2020,9 +2011,10 @@
                                             }"
                                             readonly
                                             disabled
-                                            style="
-                                              color: #212529;
-                                              background: #d6d6d6 !important;
+                                            [ngClass]="
+                                              row.status
+                                                ? 'dark-grey-input'
+                                                : 'light-grey-input'
                                             "
                                           />
                                           <input
@@ -2036,9 +2028,10 @@
                                             }"
                                             readonly
                                             disabled
-                                            style="
-                                              color: #212529;
-                                              background: #d6d6d6 !important;
+                                            [ngClass]="
+                                              row.status
+                                                ? 'dark-grey-input'
+                                                : 'light-grey-input'
                                             "
                                           />
 
@@ -2070,11 +2063,8 @@
                                                 'Funds from Other Sources'
                                             "
                                             class="anu-input w-100 text-right"
-                                            style="
-                                              position: absolute;
-                                              top: -1px;
-                                              cursor: text;
-                                              background: #d6d6d6 !important;
+                                            [ngClass]="
+                                              row.status?'dark-grey-label-abs':'light-grey-label-abs'
                                             "
                                           >
                                             {{
@@ -2108,12 +2098,9 @@
                                             "
                                             #amountFormatted
                                             class="anu-input w-100 text-right"
-                                            style="
-                                              position: absolute;
-                                              top: -1px;
-                                              cursor: text;
-                                              background: #d6d6d6 !important;
-                                            "
+                                            [ngClass]="
+                                            row.status?'dark-grey-label-abs':'light-grey-label-abs'
+                                          "
                                           >
                                             {{
                                               getFormattedCurrency(column.value)
