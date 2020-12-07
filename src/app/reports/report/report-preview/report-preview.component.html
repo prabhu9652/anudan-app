@@ -607,7 +607,15 @@
                               let i = index
                             "
                           >
-                            <tr *ngIf="row.reportId === currentReport.id">
+                            <tr
+                              *ngIf="
+                                (row.showForGrantee &&
+                                  appComp.loggedInUser.organization
+                                    .organizationType === 'GRANTEE') ||
+                                appComp.loggedInUser.organization
+                                  .organizationType === 'GRANTER'
+                              "
+                            >
                               <td
                                 style="
                                   padding: 5px;

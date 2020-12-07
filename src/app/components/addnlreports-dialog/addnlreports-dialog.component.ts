@@ -56,7 +56,7 @@ export class AddnlreportsDialogComponent implements OnInit {
 
   updateSelectedReports(evt) {
     this.selectedReports = null;
-    this.getReportsForSelectedGrant(this.reportId, evt)
+    this.getReportsForSelectedGrant(this.reportId, evt,'upcoming')
   }
 
   manageReport(report: Report) {
