@@ -768,10 +768,14 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 const assignMentResult = [];
                 for (let i = 0; i < assignmentElems.length; i++) {
                     var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
+                    let uid = $(assignmentElems[i]).val();
+                    if (uid === null) {
+                        uid = $(assignmentElems[i])[0].value;
+                    }
                     if (assignmentTokens.length === 4) {
-                        assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': $(assignmentElems[i]).val(), 'reportId': assignmentTokens[3], 'customAssignments': $(customAssignmentElem).val() });
+                        assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': uid, 'reportId': assignmentTokens[3], 'customAssignments': $(customAssignmentElem).val() });
                     } else {
-                        assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': $(assignmentElems[i]).val(), 'reportId': assignmentTokens[2], 'customAssignments': $(customAssignmentElem).val() });
+                        assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': uid, 'reportId': assignmentTokens[2], 'customAssignments': $(customAssignmentElem).val() });
                     }
                 }
                 this.dialogRef.close({ 'result': true, data: assignMentResult });
@@ -782,10 +786,14 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
             const assignMentResult = [];
             for (let i = 0; i < assignmentElems.length; i++) {
                 var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
+                let uid = $(assignmentElems[i]).val();
+                if (uid === null) {
+                    uid = $(assignmentElems[i])[0].value;
+                }
                 if (assignmentTokens.length === 4) {
-                    assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': $(assignmentElems[i]).val(), 'disbursementId': assignmentTokens[3] });
+                    assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': uid, 'disbursementId': assignmentTokens[3] });
                 } else {
-                    assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': $(assignmentElems[i]).val(), 'disbursementId': assignmentTokens[2] });
+                    assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': uid, 'disbursementId': assignmentTokens[2] });
                 }
             }
             this.dialogRef.close({ 'result': true, data: assignMentResult });
@@ -797,10 +805,14 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
         const assignMentResult = [];
         for (let i = 0; i < assignmentElems.length; i++) {
             var assignmentTokens = $(assignmentElems[i]).attr('id').split('_');
+            let uid = $(assignmentElems[i]).val();
+            if (uid === null) {
+                uid = $(assignmentElems[i])[0].value;
+            }
             if (assignmentTokens.length === 4) {
-                assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': $(assignmentElems[i]).val(), 'grantId': assignmentTokens[3] });
+                assignMentResult.push({ 'id': assignmentTokens[1], 'stateId': assignmentTokens[2], 'userId': uid, 'grantId': assignmentTokens[3] });
             } else {
-                assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': $(assignmentElems[i]).val(), 'grantId': assignmentTokens[2] });
+                assignMentResult.push({ 'id': '', 'stateId': assignmentTokens[1], 'userId': uid, 'grantId': assignmentTokens[2] });
             }
         }
         this.dialogRef.close({ 'result': true, data: assignMentResult });
