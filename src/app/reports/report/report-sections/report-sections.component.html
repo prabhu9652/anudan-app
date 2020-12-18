@@ -1848,7 +1848,9 @@
                                             : 'light-grey-label'
                                         "
                                       >
-                                        {{ row.name }}
+                                        <ng-container *ngIf="row.enteredByGrantee &&
+                                        currentReport.forGranteeUse &&
+                                        row.status">* </ng-container>{{ row.name }}
                                       </p>
                                     </td>
                                     <ng-container
@@ -2110,6 +2112,10 @@
                                       </td>
                                     </ng-container>
                                   </tr>
+                                  <tr *ngIf="row.enteredByGrantee &&
+                                  currentReport.forGranteeUse &&
+                                  row.status && row.reportId!==currentReport.id">
+                                <td colspan="3" style="padding:8px;"><strong>*</strong> Indicates unapproved funds from other sources</td></tr>
                                 </ng-container>
                               </ng-container>
 
