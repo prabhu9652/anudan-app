@@ -254,10 +254,10 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
-    viewAddnlReports(reportId: number, grantId: number) {
+    viewAddnlReports(reportId: number, grantId: number,forType:string) {
         this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
-            data: { report: reportId, grant: grantId, grants: this.grants, futureReports: this.futureReportsToSetup, single: false },
+            data: { report: reportId, grant: grantId, grants: this.grants, futureReports: this.futureReportsToSetup, single: false,type:forType },
             panelClass: 'addnl-report-class'
         });
 

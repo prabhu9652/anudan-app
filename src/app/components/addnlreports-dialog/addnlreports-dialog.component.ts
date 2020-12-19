@@ -21,6 +21,7 @@ export class AddnlreportsDialogComponent implements OnInit {
   selectedReports: Report[];
   singleGrant: boolean;
   deletedReports: Report[] = [];
+  type: string;
 
   constructor(private dialog:MatDialog,private reportService: ReportDataService, public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
     , @Inject(MAT_DIALOG_DATA) public data: AdditionReportsModel
@@ -31,13 +32,14 @@ export class AddnlreportsDialogComponent implements OnInit {
     this.grants = data.grants;
     this.futureReports = data.futureReports;
     this.singleGrant = data.single;
+    this.type = data.type;
 
     //this.selectedReports = this.futureReports.filter(r => r.grant.id===this.grantId);
   }
 
   ngOnInit() {
     if (!this.futureReports) {
-      this.getReportsForSelectedGrant(this.reportId, this.grantId);
+      this.getReportsForSelectedGrant(this.reportId, this.grantId,this.type);
     } else {
       this.selectedReports = this.futureReports;
     }
@@ -54,20 +56,23 @@ export class AddnlreportsDialogComponent implements OnInit {
 
   updateSelectedReports(evt) {
     this.selectedReports = null;
-    this.getReportsForSelectedGrant(this.reportId, evt)
+    this.getReportsForSelectedGrant(this.reportId, evt,'upcoming')
   }
 
   manageReport(report: Report) {
     this.dialogRef.close({ result: true, selectedReport: report});
   }
 
-  getReportsForSelectedGrant(reportId: number, grantId: number) {
+  getReportsForSelectedGrant(reportId: number, grantId: number, type:string) {
+
+    const queryParams = new HttpParams().set('type', type);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
         'Authorization': localStorage.getItem('AUTH_TOKEN')
-      })
+      }),
+      params:queryParams
     };
 
 

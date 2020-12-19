@@ -442,6 +442,7 @@ export class TableData {
   actualDisbursementId: number;
   disbursementId: number;
   reportId: number;
+  showForGrantee: boolean;
 }
 
 export class TemplateLibrary {

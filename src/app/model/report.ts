@@ -158,5 +158,6 @@ export class AdditionReportsModel{
     report: number;
     grants: Grant[];
     futureReports: Report[];
-    single:boolean
+    single: boolean;
+    type: string
 }
