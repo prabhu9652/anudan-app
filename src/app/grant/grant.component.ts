@@ -266,7 +266,7 @@ export class GrantComponent
       if (result) {
         switch (func) {
           case "field":
-            this.deleteFieldEntry(sectionId, attributeId,"");
+            this.deleteFieldEntry(sectionId, attributeId, "");
             break;
           case "section":
             this.deleteSection(Number(sectionId));
@@ -288,10 +288,10 @@ export class GrantComponent
   deleteFieldEntry(sectionId: number, attributeId: number, msg: string) {
     const dg = this.dialog.open(FieldDialogComponent, {
       data: { title: msg, btnMain: "Delete Field", btnSecondary: "Not Now" },
-      panelClass:"center-class"
+      panelClass: "center-class"
     });
-    
-    dg.afterClosed().subscribe(result => { 
+
+    dg.afterClosed().subscribe(result => {
       if (result) {
         for (const section of this.currentGrant.grantDetails.sections) {
           if (section.id === sectionId) {
@@ -461,8 +461,8 @@ export class GrantComponent
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-        ",select[required]:not(:disabled):not([readonly])" +
-        ",textarea[required]:not(:disabled):not([readonly])"
+      ",select[required]:not(:disabled):not([readonly])" +
+      ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (let elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -1054,7 +1054,7 @@ export class GrantComponent
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-              "GRANTEE" &&
+            "GRANTEE" &&
             grant.grantStatus.internalStatus !== "ACTIVE" &&
             grant.grantStatus.internalStatus !== "CLOSED"
           ) {
@@ -1084,7 +1084,7 @@ export class GrantComponent
       data: {
         title: "Important!",
         content:
-          '<p><strong>You are about to amend an active grant. This action will create an amendment-in-progress Grant ("Draft" state) with all the contents from the original grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this Grant through the current organizational workflow. On reaching "Active" state, the original grant will be marked as "Closed" and will be unavailable for disbursements or reports against it.  </p><p>All new disbursements and reports will need to be recorded against the amended "Active" grant.</strong></p>',
+          '<p><strong>You are about to amend an active Grant. This action will create a new amendment-in-progress Grant ("Draft" state) with all the contents from the original Grant copied over with the exception of workflow assignments, notes and audit history.</p><p>The amendment-in-progress Grant will be placed in a "Draft" stage with you as the owner of this state.  You will need to add appropriate assignments to progress this Grant through the current organizational workflow.  On reaching "Active" state, the original Grant will be marked as "Closed" and while you and others in your organization can view it, it will be unavailable for future disbursements or project progress reports against it.  All pending and new disbursements and project progress reports will need to be recorded against the newly amended grant in its “Active” state.</p><p>All reports and disbursements that were in progress when the “Closed” grant was amended will be moved over and placed under the newly amended Grant in its “Active” state. Project documents and previously approved reports and disbursements recorded with the “Closed” Grant will now also show up against the newly amended Grant in its “Active” state.</strong></p>',
         btnMain: "Amend Grant",
         btnSecondary: "Not Now",
       },
@@ -1118,7 +1118,7 @@ export class GrantComponent
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-              "GRANTEE" &&
+            "GRANTEE" &&
             grant.grantStatus.internalStatus !== "ACTIVE" &&
             grant.grantStatus.internalStatus !== "CLOSED"
           ) {
