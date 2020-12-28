@@ -259,14 +259,31 @@ export class BasicComponent implements OnInit {
       this.myControl.disable();
     }
 
-    this.options = this.appComp.appConfig.granteeOrgs;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
 
-    const orgs = this.options ? this.options.slice() : [];
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(""),
-      map((value) => (typeof value === "string" ? value : value.name)),
-      map((name) => (name ? this._filter(name) : orgs))
-    );
+    const url =
+      "/api/user/" +
+      this.appComp.loggedInUser.id +
+      "/grant/granteeOrgs";
+
+    this.http.get(url, httpOptions).subscribe((granteeOrgs: Organization[]) => {
+      this.options = granteeOrgs;
+      const orgs = this.options ? this.options.slice() : [];
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(""),
+        map((value) => (typeof value === "string" ? value : value.name)),
+        map((name) => (name ? this._filter(name) : orgs))
+      );
+    });
+
+
+
 
     this.setDateDuration();
 
@@ -551,7 +568,7 @@ export class BasicComponent implements OnInit {
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-              "GRANTEE" &&
+            "GRANTEE" &&
             this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
             this.currentGrant.grantStatus.internalStatus !== "CLOSED"
           ) {
@@ -607,8 +624,8 @@ export class BasicComponent implements OnInit {
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-        ",select[required]:not(:disabled):not([readonly])" +
-        ",textarea[required]:not(:disabled):not([readonly])"
+      ",select[required]:not(:disabled):not([readonly])" +
+      ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (const elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -772,11 +789,11 @@ export class BasicComponent implements OnInit {
 
         this.router.navigate([
           "grant/section/" +
-            this.getCleanText(
-              info.grant.grantDetails.sections.filter(
-                (a) => a.id === info.sectionId
-              )[0]
-            ),
+          this.getCleanText(
+            info.grant.grantDetails.sections.filter(
+              (a) => a.id === info.sectionId
+            )[0]
+          ),
         ]);
       },
       (error) => {
