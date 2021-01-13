@@ -35,7 +35,7 @@ import {
 class Timer {
   readonly start = performance.now();
 
-  constructor(private readonly name: string) {}
+  constructor(private readonly name: string) { }
 
   stop() {
     const time = performance.now() - this.start;
@@ -104,7 +104,7 @@ export class DraftGrantsComponent implements OnInit {
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.appComponent.subMenu = { name: "In-progress Grants", action: "dg" };
@@ -256,7 +256,7 @@ export class DraftGrantsComponent implements OnInit {
             wf.assignments === this.appComponent.loggedInUser.id
         ).length > 0 &&
         this.appComponent.loggedInUser.organization.organizationType !==
-          "GRANTEE" &&
+        "GRANTEE" &&
         grant.grantStatus.internalStatus !== "ACTIVE" &&
         grant.grantStatus.internalStatus !== "CLOSED"
       ) {
@@ -289,7 +289,7 @@ export class DraftGrantsComponent implements OnInit {
           wf.assignments === this.appComponent.loggedInUser.id
       ).length > 0 &&
       this.appComponent.loggedInUser.organization.organizationType !==
-        "GRANTEE" &&
+      "GRANTEE" &&
       grant.grantStatus.internalStatus !== "ACTIVE" &&
       grant.grantStatus.internalStatus !== "CLOSED"
     ) {
@@ -315,7 +315,7 @@ export class DraftGrantsComponent implements OnInit {
   deleteGrant(grant: Grant) {
     this.deleteGrantEvent = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Are you sure you want to delete this grant?",btnMain:"Delete Grant",brnSecondary:"Not Now" },
+      data: { title: "Are you sure you want to delete this grant?", btnMain: "Delete Grant", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 

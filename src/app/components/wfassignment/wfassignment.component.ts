@@ -677,7 +677,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
         this.jsPlumbInstance.Defaults.Overlays = [];
         for (let transition of transitions) {
 
-            if (Number(transition.seqOrder) === 0) {
+            if (Number(transition.seqOrder) < 50) {
                 setTimeout(() => {
                     this.jsPlumbInstance.connect({
                         connector: ["Flowchart"],
@@ -965,11 +965,11 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                 const assTokens = ass.id.split("_");
                 const assId = assTokens[1];
                 const orgAss = this.data.model.workflowAssignments.filter(a => a.id === Number(assId))[0];
-                if (orgAss!==undefined && orgAss.assignmentId == undefined) {
+                if (orgAss !== undefined && orgAss.assignmentId == undefined) {
                     orgAss.assignmentId = 0;
                 }
-                
-                if (orgAss!==undefined && orgAss.assignmentId !== undefined && orgAss.assignmentId !== null && orgAss.assignmentId !== Number(ass.value)) {
+
+                if (orgAss !== undefined && orgAss.assignmentId !== undefined && orgAss.assignmentId !== null && orgAss.assignmentId !== Number(ass.value)) {
                     return true;
                 }
             }

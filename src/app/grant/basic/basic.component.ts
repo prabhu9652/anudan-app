@@ -216,7 +216,9 @@ export class BasicComponent implements OnInit {
     });
 
     this.grantData.currentMessage.subscribe(
-      (grant) => (this.currentGrant = grant)
+      (grant) => {
+        this.currentGrant = grant;
+      }
     );
 
     const httpOptions = {
@@ -1758,4 +1760,43 @@ export class BasicComponent implements OnInit {
   manageGrant() {
     this.adminComp.manageGrant(null, this.currentGrant.origGrantId);
   }
+
+  doZoom = () => (function () {
+
+    var $section = $('#zoomImageContainer')
+    $section
+      .find(
+        '.panzoom')
+      .panzoom(
+        {
+          $zoomIn: $section
+            .find(".zoom-in"),
+          $zoomOut: $section
+            .find(".zoom-out"),
+          $zoomRange: $section
+            .find(".zoom-range"),
+          $reset: $section
+            .find(".reset")
+        });
+    var deg = 0;
+    $(".rotateBtn").on("click", function () {
+      if ($(this).is("#left")) {
+        deg = deg - 90;
+      } else {
+        deg = deg + 90;
+      }
+      $("#imgToRotate").css({
+        "-webkit-transform": "rotate(" + deg + "deg)",
+        "-moz-transform": "rotate(" + deg + "deg)",
+        transform: "rotate(" + deg + "deg)"
+      });
+    });
+
+    // $('#ex1').zoom({
+    //   onZoomIn:true,
+    // });
+    // $('#ex1').zoom({ on:'hover' });
+    //$('#ex1').zoom({ on:'click' });			 
+    // $('#ex4').zoom({ on:'toggle' });
+  })();
 }
