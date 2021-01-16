@@ -14,20 +14,7 @@
 
                 </div>
             </mat-tab>
-            <!-- <mat-tab label="Workflow" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
-                <div class="row text-left">
-                    <div class="col-12 text-left">
-                        <app-workflow-management></app-workflow-management>
-                    </div>
-                </div>
-            </mat-tab> -->
-            <!-- <mat-tab label="Templates" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
-                <div class="row text-left">
-                    <div class="col-12 text-left">
-                        <app-templates></app-templates>
-                    </div>
-                </div>
-            </mat-tab> -->
+            
 
             <mat-tab label="Library">
                 <div class="row text-left">
@@ -44,7 +31,20 @@
                     </div>
                 </div>
             </mat-tab>
-
+            <mat-tab label="Workflow" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
+                <div class="row text-left">
+                    <div class="col-12 text-left">
+                        <app-workflow-management></app-workflow-management>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Templates" *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTER'">
+                <div class="row text-left">
+                    <div class="col-12 text-left">
+                        <app-templates></app-templates>
+                    </div>
+                </div>
+            </mat-tab>
         </mat-tab-group>
     </div>
 </div>

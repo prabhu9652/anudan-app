@@ -24,13 +24,13 @@ declare interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard', icon: 'dashboard.png', class: '', divide: false },
-  { path: '/rfps', title: 'RFPs', icon: 'rfp.svg', class: '', divide: false },
-  { path: '/applications', title: 'Applications', icon: 'proposal.svg', class: '', divide: false },
   { path: '/grants', title: 'Grants', icon: 'grant.svg', class: '', divide: false },
   { path: '/reports', title: 'Reports', icon: 'report.svg', class: '', divide: false },
   { path: '/disbursements', title: 'Disbursements', icon: 'disbursement.svg', class: '', divide: false },
   /*{ path: '/disbursements', title: 'Disbursements',  icon: 'disbursement.svg', class: '',divide:false },*/
-  { path: '/organization', title: 'Organization', icon: 'organization.svg', class: '', divide: true }
+  { path: '/organization', title: 'Organization', icon: 'organization.svg', class: '', divide: true },
+  { path: '/rfps', title: 'RFPs', icon: 'rfp.svg', class: '', divide: false },
+  { path: '/applications', title: 'Applications', icon: 'proposal.svg', class: '', divide: false }
   /*,
   { path: '/user-profile', title: 'Administration',  icon:'person', class: '' },
   { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },

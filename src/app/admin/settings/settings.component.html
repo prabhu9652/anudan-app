@@ -4,8 +4,8 @@
         <ng-container class="row grants-section p-3 mx-3" *ngFor="let setting of appSettings">
             <div *ngIf="setting.configurable" class="row grants-section p-3 mx-3">
             <div class="col-3" align="left" width="30%" valign="top">
-                <small class="badge badge-light" *ngIf="setting.type==='app'">System Configuration</small>
-                <small class="badge badge-success" *ngIf="setting.type==='org'">Custom Configuration</small>
+                <small class="badge badge-light" *ngIf="setting.type==='app'">Anudan default</small>
+                <small class="badge badge-success" *ngIf="setting.type==='org'">{{this.appComp.loggedInUser.organization.name}} configured</small>
 
                 <div [innerHTML]="setting.description" class="pt-4"></div>
             </div>
@@ -14,11 +14,11 @@
                     <input matInput class="anu-input" [(ngModel)]="setting.configValue">
                 </mat-form-field>
                 <mat-form-field *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS' || setting.configName==='ACTION_DUE_REPORTS_REMINDER_SETTINGS'">
-                    <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.time" placeholder="Time to run task:">
+                    <input matInput class="anu-input" [(ngModel)]="setting.scheduledTaskConfiguration.time" placeholder="Time to run task (HH:mi):">
                 </mat-form-field>
 
                     <ng-container *ngIf="setting.configName==='DUE_REPORTS_REMINDER_SETTINGS'">
-                        <mat-label>Number of days before Report Due Date to send reminder:</mat-label>
+                        <mat-label>Number of days before Report Due Reminder to be sent:</mat-label>
                         <table>
                             <tr>
                                 <td *ngFor="let db of setting.scheduledTaskConfiguration.configuration.daysBefore,let i = index">
