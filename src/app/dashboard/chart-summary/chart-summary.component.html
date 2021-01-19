@@ -3,9 +3,42 @@
         <span *ngIf="disabled" matBadge style="position: absolute;right: 30px;top: 25px;font-size: 10px;">Coming soon</span>
 
         <div class="row">
-            <div class="col-9">
-                <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; width: 400px; height: 200px;">
-                    <canvas class="pieChart1"></canvas>
+            <div class="col-3">
+                <div class="py-2"  *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #9d9d9d;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{draftReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">Draft Reports</div>
+                </div>
+            </div>
+            <div  class="col-3">
+                <div class="py-2" *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #e6ce55;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{inprogressReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">In Progress Reports</div>
+                     
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="py-2"  *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #4DC252;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{approvedReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">Approved Reports</div>
+                     
+                </div>
+
+            </div>
+            <div class="col-3">
+                <mat-select [value]="selected.name" class="anu-input" (selectionChange)="doSomething($event)">
+                    <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
+                </mat-select>
+            </div>
+            
+            <div class="col-12 pt-5">
+                <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; height: 200px;">
+                    <div class="row">
+                        <div class="col-6" style="border-right: 1px solid #d7d7d7;"><canvas class="pieChart1"></canvas></div>
+                        <div class="col-6"><canvas class="pieChartX"></canvas></div>
+                    </div>
+                    
+                    
                 </div>
                 <div *ngIf="selected.name==='Reports' && portfolioType==='Closed Grants'" style="display: block; width: 400px; height: 200px;">
                     <canvas class="pieChart2"></canvas>
@@ -14,11 +47,7 @@
                     <canvas  class="barChart"></canvas>
                 </div>
             </div>
-            <div class="col-3">
-                <mat-select [value]="selected.name" class="anu-input" (selectionChange)="doSomething($event)">
-                    <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
-                </mat-select>
-            </div>
+            
         </div>
 
     </div>
