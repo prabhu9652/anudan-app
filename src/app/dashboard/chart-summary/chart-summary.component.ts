@@ -192,7 +192,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                                     return '';
                                 }
                             }
-                        },
+                        }, barThickness: 'flex',
                         data: dataStatus,
                         backgroundColor: [
                             '#e6ce55',
@@ -203,6 +203,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     }]
                 },
                 options: {
+
                     legend: {
                         display: false,
                         position: 'right',
