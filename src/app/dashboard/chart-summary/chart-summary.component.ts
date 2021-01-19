@@ -127,6 +127,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     datasets: [{
                         datalabels: {
                             color: 'white',
+
                             font: {
                                 weight: 'bold'
                             },
@@ -140,10 +141,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         },
                         data: data,
                         backgroundColor: [
-                            '#4DC252',
-                            '#4D83C2',
-                            '#E6CE55',
-                            '#E04545'
+                            '#f44336',
+                            '#E6CE55'
                         ]
                     }]
                 },
@@ -161,7 +160,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         fontSize: 14,
                         fontColor: '#bdbdbd',
                         fontStyle: 'normal',
-                        text: 'Due/Overdue Reports'
+                        text: 'Due Status'
                     }
                 }
             });
@@ -235,7 +234,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         fontSize: 14,
                         fontColor: '#bdbdbd',
                         fontStyle: 'normal',
-                        text: 'In-Progress Reports'
+                        text: 'In-progress Status'
                     }
                 }
             });
