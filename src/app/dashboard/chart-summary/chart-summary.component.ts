@@ -121,7 +121,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
 
             this.PieChart1 = new Chart(this.ctx, {
                 plugins: [ChartDataLabels],
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: labels,
                     datasets: [{
@@ -141,8 +141,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         },
                         data: data,
                         backgroundColor: [
-                            '#f44336',
-                            '#E6CE55'
+                            '#f44336', '#FFA500',
+
                         ]
                     }]
                 },
@@ -158,8 +158,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     title: {
                         display: true,
                         fontSize: 14,
-                        fontColor: '#bdbdbd',
-                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontStyle: 'bold',
                         text: 'Due Status'
                     }
                 }
@@ -194,10 +194,11 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         }, barThickness: 'flex',
                         data: dataStatus,
                         backgroundColor: [
-                            '#e6ce55',
-                            '#c9af27',
-                            '#ecc500',
-                            '#bd9e05'
+                            '#2950c5',
+                            '#ffa500',
+                            '#5cacee',
+                            '#436eee',
+                            '#00c78c'
                         ]
                     }]
                 },
@@ -232,8 +233,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     title: {
                         display: true,
                         fontSize: 14,
-                        fontColor: '#bdbdbd',
-                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontStyle: 'bold',
                         text: 'In-progress Status'
                     }
                 }
