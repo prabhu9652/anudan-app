@@ -182,7 +182,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
 
                             offset: 10,
                             font: {
-                                weight: 'bold'
+                                weight: 'bold',
                             },
                             formatter: function (value, context) {
                                 if (Number(value) > 0) {
@@ -214,6 +214,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     },
                     scales: {
                         xAxes: [{
+                            display: "false",
                             gridLines: {
                                 color: "rgba(0, 0, 0, 0)",
                             },
@@ -340,9 +341,9 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Grant Level Commitment',
+                    label: 'Commitments',
                     data: dataCommitted,
-                    backgroundColor: "#4D83C2",
+                    backgroundColor: "#FFA500",
                     datalabels: {
                         color: 'black',
                         font: {
@@ -356,9 +357,9 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         }
                     }
                 }, {
-                    label: 'Disbursed for the period',
+                    label: 'Disbursed',
                     data: dataDisbursed,
-                    backgroundColor: "#39743C",
+                    backgroundColor: "#4dc252",
                     datalabels: {
                         color: 'black',
                         font: {
@@ -389,10 +390,13 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                                 display: true,
                                 labelString: "In Lakhs (₹)",
                             },
+                            gridLines: {
+                                color: "rgba(0, 0, 0, 0)",
+                            },
                             ticks: {
                                 min: 0,
-                                max: (Math.ceil(maxTick / 50) * 50) + 500,
-                                stepSize: 500
+                                max: (Math.ceil(maxTick / 50) * 50) + 2000,
+                                stepSize: 2000
                             }
                         }],
                     xAxes: [
@@ -402,6 +406,13 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                                 labelString: "Financial Periods",
                             }
                         }]
+                },
+                title: {
+                    display: true,
+                    fontSize: 14,
+                    fontColor: '#000',
+                    fontStyle: 'bold',
+                    text: 'Commitments v/s Disbursed'
                 }
             }
         });
