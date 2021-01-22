@@ -43,10 +43,10 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
     }
 
     ngAfterViewChecked() {
-        if (this.readyToDisplayReportsChart) {
-            this.displayReportsChart();
-        } else if (this.readyToDisplayDisbursementsChart) {
+        if (this.readyToDisplayDisbursementsChart) {
             this.displayDisbursementsChart();
+        } else if (this.readyToDisplayReportsChart) {
+            this.displayReportsChart();
         }
     }
 
@@ -57,7 +57,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 if (this.data) {
                     this.display = true;
                     if (this.data && this.portfolioType) {
-                        this.readyToDisplayReportsChart = true;
+                        this.readyToDisplayDisbursementsChart = true;
                     }
                     this.selected = this.data[0];
                 }
@@ -67,7 +67,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 if (this.data && this.portfolioType) {
                     this.display = true;
                     if (this.data && this.portfolioType) {
-                        this.readyToDisplayReportsChart = true;
+                        this.readyToDisplayDisbursementsChart = true;
                     }
                     this.grantState = this.portfolioType;
                 }
@@ -141,7 +141,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         },
                         data: data,
                         backgroundColor: [
-                            '#f44336', '#FFA500',
+                            '#FFA500', '#f44336'
 
                         ]
                     }]
@@ -173,7 +173,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 plugins: [ChartDataLabels],
                 type: 'horizontalBar',
                 data: {
-                    labels: labelsStatus,
+                    labels: this.formatLabel(labelsStatus),
                     datasets: [{
                         datalabels: {
                             color: 'black',
@@ -216,6 +216,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         xAxes: [{
                             display: "false",
                             gridLines: {
+
                                 color: "rgba(0, 0, 0, 0)",
                             },
                             ticks: {
@@ -226,7 +227,9 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                             }
                         }],
                         yAxes: [{
+                            display: "false",
                             gridLines: {
+                                display: false,
                                 color: "rgba(0, 0, 0, 0)",
                             }
                         }]
@@ -340,6 +343,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
             type: 'bar',
             data: {
                 labels: labels,
+
                 datasets: [{
                     label: 'Commitments',
                     data: dataCommitted,
@@ -385,6 +389,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 },
                 scales: {
                     yAxes: [
+
                         {
                             scaleLabel: {
                                 display: true,
@@ -417,6 +422,23 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
             }
         });
         this.BarChart.generateLegend();
+    }
+
+    formatLabel(labelStatus: string[]) {
+        const labelsArr = [];
+        for (let s of labelStatus) {
+            const splitArr = s.split(" ");
+            if (splitArr.length <= 2) {
+                labelsArr.push(s);
+            } else {
+                let a = [];
+                for (let i = 0; i < splitArr.length; i += 2) {
+                    a.push((splitArr[i] === undefined ? "" : splitArr[i]) + " " + (splitArr[i + 1] === undefined ? "" : splitArr[i + 1]));
+                }
+                labelsArr.push(a);
+            }
+        }
+        return labelsArr;
     }
 
 
