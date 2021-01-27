@@ -1,24 +1,61 @@
 <div *ngIf="display" class="mt-3" style="border: 1px solid rgba(14, 16, 14, 0.12);border-radius:4px;">
-    <div class="mt-4 mx-2 px-53 py-5">
+    <div class="mt-1 mx-2 px-53 pt-2 pb-5">
         <span *ngIf="disabled" matBadge style="position: absolute;right: 30px;top: 25px;font-size: 10px;">Coming soon</span>
 
         <div class="row">
-            <div class="col-9">
-                <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; width: 400px; height: 200px;">
-                    <canvas class="pieChart1"></canvas>
+            <div class="col-12">
+                <div class="w-100">
+                    <mat-select [value]="selected.name" class="anu-input pull-right mb-3" style="max-width: 208px;" (selectionChange)="doSomething($event)">
+                        <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="py-2"  *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #9d9d9d;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{draftReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">Draft</div>
+                </div>
+            </div>
+            <div  class="col-4">
+                <div class="py-2" *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #FFA500;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{inprogressReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">In-progress</div>
+                     
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="py-2"  *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="background: #f4f4f4;border-left: 3px solid #4DC252;border-top: 1px solid rgba(14, 16, 14, 0.12);border-radius: 2px;border-right: 1px solid rgba(14, 16, 14, 0.12);border-bottom: 1px solid rgba(14, 16, 14, 0.12);">
+                    
+                    <div class="text-center" style="min-width:200px;font-weight: 800;font-size: 24px;color: #0E100E;font-family:Archivo">{{approvedReportsCount}}</div>
+                    <div class="text-center" style="min-width:200px;font-weight: 400;color: rgba(14, 16, 14, 0.68);font-size: 12px;font-family:Lato;">Approved</div>
+                     
+                </div>
+
+            </div>
+            
+            
+            <div class="col-12 pt-5">
+                <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; height: auto;">
+                    <div class="row">
+                        <div class="col-6"><div ><canvas style="border: 1px solid #d7d7d7;" class="pieChartX" ></canvas></div></div>
+                        <div class="col-6"><div><canvas  style="border: 1px solid #d7d7d7;" class="pieChart1"></canvas></div></div>
+                    </div>
+                    
+                    
                 </div>
                 <div *ngIf="selected.name==='Reports' && portfolioType==='Closed Grants'" style="display: block; width: 400px; height: 200px;">
                     <canvas class="pieChart2"></canvas>
                 </div>
-                <div *ngIf="selected.name==='Disbursements'" style="display: block; width: 600px; height: 300px;">
-                    <canvas  class="barChart"></canvas>
+                <div *ngIf="selected.name==='Disbursements'" style="display: block; height: 300px;justify-content: center;">
+                    <div class="row" style="display: flex; justify-content: center;">
+                        <div class="col-6">
+                            <canvas style="border: 1px solid #d7d7d7;"  class="barChart"></canvas>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
-            <div class="col-3">
-                <mat-select [value]="selected.name" class="anu-input" (selectionChange)="doSomething($event)">
-                    <mat-option *ngFor="let filter of data" [value]="filter.name">{{filter.name}}</mat-option>
-                </mat-select>
-            </div>
+            
         </div>
 
     </div>
