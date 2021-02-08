@@ -1,3 +1,4 @@
+import { Grant } from './../../../model/dahsboard';
 import {
   Component,
   OnInit,
@@ -329,14 +330,14 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
           );
           if (
             (assignment.owner === null ||
-            assignment.owner === undefined ||
-            (assignment.owner === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted))
+              assignment.owner === undefined ||
+              (assignment.owner === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted))
           ) {
             const dialogRef = this.dialog.open(FieldDialogComponent, {
               data: {
                 title: "Would you like to assign users responsible for this workflow?",
                 btnMain: "Assign Users",
-                btnSecondary:"Not Now"
+                btnSecondary: "Not Now"
               },
               panelClass: "center-class",
             });
@@ -363,8 +364,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
         this.appComponent
       ).internalStatus === "ACTIVE" &&
       this.currentDisbursement.requestedAmount +
-        this.getApprovedActualTotals() >
-        this.currentDisbursement.grant.amount
+      this.getApprovedActualTotals() >
+      this.currentDisbursement.grant.amount
     ) {
       const dialogRef = this.dialog.open(MessagingComponent, {
         data:
@@ -506,4 +507,21 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       day <= today && day >= new Date(this.currentDisbursement.grant.startDate)
     );
   };
+
+  public getGrantTypeName(typeId): string {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

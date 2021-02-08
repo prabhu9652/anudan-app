@@ -1,3 +1,4 @@
+import { Grant } from './../../model/dahsboard';
 import {
   Component,
   OnInit,
@@ -121,5 +122,22 @@ export class DisbursementComponent implements OnInit, OnDestroy {
   getGrantAmountAvailable() {
 
     return this.currencyService.getFormattedAmount(this.currentDisbursement.grant.amount - this.disbursementService.getActualDisbursementsTotal(this.currentDisbursement));
+  }
+
+  public getGrantTypeName(typeId): string {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

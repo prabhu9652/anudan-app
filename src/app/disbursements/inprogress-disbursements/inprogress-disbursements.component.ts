@@ -97,7 +97,7 @@ export class InprogressDisbursementsComponent implements OnInit {
 
     this.deleteDisbursementEvent = true;
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete this disbursement?',btnMain:"Delete Disbursement",btnSecondary:"Not Now" },
+      data: { title: 'Are you sure you want to delete this disbursement?', btnMain: "Delete Disbursement", btnSecondary: "Not Now" },
       panelClass: 'center-class'
     });
 
@@ -112,6 +112,23 @@ export class InprogressDisbursementsComponent implements OnInit {
         dialogRef.close();
       }
     });
+  }
+
+  public getGrantTypeName(typeId): string {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

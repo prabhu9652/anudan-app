@@ -1799,4 +1799,14 @@ export class BasicComponent implements OnInit {
     //$('#ex1').zoom({ on:'click' });			 
     // $('#ex4').zoom({ on:'toggle' });
   })();
+
+
+  isExternalGrant(): boolean {
+    const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

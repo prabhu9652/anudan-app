@@ -1,0 +1,52 @@
+<h1 mat-dialog-title style="margin-bottom: 0px">Select a Grant Type</h1>
+<h4
+  mat-dialog-title
+  *ngIf="this.selectedGrantType"
+  style="margin-top: 0; font-size: 16px; font-weight: normal"
+>
+  {{ selectedGrantType.name }}
+</h4>
+<h4
+  mat-dialog-title
+  *ngIf="!this.selectedGrantType"
+  style="margin-top: 0; font-size: 16px; font-weight: normal"
+>
+  No grant type selected
+</h4>
+
+<div mat-dialog-content>
+  <div>
+    <mat-card
+      *ngFor="let grant of grantTypes1"
+      value="{{ grant.id }}"
+      style="background: #e5e5e5; max-width: none"
+      class="mb-3"
+    >
+      <mat-checkbox
+        [checked]="grant.id === selected"
+        class="template-checkbox float-right"
+        (change)="setSelectedGrant(grant.id, $event)"
+        
+      >
+      </mat-checkbox>
+      <mat-card-title style="font-size: 14px"
+        >{{ grant.name }}
+      </mat-card-title>
+      
+    </mat-card>
+  </div>
+</div>
+<!--<mat-select [(value)]="selected">
+	<mat-option  matTooltip="{{template.description}}" matTooltipPosition="right" *ngFor="let template of templates" value="{{template.id}}">{{template.name}}</mat-option>
+</mat-select>-->
+<hr />
+<div mat-dialog-actions>
+  <button
+    [disabled]="selected === 0"
+    class="btn btn-sm btn-green-primary"
+    (click)="onYesClick()"
+  >
+    Select Grant Type
+  </button>
+  <button class="btn btn-sm btn-green" (click)="onNoClick()">Not Now</button>
+</div>

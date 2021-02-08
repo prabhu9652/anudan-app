@@ -56,6 +56,7 @@
                   Underlying grant has been amended. Please check if this
                   disbursement is still valid
                 </p>
+                <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(disbursement.grant.grantTypeId)}" ><small>{{getGrantTypeName(disbursement.grant.grantTypeId)}}</small></span>
                 <p class="text-subheader text-left mb-0">
                   Grant Name:
                   <b>{{
@@ -63,7 +64,7 @@
                       ? disbursement.grant.referenceNo + " | "
                       : "") + disbursement.grant.name
                   }}</b>
-                  &nbsp;&nbsp;|&nbsp;&nbsp; Grantee Organization:
+                  &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
                   <b>{{
                     disbursement.grant.organization
                       ? disbursement.grant.organization.name

@@ -74,13 +74,13 @@
             <div>{{ currentGrant.amount }}</div>
           </div>
           <div class="col-6 mb-4">
-            <b>Grantee Organization:</b>
+            <b>Implementing Organization:</b>
             <div *ngIf="currentGrant.organization">
               {{ currentGrant.organization.name }}
             </div>
           </div>
           <div class="col-6 mb-4">
-            <b>Grantee Organization Representative:</b>
+            <b>Implementing Organization Representative:</b>
             <div>{{ currentGrant.representative }}</div>
           </div>
         </div>
@@ -113,7 +113,7 @@
             <div class="row">
               <div class="col-4">
                 <mat-form-field [floatLabel]="'always'">
-                  <mat-label>Grant Start Date</mat-label>
+                  <mat-label>Start Date</mat-label>
                   <input
                     style="cursor: pointer"
                     id="grantStart"
@@ -191,7 +191,7 @@
               </div>
               <div class="col-4">
                 <mat-form-field [floatLabel]="'always'">
-                  <mat-label>Grant End Date</mat-label>
+                  <mat-label>End Date</mat-label>
                   <input
                     style="cursor: pointer"
                     id="grantEnd"
@@ -256,7 +256,7 @@
               </div>
               <div class="col-4">
                 <mat-form-field [floatLabel]="'always'">
-                  <mat-label>Grant Duration</mat-label>
+                  <mat-label>Duration</mat-label>
                   <input
                     matInput
                     [(ngModel)]="currentGrant.duration"
@@ -272,7 +272,7 @@
           </div>
           <div class="col-3">
             <mat-form-field [floatLabel]="'always'">
-              <mat-label>Grant Amount (₹)</mat-label>
+              <mat-label>Amount (₹)</mat-label>
               <input
                 (blur)="showFormattedGrantAmount($event)"
                 #grantAmount
@@ -303,7 +303,7 @@
                 font-family: Lato;
                 color: rgba(0, 0, 0, 0.54);
               "
-              >Grant Amount (In Words)</label
+              >Amount (In Words)</label
             >
             <p
               disabled
@@ -323,7 +323,7 @@
         <div class="row">
           <div class="col-6">
             <!--mat-form-field>
-                            <mat-select placeholder="Grantee Organization" matInput [value]="currentGrant.organization.id"
+                            <mat-select placeholder="Implementing Organization" matInput [value]="currentGrant.organization.id"
                                         (selectionChange)="setNewOrg($event)" required class="anu-input">
                                 <mat-option *ngFor="let org of appComp.appConfig.granteeOrgs" [value]="org.id"
                                             (select)="org.id===currentGrant.organization.id">{{org.name}}</mat-option>
@@ -331,14 +331,21 @@
                         </mat-form-field-->
             <form class="example-form">
               <mat-form-field [floatLabel]="'always'">
-                <mat-label>Grantee Organization</mat-label>
-                <input
+                <mat-label>Implementing Organization</mat-label>
+                <input *ngIf="isExternalGrant()"
                   type="text"
                   matInput
                   [formControl]="myControl"
                   class="anu-input"
                   [matAutocomplete]="auto"
-                  placeholder="Select or create Grantee organization"
+                  placeholder="Select or create Implementing organization"
+                />
+                <input *ngIf="!isExternalGrant()"
+                  type="text"
+                  matInput
+                  class="anu-input"
+                  disabled
+                  [value]="currentGrant.grantorOrganization.name"
                 />
               </mat-form-field>
 
@@ -358,14 +365,14 @@
           </div>
           <div class="col-6">
             <mat-form-field [floatLabel]="'always'">
-              <mat-label>Grantee Organization Representative</mat-label>
+              <mat-label>Implementing Organization Representative</mat-label>
               <input
                 matInput
                 id="granteeOrgRep"
                 [(ngModel)]="currentGrant.representative"
                 [ngModelOptions]="{ standAlone: true }"
                 (ngModelChange)="checkGrant()"
-                placeholder="Enter Grantee organization representative name"
+                placeholder="Representative name"
                 type="text"
                 autocomplete="off"
                 class="anu-input"

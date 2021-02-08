@@ -49,19 +49,19 @@ export class UpcomingReportsComponent implements OnInit {
         private dialog: MatDialog,
         public reportComponent: ReportComponent,
         private titlecasePipe: TitleCasePipe) {
-        this.appComp.reportUpdated.subscribe((statusUpdate) => { 
+        this.appComp.reportUpdated.subscribe((statusUpdate) => {
             if (statusUpdate.status && statusUpdate.reportId) {
                 let url =
-                "/api/user/" + this.appComp.loggedInUser.id + "/report/"+ statusUpdate.reportId;
+                    "/api/user/" + this.appComp.loggedInUser.id + "/report/" + statusUpdate.reportId;
                 const httpOptions = {
-                headers: new HttpHeaders({
-                    "Content-Type": "application/json",
-                    "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
-                    Authorization: localStorage.getItem("AUTH_TOKEN"),
-                }),
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+                        Authorization: localStorage.getItem("AUTH_TOKEN"),
+                    }),
                 };
 
-                this.http.get(url, httpOptions).subscribe((report:Report) => {
+                this.http.get(url, httpOptions).subscribe((report: Report) => {
                     if (report) {
                         let idx = -1;
                         if (this.reportsToSetup !== undefined && this.reportsToSetup !== null) {
@@ -137,7 +137,7 @@ export class UpcomingReportsComponent implements OnInit {
             //this.processReports(reports);
             this.reportsReadyToSubmit = reports;
             if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
-                this.reportsReadyToSubmit.sort((a, b) => (a.dueDate <= b.dueDate)?-1:1);
+                this.reportsReadyToSubmit.sort((a, b) => (a.dueDate <= b.dueDate) ? -1 : 1);
             }
         });
 
@@ -254,10 +254,10 @@ export class UpcomingReportsComponent implements OnInit {
         });
     }
 
-    viewAddnlReports(reportId: number, grantId: number,forType:string) {
+    viewAddnlReports(reportId: number, grantId: number, forType: string) {
         this.otherReportsClicked = true
         let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
-            data: { report: reportId, grant: grantId, grants: this.grants, futureReports: this.futureReportsToSetup, single: false,type:forType },
+            data: { data: { report: reportId, grant: grantId, grants: this.grants, futureReports: this.futureReportsToSetup, single: false, type: forType }, appComp: this.appComp },
             panelClass: 'addnl-report-class'
         });
 
@@ -269,13 +269,13 @@ export class UpcomingReportsComponent implements OnInit {
                 this.otherReportsClicked = false;
                 if (result.deleted && result.deleted.length > 0) {
                     let idx = -1;
-                    if (this.reportsToSetup!==undefined && this.reportsToSetup!==null) {
+                    if (this.reportsToSetup !== undefined && this.reportsToSetup !== null) {
                         this.reportsToSetup.findIndex(x => x.id === reportId);
                         if (idx !== -1) {
                             this.reportsToSetup[idx].futureReportsCount = this.reportsToSetup[idx].futureReportsCount - 1;
                         }
                     }
-                    
+
                     if (this.reportsReadyToSubmit !== undefined && this.reportsReadyToSubmit !== null) {
                         idx = this.reportsReadyToSubmit.findIndex(x => x.id === reportId);
                         if (idx !== -1) {
@@ -330,7 +330,7 @@ export class UpcomingReportsComponent implements OnInit {
     deleteReport(report: Report) {
         this.deleteReportsClicked = true;
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to delete this report?',btnMain:"Delete Report",brnSecondary:"Not Now" },
+            data: { title: 'Are you sure you want to delete this report?', btnMain: "Delete Report", brnSecondary: "Not Now" },
             panelClass: 'center-class'
         });
 
@@ -370,5 +370,22 @@ export class UpcomingReportsComponent implements OnInit {
                 dialogRef.close();
             }
         });
+    }
+
+    public getGrantTypeName(typeId): string {
+        return this.appComp.grantTypes.filter(t => t.id === typeId)[0].name;
+    }
+
+    public getGrantTypeColor(typeId): any {
+        return this.appComp.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+    }
+
+    isExternalGrant(grant: Grant): boolean {
+        const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+        if (!grantType.internal) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

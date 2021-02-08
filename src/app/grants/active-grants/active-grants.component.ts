@@ -7,7 +7,7 @@ import {
   HTTP_INTERCEPTORS,
 } from "@angular/common/http";
 import { User } from "../../model/user";
-import { SerializationHelper, Tenant, Tenants } from "../../model/dahsboard";
+import { GrantType, SerializationHelper, Tenant, Tenants } from "../../model/dahsboard";
 import { AppComponent } from "../../app.component";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { GrantDataService } from "../../grant.data.service";
@@ -27,6 +27,7 @@ import { FieldDialogComponent } from "../../components/field-dialog/field-dialog
 import * as indianCurrencyInWords from "indian-currency-in-words";
 import { TitleCasePipe } from "@angular/common";
 import * as inf from "indian-number-format";
+import { GranttypeSelectionDialogComponent } from "app/components/granttype-selection-dialog/granttype-selection-dialog.component";
 
 @Component({
   selector: "app-active-grants",
@@ -85,7 +86,7 @@ export class ActiveGrantsComponent implements OnInit {
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.appComponent.subMenu = { name: "Active Grants", action: "ag" };
@@ -108,7 +109,40 @@ export class ActiveGrantsComponent implements OnInit {
     this.logoURL = "/api/public/images/" + tenantCode + "/logo";
   }
 
+  getGrantTypes() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+
+    const url = "/api/user/" + this.appComponent.loggedInUser.id + "/grant/grantTypes";
+    this.http.get(url, httpOptions).subscribe((result: GrantType[]) => {
+      this.appComponent.grantTypes = result;
+    });
+  }
+
   createGrant() {
+
+    if (this.appComponent.grantTypes.length > 1) {
+      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+        data: this.appComponent.grantTypes,
+        panelClass: 'grant-template-class'
+      });
+
+      dg.afterClosed().subscribe(result => {
+        if (result && result.result) {
+          this.selectTemplateAndCreateGrant(result.selectedGrantType.id);
+        }
+      });
+    } else {
+      this.selectTemplateAndCreateGrant(this.appComponent.grantTypes[0].id)
+    }
+  }
+
+  selectTemplateAndCreateGrant(grantType) {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
@@ -128,7 +162,7 @@ export class ActiveGrantsComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
           if (result.result) {
-            this.grantComponent.createGrant(result.selectedTemplate);
+            this.grantComponent.createGrant(result.selectedTemplate, grantType);
             this.appComponent.selectedTemplate = result.selectedTemplate;
           } else {
             dialogRef.close();
@@ -191,7 +225,7 @@ export class ActiveGrantsComponent implements OnInit {
                     wf.assignments === this.appComponent.loggedInUser.id
                 ).length > 0 &&
                 this.appComponent.loggedInUser.organization.organizationType !==
-                  "GRANTEE" &&
+                "GRANTEE" &&
                 grant.grantStatus.internalStatus !== "ACTIVE" &&
                 grant.grantStatus.internalStatus !== "CLOSED"
               ) {
@@ -254,7 +288,7 @@ export class ActiveGrantsComponent implements OnInit {
           wf.assignments === this.appComponent.loggedInUser.id
       ).length > 0 &&
       this.appComponent.loggedInUser.organization.organizationType !==
-        "GRANTEE" &&
+      "GRANTEE" &&
       grant.grantStatus.internalStatus !== "ACTIVE" &&
       grant.grantStatus.internalStatus !== "CLOSED"
     ) {
@@ -279,7 +313,7 @@ export class ActiveGrantsComponent implements OnInit {
 
   deleteGrant(grant: Grant) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Are you sure you want to delete this grant?",btnMain:"Delete Grant",btnSecondary:"Not Now" },
+      data: { title: "Are you sure you want to delete this grant?", btnMain: "Delete Grant", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 
@@ -387,5 +421,22 @@ export class ActiveGrantsComponent implements OnInit {
 
   getFormattedGrantAmount(amount: number): string {
     return inf.format(amount, 2);
+  }
+
+  getGrantTypeName(typeId): string {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+  
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
