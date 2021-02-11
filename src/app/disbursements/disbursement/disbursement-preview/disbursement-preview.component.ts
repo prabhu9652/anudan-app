@@ -323,20 +323,34 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
           return;
         }
 
+        for (let i = 0; i < this.appComponent.disbursementWorkflowStatuses.length; i++) {
+          if (i < this.appComponent.disbursementWorkflowStatuses.length - 1) {
+            const prev = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i].id))[0];
+            const next = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i + 1].id))[0];
+            if (prev && next && (prev.owner === next.owner)) {
+              const dialogRef = this.dialog.open(MessagingComponent, {
+                data: "Workflow Assignemnts do not look right. Please review and fix before proceeding.",
+                panelClass: "center-class",
+              });
+              return;
+            }
+          }
+        }
+
         for (let assignment of this.currentDisbursement.assignments) {
           const status1 = this.appComponent.disbursementWorkflowStatuses.filter(
             (status) => status.id === assignment.stateId
           );
           if (
             (assignment.owner === null ||
-            assignment.owner === undefined ||
-            (assignment.owner === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted))
+              assignment.owner === undefined ||
+              (assignment.owner === 0 && !status1[0].terminal) || (assignment.assignmentUser.deleted))
           ) {
             const dialogRef = this.dialog.open(FieldDialogComponent, {
               data: {
                 title: "Would you like to assign users responsible for this workflow?",
                 btnMain: "Assign Users",
-                btnSecondary:"Not Now"
+                btnSecondary: "Not Now"
               },
               panelClass: "center-class",
             });
@@ -363,8 +377,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
         this.appComponent
       ).internalStatus === "ACTIVE" &&
       this.currentDisbursement.requestedAmount +
-        this.getApprovedActualTotals() >
-        this.currentDisbursement.grant.amount
+      this.getApprovedActualTotals() >
+      this.currentDisbursement.grant.amount
     ) {
       const dialogRef = this.dialog.open(MessagingComponent, {
         data:

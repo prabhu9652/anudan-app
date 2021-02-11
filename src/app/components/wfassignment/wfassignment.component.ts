@@ -31,6 +31,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     title: string;
     previousUser;
     previousNodeOwner;
+    activeStateOwnerChanged: boolean;
 
     constructor(
         public dialogRef: MatDialogRef<WfassignmentComponent>
@@ -623,6 +624,17 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     handleSelection(event: any): boolean | void {
 
         this.updateGrantAndDisbursementUsers();
+
+
+        if (this.data.model.type === 'grant' && this.data.model.grant.grantStatus.internalStatus === 'ACTIVE') {
+            const val = event.currentTarget.value;
+            const orgAss = this.data.model.workflowAssignment.filter(a => a.stateId === this.data.model.grant.grantStatus.id)[0];
+            if (orgAss.assignments !== Number(val)) {
+                this.activeStateOwnerChanged = true;
+            } else {
+                this.activeStateOwnerChanged = false;
+            }
+        }
         /* if (!environment.production) {
             return;
         } */
@@ -728,7 +740,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
     onNoClick(): void {
         if (this.verifyChanges()) {
             const d = this.dialog.open(FieldDialogComponent, {
-                data: { title: "Would you like to save the assignment changes?", btnMain: "Save Assignments", btnSecondary: "Not Now" },
+                data: { title: "Would you like to save the assignment changes?", btnMain: "Save Assignments", btnSecondary: "Not Now", subTitle: ((this.activeStateOwnerChanged && this.activeStateOwnerChanged === true) ? "<strong class='text-red'>Warning!</strong> Changing the Active State owner of this grant is likely to impact the workflow assignments for associated reports and disbursements.\nPlease review the workdlowflow assignments of the associated Reports and Disbursements." : "") },
                 panelClass: "center-class"
             });
 
@@ -750,6 +762,10 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
 
     onYesClick(): void {
         if (this.data.model.type === 'grant') {
+            /* const dg = this.dialog.open(FieldDialogComponent, {
+                data: { title: "Would you like to save the assignment changes?", btnMain: "Save Assignments", btnSecondary: "Not Now" },
+                panelClass: "center-class"
+            }); */
             this.processGrantAssignments();
 
         } else if (this.data.model.type === 'report') {
