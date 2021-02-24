@@ -1,3 +1,4 @@
+import { Grant } from './../../../model/dahsboard';
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SingleReportDataService } from "../../../single.report.data.service";
 import { Report, ReportSectionInfo } from "../../../model/report";
@@ -304,11 +305,11 @@ export class ReportHeaderComponent implements OnInit {
           //  this.appComp.selectedTemplate = info.report.template;
           this.router.navigate([
             "report/section/" +
-              this.getCleanText(
-                info.report.reportDetails.sections.filter(
-                  (a) => a.id === info.sectionId
-                )[0]
-              ),
+            this.getCleanText(
+              info.report.reportDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
           ]);
         },
         (error) => {
@@ -404,7 +405,7 @@ export class ReportHeaderComponent implements OnInit {
       );
     } else if (!this.currentReport.dueDate && this.currentReport.dueDate) {
       return day <= new Date(this.currentReport.dueDate);
-    } 
+    }
     return true;
   };
 
@@ -443,4 +444,22 @@ export class ReportHeaderComponent implements OnInit {
     }
     return true;
   };
+
+
+  public getGrantTypeName(typeId): string {
+    return this.appComp.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComp.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

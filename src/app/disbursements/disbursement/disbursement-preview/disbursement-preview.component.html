@@ -146,6 +146,7 @@
                       matBadgeSize="medium"
                       >{{ currentDisbursement.status.displayName }}</span
                     >
+                    <span class=" badge text-black m-0 ml-2" [ngStyle]="{'background-color':getGrantTypeColor(currentDisbursement.grant.grantTypeId)}" ><small>{{getGrantTypeName(currentDisbursement.grant.grantTypeId)}}</small></span>
                   </div>
                 </div>
               </div>
@@ -192,19 +193,19 @@
               <div class="col-6 mb-2">
                 <span
                   style="color: #929292; font-size: 13px; font-family: Roboto"
-                  >Grantee Organization:</span
+                  >Implementing Organization:</span
                 >
                 <div
                   *ngIf="currentDisbursement.grant.organization"
                   class="ml-0 mb-3"
                 >
-                  <b>{{ currentDisbursement.grant.organization.name }}</b>
+                  <b *ngIf="isExternalGrant(currentDisbursement.grant)">{{ currentDisbursement.grant.organization.name }}</b>
                 </div>
               </div>
               <div class="col-4 mb-2">
                 <span
                   style="color: #929292; font-size: 13px; font-family: Roboto"
-                  >Grantee Organization Representative:</span
+                  >Implementing Organization Representative:</span
                 >
                 <div class="ml-0 mb-3">
                   <b>{{ currentDisbursement.grant.representative }}</b>

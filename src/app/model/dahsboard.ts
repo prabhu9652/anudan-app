@@ -276,6 +276,7 @@ export class Grant {
   amended: boolean;
   origGrantRefNo: string;
   minEndEndate: Date;
+  grantTypeId: number;
 }
 
 export class GrantSnapshot {
@@ -337,7 +338,7 @@ export class WorkflowAssignment {
   assignmentUser: User;
   anchor: boolean;
   history: any[];
-  constructor() {}
+  constructor() { }
 }
 export class GrantTemplate {
   id: number;
@@ -479,7 +480,7 @@ export class WorkflowAssignmentModel {
   grant: Grant;
   type: string;
   canManage: boolean;
-  constructor() {}
+  constructor() { }
 }
 
 export class AttachmentDownloadRequest {
@@ -527,4 +528,14 @@ export class CustomDateAdapter extends NativeDateAdapter {
       return date.toDateString();
     }
   }
+}
+
+
+export class GrantType {
+  id: number;
+  name: string;
+  description: string;
+  internal: boolean;
+  granterId: number;
+  colorCode: string;
 }

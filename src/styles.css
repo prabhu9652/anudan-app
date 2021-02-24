@@ -435,6 +435,10 @@ font-white {
   color: #39743c !important;
 }
 
+.text-black{
+  color: #000 !important;
+}
+
 .text-blue {
   color: #3f51b5 !important;
 }
@@ -932,4 +936,13 @@ li:focus {
 .dark-grey-input {
   color: #212529 !important;
   background: #d6d6d6 !important;
+}
+
+
+.grant-type{
+  position: absolute;
+  top: -26px;
+  left: -8px;
+  box-shadow: none;
+  border: 1px solid #c5defd;
 }

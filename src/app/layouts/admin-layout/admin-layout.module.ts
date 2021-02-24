@@ -51,6 +51,7 @@ import { InviteDialogComponent } from '../../components/invite-dialog/invite-dia
 import { GrantTemplateDialogComponent } from '../../components/grant-template-dialog/grant-template-dialog.component';
 import { ReportTemplateDialogComponent } from '../../components/report-template-dialog/report-template-dialog.component';
 import { GrantSelectionDialogComponent } from '../../components/grant-selection-dialog/grant-selection-dialog.component';
+import { GranttypeSelectionDialogComponent } from '../../components/granttype-selection-dialog/granttype-selection-dialog.component';
 import { TemplateDialogComponent } from '../../components/template-dialog/template-dialog.component';
 import { BottomsheetComponent } from '../../components/bottomsheet/bottomsheet.component';
 import { BottomsheetAttachmentsComponent } from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
@@ -159,6 +160,7 @@ import { DisbursementNotesComponent } from 'app/components/disbursementNotes/dis
         GrantTemplateDialogComponent,
         ReportTemplateDialogComponent,
         GrantSelectionDialogComponent,
+        GranttypeSelectionDialogComponent,
         TemplateDialogComponent,
         BottomsheetComponent,
         BottomsheetAttachmentsComponent,
@@ -191,7 +193,7 @@ import { DisbursementNotesComponent } from 'app/components/disbursementNotes/dis
         DisbursementComponent,
         DisbursementPreviewComponent
     ],
-    entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent],
+    entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent, GranttypeSelectionDialogComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

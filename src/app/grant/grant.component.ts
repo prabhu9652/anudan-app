@@ -970,7 +970,7 @@ export class GrantComponent
     $(scheduleModal).modal("show");
   }
 
-  createGrant(template: GrantTemplate) {
+  createGrant(template: GrantTemplate, typeId) {
     this.appComp.selectedTemplate = template;
     this.appComp.currentView = "grant";
 
@@ -986,7 +986,7 @@ export class GrantComponent
       "/api/user/" +
       this.appComp.loggedInUser.id +
       "/grant/create/" +
-      template.id;
+      template.id + "/" + typeId;
 
     this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
       if (
@@ -1434,11 +1434,13 @@ export class GrantComponent
   public showActiveReports(grant: Grant, reports: Report[]) {
     let dialogRef1 = this.dialog.open(AddnlreportsDialogComponent, {
       data: {
-        report: null,
-        grant: grant,
-        grants: [grant],
-        futureReports: reports,
-        single: true,
+        data: {
+          report: null,
+          grant: grant,
+          grants: [grant],
+          futureReports: reports,
+          single: true
+        }, appComp: this.appComp
       },
       panelClass: "addnl-report-class",
     });

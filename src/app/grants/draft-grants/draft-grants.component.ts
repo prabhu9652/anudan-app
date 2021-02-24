@@ -1,3 +1,4 @@
+import { GrantType } from './../../model/dahsboard';
 import { CurrencyService } from "./../../currency-service";
 import { Component, OnInit, DoCheck, AfterViewChecked } from "@angular/core";
 import {
@@ -31,6 +32,7 @@ import {
   HumanizeDurationLanguage,
   HumanizeDuration,
 } from "humanize-duration-ts";
+import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
 
 class Timer {
   readonly start = performance.now();
@@ -103,7 +105,7 @@ export class DraftGrantsComponent implements OnInit {
     private grantUpdateService: GrantUpdateService,
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
   ) { }
 
   ngOnInit() {
@@ -125,6 +127,7 @@ export class DraftGrantsComponent implements OnInit {
     });
 
     this.fetchDashboard(user.id, this.currentGrant);
+    this.getGrantTypes();
     this.grantUpdateService.currentMessage.subscribe((id) => {
       if (id) {
         //this.fetchDashboard(user.id);
@@ -135,7 +138,40 @@ export class DraftGrantsComponent implements OnInit {
     this.logoURL = "/api/public/images/" + tenantCode + "/logo";
   }
 
+  getGrantTypes() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+
+    const url = "/api/user/" + this.appComponent.loggedInUser.id + "/grant/grantTypes";
+    this.http.get(url, httpOptions).subscribe((result: GrantType[]) => {
+      this.appComponent.grantTypes = result;
+    });
+  }
+
   createGrant() {
+
+    if (this.appComponent.grantTypes.length > 1) {
+      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+        data: this.appComponent.grantTypes,
+        panelClass: 'center-class'
+      });
+
+      dg.afterClosed().subscribe(result => {
+        if (result && result.result) {
+          this.selectTemplateAndCreateGrant(result.selectedGrantType.id);
+        }
+      });
+    } else {
+      this.selectTemplateAndCreateGrant(this.appComponent.grantTypes[0].id)
+    }
+  }
+
+  selectTemplateAndCreateGrant(grantType) {
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
@@ -155,7 +191,7 @@ export class DraftGrantsComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
           if (result.result) {
-            this.grantComponent.createGrant(result.selectedTemplate);
+            this.grantComponent.createGrant(result.selectedTemplate, grantType);
             this.appComponent.selectedTemplate = result.selectedTemplate;
           } else {
             dialogRef.close();
@@ -424,5 +460,23 @@ export class DraftGrantsComponent implements OnInit {
 
   getFormattedGrantAmount(amount: number): string {
     return inf.format(amount, 2);
+  }
+
+
+  getGrantTypeName(typeId): string {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

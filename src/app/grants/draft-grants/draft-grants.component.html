@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12">
-        <button
+        <ng-container *ngIf="appComponent.grantTypes && appComponent.grantTypes.length>0">
+          <button
           *ngIf="
             appComponent.loggedInUser.organization.organizationType ===
             'GRANTER'
@@ -12,6 +13,8 @@
         >
           New Grant
         </button>
+        </ng-container>
+        
       </div>
     </div>
     <div class="row">
@@ -43,6 +46,7 @@
               (click)="manageGrant(grant)"
             >
               <div class="col-10 text-left">
+                
                 <p
                   class="text-header mb-1"
                   *ngIf="!grant.referenceNo"
@@ -81,9 +85,12 @@
                   </span>
                   <b>{{ grant.name }}</b>
                 </p>
+
+                <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(grant.grantTypeId)}" ><small>{{getGrantTypeName(grant.grantTypeId)}}</small></span>
               </div>
               <div class="col-2 text-right">
                 <div>
+                  
                   <span
                     [class]="
                       'badge text-white state-' +
@@ -95,8 +102,11 @@
                 </div>
               </div>
               <div class="col-12 text-left">
-                <div class="text-subheader mb-2">
+                <div class="text-subheader mb-2" *ngIf="isExternalGrant(grant)">
                   {{ grant.organization ? grant.organization.name : null }}
+                </div>
+                <div class="text-subheader mb-2" *ngIf="!isExternalGrant(grant)">
+                  {{ grant.grantorOrganization.name }}
                 </div>
               </div>
               <div
@@ -186,6 +196,7 @@
                       Applicable to Active grants only</strong
                     >
                   </div>
+
                 </div>
               </div>
             </div>

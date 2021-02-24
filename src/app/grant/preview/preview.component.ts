@@ -416,10 +416,10 @@ export class PreviewComponent implements OnInit {
     func: string,
     title: string,
     btnSecondary: string,
-    btnMain:string
+    btnMain: string
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title,btnMain:btnMain,btnSecondary:btnSecondary },
+      data: { title: title, btnMain: btnMain, btnSecondary: btnSecondary },
       panelClass: "center-class",
     });
 
@@ -463,7 +463,7 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  saveTemplate(templateId: number, templateName: string) {}
+  saveTemplate(templateId: number, templateName: string) { }
 
   deleteKpi(kpiId: number) {
     for (const kpi of this.currentGrant.kpis) {
@@ -602,7 +602,7 @@ export class PreviewComponent implements OnInit {
                 wf.assignments === this.appComp.loggedInUser.id
             ).length > 0 &&
             this.appComp.loggedInUser.organization.organizationType !==
-              "GRANTEE" &&
+            "GRANTEE" &&
             this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
             this.currentGrant.grantStatus.internalStatus !== "CLOSED"
           ) {
@@ -636,8 +636,8 @@ export class PreviewComponent implements OnInit {
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-        ",select[required]:not(:disabled):not([readonly])" +
-        ",textarea[required]:not(:disabled):not([readonly])"
+      ",select[required]:not(:disabled):not([readonly])" +
+      ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (let elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -804,11 +804,11 @@ export class PreviewComponent implements OnInit {
 
           this.router.navigate([
             "grant/section/" +
-              this.getCleanText(
-                info.grant.grantDetails.sections.filter(
-                  (a) => a.id === info.sectionId
-                )[0]
-              ),
+            this.getCleanText(
+              info.grant.grantDetails.sections.filter(
+                (a) => a.id === info.sectionId
+              )[0]
+            ),
           ]);
         },
         (error) => {
@@ -1085,8 +1085,8 @@ export class PreviewComponent implements OnInit {
       );
       if (
         (assignment.assignments === null ||
-        assignment.assignments === undefined ||
-        (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
+          assignment.assignments === undefined ||
+          (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
       ) {
         this.confirm(
           toStateId,
@@ -1620,7 +1620,7 @@ export class PreviewComponent implements OnInit {
         );
         break;
       case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions",null,null);
+        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions", null, null);
         break;
     }
 
@@ -1734,14 +1734,14 @@ export class PreviewComponent implements OnInit {
       this.appComp.loggedInUser.organization.organizationType === "GRANTEE"
         ? false
         : this.currentGrant.workflowAssignment.filter(
-            (wf) =>
-              wf.stateId === this.currentGrant.grantStatus.id &&
-              wf.assignments === this.appComp.loggedInUser.id
-          ).length > 0 &&
-          this.appComp.loggedInUser.organization.organizationType !==
-            "GRANTEE" &&
-          this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
-          this.currentGrant.grantStatus.internalStatus !== "CLOSED";
+          (wf) =>
+            wf.stateId === this.currentGrant.grantStatus.id &&
+            wf.assignments === this.appComp.loggedInUser.id
+        ).length > 0 &&
+        this.appComp.loggedInUser.organization.organizationType !==
+        "GRANTEE" &&
+        this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
+        this.currentGrant.grantStatus.internalStatus !== "CLOSED";
     const dialogRef = this.dialog.open(WfassignmentComponent, {
       data: { model: wfModel, userId: this.appComp.loggedInUser.id },
       panelClass: "wf-assignment-class",
@@ -1856,7 +1856,7 @@ export class PreviewComponent implements OnInit {
               httpOptions
             )
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((grant: Grant) => {});
+            .subscribe((grant: Grant) => { });
         }
       });
   }
@@ -1940,7 +1940,7 @@ export class PreviewComponent implements OnInit {
                 let i = 0;
                 for (let col of row.columns) {
                   if (i === 1) {
-                    total += !col.value?0:Number(col.value);
+                    total += !col.value ? 0 : Number(col.value);
                   }
                   i++;
                 }
@@ -2013,6 +2013,23 @@ export class PreviewComponent implements OnInit {
       return this.currentGrant.note.substr(this.currentGrant.note.lastIndexOf('</i>') + 4);
     } else {
       return 'This grant has been closed.'
+    }
+  }
+
+  public getGrantTypeName(typeId): string {
+    return this.appComp.grantTypes.filter(t => t.id === typeId)[0].name;
+  }
+
+  public getGrantTypeColor(typeId): any {
+    return this.appComp.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+  }
+
+  isExternalGrant(): boolean {
+    const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

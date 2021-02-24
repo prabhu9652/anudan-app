@@ -18,11 +18,12 @@
                             *ngFor="let disbursement of disbursements; let i = index"
                             (click)="manageDisbursement(disbursement)">
                             <div class="col-10 mb-1">
+                                <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(disbursement.grant.grantTypeId)}" ><small>{{getGrantTypeName(disbursement.grant.grantTypeId)}}</small></span>
                                 <p class="text-subheader text-left mb-0">
                                     Grant Name:
                                     <b>{{(disbursement.grant.referenceNo?disbursement.grant.referenceNo+' | ':'') + disbursement.grant.name}}</b>
                                     &nbsp;&nbsp;|&nbsp;&nbsp;
-                                    Grantee Organization:
+                                    Implementing Organization:
                                     <b>{{disbursement.grant.organization?disbursement.grant.organization.name:''}}</b><br>
                                     Grant Amount: <b>{{currencyService.getFormattedAmount(disbursement.grant.amount)}}
                                     </b>

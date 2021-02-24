@@ -154,13 +154,6 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                     },
                     tooltips: {
                         enabled: false
-                    },
-                    title: {
-                        display: true,
-                        fontSize: 14,
-                        fontColor: '#000',
-                        fontStyle: 'bold',
-                        text: 'Due Status'
                     }
                 }
             });
@@ -233,13 +226,6 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                                 color: "rgba(0, 0, 0, 0)",
                             }
                         }]
-                    },
-                    title: {
-                        display: true,
-                        fontSize: 14,
-                        fontColor: '#000',
-                        fontStyle: 'bold',
-                        text: 'In-progress Status'
                     }
                 }
             });
@@ -357,7 +343,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         align: 'top',
                         offset: 10,
                         formatter: function (value, context) {
-                            return value;
+                            return value.split('.')[0];
                         }
                     }
                 }, {
@@ -373,7 +359,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         align: 'top',
                         offset: 15,
                         formatter: function (value, context) {
-                            return value;
+                            return value.split('.')[0];
                         }
                     }
                 }]
@@ -400,8 +386,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                             },
                             ticks: {
                                 min: 0,
-                                max: (Math.ceil(maxTick / 50) * 50) + 2000,
-                                stepSize: 2000
+                                max: (Math.ceil(maxTick / 50) * 50) + ((Math.ceil(maxTick / 50) * 50) * 0.2),
+                                //stepSize: Math.round(maxTick / 4)
                             }
                         }],
                     xAxes: [
@@ -411,13 +397,6 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                                 labelString: "Financial Periods",
                             }
                         }]
-                },
-                title: {
-                    display: true,
-                    fontSize: 14,
-                    fontColor: '#000',
-                    fontStyle: 'bold',
-                    text: 'Commitments v/s Disbursed'
                 }
             }
         });

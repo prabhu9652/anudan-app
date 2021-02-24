@@ -37,6 +37,7 @@
                 Underlying grant has been amended. Please check if this report
                 is still valid.
               </p>
+              <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
               <p class="text-subheader text-left mb-0">
                 Grant Name:
                 <b>{{
@@ -44,7 +45,7 @@
                     ? report.grant.referenceNo + " | "
                     : "") + report.grant.name
                 }}</b>
-                &nbsp;&nbsp;|&nbsp;&nbsp; Grantee Organization:
+                &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
                 <b>{{
                   report.grant.organization
                     ? report.grant.organization.name

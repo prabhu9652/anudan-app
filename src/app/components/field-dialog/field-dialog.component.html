@@ -1,6 +1,7 @@
 <h1 mat-dialog-title class="text-header" style="font-weight: normal">
   {{ message.title }}
 </h1>
+<div *ngIf="message.subTitle" class="my-4" [innerHTML]="message.subTitle"></div>
 <pre *ngIf="message.content" [innerHtml]="message.content"></pre>
 <div
   mat-dialog-actions

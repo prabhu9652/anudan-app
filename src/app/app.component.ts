@@ -7,7 +7,7 @@ import { Report } from './model/report';
 import { Release } from './model/release';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { AppConfig } from './model/app-config';
-import { WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate, Grant, TemplateLibrary } from "./model/dahsboard";
+import { WorkflowStatus, Notifications, Organization, Tenant, GrantTemplate, Grant, TemplateLibrary, GrantType } from "./model/dahsboard";
 import { ReportTemplate } from "./model/report";
 import { WorkflowTransition } from "./model/workflow-transition";
 import { Time } from "@angular/common";
@@ -55,6 +55,7 @@ export class AppComponent implements AfterViewChecked {
   grantSaved = false;
   reportSaved = true;
   confgSubscription: any;
+  public grantTypes: GrantType[];
   originalGrant: Grant;
   originalReport: Report;
   action: string;
@@ -89,7 +90,7 @@ export class AppComponent implements AfterViewChecked {
     templateLibrary: []
   };
 
-  reportUpdated = new BehaviorSubject<any>({status:false,reportId:0});
+  reportUpdated = new BehaviorSubject<any>({ status: false, reportId: 0 });
 
   subMenu = {};
 
@@ -170,8 +171,25 @@ export class AppComponent implements AfterViewChecked {
       }
     });
 
-
+    this.getGrantTypes();
   }
+
+  getGrantTypes() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+
+    const url = "/api/user/" + this.loggedInUser.id + "/grant/grantTypes";
+    this.httpClient.get(url, httpOptions).subscribe((result: GrantType[]) => {
+      this.grantTypes = result;
+    });
+  }
+
+
 
   ngAfterViewChecked(): void {
     this.cdRef.detectChanges();
