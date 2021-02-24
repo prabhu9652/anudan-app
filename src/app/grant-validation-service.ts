@@ -12,6 +12,5 @@ export class GrantValidationService {
         } else {
             return false;
         }
-
     }
 }
