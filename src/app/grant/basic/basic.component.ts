@@ -394,6 +394,7 @@ export class BasicComponent implements OnInit {
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title },
+      panelClass: 'center-class'
     });
 
     dialogRef.afterClosed().subscribe((result) => {

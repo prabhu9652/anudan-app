@@ -129,7 +129,7 @@ export class ClosedGrantsComponent implements OnInit {
     if (this.appComponent.grantTypes.length > 1) {
       const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
         data: this.appComponent.grantTypes,
-        panelClass: 'center-class'
+        panelClass: 'grant-template-class'
       });
 
       dg.afterClosed().subscribe(result => {

@@ -401,7 +401,7 @@ export class SectionsComponent
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title, btnMain: "Delete Field", btnSecondary: "Not Now" },
-      panelClass: "center-class",
+      panelClass: "grant-template-class",
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1382,7 +1382,7 @@ export class SectionsComponent
           title:
             "You will lose all data for " + attr.fieldName + " Are you sure?", btnMain: 'Change Field Type', btnSecondary: 'Not Now'
         },
-        panelClass: "center-class",
+        panelClass: "grant-template-class",
       });
 
       dialogRef.afterClosed().subscribe((result) => {
@@ -1561,7 +1561,7 @@ export class SectionsComponent
 
     const dg = this.dialog.open(FieldDialogComponent, {
       data: { title: msg, btnMain: "Delete Row", btnSecondary: "Not Now" },
-      panelClass: "center-class"
+      panelClass: "grant-template-class"
     });
 
     dg.afterClosed().subscribe((result) => {
@@ -1588,7 +1588,7 @@ export class SectionsComponent
   deleteDisbursementRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: "Delete the selected planned disbursement row?", btnMain: "Delete Planned Disbursement", btnSecondary: "Not Now" },
-      panelClass: "center-class",
+      panelClass: "grant-template-class",
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1616,7 +1616,7 @@ export class SectionsComponent
   deleteColumn(sectionId, attributeId, colIndex, msg: string) {
     const dg = this.dialog.open(FieldDialogComponent, {
       data: { title: msg, btnMain: "Delete Column", btnSecondary: "Not Now" },
-      panelClass: "center-class"
+      panelClass: "grant-template-class"
     });
 
     dg.afterClosed().subscribe((result) => {
@@ -1739,7 +1739,7 @@ export class SectionsComponent
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title, btnMain: "Delete Section", btnSecondary: "Not Now" },
-      panelClass: "center-class",
+      panelClass: "grant-template-class",
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -2072,7 +2072,7 @@ export class SectionsComponent
         btnMain: "Delete Document(s)",
         btnSecondary: "Not Now"
       },
-      panelClass: "center-class",
+      panelClass: "grant-template-class",
     });
 
     dReg.afterClosed().subscribe((result) => {
@@ -2285,7 +2285,7 @@ export class SectionsComponent
   editSection(section) {
     const dialogRef = this.dialog.open(SectionEditComponent, {
       data: section,
-      panelClass: "center-class",
+      panelClass: "grant-template-class",
     });
 
     dialogRef.afterClosed().subscribe((result) => {
