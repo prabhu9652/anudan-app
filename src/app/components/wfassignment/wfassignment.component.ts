@@ -283,7 +283,7 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                         if (transition.internalStatus !== 'ACTIVE') {
                             nodeStateName = this.renderer.createText(transition._from);
                         } else {
-                            nodeStateName = this.renderer.createText(this.data.model.report.grant.organization.name);
+                            nodeStateName = this.renderer.createText(this.data.model.report.grant.isInternal ? transition._from : this.data.model.report.grant.organization.name);
                         }
                         this.renderer.appendChild(stateNode, nodeStateName);
                         this.renderer.appendChild(node, stateNode);

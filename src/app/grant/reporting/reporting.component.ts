@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   ActionAuthorities, AttachmentTemplates,
   Attribute, Doc, DocumentKpiSubmission, FileTemplates,
@@ -11,20 +11,20 @@ import {
   Submission,
   SubmissionStatus, Template
 } from '../../model/dahsboard';
-import {GrantDataService} from '../../grant.data.service';
-import {SubmissionDataService} from '../../submission.data.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppComponent} from '../../app.component';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
-import {DatePipe} from '@angular/common';
-import {Colors} from '../../model/app-config';
-import {interval} from 'rxjs';
-import {FieldDialogComponent} from '../../components/field-dialog/field-dialog.component';
-import {BottomsheetComponent} from '../../components/bottomsheet/bottomsheet.component';
-import {BottomsheetAttachmentsComponent} from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
-import {BottomsheetNotesComponent} from '../../components/bottomsheetNotes/bottomsheetNotes.component';
+import { GrantDataService } from '../../grant.data.service';
+import { SubmissionDataService } from '../../submission.data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from '../../app.component';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { MatBottomSheet, MatDatepickerInputEvent, MatDialog } from '@angular/material';
+import { DatePipe } from '@angular/common';
+import { Colors } from '../../model/app-config';
+import { interval } from 'rxjs';
+import { FieldDialogComponent } from '../../components/field-dialog/field-dialog.component';
+import { BottomsheetComponent } from '../../components/bottomsheet/bottomsheet.component';
+import { BottomsheetAttachmentsComponent } from '../../components/bottomsheetAttachments/bottomsheetAttachments.component';
+import { BottomsheetNotesComponent } from '../../components/bottomsheetNotes/bottomsheetNotes.component';
 
 @Component({
   selector: 'app-reporting',
@@ -65,18 +65,18 @@ export class ReportingComponent implements OnInit {
   @ViewChild('container') container: ElementRef;
 
   constructor(private grantData: GrantDataService
-      , private submissionData: SubmissionDataService
-      , private route: ActivatedRoute
-      , private router: Router
-      , private submissionDataService: SubmissionDataService
-      , public appComp: AppComponent
-      , private http: HttpClient
-      , private toastr: ToastrService
-      , private dialog: MatDialog
-      , private _bottomSheet: MatBottomSheet
-      , private elem: ElementRef
-      , private datepipe: DatePipe
-      , public colors: Colors) {
+    , private submissionData: SubmissionDataService
+    , private route: ActivatedRoute
+    , private router: Router
+    , private submissionDataService: SubmissionDataService
+    , public appComp: AppComponent
+    , private http: HttpClient
+    , private toastr: ToastrService
+    , private dialog: MatDialog
+    , private _bottomSheet: MatBottomSheet
+    , private elem: ElementRef
+    , private datepipe: DatePipe
+    , public colors: Colors) {
     this.colors = new Colors();
   }
 
@@ -119,7 +119,7 @@ export class ReportingComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId===this.currentGrant.grantStatus.id && wf.assignments===this.appComp.loggedInUser.id).length>0 ) && this.appComp.loggedInUser.organization.organizationType!=='GRANTEE' && (this.currentGrant.grantStatus.internalStatus!=='ACTIVE' && this.currentGrant.grantStatus.internalStatus!=='CLOSED')) {
+    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED')) {
       this.canManage = true;
     } else {
       this.canManage = false;
@@ -183,7 +183,7 @@ export class ReportingComponent implements OnInit {
   confirm(sectionId: number, attributeId: number, submissios: Submission[], kpiId: number, func: string, title: string) {
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: {title:title}
+      data: { title: title }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -276,7 +276,7 @@ export class ReportingComponent implements OnInit {
           if (attrib.id === Number(attributeId)) {
             console.log(attrib);
             attrib.fieldValue = inputField.val();
-            this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+            this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
           }
         }
       }
@@ -331,29 +331,29 @@ export class ReportingComponent implements OnInit {
     const url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/';
 
     this.http.put(url, this.grantToUpdate, httpOptions).subscribe((grant: Grant) => {
-          this.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-          this.currentGrant = grant;
-          this._setEditMode(false);
-          this.currentSubmission = null;
-          this.checkGrantPermissions();
-          this.checkCurrentSubmission();
-          this.appComp.autosave = false;
-        },
-        error => {
-          const errorMsg = error as HttpErrorResponse;
-          console.log(error);
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true
-          });
+      this.originalGrant = JSON.parse(JSON.stringify(grant));
+      this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
+      this.currentGrant = grant;
+      this._setEditMode(false);
+      this.currentSubmission = null;
+      this.checkGrantPermissions();
+      this.checkCurrentSubmission();
+      this.appComp.autosave = false;
+    },
+      error => {
+        const errorMsg = error as HttpErrorResponse;
+        console.log(error);
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true
         });
+      });
     // }
   }
 
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll('input[required]:not(:disabled):not([readonly]):not([type=hidden])' +
-        ',select[required]:not(:disabled):not([readonly])' +
-        ',textarea[required]:not(:disabled):not([readonly])');
+      ',select[required]:not(:disabled):not([readonly])' +
+      ',textarea[required]:not(:disabled):not([readonly])');
     for (let elem of containerFormLements) {
       if (elem.value.trim() === '') {
         this.erroredElement = elem;
@@ -461,7 +461,7 @@ export class ReportingComponent implements OnInit {
         break;
       }
     }
-    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
     fieldName.val('');
     this._setEditMode(true);
     $(createFieldModal).modal('hide');
@@ -493,7 +493,7 @@ export class ReportingComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
 
     sectionName.val('');
     $('#section_' + newSection.id).css('display', 'block');
@@ -519,7 +519,7 @@ export class ReportingComponent implements OnInit {
 
     currentSections.push(newSection);
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
 
     sectionName.val('');
     this.addNewSection();
@@ -599,7 +599,7 @@ export class ReportingComponent implements OnInit {
         sub.documentKpiSubmissions.push(docKpi);
       }
     }
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
 
     this._setEditMode(true);
     kpiDesc.val('');
@@ -649,7 +649,7 @@ export class ReportingComponent implements OnInit {
         break;
     }
 
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
     console.log();
   }
 
@@ -682,8 +682,8 @@ export class ReportingComponent implements OnInit {
     };
 
     let url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/'
-        + this.currentGrant.id + '/flow/'
-        + this.currentGrant.grantStatus.id + '/' + toStateId;
+      + this.currentGrant.id + '/flow/'
+      + this.currentGrant.grantStatus.id + '/' + toStateId;
     this.http.post(url, this.currentGrant, httpOptions).subscribe((grant: Grant) => {
       /*this.loading = false;
       this.grantDataService.changeMessage(grant);
@@ -691,7 +691,7 @@ export class ReportingComponent implements OnInit {
 
       url = '/api/user/' + this.appComp.loggedInUser.id + '/grant/' + this.currentGrant.id;
       this.http.get(url, httpOptions).subscribe((updatedGrant: Grant) => {
-        this.grantData.changeMessage(updatedGrant,this.appComp.loggedInUser.id);
+        this.grantData.changeMessage(updatedGrant, this.appComp.loggedInUser.id);
         this.currentGrant = updatedGrant;
         this.checkGrantPermissions();
         // this.router.navigate(['grant']);
@@ -802,7 +802,7 @@ export class ReportingComponent implements OnInit {
         break;
     }
     this._setEditMode(true);
-    this.grantData.changeMessage(this.currentGrant,this.appComp.loggedInUser.id);
+    this.grantData.changeMessage(this.currentGrant, this.appComp.loggedInUser.id);
     console.log(this.currentGrant);
   }
 
@@ -812,130 +812,15 @@ export class ReportingComponent implements OnInit {
     $(scheduleModal).modal('show');
   }
 
-  createGrant() {
-    const grant = new Grant();
-    grant.submissions = new Array<Submission>();
-    grant.actionAuthorities = new ActionAuthorities();
-    grant.actionAuthorities.permissions = [];
-    grant.actionAuthorities.permissions.push('MANAGE');
-    grant.organization = this.appComp.appConfig.granteeOrgs[0];
-    grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
-    grant.substatus = this.appComp.appConfig.submissionInitialStatus;
 
-    grant.id = 0 - Math.round(Math.random() * 10000000000);
-
-    const st = new Date;
-    grant.startDate = st;
-    grant.stDate = this.datepipe.transform(st, 'yyyy-MM-dd');
-    let et = new Date();
-    et = new Date(et.setFullYear(et.getFullYear() + 1));
-    grant.endDate = et;
-    grant.enDate = this.datepipe.transform(et, 'yyyy-MM-dd');
-
-
-    grant.kpis = new Array<Kpi>();
-    grant.grantDetails = new GrantDetails();
-    grant.grantDetails.sections = new Array<Section>();
-    for (const defaultSection of this.appComp.appConfig.defaultSections) {
-      defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
-      for (const attr of defaultSection.attributes) {
-        attr.id = 0 - Math.round(Math.random() * 10000000000);
-        attr.fieldValue = '';
-      }
-      grant.grantDetails.sections.push(defaultSection);
-    }
-
-    /*grant.submissions = new Array<Submission>();
-    const tmpDt = new Date();
-    for (let i = 0; i < 4; i++) {
-        // sub.grant = grant;
-        // sub.actionAuthorities = new ActionAuthorities();
-
-        const mnth = tmpDt.getMonth()+ (3*i);
-        const dt = new Date(tmpDt.getFullYear(),mnth ,tmpDt.getDate());
-        const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-        // sub.grant = grant;
-        grant.submissions.push(sub);
-    }*/
-
-    this.currentGrant = grant
-    this.grantData.changeMessage(grant,this.appComp.loggedInUser.id);
-    this.router.navigate(['grant']);
-  }
-
-  private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
-    const sub = new Submission();
-    sub.id = 0 - Math.round(Math.random() * 10000000000);
-    sub.documentKpiSubmissions = [];
-    sub.qualitativeKpiSubmissions = [];
-    sub.quantitiaveKpisubmissions = [];
-    sub.flowAuthorities = [];
-    sub.submissionStatus = this.appComp.appConfig.submissionInitialStatus;
-    sub.title = title;
-
-
-    sub.submitBy = dt1;
-    sub.submitDateStr = this.datepipe.transform(dt1, 'yyyy-MM-dd');
-    return sub;
-  }
-
-  private _addExistingKpisToSubmission(submission: Submission): Submission {
-    const quantKpis = new Array<QuantitiaveKpisubmission>();
-    const qualKpis = new Array<QualitativeKpiSubmission>();
-    const docKpis = new Array<DocumentKpiSubmission>();
-
-    for (const kpi of this.currentGrant.kpis) {
-      if (kpi.kpiType === 'QUANTITATIVE') {
-        const newQuantKpi = new QuantitiaveKpisubmission();
-        newQuantKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQuantKpi.goal = 0;
-        newQuantKpi.grantKpi = kpi;
-        newQuantKpi.actuals = 0;
-        newQuantKpi.toReport = true;
-        newQuantKpi.submissionDocs = [];
-        // newQuantKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQuantKpi.notesHistory = [];
-        newQuantKpi.note = '';
-        quantKpis.push(newQuantKpi);
-      } else if (kpi.kpiType === 'QUALITATIVE') {
-        const newQualKpi = new QualitativeKpiSubmission();
-        newQualKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQualKpi.goal = '';
-        newQualKpi.grantKpi = kpi;
-        newQualKpi.actuals = '';
-        newQualKpi.toReport = true;
-        newQualKpi.submissionDocs = [];
-        // newQualKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQualKpi.notesHistory = [];
-        newQualKpi.note = '';
-        qualKpis.push(newQualKpi);
-      } else if (kpi.kpiType === 'DOCUMENT') {
-        const newDocKpi = new DocumentKpiSubmission();
-        newDocKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newDocKpi.goal = '';
-        newDocKpi.grantKpi = kpi;
-        newDocKpi.actuals = '';
-        newDocKpi.toReport = true;
-        newDocKpi.submissionDocs = [];
-        // newDocKpi.submission = JSON.parse(JSON.stringify(submission));
-        newDocKpi.notesHistory = [];
-        newDocKpi.note = '';
-        docKpis.push(newDocKpi);
-      }
-    }
-    submission.quantitiaveKpisubmissions = quantKpis;
-    submission.qualitativeKpiSubmissions = qualKpis;
-    submission.documentKpiSubmissions = docKpis;
-    return submission;
-  }
 
   private _adjustHeights() {
 
     const elems = $('[id^="kpi_title_"]').toArray();
     for (const singleElem of elems) {
       const idVal = $(singleElem).attr('id').split('_')[2];
-        $('[data-id='+idVal+']').height($(singleElem).height()+'px');
-        console.log($('[data-id='+idVal+']').height());
+      $('[data-id=' + idVal + ']').height($(singleElem).height() + 'px');
+      console.log($('[data-id=' + idVal + ']').height());
     }
   }
 
@@ -979,10 +864,10 @@ export class ReportingComponent implements OnInit {
   }
 
   openBottomSheetForSubmittionAttachments(kpiDataId: number
-      , kpiDataType: string
-      , title: string
-      , attachments: Doc[]
-      , canManage: boolean): void {
+    , kpiDataType: string
+    , title: string
+    , attachments: Doc[]
+    , canManage: boolean): void {
 
     const attachmentTemplates = new AttachmentTemplates();
     attachmentTemplates.kpiDataId = kpiDataId;
@@ -1005,10 +890,10 @@ export class ReportingComponent implements OnInit {
   }
 
   openBottomSheetForSubmittionNotes(kpiDataId: number
-      , kpiDataType: string
-      , title: string
-      , notes: Note[]
-      , canManage: boolean): void {
+    , kpiDataType: string
+    , title: string
+    , notes: Note[]
+    , canManage: boolean): void {
 
     const noteTemplates = new NoteTemplates();
     noteTemplates.kpiDataId = kpiDataId;
@@ -1030,40 +915,7 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  performAction(event: any) {
-    const selectedOption = event.value;
-    switch (selectedOption) {
-      case '1':
-        let newSubmission = this._createNewSubmissionAndReturn('Submission Title', new Date());
-        // newSubmission.grant = this.currentGrant;
-        newSubmission = this._addExistingKpisToSubmission(newSubmission);
-        this.currentGrant.submissions.splice(0, 0, newSubmission);
-        this.toastr.info('New submission period appended to existing list', 'Submission Period Added');
-        break;
-      case '2':
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-          // sub.grant = grant;
-          // sub.actionAuthorities = new ActionAuthorities();
 
-          const mnth = tmpDt.getMonth() + (3 * i);
-          const dt = new Date(tmpDt.getFullYear(), mnth, tmpDt.getDate());
-          let sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-          sub = this._addExistingKpisToSubmission(sub);
-          // sub.grant = grant;
-          this.currentGrant.submissions.push(sub);
-        }
-        this.toastr.info('Quarterly Submissions added', 'Submission Periods Added');
-        break;
-      case '3':
-        this.confirm(0, 0, [], 0, 'clearSubmissions', ' all Submissions')
-        break;
-    }
-
-
-    this.checkGrant();
-    event.source.value = '';
-  }
 
 
   clearSubmissions() {

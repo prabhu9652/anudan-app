@@ -109,7 +109,7 @@ export class AdminLayoutComponent implements OnInit {
     private singleReportDataService: SingleReportDataService,
     private disbursementService: DisbursementDataService,
     private workflowDataService: WorkflowDataService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dataService.currentMessage.subscribe(
@@ -303,7 +303,7 @@ export class AdminLayoutComponent implements OnInit {
             if (
               !JSON.parse(localStorage.getItem("MESSAGE_COUNT")) ||
               JSON.parse(localStorage.getItem("MESSAGE_COUNT")) !==
-                this.appComponent.unreadMessages
+              this.appComponent.unreadMessages
             ) {
               localStorage.setItem(
                 "MESSAGE_COUNT",
@@ -451,17 +451,18 @@ export class AdminLayoutComponent implements OnInit {
       wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
       wfModel.type = this.appComponent.currentView;
       wfModel.grant = this.currentGrant;
+      wfModel.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentGrant.grantTypeId)[0].internal;
       wfModel.canManage =
         this.appComponent.loggedInUser.organization.organizationType ===
-        "GRANTEE"
+          "GRANTEE"
           ? false
           : this.currentGrant.workflowAssignment.filter(
-              (wf) =>
-                wf.stateId === this.currentGrant.grantStatus.id &&
-                wf.assignments === this.appComponent.loggedInUser.id
-            ).length > 0 &&
-            this.appComponent.loggedInUser.organization.organizationType !==
-              "GRANTEE";
+            (wf) =>
+              wf.stateId === this.currentGrant.grantStatus.id &&
+              wf.assignments === this.appComponent.loggedInUser.id
+          ).length > 0 &&
+          this.appComponent.loggedInUser.organization.organizationType !==
+          "GRANTEE";
       const dialogRef = this.dialog.open(WfassignmentComponent, {
         data: { model: wfModel, userId: this.appComponent.loggedInUser.id },
         panelClass: "wf-assignment-class",
@@ -550,9 +551,10 @@ export class AdminLayoutComponent implements OnInit {
       wfModel.workflowAssignments = this.currentReport.workflowAssignments;
       wfModel.type = this.appComponent.currentView;
       wfModel.report = this.currentReport;
+      wfModel.report.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentReport.grant.grantTypeId)[0].internal;
       wfModel.canManage =
         this.appComponent.loggedInUser.organization.organizationType ===
-        "GRANTEE"
+          "GRANTEE"
           ? false
           : this.currentReport.flowAuthorities && this.currentReport.canManage;
       const dialogRef = this.dialog.open(WfassignmentComponent, {
@@ -643,6 +645,7 @@ export class AdminLayoutComponent implements OnInit {
           wfModel.workflowAssignments = this.currentDisbursement.assignments;
           wfModel.type = this.appComponent.currentView;
           wfModel.disbursement = this.currentDisbursement;
+          wfModel.disbursement.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentDisbursement.grant.grantTypeId)[0].internal;
           wfModel.canManage = this.currentDisbursement.canManage;
           const dialogRef = this.dialog.open(WfassignmentComponent, {
             data: { model: wfModel, userId: this.appComponent.loggedInUser.id },
@@ -745,7 +748,7 @@ export class AdminLayoutComponent implements OnInit {
             wf.assignments === this.appComponent.loggedInUser.id
         ).length > 0 &&
         this.appComponent.loggedInUser.organization.organizationType !==
-          "GRANTEE" &&
+        "GRANTEE" &&
         grant.grantStatus.internalStatus !== "ACTIVE" &&
         grant.grantStatus.internalStatus !== "CLOSED"
       ) {

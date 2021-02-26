@@ -174,13 +174,13 @@ export class ReportPreviewComponent implements OnInit {
             }
         }
 
-        const statusTransition = this.appComp.reportTransitions.filter((transition) => transition.fromStateId === this.currentReport.status.id && transition.toStateId === toStateId);
+        //const statusTransition = this.appComp.reportTransitions.filter((transition) => transition.fromStateId === this.currentReport.status.id && transition.toStateId === toStateId);
 
-        if (statusTransition && statusTransition[0].noteRequired) {
-            this.openBottomSheetForReportNotes(toStateId);
-            this.wfDisabled = true;
-            return;
-        }
+        //if (statusTransition && statusTransition[0].noteRequired) {
+        this.openBottomSheetForReportNotes(toStateId);
+        this.wfDisabled = true;
+        return;
+        //}
     }
 
     openBottomSheetForReportNotes(toStateId: number): void {
@@ -208,6 +208,7 @@ export class ReportPreviewComponent implements OnInit {
         wfModel.workflowAssignments = this.currentReport.workflowAssignments;
         wfModel.type = this.appComp.currentView;
         wfModel.report = this.currentReport;
+        wfModel.report.grant.isInternal = this.appComp.grantTypes.filter(gt => this.currentReport.grant.grantTypeId)[0].internal;
         wfModel.canManage = this.currentReport.flowAuthorities && this.currentReport.canManage;
         const dialogRef = this.dialog.open(WfassignmentComponent, {
             data: { model: wfModel, userId: this.appComp.loggedInUser.id },

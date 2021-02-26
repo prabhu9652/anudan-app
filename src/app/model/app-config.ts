@@ -1,6 +1,6 @@
-import {Organization, Section, WorkflowStatus,TemplateLibrary} from './dahsboard';
-import {WorkflowTransition} from './workflow-transition';
-import {User} from './user';
+import { Organization, Section, WorkflowStatus, TemplateLibrary } from './dahsboard';
+import { WorkflowTransition } from './workflow-transition';
+import { User } from './user';
 
 export class AppConfig {
   appName: string;
@@ -9,8 +9,6 @@ export class AppConfig {
   navbarTextColor: string;
   tenantCode: string;
   defaultSections: Section[];
-  submissionInitialStatus: WorkflowStatus;
-  grantInitialStatus: WorkflowStatus;
   granteeOrgs: Organization[];
   workflowStatuses: WorkflowStatus[];
   reportWorkflowStatuses: WorkflowStatus[];
@@ -32,10 +30,10 @@ export class Colors {
     '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
 }
 
-export class Configuration{
-    tenantUsers: User[];
-    reportWorkflowStatuses:WorkflowStatus[];
-    grantWorkflowStatuses: WorkflowStatus[];
-    reportTransitions: WorkflowTransition[];
-    disbursementWorkflowStatuses: WorkflowStatus[];
+export class Configuration {
+  tenantUsers: User[];
+  reportWorkflowStatuses: WorkflowStatus[];
+  grantWorkflowStatuses: WorkflowStatus[];
+  reportTransitions: WorkflowTransition[];
+  disbursementWorkflowStatuses: WorkflowStatus[];
 }

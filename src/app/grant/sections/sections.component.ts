@@ -395,12 +395,12 @@ export class SectionsComponent
     $(editFieldModal).modal("show");
   }
 
-  
+
 
   deleteFieldEntry(sectionId: number, attributeId: number, title: string) {
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title, btnMain:"Delete Field", btnSecondary:"Not Now" },
+      data: { title: title, btnMain: "Delete Field", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 
@@ -413,7 +413,7 @@ export class SectionsComponent
             Authorization: localStorage.getItem("AUTH_TOKEN"),
           }),
         };
-    
+
         const url =
           "/api/user/" +
           this.appComp.loggedInUser.id +
@@ -423,7 +423,7 @@ export class SectionsComponent
           sectionId +
           "/field/" +
           attributeId;
-    
+
         this.http.post<Grant>(url, this.currentGrant, httpOptions).subscribe(
           (grant: Grant) => {
             this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
@@ -600,7 +600,7 @@ export class SectionsComponent
               wf.assignments === this.appComp.loggedInUser.id
           ).length > 0 &&
           this.appComp.loggedInUser.organization.organizationType !==
-            "GRANTEE" &&
+          "GRANTEE" &&
           this.currentGrant.grantStatus.internalStatus !== "ACTIVE" &&
           this.currentGrant.grantStatus.internalStatus !== "CLOSED"
         ) {
@@ -652,8 +652,8 @@ export class SectionsComponent
   private validateFields() {
     const containerFormLements = this.container.nativeElement.querySelectorAll(
       "input[required]:not(:disabled):not([readonly]):not([type=hidden])" +
-        ",select[required]:not(:disabled):not([readonly])" +
-        ",textarea[required]:not(:disabled):not([readonly])"
+      ",select[required]:not(:disabled):not([readonly])" +
+      ",textarea[required]:not(:disabled):not([readonly])"
     );
     for (let elem of containerFormLements) {
       if (elem.value.trim() === "") {
@@ -864,11 +864,11 @@ export class SectionsComponent
 
         this.router.navigate([
           "grant/section/" +
-            this.getCleanText(
-              info.grant.grantDetails.sections.filter(
-                (a) => a.id === info.sectionId
-              )[0]
-            ),
+          this.getCleanText(
+            info.grant.grantDetails.sections.filter(
+              (a) => a.id === info.sectionId
+            )[0]
+          ),
         ]);
         this.sidebar.buildSectionsSideNav(null);
       },
@@ -1284,120 +1284,8 @@ export class SectionsComponent
     $(scheduleModal).modal("show");
   }
 
-  createGrant() {
-    const grant = new Grant();
-    grant.submissions = new Array<Submission>();
-    grant.actionAuthorities = new ActionAuthorities();
-    grant.actionAuthorities.permissions = [];
-    grant.actionAuthorities.permissions.push("MANAGE");
-    grant.organization = this.appComp.appConfig.granteeOrgs[0];
-    grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
-    grant.substatus = this.appComp.appConfig.submissionInitialStatus;
 
-    grant.id = 0 - Math.round(Math.random() * 10000000000);
 
-    const st = new Date();
-    grant.startDate = st;
-    grant.stDate = this.datepipe.transform(st, "yyyy-MM-dd");
-    let et = new Date();
-    et = new Date(et.setFullYear(et.getFullYear() + 1));
-    grant.endDate = et;
-    grant.enDate = this.datepipe.transform(et, "yyyy-MM-dd");
-
-    grant.kpis = new Array<Kpi>();
-    grant.grantDetails = new GrantDetails();
-    grant.grantDetails.sections = new Array<Section>();
-    for (const defaultSection of this.appComp.appConfig.defaultSections) {
-      defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
-      for (const attr of defaultSection.attributes) {
-        attr.id = 0 - Math.round(Math.random() * 10000000000);
-        attr.fieldValue = "";
-      }
-      grant.grantDetails.sections.push(defaultSection);
-    }
-
-    /*grant.submissions = new Array<Submission>();
-    const tmpDt = new Date();
-    for (let i = 0; i < 4; i++) {
-        // sub.grant = grant;
-        // sub.actionAuthorities = new ActionAuthorities();
-
-        const mnth = tmpDt.getMonth()+ (3*i);
-        const dt = new Date(tmpDt.getFullYear(),mnth ,tmpDt.getDate());
-        const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-        // sub.grant = grant;
-        grant.submissions.push(sub);
-    }*/
-
-    this.currentGrant = grant;
-    this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
-    this.router.navigate(["grant"]);
-  }
-
-  private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
-    const sub = new Submission();
-    sub.id = 0 - Math.round(Math.random() * 10000000000);
-    sub.documentKpiSubmissions = [];
-    sub.qualitativeKpiSubmissions = [];
-    sub.quantitiaveKpisubmissions = [];
-    sub.flowAuthorities = [];
-    sub.submissionStatus = this.appComp.appConfig.submissionInitialStatus;
-    sub.title = title;
-
-    sub.submitBy = dt1;
-    sub.submitDateStr = this.datepipe.transform(dt1, "yyyy-MM-dd");
-    return sub;
-  }
-
-  private _addExistingKpisToSubmission(submission: Submission): Submission {
-    const quantKpis = new Array<QuantitiaveKpisubmission>();
-    const qualKpis = new Array<QualitativeKpiSubmission>();
-    const docKpis = new Array<DocumentKpiSubmission>();
-
-    for (const kpi of this.currentGrant.kpis) {
-      if (kpi.kpiType === "QUANTITATIVE") {
-        const newQuantKpi = new QuantitiaveKpisubmission();
-        newQuantKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQuantKpi.goal = 0;
-        newQuantKpi.grantKpi = kpi;
-        newQuantKpi.actuals = 0;
-        newQuantKpi.toReport = true;
-        newQuantKpi.submissionDocs = [];
-        // newQuantKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQuantKpi.notesHistory = [];
-        newQuantKpi.note = "";
-        quantKpis.push(newQuantKpi);
-      } else if (kpi.kpiType === "QUALITATIVE") {
-        const newQualKpi = new QualitativeKpiSubmission();
-        newQualKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQualKpi.goal = "";
-        newQualKpi.grantKpi = kpi;
-        newQualKpi.actuals = "";
-        newQualKpi.toReport = true;
-        newQualKpi.submissionDocs = [];
-        // newQualKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQualKpi.notesHistory = [];
-        newQualKpi.note = "";
-        qualKpis.push(newQualKpi);
-      } else if (kpi.kpiType === "DOCUMENT") {
-        const newDocKpi = new DocumentKpiSubmission();
-        newDocKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newDocKpi.goal = "";
-        newDocKpi.grantKpi = kpi;
-        newDocKpi.actuals = "";
-        newDocKpi.toReport = true;
-        newDocKpi.submissionDocs = [];
-        // newDocKpi.submission = JSON.parse(JSON.stringify(submission));
-        newDocKpi.notesHistory = [];
-        newDocKpi.note = "";
-        docKpis.push(newDocKpi);
-      }
-    }
-    submission.quantitiaveKpisubmissions = quantKpis;
-    submission.qualitativeKpiSubmissions = qualKpis;
-    submission.documentKpiSubmissions = docKpis;
-    return submission;
-  }
 
   private _adjustHeights() {
     /*for (const elem of $('[data-id]')) {
@@ -1492,7 +1380,7 @@ export class SectionsComponent
       const dialogRef = this.dialog.open(FieldDialogComponent, {
         data: {
           title:
-            "You will lose all data for " + attr.fieldName + " Are you sure?", btnMain:'Change Field Type',btnSecondary:'Not Now'
+            "You will lose all data for " + attr.fieldName + " Are you sure?", btnMain: 'Change Field Type', btnSecondary: 'Not Now'
         },
         panelClass: "center-class",
       });
@@ -1669,37 +1557,37 @@ export class SectionsComponent
     attr.fieldTableValue.push(row);
   }
 
-  deleteRow(sectionId, attributeId, rowIndex,msg:string) {
+  deleteRow(sectionId, attributeId, rowIndex, msg: string) {
 
     const dg = this.dialog.open(FieldDialogComponent, {
       data: { title: msg, btnMain: "Delete Row", btnSecondary: "Not Now" },
-      panelClass:"center-class"
+      panelClass: "center-class"
     });
 
     dg.afterClosed().subscribe((result) => {
       if (result()) {
         console.log(sectionId + " " + attributeId + " " + rowIndex);
-    for (let section of this.currentGrant.grantDetails.sections) {
-      if (section.id === sectionId) {
-        for (let attrib of section.attributes) {
-          if (attrib.id == attributeId) {
-            console.log(attrib.fieldTableValue);
-            const tableData = attrib.fieldTableValue;
-            tableData.splice(rowIndex, 1);
+        for (let section of this.currentGrant.grantDetails.sections) {
+          if (section.id === sectionId) {
+            for (let attrib of section.attributes) {
+              if (attrib.id == attributeId) {
+                console.log(attrib.fieldTableValue);
+                const tableData = attrib.fieldTableValue;
+                tableData.splice(rowIndex, 1);
+              }
+            }
           }
         }
-      }
-    }
       } else {
         dg.close();
       }
     });
-    
+
   }
 
   deleteDisbursementRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete the selected planned disbursement row?",btnMain:"Delete Planned Disbursement",btnSecondary:"Not Now" },
+      data: { title: "Delete the selected planned disbursement row?", btnMain: "Delete Planned Disbursement", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 
@@ -1725,12 +1613,12 @@ export class SectionsComponent
     });
   }
 
-  deleteColumn(sectionId, attributeId, colIndex,msg:string) {
-    const dg = this.dialog.open(FieldDialogComponent,{
+  deleteColumn(sectionId, attributeId, colIndex, msg: string) {
+    const dg = this.dialog.open(FieldDialogComponent, {
       data: { title: msg, btnMain: "Delete Column", btnSecondary: "Not Now" },
-      panelClass:"center-class"
+      panelClass: "center-class"
     });
-    
+
     dg.afterClosed().subscribe((result) => {
       if (result) {
         for (let section of this.currentGrant.grantDetails.sections) {
@@ -1863,7 +1751,7 @@ export class SectionsComponent
             Authorization: localStorage.getItem("AUTH_TOKEN"),
           }),
         };
-    
+
         const url =
           "/api/user/" +
           this.appComp.loggedInUser.id +
@@ -1873,7 +1761,7 @@ export class SectionsComponent
           this.currentGrant.templateId +
           "/section/" +
           secId;
-    
+
         this.http.put<Grant>(url, this.currentGrant, httpOptions).subscribe(
           (grant: Grant) => {
             this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
@@ -1909,8 +1797,8 @@ export class SectionsComponent
         dialogRef.close();
       }
     });
-  
-    
+
+
     /* const index = this.currentGrant.grantDetails.sections.findIndex(section => section.id === Number(secId));
     this.currentGrant.grantDetails.sections.splice(index, 1);
     this.grantData.changeMessage(this.currentGrant);
@@ -2070,9 +1958,9 @@ export class SectionsComponent
     if (fileExistsCheck.status) {
       alert(
         "Document " +
-          event.option.value.name +
-          " is already attached under " +
-          fileExistsCheck.message
+        event.option.value.name +
+        " is already attached under " +
+        fileExistsCheck.message
       );
       return;
     }
@@ -2177,12 +2065,12 @@ export class SectionsComponent
     }
   }
 
-  deleteSelection(attribId,msg:string) {
+  deleteSelection(attribId, msg: string) {
     const dReg = this.dialog.open(FieldDialogComponent, {
       data: {
         title: "Are you sure you want to delete the selected document(s)?",
         btnMain: "Delete Document(s)",
-        btnSecondary:"Not Now"
+        btnSecondary: "Not Now"
       },
       panelClass: "center-class",
     });
@@ -2296,9 +2184,9 @@ export class SectionsComponent
       if (fileExistsCheck.status) {
         alert(
           "Document " +
-            files.item(i).name +
-            " is already attached under " +
-            fileExistsCheck.message
+          files.item(i).name +
+          " is already attached under " +
+          fileExistsCheck.message
         );
         event.target.value = "";
         return;
