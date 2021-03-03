@@ -277,6 +277,7 @@ export class Grant {
   origGrantRefNo: string;
   minEndEndate: Date;
   grantTypeId: number;
+  isInternal: boolean;
 }
 
 export class GrantSnapshot {

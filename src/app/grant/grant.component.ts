@@ -1143,71 +1143,6 @@ export class GrantComponent
     });
   }
 
-  private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
-    const sub = new Submission();
-    sub.id = 0 - Math.round(Math.random() * 10000000000);
-    sub.documentKpiSubmissions = [];
-    sub.qualitativeKpiSubmissions = [];
-    sub.quantitiaveKpisubmissions = [];
-    sub.flowAuthorities = [];
-    sub.submissionStatus = this.appComp.appConfig.submissionInitialStatus;
-    sub.title = title;
-
-    sub.submitBy = dt1;
-    sub.submitDateStr = this.datepipe.transform(dt1, "yyyy-MM-dd");
-    return sub;
-  }
-
-  private _addExistingKpisToSubmission(submission: Submission): Submission {
-    const quantKpis = new Array<QuantitiaveKpisubmission>();
-    const qualKpis = new Array<QualitativeKpiSubmission>();
-    const docKpis = new Array<DocumentKpiSubmission>();
-
-    for (const kpi of this.currentGrant.kpis) {
-      if (kpi.kpiType === "QUANTITATIVE") {
-        const newQuantKpi = new QuantitiaveKpisubmission();
-        newQuantKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQuantKpi.goal = 0;
-        newQuantKpi.grantKpi = kpi;
-        newQuantKpi.actuals = 0;
-        newQuantKpi.toReport = true;
-        newQuantKpi.submissionDocs = [];
-        // newQuantKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQuantKpi.notesHistory = [];
-        newQuantKpi.note = "";
-        quantKpis.push(newQuantKpi);
-      } else if (kpi.kpiType === "QUALITATIVE") {
-        const newQualKpi = new QualitativeKpiSubmission();
-        newQualKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQualKpi.goal = "";
-        newQualKpi.grantKpi = kpi;
-        newQualKpi.actuals = "";
-        newQualKpi.toReport = true;
-        newQualKpi.submissionDocs = [];
-        // newQualKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQualKpi.notesHistory = [];
-        newQualKpi.note = "";
-        qualKpis.push(newQualKpi);
-      } else if (kpi.kpiType === "DOCUMENT") {
-        const newDocKpi = new DocumentKpiSubmission();
-        newDocKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newDocKpi.goal = "";
-        newDocKpi.grantKpi = kpi;
-        newDocKpi.actuals = "";
-        newDocKpi.toReport = true;
-        newDocKpi.submissionDocs = [];
-        // newDocKpi.submission = JSON.parse(JSON.stringify(submission));
-        newDocKpi.notesHistory = [];
-        newDocKpi.note = "";
-        docKpis.push(newDocKpi);
-      }
-    }
-    submission.quantitiaveKpisubmissions = quantKpis;
-    submission.qualitativeKpiSubmissions = qualKpis;
-    submission.documentKpiSubmissions = docKpis;
-    return submission;
-  }
-
   private _adjustHeights() {
     /*for (const elem of $('[data-id]')) {
             $(elem).css('height', $('#kpi_title_' + $(elem).attr('data-id')).outerHeight() + 'px');
@@ -1313,48 +1248,7 @@ export class GrantComponent
     });
   }
 
-  performAction(event: any) {
-    const selectedOption = event.value;
-    switch (selectedOption) {
-      case "1":
-        let newSubmission = this._createNewSubmissionAndReturn(
-          "Submission Title",
-          new Date()
-        );
-        // newSubmission.grant = this.currentGrant;
-        newSubmission = this._addExistingKpisToSubmission(newSubmission);
-        this.currentGrant.submissions.splice(0, 0, newSubmission);
-        this.toastr.info(
-          "New submission period appended to existing list",
-          "Submission Period Added"
-        );
-        break;
-      case "2":
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-          // sub.grant = grant;
-          // sub.actionAuthorities = new ActionAuthorities();
 
-          const mnth = tmpDt.getMonth() + 3 * i;
-          const dt = new Date(tmpDt.getFullYear(), mnth, tmpDt.getDate());
-          let sub = this._createNewSubmissionAndReturn("Quarter" + (i + 1), dt);
-          sub = this._addExistingKpisToSubmission(sub);
-          // sub.grant = grant;
-          this.currentGrant.submissions.push(sub);
-        }
-        this.toastr.info(
-          "Quarterly Submissions added",
-          "Submission Periods Added"
-        );
-        break;
-      case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions");
-        break;
-    }
-
-    this.checkGrant();
-    event.source.value = "";
-  }
 
   clearSubmissions() {
     this.currentGrant.submissions = [];

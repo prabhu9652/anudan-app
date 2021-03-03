@@ -394,6 +394,7 @@ export class BasicComponent implements OnInit {
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: title },
+      panelClass: 'center-class'
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1212,121 +1213,6 @@ export class BasicComponent implements OnInit {
     $(scheduleModal).modal("show");
   }
 
-  createGrant() {
-    const grant = new Grant();
-    grant.submissions = new Array<Submission>();
-    grant.actionAuthorities = new ActionAuthorities();
-    grant.actionAuthorities.permissions = [];
-    grant.actionAuthorities.permissions.push("MANAGE");
-    grant.organization = this.appComp.appConfig.granteeOrgs[0];
-    grant.grantStatus = this.appComp.appConfig.grantInitialStatus;
-    grant.substatus = this.appComp.appConfig.submissionInitialStatus;
-
-    grant.id = 0 - Math.round(Math.random() * 10000000000);
-
-    const st = new Date();
-    grant.startDate = st;
-    grant.stDate = this.datepipe.transform(st, "yyyy-MM-dd");
-    let et = new Date();
-    et = new Date(et.setFullYear(et.getFullYear() + 1));
-    grant.endDate = et;
-    grant.enDate = this.datepipe.transform(et, "yyyy-MM-dd");
-
-    grant.kpis = new Array<Kpi>();
-    grant.grantDetails = new GrantDetails();
-    grant.grantDetails.sections = new Array<Section>();
-    for (const defaultSection of this.appComp.appConfig.defaultSections) {
-      defaultSection.id = 0 - Math.round(Math.random() * 10000000000);
-      for (const attr of defaultSection.attributes) {
-        attr.id = 0 - Math.round(Math.random() * 10000000000);
-        attr.fieldValue = "";
-      }
-      grant.grantDetails.sections.push(defaultSection);
-    }
-
-    /*grant.submissions = new Array<Submission>();
-    const tmpDt = new Date();
-    for (let i = 0; i < 4; i++) {
-        // sub.grant = grant;
-        // sub.actionAuthorities = new ActionAuthorities();
-
-        const mnth = tmpDt.getMonth()+ (3*i);
-        const dt = new Date(tmpDt.getFullYear(),mnth ,tmpDt.getDate());
-        const sub = this._createNewSubmissionAndReturn('Quarter' + (i + 1), dt);
-        // sub.grant = grant;
-        grant.submissions.push(sub);
-    }*/
-
-    this.currentGrant = grant;
-    this.grantData.changeMessage(grant, this.appComp.loggedInUser.id);
-    this.router.navigate(["grant"]);
-    this.setDateDuration();
-  }
-
-  private _createNewSubmissionAndReturn(title: string, dt1: Date): Submission {
-    const sub = new Submission();
-    sub.id = 0 - Math.round(Math.random() * 10000000000);
-    sub.documentKpiSubmissions = [];
-    sub.qualitativeKpiSubmissions = [];
-    sub.quantitiaveKpisubmissions = [];
-    sub.flowAuthorities = [];
-    sub.submissionStatus = this.appComp.appConfig.submissionInitialStatus;
-    sub.title = title;
-
-    sub.submitBy = dt1;
-    sub.submitDateStr = this.datepipe.transform(dt1, "yyyy-MM-dd");
-    return sub;
-  }
-
-  private _addExistingKpisToSubmission(submission: Submission): Submission {
-    const quantKpis = new Array<QuantitiaveKpisubmission>();
-    const qualKpis = new Array<QualitativeKpiSubmission>();
-    const docKpis = new Array<DocumentKpiSubmission>();
-
-    for (const kpi of this.currentGrant.kpis) {
-      if (kpi.kpiType === "QUANTITATIVE") {
-        const newQuantKpi = new QuantitiaveKpisubmission();
-        newQuantKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQuantKpi.goal = 0;
-        newQuantKpi.grantKpi = kpi;
-        newQuantKpi.actuals = 0;
-        newQuantKpi.toReport = true;
-        newQuantKpi.submissionDocs = [];
-        // newQuantKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQuantKpi.notesHistory = [];
-        newQuantKpi.note = "";
-        quantKpis.push(newQuantKpi);
-      } else if (kpi.kpiType === "QUALITATIVE") {
-        const newQualKpi = new QualitativeKpiSubmission();
-        newQualKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newQualKpi.goal = "";
-        newQualKpi.grantKpi = kpi;
-        newQualKpi.actuals = "";
-        newQualKpi.toReport = true;
-        newQualKpi.submissionDocs = [];
-        // newQualKpi.submission = JSON.parse(JSON.stringify(submission));
-        newQualKpi.notesHistory = [];
-        newQualKpi.note = "";
-        qualKpis.push(newQualKpi);
-      } else if (kpi.kpiType === "DOCUMENT") {
-        const newDocKpi = new DocumentKpiSubmission();
-        newDocKpi.id = 0 - Math.round(Math.random() * 10000000000);
-        newDocKpi.goal = "";
-        newDocKpi.grantKpi = kpi;
-        newDocKpi.actuals = "";
-        newDocKpi.toReport = true;
-        newDocKpi.submissionDocs = [];
-        // newDocKpi.submission = JSON.parse(JSON.stringify(submission));
-        newDocKpi.notesHistory = [];
-        newDocKpi.note = "";
-        docKpis.push(newDocKpi);
-      }
-    }
-    submission.quantitiaveKpisubmissions = quantKpis;
-    submission.qualitativeKpiSubmissions = qualKpis;
-    submission.documentKpiSubmissions = docKpis;
-    return submission;
-  }
 
   private _adjustHeights() {
     /*  const allElems = $('[data-id]');
@@ -1442,48 +1328,7 @@ export class BasicComponent implements OnInit {
     });
   }
 
-  performAction(event: any) {
-    const selectedOption = event.value;
-    switch (selectedOption) {
-      case "1":
-        let newSubmission = this._createNewSubmissionAndReturn(
-          "Submission Title",
-          new Date()
-        );
-        // newSubmission.grant = this.currentGrant;
-        newSubmission = this._addExistingKpisToSubmission(newSubmission);
-        this.currentGrant.submissions.splice(0, 0, newSubmission);
-        this.toastr.info(
-          "New submission period appended to existing list",
-          "Submission Period Added"
-        );
-        break;
-      case "2":
-        const tmpDt = new Date();
-        for (let i = 0; i < 4; i++) {
-          // sub.grant = grant;
-          // sub.actionAuthorities = new ActionAuthorities();
 
-          const mnth = tmpDt.getMonth() + 3 * i;
-          const dt = new Date(tmpDt.getFullYear(), mnth, tmpDt.getDate());
-          let sub = this._createNewSubmissionAndReturn("Quarter" + (i + 1), dt);
-          sub = this._addExistingKpisToSubmission(sub);
-          // sub.grant = grant;
-          this.currentGrant.submissions.push(sub);
-        }
-        this.toastr.info(
-          "Quarterly Submissions added",
-          "Submission Periods Added"
-        );
-        break;
-      case "3":
-        this.confirm(0, 0, [], 0, "clearSubmissions", " all Submissions");
-        break;
-    }
-
-    this.checkGrant();
-    event.source.value = "";
-  }
 
   clearSubmissions() {
     this.currentGrant.submissions = [];
