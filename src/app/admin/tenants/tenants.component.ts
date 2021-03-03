@@ -39,7 +39,7 @@ export class TenantsComponent implements OnInit {
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   createTenant() {
     const tenantName = this.tenantNameElem.nativeElement.value;
@@ -103,6 +103,20 @@ export class TenantsComponent implements OnInit {
     let url = "/api/admin/fixgrants";
 
     this.http.post(url, {}, httpOptions).subscribe(() => {
+      alert("Grants Fixed");
+    });
+  }
+
+  fixGranType() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+    let url = "/api/admin/create-grant-types";
+
+    this.http.get(url, httpOptions).subscribe(() => {
       alert("Grants Fixed");
     });
   }
