@@ -95,6 +95,7 @@ import { ClosedDisbursementsComponent } from 'app/disbursements/closed-disbursem
 import { DisbursementComponent } from 'app/disbursements/disbursement/disbursement.component';
 import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/disbursement-preview/disbursement-preview.component';
 import { DisbursementNotesComponent } from 'app/components/disbursementNotes/disbursementNotes.component';
+import { DataApiComponent } from 'app/data-api/data-api.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -191,7 +192,8 @@ import { DisbursementNotesComponent } from 'app/components/disbursementNotes/dis
         ApprovedDisbursementsComponent,
         ClosedDisbursementsComponent,
         DisbursementComponent,
-        DisbursementPreviewComponent
+        DisbursementPreviewComponent,
+        DataApiComponent
     ],
     entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent, GranttypeSelectionDialogComponent],
     schemas: [NO_ERRORS_SCHEMA]
