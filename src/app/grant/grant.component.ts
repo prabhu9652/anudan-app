@@ -1015,7 +1015,7 @@ export class GrantComponent
     });
   }
 
-  copyGrant(grantId: number) {
+  copyGrant(grantId: number, grantTypeId: number) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: {
         title: "Important!",
@@ -1044,7 +1044,7 @@ export class GrantComponent
           this.appComp.loggedInUser.id +
           "/grant/" +
           grantId +
-          "/copy";
+          "/copy/" + grantTypeId;
 
         this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
           if (

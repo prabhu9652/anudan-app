@@ -1,3 +1,4 @@
+import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
 import {
   Component,
   ElementRef,
@@ -1757,7 +1758,22 @@ export class PreviewComponent implements OnInit {
   }
 
   copyGrant(grantId: number) {
-    this.grantComponent.copyGrant(grantId);
+
+    if (this.appComp.grantTypes.length > 1) {
+      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+        data: this.appComp.grantTypes,
+        panelClass: 'grant-template-class'
+      });
+
+      dg.afterClosed().subscribe(result => {
+        if (result && result.result) {
+          this.grantComponent.copyGrant(grantId, result.selectedGrantType.id);
+        }
+      });
+    } else {
+      this.grantComponent.copyGrant(grantId, this.appComp.grantTypes[0].id);
+    }
+
   }
 
   getTotals(idx: number, fieldTableValue: TableData[]): string {
