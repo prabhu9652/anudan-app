@@ -278,6 +278,7 @@ export class Grant {
   minEndEndate: Date;
   grantTypeId: number;
   isInternal: boolean;
+  tags: Tag[] = [];
 }
 
 export class GrantSnapshot {
@@ -539,4 +540,9 @@ export class GrantType {
   internal: boolean;
   granterId: number;
   colorCode: string;
+}
+
+export class Tag {
+  id: number;
+  name: string;
 }

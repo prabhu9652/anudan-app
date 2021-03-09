@@ -1,3 +1,5 @@
+import { OrgTagsComponent } from './../../org-tags/org-tags.component';
+import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -193,9 +195,11 @@ import { DataApiComponent } from 'app/data-api/data-api.component';
         ClosedDisbursementsComponent,
         DisbursementComponent,
         DisbursementPreviewComponent,
-        DataApiComponent
+        DataApiComponent,
+        GrantTagsComponent,
+        OrgTagsComponent
     ],
-    entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent, GranttypeSelectionDialogComponent],
+    entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent, GranttypeSelectionDialogComponent, GrantTagsComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 

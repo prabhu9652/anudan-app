@@ -1,4 +1,4 @@
-import { TemplateLibrary } from './../../model/dahsboard';
+import { Tag, TemplateLibrary } from './../../model/dahsboard';
 import { AdminService } from './../../admin.service';
 import { Role, User } from './../../model/user';
 import { Component, OnInit } from '@angular/core';
@@ -16,6 +16,7 @@ export class OrgadminComponent implements OnInit {
     roles: Role[];
     users: User[];
     docs: TemplateLibrary[];
+    tags: Tag[];
     constructor(
         public appComp: AppComponent,
         private adminService: AdminService
@@ -43,7 +44,12 @@ export class OrgadminComponent implements OnInit {
         } else if (ev.tab.textLabel === 'Library') {
             this.adminService.getLibraryDocs(this.appComp.loggedInUser).then((data: TemplateLibrary[]) => {
                 this.docs = data;
-                this.appComp.currentTenant.templateLibrary = this.docs;
+                //this.appComp.currentTenant.templateLibrary = this.docs;
+            });
+        } else if (ev.tab.textLabel === 'Tag Library') {
+            this.adminService.getOrgTags(this.appComp.loggedInUser).then((data: Tag[]) => {
+                this.tags = data;
+                //this.appComp.currentTenant.templateLibrary = this.docs;
             });
         }
     }

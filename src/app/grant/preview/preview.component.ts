@@ -1,3 +1,7 @@
+import { GranttypeSelectionDialogComponent } from './../../components/granttype-selection-dialog/granttype-selection-dialog.component';
+import { AdminService } from './../../admin.service';
+import { Tag } from './../../model/dahsboard';
+import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import {
   Component,
   ElementRef,
@@ -177,7 +181,8 @@ export class PreviewComponent implements OnInit {
     private titlecasePipe: TitleCasePipe,
     private grantValidationService: GrantValidationService,
     private workflowValidationService: WorkflowValidationService,
-    public currencyService: CurrencyService
+    public currencyService: CurrencyService,
+    private adminService: AdminService
   ) {
     this.colors = new Colors();
 
@@ -1757,7 +1762,22 @@ export class PreviewComponent implements OnInit {
   }
 
   copyGrant(grantId: number) {
-    this.grantComponent.copyGrant(grantId);
+
+    if (this.appComp.grantTypes.length > 1) {
+      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+        data: this.appComp.grantTypes,
+        panelClass: 'grant-template-class'
+      });
+
+      dg.afterClosed().subscribe(result => {
+        if (result && result.result) {
+          this.grantComponent.copyGrant(grantId, result.selectedGrantType.id);
+        }
+      });
+    } else {
+      this.grantComponent.copyGrant(grantId, this.appComp.grantTypes[0].id);
+    }
+
   }
 
   getTotals(idx: number, fieldTableValue: TableData[]): string {
@@ -1876,5 +1896,22 @@ export class PreviewComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: Tag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentGrant.tags },
+        panelClass: "grant-template-class"
+      });
+
+      dg.afterClosed().subscribe(response => {
+        if (response.result) {
+          this.currentGrant.tags = response.selectedTags
+        }
+      });
+    });
+
   }
 }
