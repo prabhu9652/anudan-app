@@ -34,11 +34,11 @@
             </div>
             
             
-            <div class="col-12 pt-2">
+            <div class="col-12 pt-1">
                 <div *ngIf="selected.name==='Reports' && portfolioType==='Active Grants'" style="display: block; height: auto;">
                     <div class="row">
-                        <div class="col-6 pt-3" *ngFor="let gt of grantTypes"><div ><p style="font-weight: 600;text-align: center;">In-Progress Status (<small>{{gt.name}}</small>}</p><canvas style="border: 1px solid #d7d7d7;" class="pieChartX" ></canvas></div></div>
-                        <div class="col-6 pt-3"><div><p style="font-weight: 600;text-align: center;">Due Status</p><canvas  style="border: 1px solid #d7d7d7;" class="pieChart1"></canvas></div></div>
+                        <div class="col-6 pt-4" *ngFor="let gt of grantTypes"><div ><p style="font-weight: 600;text-align: center;">In-Progress Status <small>({{gt.name}})</small></p><canvas style="border: 1px solid #d7d7d7;" class="pieChartX" ></canvas></div></div>
+                        <div class="col-6 pt-4"><div><p style="font-weight: 600;text-align: center;">Due Status</p><canvas  style="border: 1px solid #d7d7d7;" class="pieChart1"></canvas></div></div>
                     </div>
                     
                     
