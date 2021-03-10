@@ -1,7 +1,7 @@
-import { GranttypeSelectionDialogComponent } from './../../components/granttype-selection-dialog/granttype-selection-dialog.component';
-import { AdminService } from './../../admin.service';
 import { Tag } from './../../model/dahsboard';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
+import { AdminService } from './../../admin.service';
+import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
 import {
   Component,
   ElementRef,
