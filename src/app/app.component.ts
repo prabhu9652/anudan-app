@@ -182,10 +182,12 @@ export class AppComponent implements AfterViewChecked {
       }),
     };
 
-    const url = "/api/user/" + this.loggedInUser.id + "/grant/grantTypes";
-    this.httpClient.get(url, httpOptions).subscribe((result: GrantType[]) => {
-      this.grantTypes = result;
-    });
+    if (this.loggedInUser) {
+      const url = "/api/user/" + this.loggedInUser.id + "/grant/grantTypes";
+      this.httpClient.get(url, httpOptions).subscribe((result: GrantType[]) => {
+        this.grantTypes = result;
+      });
+    }
   }
 
 

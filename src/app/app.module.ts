@@ -94,7 +94,7 @@ export function provideConfig() {
     ProjectDocumentsComponent,
     OwnersPopupComponent,
     NotificationspopupComponent,
-    NocookieComponent
+    NocookieComponent,
   ],
   imports: [
     BrowserAnimationsModule,

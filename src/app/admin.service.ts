@@ -1,4 +1,4 @@
-import { TemplateLibrary, AttachmentDownloadRequest, Organization } from './model/dahsboard';
+import { TemplateLibrary, AttachmentDownloadRequest, Organization, Tag } from './model/dahsboard';
 import { User, Role } from './model/user';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
@@ -52,6 +52,21 @@ export class AdminService {
     const url = 'api/admin/user/' + user.id + '/document-library';
 
     return this.http.get(url, httpOptions).toPromise().then<TemplateLibrary[]>().catch(err => {
+      return Promise.reject('Could not retreive library docs');
+    });
+  }
+
+  public getOrgTags(user: User): Promise<Tag[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+        'Authorization': localStorage.getItem('AUTH_TOKEN')
+      })
+    };
+    const url = 'api/admin/user/' + user.id + '/tags';
+
+    return this.http.get(url, httpOptions).toPromise().then<Tag[]>().catch(err => {
       return Promise.reject('Could not retreive library docs');
     });
   }

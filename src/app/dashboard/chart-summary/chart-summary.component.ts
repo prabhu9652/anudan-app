@@ -1,3 +1,4 @@
+import { GrantType } from './../../model/dahsboard';
 import { Colors } from './../../model/app-config';
 import { Component, OnInit, Input, ElementRef, ViewChild, OnChanges, SimpleChanges, SimpleChange, AfterViewChecked } from '@angular/core';
 import { Chart } from 'chart.js';
@@ -33,6 +34,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
     draftReportsCount: number = 0;
     inprogressReportsCount: number = 0;
     approvedReportsCount: number = 0;
+    grantTypes: GrantType[] = [];
 
     constructor(private elRef: ElementRef) {
 
@@ -60,6 +62,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                         this.readyToDisplayDisbursementsChart = true;
                     }
                     this.selected = this.data[0];
+
                 }
             }
             if (property === 'portfolioType') {
@@ -76,6 +79,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
     }
 
     displayReportsChart() {
+
+
 
         this.readyToDisplayReportsChart = false;
         const elemRef: HTMLElement = this.elRef.nativeElement;
@@ -95,24 +100,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
             }
         }
 
-        for (let s of this.selected.summary.statusSummary) {
-            if (s.internalStatus === 'DRAFT') {
-                this.draftReportsCount += s.value;
-            } else if (s.internalStatus === 'CLOSED') {
-                this.approvedReportsCount += s.value;
-            } else {
-                this.inprogressReportsCount += s.value;
-            }
-            if (s.internalStatus !== 'DRAFT' && s.internalStatus !== 'CLOSED') {
-                labelsStatus.push(s.name);
-                dataStatus.push(s.value);
-                if (Number(s.value) > maxStatusTick) {
-                    maxStatusTick = Number(s.value);
-                }
-            }
 
-
-        }
 
         if (this.portfolioType === 'Active Grants') {
             this.pieChart1 = <HTMLCanvasElement>elemRef.getElementsByClassName('pieChart1')[0];
@@ -158,77 +146,110 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 }
             });
 
-            this.pieChartX = <HTMLCanvasElement>elemRef.getElementsByClassName('pieChartX')[0];
-            this.ctx = this.pieChartX.getContext('2d');
-            this.ctx.clearRect(0, 0, this.pieChartX.width, this.pieChartX.height);
-
-            this.PieChartX = new Chart(this.ctx, {
-                plugins: [ChartDataLabels],
-                type: 'horizontalBar',
-                data: {
-                    labels: this.formatLabel(labelsStatus),
-                    datasets: [{
-                        datalabels: {
-                            color: 'black',
-                            anchor: 'end',
-                            align: 'end',
-
-                            offset: 10,
-                            font: {
-                                weight: 'bold',
-                            },
-                            formatter: function (value, context) {
-                                if (Number(value) > 0) {
-                                    return value;
-                                } else {
-                                    return '';
-                                }
-                            }
-                        }, barThickness: 'flex',
-                        data: dataStatus,
-                        backgroundColor: [
-                            '#2950c5',
-                            '#ffa500',
-                            '#5cacee',
-                            '#436eee',
-                            '#00c78c'
-                        ]
-                    }]
-                },
-                options: {
-
-                    legend: {
-                        display: false,
-                        position: 'right',
-                        align: 'center'
-                    },
-                    tooltips: {
-                        enabled: false
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: "false",
-                            gridLines: {
-
-                                color: "rgba(0, 0, 0, 0)",
-                            },
-                            ticks: {
-                                display: false,
-                                min: 0,
-                                max: maxStatusTick + 1,
-                                stepSize: 1
-                            }
-                        }],
-                        yAxes: [{
-                            display: "false",
-                            gridLines: {
-                                display: false,
-                                color: "rgba(0, 0, 0, 0)",
-                            }
-                        }]
+            for (let i = 0; i < this.grantTypes.length; i++) {
+                const labelsStatus: string[] = [];
+                const dataStatus: number[] = [];
+                let maxTick = 0;
+                let maxStatusTick = 0;
+                let charData = this.selected.summary.statusSummary.filter(s => s.grantType === this.grantTypes[i].name);
+                for (let s of charData) {
+                    if (s.internalStatus === 'DRAFT') {
+                        this.draftReportsCount += s.value;
+                    } else if (s.internalStatus === 'CLOSED') {
+                        this.approvedReportsCount += s.value;
+                    } else {
+                        this.inprogressReportsCount += s.value;
+                    }
+                    if (s.internalStatus !== 'DRAFT' && s.internalStatus !== 'CLOSED') {
+                        const idx = labelsStatus.findIndex(f => f === s.name);
+                        if (idx === -1) {
+                            labelsStatus.push(s.name);
+                            dataStatus.push(s.value);
+                        } else {
+                            dataStatus[idx] += s.value;
+                        }
                     }
                 }
-            });
+
+                for (let d of dataStatus) {
+                    if (maxStatusTick < d)
+                        maxStatusTick = Number(d);
+                }
+                maxStatusTick += 1;
+                const pieChartX = <HTMLCanvasElement>elemRef.getElementsByClassName('pieChartX')[i];
+                let ctx = pieChartX.getContext('2d');
+                ctx.clearRect(0, 0, pieChartX.width, pieChartX.height);
+
+                let PieChartX = new Chart(ctx, {
+                    plugins: [ChartDataLabels],
+                    type: 'horizontalBar',
+                    data: {
+                        labels: this.formatLabel(labelsStatus),
+                        datasets: [{
+                            datalabels: {
+                                color: 'black',
+                                anchor: 'end',
+                                align: 'end',
+
+                                offset: 10,
+                                font: {
+                                    weight: 'bold',
+                                },
+                                formatter: function (value, context) {
+                                    if (Number(value) > 0) {
+                                        return value;
+                                    } else {
+                                        return '';
+                                    }
+                                }
+                            }, maxBarThickness: 20,
+                            data: dataStatus,
+                            backgroundColor: [
+                                '#2950c5',
+                                '#ffa500',
+                                '#5cacee',
+                                '#436eee',
+                                '#00c78c'
+                            ]
+                        }]
+                    },
+                    options: {
+
+                        legend: {
+                            display: false,
+                            position: 'right',
+                            align: 'center'
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: "false",
+                                gridLines: {
+
+                                    color: "rgba(0, 0, 0, 0)",
+                                },
+                                ticks: {
+                                    display: false,
+                                    min: 0,
+                                    max: maxStatusTick + 1,
+                                    stepSize: 1
+                                }
+                            }],
+                            yAxes: [{
+                                display: "false",
+                                gridLines: {
+                                    display: false,
+                                    color: "rgba(0, 0, 0, 0)",
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+
         } else if (this.portfolioType === 'Closed Grants') {
             this.pieChart2 = <HTMLCanvasElement>elemRef.getElementsByClassName('pieChart2')[0];
             this.ctx = this.pieChart2.getContext('2d');
@@ -430,11 +451,27 @@ export class ChartSummaryComponent implements OnInit, OnChanges, AfterViewChecke
                 if (ev.value === 'Reports') {
                     this.readyToDisplayReportsChart = true;
                     this.readyToDisplayDisbursementsChart = false;
+
+                    /* for (let summ of this.selected.summary.statusSummary) {
+                        const idx = this.grantTypes.findIndex(gt => gt.name === summ.grantType);
+                    } */
                 } else if (ev.value === 'Disbursements') {
                     this.readyToDisplayReportsChart = false;
                     this.readyToDisplayDisbursementsChart = true;
                 }
                 this.selected = this.data[i];
+                if (ev.value === 'Reports' && this.selected.summary.statusSummary) {
+                    for (let summ of this.selected.summary.statusSummary) {
+                        if (summ.grantType !== undefined && (summ.internalStatus !== 'DRAFT' && summ.internalStatus !== 'CLOSED')) {
+                            const idx = this.grantTypes.findIndex(gt => ((gt.name === summ.grantType)));
+                            if (idx === -1) {
+                                const type = new GrantType();
+                                type.name = summ.grantType;
+                                this.grantTypes.push(type);
+                            }
+                        }
+                    }
+                }
                 return;
             }
         }
