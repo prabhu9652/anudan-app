@@ -85,7 +85,7 @@ export const PLATFORM_ROUTES: RouteInfo[] = [
 export const ORGANIZATION_ROUTES: RouteInfo[] = [
   { path: '/organization/details', title: 'About', icon: 'stop', class: '', divide: false },
   { path: '/organization/administration', title: 'Administration', icon: 'stop', class: '', divide: false },
-  { path: '/organization/data', title: 'Export', icon: 'stop', class: '', divide: false },
+  /* { path: '/organization/data', title: 'Export', icon: 'stop', class: '', divide: false }, */
 ];
 export let SECTION_ROUTES: RouteInfo[] = [];
 export let REPORT_SECTION_ROUTES: RouteInfo[] = [];
