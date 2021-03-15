@@ -88,7 +88,7 @@ export class ReportHeaderComponent implements OnInit {
   constructor(
     private singleReportDataService: SingleReportDataService,
     private route: ActivatedRoute,
-    private appComp: AppComponent,
+    public appComp: AppComponent,
     private router: Router,
     private adminComp: AdminLayoutComponent,
     private http: HttpClient,
