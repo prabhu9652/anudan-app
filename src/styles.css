@@ -946,3 +946,7 @@ li:focus {
   box-shadow: none;
   border: 1px solid #c5defd;
 }
+
+.grant-tags{
+  position: absolute; left: -7px; top: 5px; color: #13b37d;
+}

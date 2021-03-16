@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { MessagingComponent } from './../components/messaging/messaging.component';
 import { MatDialog } from '@angular/material';
-import { Tag } from './../model/dahsboard';
+import { OrgTag } from './../model/dahsboard';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -12,7 +12,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class OrgTagsComponent implements OnInit {
 
-  @Input('tags') tags: Tag[] = [];
+  @Input('tags') tags: OrgTag[] = [];
 
   constructor(private dialog: MatDialog, private http: HttpClient) { }
 
@@ -36,10 +36,10 @@ export class OrgTagsComponent implements OnInit {
       }),
     };
 
-    this.http.post("api/admin/tags/" + ev.currentTarget.value, {}, httpOptions).subscribe((result: Tag) => {
+    this.http.post("api/admin/tags/" + ev.currentTarget.value, {}, httpOptions).subscribe((result: OrgTag) => {
 
       this.tags.push(result);
-      ev.currentTarget.value = null;
+      ev.target.value = null;
     });
 
 
