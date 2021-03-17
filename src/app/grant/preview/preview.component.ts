@@ -1890,6 +1890,9 @@ export class PreviewComponent implements OnInit {
   }
 
   isExternalGrant(): boolean {
+    if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
+      return true;
+    }
     const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;
@@ -1902,7 +1905,7 @@ export class PreviewComponent implements OnInit {
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp },
         panelClass: "grant-template-class"
       });
 

@@ -1,3 +1,4 @@
+import { AppComponent } from './../app.component';
 import { User } from 'app/model/user';
 import { FieldDialogComponent } from 'app/components/field-dialog/field-dialog.component';
 import { Grant } from 'app/model/dahsboard';
@@ -31,6 +32,7 @@ export class GrantTagsComponent {
   initialTags: GrantTag[] = [];
   allTags: OrgTag[];
   grant: Grant;
+  appComp: AppComponent
 
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
@@ -40,6 +42,10 @@ export class GrantTagsComponent {
     this.allTags = data.orgTags;
     this.selectedTags = Object.assign([], data.grantTags);
     this.initialTags = Object.assign([], data.grantTags);
+    this.appComp = data.appComp;
+    this.allTags.filter((el) => {
+      return (this.initialTags.findIndex(a => a.orgTagId === el.id) < 0);
+    });
     this.grant = data.grant;
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
@@ -152,4 +158,19 @@ export class GrantTagsComponent {
     }
     this.dialogRef.close({ result: changed, selectedTags: this.selectedTags });
   }
+
+  canManageTags(): boolean {
+    const isAdmin = this.appComp.loggedInUser.userRoles.filter((ur) => ur.role.name === 'Admin').length > 0;
+    const grantNotActiveOrClosed = (this.grant.grantStatus.internalStatus !== 'ACTIVE' && this.grant.grantStatus.internalStatus !== 'CLOSED');
+    let activeOrClosedStateOwner = false;
+    if (!grantNotActiveOrClosed) {
+      const idx = this.grant.workflowAssignment.findIndex(a => a.stateId === this.grant.grantStatus.id && a.assignments === this.appComp.loggedInUser.id);
+      if (idx >= 0) {
+        activeOrClosedStateOwner = true;
+      }
+    }
+
+    return (isAdmin || grantNotActiveOrClosed || activeOrClosedStateOwner);
+  }
+
 }

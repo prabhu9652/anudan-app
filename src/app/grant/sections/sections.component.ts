@@ -2412,7 +2412,7 @@ export class SectionsComponent
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp },
         panelClass: "grant-template-class"
       });
 

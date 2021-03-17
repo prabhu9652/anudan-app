@@ -248,7 +248,7 @@
                       matBadgeSize="medium"
                       >{{ currentGrant.grantStatus.displayName }}</span
                     >
-                    <span class=" badge text-black m-0 ml-2" [ngStyle]="{'background-color':getGrantTypeColor(currentGrant.grantTypeId)}" ><small>{{getGrantTypeName(currentGrant.grantTypeId)}}</small></span>
+                    <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 ml-2" [ngStyle]="{'background-color':getGrantTypeColor(currentGrant.grantTypeId)}" ><small>{{getGrantTypeName(currentGrant.grantTypeId)}}</small></span>
                   </div>
                 </div>
               </div>
