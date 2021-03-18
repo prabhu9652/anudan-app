@@ -1,4 +1,6 @@
-import { Grant } from './../../../model/dahsboard';
+import { AdminService } from './../../../admin.service';
+import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
+import { Grant, OrgTag } from './../../../model/dahsboard';
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SingleReportDataService } from "../../../single.report.data.service";
 import { Report, ReportSectionInfo } from "../../../model/report";
@@ -95,7 +97,9 @@ export class ReportHeaderComponent implements OnInit {
     private toastr: ToastrService,
     private sidebar: SidebarComponent,
     private titlecasePipe: TitleCasePipe,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog,
+    private adminService: AdminService
   ) {
     this.route.params.subscribe((p) => {
       this.action = p["action"];
@@ -461,5 +465,17 @@ export class ReportHeaderComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentReport.grant.grantTags, grant: this.currentReport.grant, appComp: this.appComp, type: 'report' },
+        panelClass: "grant-template-class"
+      });
+
+    });
+
   }
 }

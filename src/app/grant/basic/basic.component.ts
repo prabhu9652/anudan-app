@@ -1666,7 +1666,7 @@ export class BasicComponent implements OnInit {
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 

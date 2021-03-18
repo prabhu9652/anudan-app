@@ -1,4 +1,7 @@
-import { Grant } from './../../model/dahsboard';
+import { MatDialog } from '@angular/material';
+import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
+import { AdminService } from './../../admin.service';
+import { Grant, OrgTag } from './../../model/dahsboard';
 import {
   Component,
   OnInit,
@@ -39,7 +42,9 @@ export class DisbursementComponent implements OnInit, OnDestroy {
     private router: Router,
     public currencyService: CurrencyService,
     private adminComp: AdminLayoutComponent,
-    public amountValidator: AmountValidator
+    public amountValidator: AmountValidator,
+    private adminService: AdminService,
+    private dialog: MatDialog
   ) {
     this.subscribers = this.router.events.subscribe((val) => {
       if (val instanceof NavigationStart && this.currentDisbursement) {
@@ -139,5 +144,17 @@ export class DisbursementComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComponent.loggedInUser).then((tags: OrgTag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentDisbursement.grant.grantTags, grant: this.currentDisbursement.grant, appComp: this.appComponent, type: 'disbursement' },
+        panelClass: "grant-template-class"
+      });
+
+    });
+
   }
 }

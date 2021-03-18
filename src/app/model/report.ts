@@ -1,16 +1,16 @@
 import { User } from 'app/model/user';
-import {Grant, WorkflowStatus,Section,WorkflowAssignment,FlowAuthority,SectionDiff} from './dahsboard';
+import { Grant, WorkflowStatus, Section, WorkflowAssignment, FlowAuthority, SectionDiff } from './dahsboard';
 
-export class Report{
+export class Report {
     id: number;
     name: string;
-     startDate: Date;
-     stDate: string;
-     endDate: Date;
-     enDate: string;
-     dueDate: Date;
-     dDate: string;
-     type: String;
+    startDate: Date;
+    stDate: string;
+    endDate: Date;
+    enDate: string;
+    dueDate: Date;
+    dDate: string;
+    type: string;
     status: WorkflowStatus;
     createdAt: Date;
     createdBy: User
@@ -19,27 +19,27 @@ export class Report{
     template: any;
     granteeUsers: User[];
     reportDetails: ReportDetails;
-    workflowAssignments:ReportAssignment[];
+    workflowAssignments: ReportAssignment[];
     duration: string;
     grant: Grant;
     canEdit: boolean;
     canManage: boolean;
     flowAuthorities: FlowAuthority;
-    cumulativeActuals:number;
+    cumulativeActuals: number;
     linkedReports: number;
     forGranteeUse: boolean;
     futureReportsCount: number;
     disabledByAmendment: boolean;
 }
 
-export class ReportHistory{
+export class ReportHistory {
     seqid: number
     id: number;
     name: string;
-     startDate: Date;
-     endDate: Date;
-     dueDate: Date;
-     type: String;
+    startDate: Date;
+    endDate: Date;
+    dueDate: Date;
+    type: String;
     status: WorkflowStatus;
     createdAt: Date;
     createdBy: User
@@ -48,7 +48,7 @@ export class ReportHistory{
     template: any;
     granteeUsers: User[];
     reportDetails: ReportDetails;
-    workflowAssignments:ReportAssignment[];
+    workflowAssignments: ReportAssignment[];
     duration: string;
     grant: Grant;
     canEdit: boolean;
@@ -57,49 +57,49 @@ export class ReportHistory{
 }
 
 export class ReportDetails {
-  sections: Section[];
+    sections: Section[];
 }
 
-export class ReportAssignment{
+export class ReportAssignment {
     id: number;
     reportId: number;
     stateId: number;
     assignmentId: number;
     anchor: boolean;
     assignmentUser: User
-    constructor(){}
+    constructor() { }
 }
 
-export class ReportFieldInfo{
+export class ReportFieldInfo {
     attributeId: number;
     stringAttributeId: number;
     report: Report;
 }
 
-export class ReportDocInfo{
+export class ReportDocInfo {
     attachmentId: number;
     report: Report;
 }
 
-export class ReportSectionInfo{
+export class ReportSectionInfo {
     sectionId: number;
     sectionName: string;
     report: Report;
 }
 
-export class ReportWorkflowAssignmentModel{
- users: User[];
- workflowStatuses: WorkflowStatus[];
- workflowAssignments: ReportAssignment[];
- customAssignments: string;
- type:string;
- granteeUsers: User[];
- report: Report;
- canManage: boolean;
- constructor(){}
+export class ReportWorkflowAssignmentModel {
+    users: User[];
+    workflowStatuses: WorkflowStatus[];
+    workflowAssignments: ReportAssignment[];
+    customAssignments: string;
+    type: string;
+    granteeUsers: User[];
+    report: Report;
+    canManage: boolean;
+    constructor() { }
 }
 
-export class ReportWorkflowAssignment{
+export class ReportWorkflowAssignment {
     id: number;
     reportId: number;
     stateName: WorkflowStatus;
@@ -108,16 +108,16 @@ export class ReportWorkflowAssignment{
     customAssignments: string;
     assignmentUser: User;
     anchor: boolean;
-    constructor(){}
+    constructor() { }
 }
 
-export class ReportNote{
+export class ReportNote {
     currentReport: Report;
     originalReport: Report;
     canManage: boolean;
 }
 
-export class ReportDiff{
+export class ReportDiff {
     oldReportName: string;
     newReportName: string;
     oldReportStartDate: Date;
@@ -130,30 +130,30 @@ export class ReportDiff{
 }
 
 export class ReportSnapshot {
-  id: number;
-  assignedToId: number;
-  reportId: number;
-  stringAttributes: string;
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  dueDate: Date;
-  statusId: number;
-  reportDetails: ReportDetails;
+    id: number;
+    assignedToId: number;
+    reportId: number;
+    stringAttributes: string;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    dueDate: Date;
+    statusId: number;
+    reportDetails: ReportDetails;
 }
 
-export class ReportTemplate{
-  id: number;
-  name: string;
-  description: string;
-  published: boolean;
-  _private: boolean;
-  defaultTemplate: boolean;
-  sections: Section[];
+export class ReportTemplate {
+    id: number;
+    name: string;
+    description: string;
+    published: boolean;
+    _private: boolean;
+    defaultTemplate: boolean;
+    sections: Section[];
 }
 
-export class AdditionReportsModel{
+export class AdditionReportsModel {
     grant: number;
     report: number;
     grants: Grant[];

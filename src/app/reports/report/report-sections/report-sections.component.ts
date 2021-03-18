@@ -1,3 +1,5 @@
+import { OrgTag } from './../../../model/dahsboard';
+import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { AdminService } from './../../../admin.service';
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
@@ -314,7 +316,7 @@ export class ReportSectionsComponent implements OnInit {
           title:
             "You will lose all data for " + attr.fieldName + " Are you sure?",
           btnSecondary: "Not Now",
-          btnMain:"Change Field Type"
+          btnMain: "Change Field Type"
         },
         panelClass: "center-class",
       });
@@ -749,7 +751,7 @@ export class ReportSectionsComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: title,btnMain:"Delete Section",btnSecondary:"Not Now" },
+      data: { title: title, btnMain: "Delete Section", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 
@@ -835,7 +837,7 @@ export class ReportSectionsComponent implements OnInit {
     attributeName: string
   ) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Are you sure you want to delete " + attributeName, btnMain:'Delete Field',btnSecondary:'Not Now' },
+      data: { title: "Are you sure you want to delete " + attributeName, btnMain: 'Delete Field', btnSecondary: 'Not Now' },
       panelClass: "center-class",
     });
 
@@ -1000,7 +1002,7 @@ export class ReportSectionsComponent implements OnInit {
   deleteSelection(attribId) {
 
     const dReg = this.dialog.open(FieldDialogComponent, {
-      data: { title: 'Are you sure you want to delete the selected document(s)?', btnMain:"Delete Document(s)",btnSecondary:"Not Now" },
+      data: { title: 'Are you sure you want to delete the selected document(s)?', btnMain: "Delete Document(s)", btnSecondary: "Not Now" },
       panelClass: 'center-class'
     });
 
@@ -1087,7 +1089,7 @@ export class ReportSectionsComponent implements OnInit {
   addRow(attr: Attribute) {
     const row = new TableData();
     row.name = "";
-    
+
     row.columns = JSON.parse(JSON.stringify(attr.fieldTableValue[0].columns));
     for (let i = 0; i < row.columns.length; i++) {
       row.columns[i].value = "";
@@ -1099,7 +1101,7 @@ export class ReportSectionsComponent implements OnInit {
   deleteRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: "Delete the selected row?", btnMain: "Delete Row", btnSecondary: "Not Now" },
-      panelClass:"center-class"
+      panelClass: "center-class"
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1122,7 +1124,7 @@ export class ReportSectionsComponent implements OnInit {
   deleteColumn(sectionId, attributeId, colIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
       data: { title: "Delete the selected column?", btnMain: "Delete Column", btnSecondary: "Not Now" },
-      panelClass:"center-class"
+      panelClass: "center-class"
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -1264,7 +1266,7 @@ export class ReportSectionsComponent implements OnInit {
 
   deleteDisbursementRow(sectionId, attributeId, rowIndex) {
     const dialogRef = this.dialog.open(FieldDialogComponent, {
-      data: { title: "Delete selected disbursement row?", btnMain:"Delete Disbursement",btnSecondary:"Not Now" },
+      data: { title: "Delete selected disbursement row?", btnMain: "Delete Disbursement", btnSecondary: "Not Now" },
       panelClass: "center-class",
     });
 
@@ -1440,4 +1442,16 @@ export class ReportSectionsComponent implements OnInit {
       day <= today && day >= new Date(this.currentReport.grant.startDate)
     );
   };
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentReport.grant.grantTags, grant: this.currentReport.grant, appComp: this.appComp, type: 'report' },
+        panelClass: "grant-template-class"
+      });
+
+    });
+
+  }
 }

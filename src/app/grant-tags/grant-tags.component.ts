@@ -160,13 +160,15 @@ export class GrantTagsComponent {
   }
 
   canManageTags(): boolean {
-    const isAdmin = this.appComp.loggedInUser.userRoles.filter((ur) => ur.role.name === 'Admin').length > 0;
+    const isAdmin = this.data.type !== 'grant' ? false : this.appComp.loggedInUser.userRoles.filter((ur) => ur.role.name === 'Admin').length > 0;
     const grantNotActiveOrClosed = (this.grant.grantStatus.internalStatus !== 'ACTIVE' && this.grant.grantStatus.internalStatus !== 'CLOSED');
     let activeOrClosedStateOwner = false;
     if (!grantNotActiveOrClosed) {
-      const idx = this.grant.workflowAssignment.findIndex(a => a.stateId === this.grant.grantStatus.id && a.assignments === this.appComp.loggedInUser.id);
-      if (idx >= 0) {
-        activeOrClosedStateOwner = true;
+      if (this.data.type === 'grant') {
+        const idx = this.grant.workflowAssignment.findIndex(a => a.stateId === this.grant.grantStatus.id && a.assignments === this.appComp.loggedInUser.id);
+        if (idx >= 0) {
+          activeOrClosedStateOwner = true;
+        }
       }
     }
 
