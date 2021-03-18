@@ -1760,7 +1760,7 @@ export class PreviewComponent implements OnInit {
   copyGrant(grantId: number) {
 
     if (this.appComp.grantTypes.length > 1) {
-      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+      /* const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
         data: this.appComp.grantTypes,
         panelClass: 'grant-template-class'
       });
@@ -1769,7 +1769,8 @@ export class PreviewComponent implements OnInit {
         if (result && result.result) {
           this.grantComponent.copyGrant(grantId, result.selectedGrantType.id);
         }
-      });
+      }); */
+      this.grantComponent.copyGrant(grantId, this.appComp.grantTypes.filter(a => !a.internal)[0].id);
     } else {
       this.grantComponent.copyGrant(grantId, this.appComp.grantTypes[0].id);
     }

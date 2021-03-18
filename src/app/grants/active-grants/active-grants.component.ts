@@ -127,7 +127,7 @@ export class ActiveGrantsComponent implements OnInit {
   createGrant() {
 
     if (this.appComponent.grantTypes.length > 1) {
-      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+      /* const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
         data: this.appComponent.grantTypes,
         panelClass: 'grant-template-class'
       });
@@ -136,7 +136,8 @@ export class ActiveGrantsComponent implements OnInit {
         if (result && result.result) {
           this.selectTemplateAndCreateGrant(result.selectedGrantType.id);
         }
-      });
+      }); */
+      this.selectTemplateAndCreateGrant(this.appComponent.grantTypes.filter(a => !a.internal)[0].id);
     } else {
       this.selectTemplateAndCreateGrant(this.appComponent.grantTypes[0].id)
     }
@@ -430,7 +431,7 @@ export class ActiveGrantsComponent implements OnInit {
   public getGrantTypeColor(typeId): any {
     return this.appComponent.grantTypes.filter(t => t.id === typeId)[0].colorCode;
   }
-  
+
   isExternalGrant(grant: Grant): boolean {
     const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
     if (!grantType.internal) {
