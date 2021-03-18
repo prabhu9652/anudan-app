@@ -1,0 +1,18 @@
+<div class="row mt-0 mx-0 py-4">
+  <div class="col-12">
+      <h5 style="font-weight:bold;">Manage Tags</h5>
+  </div>
+  <div class="col-12">
+    <input matInput class="anu-input" placeholder="Type in text and press Enter to create a new tag" (keyup.enter)="addTag($event)">
+  </div>
+  <div class="col-12">
+    <p style="font-weight:bold;" class="mt-4"><strong>Current Tags</strong></p>
+    <mat-list dense  matRipple>
+      <mat-list-item *ngFor="let tag of tags" style="background:#f4f4f4 !important;" class="m-1">
+       <span matLine>{{tag.name}}</span><mat-icon matListIcon class="pull-right" style="position: absolute;right:15px;">delete</mat-icon>
+       
+      </mat-list-item>
+    </mat-list>
+  </div>
+  
+</div>

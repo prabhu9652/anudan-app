@@ -106,7 +106,7 @@
                       matBadgeSize="medium"
                       >{{ currentReport.status.displayName }}</span
                     >
-                    <span class=" badge text-black m-0 ml-2" [ngStyle]="{'background-color':getGrantTypeColor(currentReport.grant.grantTypeId)}" ><small>{{getGrantTypeName(currentReport.grant.grantTypeId)}}</small></span>
+                    <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 ml-2" [ngStyle]="{'background-color':getGrantTypeColor(currentReport.grant.grantTypeId)}" ><small>{{getGrantTypeName(currentReport.grant.grantTypeId)}}</small></span>
                   </div>
                 </div>
               </div>
@@ -152,8 +152,8 @@
                   >Implementing Organization:</span
                 >
                 <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3">
-                  <b *ngIf="isExternalGrant(currentReport.grant)">{{ currentReport.grant.organization.name }}</b>
-                  <b *ngIf="!isExternalGrant(currentReport.grant)">{{ currentReport.grant.grantorOrganization.name }}</b>
+                  <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && isExternalGrant(currentReport.grant)">{{ currentReport.grant.organization.name }}</b>
+                  <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && !isExternalGrant(currentReport.grant)">{{ currentReport.grant.grantorOrganization.name }}</b>
                 </div>
               </div>
               <div class="col-4 mb-2">

@@ -252,30 +252,32 @@ export class AdminLayoutComponent implements OnInit {
                       this.appComponent.loggedInUser.id +
                       "/grant/" +
                       notifications[i].grantId;
-                    this.http
-                      .get(url, httpOptions)
-                      .subscribe((updatedGrant: Grant) => {
-                        this.grantData.changeMessage(
-                          updatedGrant,
-                          this.appComponent.loggedInUser.id
-                        );
-
-                        if (
-                          this.currentGrant.startDate &&
-                          this.currentGrant.endDate
-                        ) {
-                          var time =
-                            new Date(this.currentGrant.endDate).getTime() -
-                            new Date(this.currentGrant.startDate).getTime();
-                          time = time + 86400001;
-                          this.currentGrant.duration = this.humanizer.humanize(
-                            time,
-                            { largest: 2, units: ["y", "mo"], round: true }
+                    if (this.appComponent.loggedInUser) {
+                      this.http
+                        .get(url, httpOptions)
+                        .subscribe((updatedGrant: Grant) => {
+                          this.grantData.changeMessage(
+                            updatedGrant,
+                            this.appComponent.loggedInUser.id
                           );
-                        } else {
-                          this.currentGrant.duration = "No end date";
-                        }
-                      });
+
+                          if (
+                            this.currentGrant.startDate &&
+                            this.currentGrant.endDate
+                          ) {
+                            var time =
+                              new Date(this.currentGrant.endDate).getTime() -
+                              new Date(this.currentGrant.startDate).getTime();
+                            time = time + 86400001;
+                            this.currentGrant.duration = this.humanizer.humanize(
+                              time,
+                              { largest: 2, units: ["y", "mo"], round: true }
+                            );
+                          } else {
+                            this.currentGrant.duration = "No end date";
+                          }
+                        });
+                    }
                   }
                 }
               }

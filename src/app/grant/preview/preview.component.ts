@@ -1,3 +1,6 @@
+import { Tag } from './../../model/dahsboard';
+import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
+import { AdminService } from './../../admin.service';
 import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
 import {
   Component,
@@ -178,7 +181,8 @@ export class PreviewComponent implements OnInit {
     private titlecasePipe: TitleCasePipe,
     private grantValidationService: GrantValidationService,
     private workflowValidationService: WorkflowValidationService,
-    public currencyService: CurrencyService
+    public currencyService: CurrencyService,
+    private adminService: AdminService
   ) {
     this.colors = new Colors();
 
@@ -1893,5 +1897,22 @@ export class PreviewComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: Tag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentGrant.tags },
+        panelClass: "grant-template-class"
+      });
+
+      dg.afterClosed().subscribe(response => {
+        if (response.result) {
+          this.currentGrant.tags = response.selectedTags
+        }
+      });
+    });
+
   }
 }
