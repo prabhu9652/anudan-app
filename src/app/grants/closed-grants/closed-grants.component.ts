@@ -127,7 +127,7 @@ export class ClosedGrantsComponent implements OnInit {
   createGrant() {
 
     if (this.appComponent.grantTypes.length > 1) {
-      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+      /* const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
         data: this.appComponent.grantTypes,
         panelClass: 'grant-template-class'
       });
@@ -136,7 +136,8 @@ export class ClosedGrantsComponent implements OnInit {
         if (result && result.result) {
           this.selectTemplateAndCreateGrant(result.selectedGrantType.id);
         }
-      });
+      }); */
+      this.selectTemplateAndCreateGrant(this.appComponent.grantTypes.filter(a => !a.internal)[0].id);
     } else {
       this.selectTemplateAndCreateGrant(this.appComponent.grantTypes[0].id)
     }
