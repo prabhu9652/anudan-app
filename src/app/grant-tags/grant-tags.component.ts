@@ -23,7 +23,7 @@ import { Component, OnInit, ElementRef, ViewChild, Inject } from '@angular/core'
 })
 export class GrantTagsComponent {
   visible = true;
-  selectable = true;
+  selectable = false;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   fruitCtrl = new FormControl();
@@ -40,6 +40,7 @@ export class GrantTagsComponent {
 
   constructor(private dialogRef: MatDialogRef<GrantTagsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog, private http: HttpClient) {
     this.allTags = data.orgTags;
+    this.removable = data.type === 'grant' ? true : false;
     this.selectedTags = Object.assign([], data.grantTags);
     this.initialTags = Object.assign([], data.grantTags);
     this.appComp = data.appComp;
@@ -103,21 +104,21 @@ export class GrantTagsComponent {
       if (this.selectedTags.findIndex(f => f.id === tg.id) === -1) {
         changed = true;
         deletedTags.push(tg);
-        break;
+        //break;
       }
     }
 
     for (let tg of this.selectedTags) {
-      if (this.initialTags.findIndex(f => f.id === tg.id) === -1) {
+      if (this.initialTags.findIndex(f => f.orgTagId === tg.orgTagId) === -1) {
         changed = true;
         newTags.push(tg);
-        break;
+        //break;
       }
     }
 
-    if (this.initialTags.length !== this.selectedTags.length) {
+    /* if (this.initialTags.length !== this.selectedTags.length) {
       changed = true;
-    }
+    } */
 
     if (changed) {
       const user: User = JSON.parse(localStorage.getItem('USER'));

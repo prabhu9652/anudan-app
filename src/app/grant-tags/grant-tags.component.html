@@ -18,7 +18,7 @@
           (matChipInputTokenEnd)="add($event)" style="flex-basis: 100%;">
         <mat-chip
           *ngFor="let fruit of selectedTags"
-          [selectable]="selectable"
+          [selectable]="false"
           [removable]="removable"
           (removed)="remove(fruit)">
           {{fruit.tagName}}
