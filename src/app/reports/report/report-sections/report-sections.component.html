@@ -2324,10 +2324,9 @@
                           class="col-sm-4 col-lg-4 text-left"
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
-                            appComp.loggedInUser.organization
-                              .organizationType === 'GRANTER' &&
+                            
                             currentReport.canManage &&
-                            !currentReport.forGranteeUse
+                            ((!currentReport.forGranteeUse && isExternalGrant(currentReport.grant)))
                           "
                         >
                           <mat-form-field>
@@ -2350,10 +2349,9 @@
                           class="col-sm-4 col-lg-4 text-left"
                           *ngIf="
                             attribute.fieldType === 'kpi' &&
-                            appComp.loggedInUser.organization
-                              .organizationType === 'GRANTEE' &&
+                            
                             currentReport.canManage &&
-                            currentReport.forGranteeUse
+                            ((currentReport.forGranteeUse && isExternalGrant(currentReport.grant)) || (!currentReport.forGranteeUse && !isExternalGrant(currentReport.grant)))
                           "
                         >
                           <mat-form-field>

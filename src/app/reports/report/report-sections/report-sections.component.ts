@@ -1,4 +1,4 @@
-import { OrgTag } from './../../../model/dahsboard';
+import { OrgTag, Grant } from './../../../model/dahsboard';
 import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
 import { MessagingComponent } from 'app/components/messaging/messaging.component';
 import { AdminService } from './../../../admin.service';
@@ -1453,5 +1453,14 @@ export class ReportSectionsComponent implements OnInit {
 
     });
 
+  }
+
+  isExternalGrant(grant: Grant): boolean {
+    const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+    if (!grantType.internal) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

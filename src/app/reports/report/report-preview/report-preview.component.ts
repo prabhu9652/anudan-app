@@ -83,7 +83,7 @@ export class ReportPreviewComponent implements OnInit {
         }
 
         this.appComp.reportUpdated.subscribe((statusUpdate) => {
-            if (statusUpdate.status && statusUpdate.reportId) {
+            if (statusUpdate.status && statusUpdate.reportId && this.appComp.loggedInUser !== undefined) {
                 let url =
                     "/api/user/" + this.appComp.loggedInUser.id + "/report/" + statusUpdate.reportId;
                 const httpOptions = {
