@@ -196,6 +196,10 @@ export class SidebarComponent implements OnInit {
     this.grantMenuItems = GRANT_ROUTES.filter(menuItem => menuItem);
     this.adminMenuItems = ADMIN_ROUTES.filter(menuItem => menuItem);
     this.orgMenuItems = ORGANIZATION_ROUTES.filter(menuItem => menuItem);
+    if (this.appComponent.loggedInUser.organization.organizationType === 'GRANTEE') {
+      const idx = this.orgMenuItems.findIndex(o => o.title === 'Export');
+      this.orgMenuItems.splice(idx, 1);
+    }
     this.platformMenuItems = PLATFORM_ROUTES.filter(menuItem => menuItem);
     this.reportMenuItems = REPORT_ROUTES.filter(menuItem => menuItem);
     this.grantSubMenuItems = GRANT_SUB_ROUTES.filter(menuItem => menuItem);

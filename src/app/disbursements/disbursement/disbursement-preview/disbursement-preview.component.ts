@@ -106,7 +106,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
 
   constructor(
     public disbursementService: DisbursementDataService,
-    private appComponent: AppComponent,
+    public appComponent: AppComponent,
     private titlecasePipe: TitleCasePipe,
     private adminComp: AdminLayoutComponent,
     private router: Router,

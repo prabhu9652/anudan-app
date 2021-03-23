@@ -15,9 +15,12 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OrgTagsComponent implements OnInit {
 
   @Input('tags') tags: OrgTag[] = [];
-  tagBeingEdited = 0;
+  tagBeingEdited: OrgTag;
 
-  constructor(private dialog: MatDialog, private http: HttpClient, private appComp: AppComponent) { }
+  constructor(private dialog: MatDialog, private http: HttpClient, private appComp: AppComponent) {
+    this.tagBeingEdited = new OrgTag();
+    this.tagBeingEdited.id = 0;
+  }
 
   ngOnInit() {
   }
@@ -126,7 +129,7 @@ export class OrgTagsComponent implements OnInit {
   }
 
   editTag(tag: OrgTag, event) {
-    this.tagBeingEdited = tag.id;
+    this.tagBeingEdited = Object.assign({}, tag);
   }
 
   saveTag(tag) {
@@ -141,7 +144,7 @@ export class OrgTagsComponent implements OnInit {
 
     this.http.put("api/admin/user/" + this.appComp.loggedInUser.id + "/tags", tag, httpOptions).subscribe((updatedTag: OrgTag) => {
       tag = updatedTag;
-      this.tagBeingEdited = 0;
+      this.tagBeingEdited.id = 0;
     });
   }
 }

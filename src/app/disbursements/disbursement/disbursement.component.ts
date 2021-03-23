@@ -37,7 +37,7 @@ export class DisbursementComponent implements OnInit, OnDestroy {
 
   constructor(
     public disbursementService: DisbursementDataService,
-    private appComponent: AppComponent,
+    public appComponent: AppComponent,
     private titlecasePipe: TitleCasePipe,
     private router: Router,
     public currencyService: CurrencyService,

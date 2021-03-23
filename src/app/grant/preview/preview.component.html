@@ -55,7 +55,10 @@
           >
             <mat-icon class="ml-1">comment</mat-icon>View Notes
           </button>
-          <button mat-menu-item (click)="showGrantTags()">
+          <button *ngIf="
+          this.appComp.loggedInUser.organization.organizationType !==
+          'GRANTEE'
+        " mat-menu-item (click)="showGrantTags()">
             <mat-icon class="ml-1">label</mat-icon>View Tags
           </button>
 
@@ -217,8 +220,8 @@
                     }}</strong>
                   </div>
                   <div class="col-12">
-                    <i *ngIf="currentGrant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
-                    <i *ngIf="currentGrant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                     <h4
                       *ngIf="!currentGrant.referenceNo"
                       class="m-0"
@@ -743,7 +746,7 @@
           </div>
           <div data-html2canvas-ignore class="col-12">
             <hr />
-            <h5>ATTACHMENTS <small>(Click to download)</small></h5>
+            <h5>ATTACHMENTS</h5>
             <ng-container
               *ngFor="let section of currentGrant.grantDetails.sections"
             >
@@ -804,16 +807,18 @@
                 </div>
               </div>
             </ng-container>
+            <ng-container *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'">
             <hr />
-            <h5>GRANT TAGS</h5>
+            <h5>RELATED TAGS</h5>
             <ng-container *ngIf="currentGrant.grantTags===undefined || currentGrant.grantTags.length===0">
-              No tags have been associated for this grant
+              No tags
             </ng-container>
             <ng-container *ngIf="currentGrant.grantTags && currentGrant.grantTags.length>0">
             <ng-container *ngFor="let tag of currentGrant.grantTags">
               <span class="ml-2 p-2 bg-light" style="border-radius: 4px;">{{tag.tagName}}</span>
             </ng-container>
           </ng-container>
+        </ng-container>
           </div>
         </div>
         <ng-template

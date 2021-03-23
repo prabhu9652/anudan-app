@@ -46,7 +46,7 @@ export class OrgadminComponent implements OnInit {
                 this.docs = data;
                 //this.appComp.currentTenant.templateLibrary = this.docs;
             });
-        } else if (ev.tab.textLabel === 'Tag Library') {
+        } else if (ev.tab.textLabel === 'Tags') {
             this.adminService.getOrgTags(this.appComp.loggedInUser).then((data: OrgTag[]) => {
                 this.tags = data;
                 //this.appComp.currentTenant.templateLibrary = this.docs;

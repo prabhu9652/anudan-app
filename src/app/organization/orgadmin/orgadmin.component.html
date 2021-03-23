@@ -24,7 +24,7 @@
                 </div>
             </mat-tab>
 
-            <mat-tab label="Tag Library">
+            <mat-tab label="Tags" *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'">
                 <div class="row text-left">
                     <div class="col-12 text-left">
                         <app-org-tags [tags]="tags"></app-org-tags>
