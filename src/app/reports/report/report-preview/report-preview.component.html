@@ -94,6 +94,8 @@
               >
                 <div class="row">
                   <div class="col-12">
+                    <i *ngIf="currentReport.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="currentReport.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                     <h4 class="m-0" type="text" autocomplete="off">
                       <b>{{ currentReport.name }}</b>
                     </h4>

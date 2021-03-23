@@ -176,4 +176,11 @@ export class GrantTagsComponent {
     return (isAdmin || grantNotActiveOrClosed || activeOrClosedStateOwner);
   }
 
+  checkDisabled(tag: OrgTag): boolean {
+    if (tag.disabled || this.selectedTags.findIndex(f => f.orgTagId === tag.id) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

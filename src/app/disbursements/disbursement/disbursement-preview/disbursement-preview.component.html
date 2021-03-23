@@ -117,6 +117,9 @@
                       type="text"
                       autocomplete="off"
                     >
+                    <i *ngIf="currentDisbursement.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="currentDisbursement.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
+                    
                       <b
                         >Disbursement Approval Request for
                         {{ currentDisbursement.grant.name }}</b
@@ -132,6 +135,9 @@
                       type="text"
                       autocomplete="off"
                     >
+                    <i *ngIf="currentDisbursement.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags" style="font-size: 0.6em;"></i>
+                    <i *ngIf="currentDisbursement.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags" style="font-size: 0.6em;"></i>
+                    
                       <b
                         >Disbursement Record against Approved Note for
                         <i>{{ currentDisbursement.grant.name }}</i></b

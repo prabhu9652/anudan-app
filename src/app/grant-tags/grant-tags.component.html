@@ -6,8 +6,10 @@
       <h5 style="font-weight:bold;">Grant Tags</h5>
   </div>
   <div class="col-12">
+    <p *ngIf="selectedTags.length===0">No tags have been associated with the grant</p>
     <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Fruit selection">
+        
         <input class="anu-input" *ngIf="canManageTags()"
           placeholder="Type to filter and select tags"
           #fruitInput
@@ -27,9 +29,11 @@
         
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-          {{fruit.name}}
+        <ng-container  *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+        <mat-option [disabled]="checkDisabled(fruit)" [value]="fruit">
+          <ng-container *ngIf="fruit.disabled">[Disabled] </ng-container>{{fruit.name}}
         </mat-option>
+      </ng-container>
       </mat-autocomplete>
     </mat-form-field>
   </div>

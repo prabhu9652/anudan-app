@@ -804,6 +804,16 @@
                 </div>
               </div>
             </ng-container>
+            <hr />
+            <h5>GRANT TAGS</h5>
+            <ng-container *ngIf="currentGrant.grantTags===undefined || currentGrant.grantTags.length===0">
+              No tags have been associated for this grant
+            </ng-container>
+            <ng-container *ngIf="currentGrant.grantTags && currentGrant.grantTags.length>0">
+            <ng-container *ngFor="let tag of currentGrant.grantTags">
+              <span class="ml-2 p-2 bg-light" style="border-radius: 4px;">{{tag.tagName}}</span>
+            </ng-container>
+          </ng-container>
           </div>
         </div>
         <ng-template

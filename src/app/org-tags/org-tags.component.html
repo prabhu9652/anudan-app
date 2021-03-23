@@ -9,8 +9,12 @@
     <p style="font-weight:bold;" class="mt-4"><strong>Current Tags</strong></p>
     <mat-list dense  matRipple>
       <mat-list-item *ngFor="let tag of tags" style="background:#f4f4f4 !important;" class="m-1">
-       <span matLine>{{tag.name}}</span><mat-icon matListIcon class="pull-right" style="position: absolute;right:15px;">delete</mat-icon>
-       
+       <p matLine>{{tag.name}}</p>
+       <button *ngIf="!tag.disabled" class="btn btn-sm btn-red" (click)="disableTag(tag)"><i
+        class="fas fa-dot-circle mr-2 text-red" style="cursor: pointer;"></i>Disable</button>
+        <button *ngIf="tag.disabled" class="btn btn-sm btn-green" (click)="enableTag(tag)"><i
+        class=" fas fa-dot-circle mr-2 text-green" style="cursor: pointer;"></i>Enable</button>
+       <button mat-icon-button (click)="deleteTag(tag)" [ngStyle]="tag.used?{'cursor': 'pointer','color':'#dee2e6'}:{'cursor': 'pointer','color':'#9f9f9f'}" [disabled]="tag.used"><mat-icon matListIcon class="pull-right" style="right:15px;">delete</mat-icon></button>       
       </mat-list-item>
     </mat-list>
   </div>

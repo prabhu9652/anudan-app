@@ -552,4 +552,6 @@ export class GrantType {
 export class OrgTag {
   id: number;
   name: string;
+  disabled: boolean;
+  used: boolean;
 }

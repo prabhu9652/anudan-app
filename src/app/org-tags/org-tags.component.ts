@@ -1,3 +1,5 @@
+import { FieldDialogComponent } from './../components/field-dialog/field-dialog.component';
+import { AppComponent } from 'app/app.component';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { MessagingComponent } from './../components/messaging/messaging.component';
@@ -14,7 +16,7 @@ export class OrgTagsComponent implements OnInit {
 
   @Input('tags') tags: OrgTag[] = [];
 
-  constructor(private dialog: MatDialog, private http: HttpClient) { }
+  constructor(private dialog: MatDialog, private http: HttpClient, private appComp: AppComponent) { }
 
   ngOnInit() {
   }
@@ -41,8 +43,84 @@ export class OrgTagsComponent implements OnInit {
       this.tags.push(result);
       ev.target.value = null;
     });
+  }
 
+  disableTag(tag: OrgTag) {
+
+    const dg = this.dialog.open(FieldDialogComponent, {
+      data: { title: "Are you sure you want to disable the tag '" + tag.name + "'?", btnMain: "Disable Tag", btnSecondary: "Not Now" },
+      panelClass: "grant-template-class",
+    });
+
+    dg.afterClosed().subscribe(result => {
+      if (result) {
+        tag.disabled = true;
+
+        const httpOptions = {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+            "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+            Authorization: localStorage.getItem("AUTH_TOKEN"),
+          }),
+        };
+
+        this.http.put("api/admin/user/" + this.appComp.loggedInUser.id + "/tags", tag, httpOptions).subscribe((updatedTag: OrgTag) => {
+          tag = updatedTag;
+        });
+      } else {
+        dg.close();
+      }
+    });
 
   }
 
+  enableTag(tag) {
+
+    tag.disabled = false;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+
+    this.http.put("api/admin/user/" + this.appComp.loggedInUser.id + "/tags", tag, httpOptions).subscribe((updatedTag: OrgTag) => {
+      tag = updatedTag;
+    });
+  }
+
+
+  deleteTag(tag: OrgTag) {
+
+    const dg = this.dialog.open(FieldDialogComponent, {
+      data: { title: "Are you sure you want to delete the tag '" + tag.name + "'?", btnMain: "Delete Tag", btnSecondary: "Not Now" },
+      panelClass: "grant-template-class",
+    });
+
+    dg.afterClosed().subscribe(result => {
+      if (result) {
+        tag.disabled = true;
+
+        const httpOptions = {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+            "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+            Authorization: localStorage.getItem("AUTH_TOKEN"),
+          }),
+        };
+
+        this.http.delete("api/admin/user/" + this.appComp.loggedInUser.id + "/tags/" + tag.id, httpOptions).subscribe((updatedTag: OrgTag) => {
+          const idx = this.tags.findIndex(t => t.id === tag.id);
+          if (idx > -1) {
+            this.tags.splice(idx, 1);
+          }
+        });
+      } else {
+        dg.close();
+      }
+    });
+
+  }
 }
