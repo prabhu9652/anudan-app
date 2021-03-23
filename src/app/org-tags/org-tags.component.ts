@@ -15,6 +15,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OrgTagsComponent implements OnInit {
 
   @Input('tags') tags: OrgTag[] = [];
+  tagBeingEdited = 0;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private appComp: AppComponent) { }
 
@@ -122,5 +123,25 @@ export class OrgTagsComponent implements OnInit {
       }
     });
 
+  }
+
+  editTag(tag: OrgTag, event) {
+    this.tagBeingEdited = tag.id;
+  }
+
+  saveTag(tag) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      }),
+    };
+
+    this.http.put("api/admin/user/" + this.appComp.loggedInUser.id + "/tags", tag, httpOptions).subscribe((updatedTag: OrgTag) => {
+      tag = updatedTag;
+      this.tagBeingEdited = 0;
+    });
   }
 }
