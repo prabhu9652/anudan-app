@@ -167,6 +167,7 @@ export class SectionsComponent
   @ViewChild("otherSourcesAmountFormatted")
   otherSourcesAmountFormatted: ElementRef;
   @ViewChild("dataColumns") dataColumns: ElementRef;
+  orgTags: OrgTag[] = [];
 
   constructor(
     private grantData: GrantDataService,
@@ -322,6 +323,10 @@ export class SectionsComponent
 
     $("#createKpiModal").on("shown.bs.modal", function (event) {
       $("#kpiDescription").focus();
+    });
+
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
     });
   }
 

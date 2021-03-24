@@ -48,7 +48,7 @@
           <button mat-menu-item (click)="showWFAssigments()">
             <mat-icon class="ml-1">assignment</mat-icon>View Assignments
           </button>
-          <button *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="showGrantTags()">
+          <button *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="showGrantTags()"  [disabled]="!currentReport.grant.grantTags || currentReport.grant.grantTags.length===0">
             <mat-icon class="ml-1">label</mat-icon>View Tags
           </button>
           <ng-container>

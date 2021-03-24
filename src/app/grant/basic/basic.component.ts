@@ -150,6 +150,7 @@ export class BasicComponent implements OnInit {
   grantWorkflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
   grantAmountFormattedValue: string;
+  orgTags: OrgTag[] = [];
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -317,7 +318,9 @@ export class BasicComponent implements OnInit {
       $("#kpiDescription").focus();
     });
 
-    //this.sidebar.buildSectionsSideNav(this.currentGrant);
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
+    });
   }
 
   private checkGrantPermissions() {

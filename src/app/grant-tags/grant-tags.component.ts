@@ -90,11 +90,21 @@ export class GrantTagsComponent {
     this.fruitCtrl.setValue(null);
   }
 
-  private _filter(value: OrgTag): OrgTag[] {
-    const filterValue = value.name.toLowerCase();
+  private _filter(value): OrgTag[] {
 
-    return this.allTags.filter(fruit => fruit.name.toLowerCase().indexOf(filterValue) === 0);
+    let filterValue = null;
+    if (this.isObject(value)) {
+      filterValue = value.name.toLowerCase()
+    } else {
+      filterValue = value.toLowerCase();
+    }
+
+    return this.allTags.filter(fruit => fruit.name.toLowerCase().indexOf(filterValue) >= 0);
   }
+
+  isObject = (obj) => {
+    return Object.prototype.toString.call(obj) === '[object Object]';
+  };
 
   close() {
     let changed = false;

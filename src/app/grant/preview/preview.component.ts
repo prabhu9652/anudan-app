@@ -159,6 +159,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild("previewarea") previewArea: ElementRef;
   @ViewChild("pdf") pdf;
   @ViewChild("pdf2") pdf2;
+  orgTags: OrgTag[] = [];
   //@ViewChild("pdf2Content") pdf2Content: ElementRef;
 
   constructor(
@@ -328,6 +329,11 @@ export class PreviewComponent implements OnInit {
 
     $("#createKpiModal").on("shown.bs.modal", function (event) {
       $("#kpiDescription").focus();
+    });
+
+
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
     });
   }
 

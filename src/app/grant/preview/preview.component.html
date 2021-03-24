@@ -58,7 +58,7 @@
           <button *ngIf="
           this.appComp.loggedInUser.organization.organizationType !==
           'GRANTEE'
-        " mat-menu-item (click)="showGrantTags()">
+        " mat-menu-item (click)="showGrantTags()"  [disabled]="orgTags.length===0">
             <mat-icon class="ml-1">label</mat-icon>View Tags
           </button>
 
