@@ -1891,6 +1891,10 @@ export class PreviewComponent implements OnInit {
   }
 
   isExternalGrant(): boolean {
+    if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
+      return true;
+    }
+
     const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;

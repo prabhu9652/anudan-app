@@ -86,7 +86,7 @@
                   <b>{{ grant.name }}</b>
                 </p>
 
-                <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(grant.grantTypeId)}" ><small>{{getGrantTypeName(grant.grantTypeId)}}</small></span>
+                <span *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(grant.grantTypeId)}" ><small>{{getGrantTypeName(grant.grantTypeId)}}</small></span>
               </div>
               <div class="col-2 text-right">
                 <div>
