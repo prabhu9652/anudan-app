@@ -26,7 +26,7 @@ export class SubmittedReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent,
+        public appComp: AppComponent,
         private titlecasePipe: TitleCasePipe) {
 
         this.appComp.reportUpdated.subscribe((statusUpdate) => {

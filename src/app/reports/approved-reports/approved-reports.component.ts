@@ -27,7 +27,7 @@ export class ApprovedReportsComponent implements OnInit {
         private singleReportService: SingleReportDataService,
         private http: HttpClient,
         private router: Router,
-        private appComp: AppComponent,
+        public appComp: AppComponent,
         private spinner: NgxSpinnerService,
         private titlecasePipe: TitleCasePipe) {
     }
