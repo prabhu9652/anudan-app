@@ -1,4 +1,6 @@
-import { Grant } from './../../../model/dahsboard';
+import { AdminService } from './../../../admin.service';
+import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
+import { Grant, OrgTag } from './../../../model/dahsboard';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SingleReportDataService } from '../../../single.report.data.service'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
@@ -66,7 +68,8 @@ export class ReportPreviewComponent implements OnInit {
         private titlecasePipe: TitleCasePipe,
         private workflowValidationService: WorkflowValidationService,
         private reportValidationService: ReportValidationService,
-        private currencyService: CurrencyService
+        private currencyService: CurrencyService,
+        private adminService: AdminService
     ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
@@ -80,7 +83,7 @@ export class ReportPreviewComponent implements OnInit {
         }
 
         this.appComp.reportUpdated.subscribe((statusUpdate) => {
-            if (statusUpdate.status && statusUpdate.reportId) {
+            if (statusUpdate.status && statusUpdate.reportId && this.appComp.loggedInUser !== undefined) {
                 let url =
                     "/api/user/" + this.appComp.loggedInUser.id + "/report/" + statusUpdate.reportId;
                 const httpOptions = {
@@ -547,5 +550,17 @@ export class ReportPreviewComponent implements OnInit {
         } else {
             return false;
         }
+    }
+
+    showGrantTags() {
+        this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+
+            const dg = this.dialog.open(GrantTagsComponent, {
+                data: { orgTags: tags, grantTags: this.currentReport.grant.grantTags, grant: this.currentReport.grant, appComp: this.appComp, type: 'report' },
+                panelClass: "grant-template-class"
+            });
+
+        });
+
     }
 }

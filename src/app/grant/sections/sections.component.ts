@@ -1,4 +1,4 @@
-import { Tag } from './../../model/dahsboard';
+import { GrantTag, OrgTag } from './../../model/dahsboard';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { MessagingComponent } from "app/components/messaging/messaging.component";
 import { AdminService } from "./../../admin.service";
@@ -167,6 +167,7 @@ export class SectionsComponent
   @ViewChild("otherSourcesAmountFormatted")
   otherSourcesAmountFormatted: ElementRef;
   @ViewChild("dataColumns") dataColumns: ElementRef;
+  orgTags: OrgTag[] = [];
 
   constructor(
     private grantData: GrantDataService,
@@ -322,6 +323,10 @@ export class SectionsComponent
 
     $("#createKpiModal").on("shown.bs.modal", function (event) {
       $("#kpiDescription").focus();
+    });
+
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
     });
   }
 
@@ -2409,18 +2414,13 @@ export class SectionsComponent
   }
 
   showGrantTags() {
-    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: Tag[]) => {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.tags },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 
-      dg.afterClosed().subscribe(response => {
-        if (response.result) {
-          this.currentGrant.tags = response.selectedTags
-        }
-      });
     });
 
   }

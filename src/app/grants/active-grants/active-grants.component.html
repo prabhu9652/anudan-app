@@ -44,7 +44,8 @@
               (click)="manageGrant(grant)"
             >
               <div class="col-10 text-left">
-                
+                <i *ngIf="grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                <i *ngIf="grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                 <p
                   class="text-header mb-1"
                   *ngIf="!grant.referenceNo"
@@ -68,7 +69,7 @@
                 >
                   {{ grant.referenceNo }} | <b>{{ grant.name }}</b>
                 </p>
-                <span *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE'"  class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(grant.grantTypeId)}" ><small>{{getGrantTypeName(grant.grantTypeId)}}</small></span>
+                <span *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(grant.grantTypeId)}" ><small>{{getGrantTypeName(grant.grantTypeId)}}</small></span>
               </div>
               <div class="col-2 text-right">
                 <div>

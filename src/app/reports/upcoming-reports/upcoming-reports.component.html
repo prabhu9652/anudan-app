@@ -60,7 +60,9 @@
                     Underlying grant has been amended. Please check if this
                     report is still valid.
                   </p>
-                  <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'"  class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
+                  <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{
@@ -245,6 +247,8 @@
                     report is still valid.
                   </p>
                   <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{
@@ -393,7 +397,9 @@
                     Underlying grant has been amended. Please check if this
                     report is still valid.
                   </p>
-                  <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'"  class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
+                  <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                  <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && report.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                   <p class="text-subheader text-left mb-0">
                     Grant Name:
                     <b>{{

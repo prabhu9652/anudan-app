@@ -36,9 +36,9 @@
           <button mat-menu-item (click)="showProjectDocuments()">
             <mat-icon class="ml-1">attachment</mat-icon>View Project Documents
           </button>
-          <!-- <button mat-menu-item (click)="showGrantTags()">
+          <button mat-menu-item (click)="showGrantTags()" [disabled]="orgTags.length===0">
             <mat-icon class="ml-1">label</mat-icon>View Tags
-          </button> -->
+          </button>
           <hr *ngIf="currentGrant.origGrantId" />
           <button
             *ngIf="currentGrant.origGrantId"

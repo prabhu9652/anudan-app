@@ -28,6 +28,9 @@
           <button mat-menu-item (click)="showWorkflowAssigments()">
             <mat-icon class="ml-1">assignment</mat-icon>View Assignments
           </button>
+          <button *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE'"  [disabled]="!currentDisbursement.grant.grantTags || currentDisbursement.grant.grantTags.length===0" mat-menu-item (click)="showGrantTags()">
+            <mat-icon class="ml-1">label</mat-icon>View Tags
+          </button>
           <ng-container>
             <hr />
             <button mat-menu-item (click)="manageGrant()">

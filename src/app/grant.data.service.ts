@@ -27,8 +27,8 @@ export class GrantDataService {
         message.canManage = false;
       }
     }
-    if (message !== undefined && message !== null && (message.tags === undefined || message.tags === null)) {
-      message.tags = [];
+    if (message !== undefined && message !== null && (message.grantTags === undefined || message.grantTags === null)) {
+      message.grantTags = [];
     }
     this.messageSource.next(message)
   }

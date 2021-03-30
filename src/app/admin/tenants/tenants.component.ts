@@ -21,6 +21,7 @@ export class TenantsComponent implements OnInit {
   @ViewChild("tenantAdmin") tenantAdminElem: ElementRef;
   @ViewChild("tenantSlug") tenantSlugElem: ElementRef;
   @ViewChild("tenantLogo") tenantLogoElem: ElementRef;
+  @ViewChild("refTenantCode") refTenantCodeElem: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -46,6 +47,8 @@ export class TenantsComponent implements OnInit {
     const tenantAdmin = this.tenantAdminElem.nativeElement.value;
     const tenantSlug = this.tenantSlugElem.nativeElement.value;
     const tenantLogo = this.tenantLogoElem.nativeElement;
+    const refTenantCode = this.refTenantCodeElem.nativeElement.value;
+
 
     let formData = new FormData();
     for (let i = 0; i < tenantLogo.files.length; i++) {
@@ -61,7 +64,7 @@ export class TenantsComponent implements OnInit {
       "/slug/" +
       tenantSlug +
       "/granterUser/" +
-      tenantAdmin;
+      tenantAdmin + "/" + refTenantCode;
 
     const httpOptions = {
       headers: new HttpHeaders({

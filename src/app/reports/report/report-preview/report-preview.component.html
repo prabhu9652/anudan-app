@@ -48,6 +48,9 @@
           <button mat-menu-item (click)="showWFAssigments()">
             <mat-icon class="ml-1">assignment</mat-icon>View Assignments
           </button>
+          <button *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" mat-menu-item (click)="showGrantTags()"  [disabled]="!currentReport.grant.grantTags || currentReport.grant.grantTags.length===0">
+            <mat-icon class="ml-1">label</mat-icon>View Tags
+          </button>
           <ng-container>
             <hr />
             <button mat-menu-item (click)="manageGrant()">
@@ -91,6 +94,8 @@
               >
                 <div class="row">
                   <div class="col-12">
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentReport.grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentReport.grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                     <h4 class="m-0" type="text" autocomplete="off">
                       <b>{{ currentReport.name }}</b>
                     </h4>
@@ -741,7 +746,7 @@
           </div>
           <div data-html2canvas-ignore class="col-12">
             <hr />
-            <h5>ATTACHMENTS <small>(Click to download)</small></h5>
+            <h5>ATTACHMENTS</h5>
             <ng-container
               *ngFor="let section of currentReport.reportDetails.sections"
             >
@@ -806,6 +811,7 @@
                 </div>
               </div>
             </ng-container>
+            
           </div>
         </div>
         <ng-template

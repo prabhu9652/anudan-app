@@ -3,32 +3,37 @@
     <mat-icon>close</mat-icon>
   </span>
   <div class="col-12">
-      <h5 style="font-weight:bold;">Grant Tags</h5>
+      <h5 style="font-weight:bold;">Related Tags</h5>
   </div>
   <div class="col-12">
+    <p *ngIf="selectedTags.length===0">No tags</p>
     <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Fruit selection">
         <mat-chip
           *ngFor="let fruit of selectedTags"
-          [selectable]="selectable"
+          [selectable]="false"
           [removable]="removable"
           (removed)="remove(fruit)">
-          {{fruit.name}}
+          {{fruit.tagName}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
-        <input class="anu-input"
-          placeholder="Type to filter and select tags"
+        
+      </mat-chip-list>
+      <label *ngIf="canManageTags()" class="mt-4">Add a tag(s)</label>
+      <input class="anu-input" *ngIf="canManageTags()"
+          
           #fruitInput
           [formControl]="fruitCtrl"
           [matAutocomplete]="auto"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="add($event)">
-      </mat-chip-list>
+          (matChipInputTokenEnd)="add($event)" class="anu-input w-100">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-          {{fruit.name}}
+        <ng-container  *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+        <mat-option [disabled]="checkDisabled(fruit)" [value]="fruit">
+          <ng-container *ngIf="fruit.disabled">[Disabled] </ng-container>{{fruit.name}}
         </mat-option>
+      </ng-container>
       </mat-autocomplete>
     </mat-form-field>
   </div>

@@ -1,4 +1,6 @@
-import { Grant } from './../../../model/dahsboard';
+import { AdminService } from './../../../admin.service';
+import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
+import { Grant, OrgTag } from './../../../model/dahsboard';
 import {
   Component,
   OnInit,
@@ -104,7 +106,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
 
   constructor(
     public disbursementService: DisbursementDataService,
-    private appComponent: AppComponent,
+    public appComponent: AppComponent,
     private titlecasePipe: TitleCasePipe,
     private adminComp: AdminLayoutComponent,
     private router: Router,
@@ -113,7 +115,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
     private workflowDataService: WorkflowDataService,
     private datepipe: DatePipe,
     public currencyService: CurrencyService,
-    public amountValidator: AmountValidator
+    public amountValidator: AmountValidator,
+    private adminService: AdminService
   ) {
     this.disbursementService.currentMessage.subscribe(
       (disbursement) => (this.currentDisbursement = disbursement)
@@ -538,5 +541,17 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  showGrantTags() {
+    this.adminService.getOrgTags(this.appComponent.loggedInUser).then((tags: OrgTag[]) => {
+
+      const dg = this.dialog.open(GrantTagsComponent, {
+        data: { orgTags: tags, grantTags: this.currentDisbursement.grant.grantTags, grant: this.currentDisbursement.grant, appComp: this.appComponent, type: 'disbursement' },
+        panelClass: "grant-template-class"
+      });
+
+    });
+
   }
 }

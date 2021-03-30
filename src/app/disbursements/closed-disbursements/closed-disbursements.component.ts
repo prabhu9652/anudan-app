@@ -50,6 +50,10 @@ export class ClosedDisbursementsComponent implements OnInit {
   }
 
   isExternalGrant(grant: Grant): boolean {
+    if (this.appComponent.loggedInUser.organization.organizationType === 'GRANTEE') {
+      return true;
+    }
+
     const grantType = this.appComponent.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;

@@ -1,4 +1,4 @@
-import { Tag } from './../../model/dahsboard';
+import { GrantTag, OrgTag } from './../../model/dahsboard';
 import { AdminService } from './../../admin.service';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { MessagingComponent } from "./../../components/messaging/messaging.component";
@@ -150,6 +150,7 @@ export class BasicComponent implements OnInit {
   grantWorkflowStatuses: WorkflowStatus[];
   tenantUsers: User[];
   grantAmountFormattedValue: string;
+  orgTags: OrgTag[] = [];
 
   userActivity;
   userInactive: Subject<any> = new Subject();
@@ -317,7 +318,9 @@ export class BasicComponent implements OnInit {
       $("#kpiDescription").focus();
     });
 
-    //this.sidebar.buildSectionsSideNav(this.currentGrant);
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
+    });
   }
 
   private checkGrantPermissions() {
@@ -1651,6 +1654,9 @@ export class BasicComponent implements OnInit {
 
 
   isExternalGrant(): boolean {
+    if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
+      return true;
+    }
     const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;
@@ -1660,19 +1666,13 @@ export class BasicComponent implements OnInit {
   }
 
   showGrantTags() {
-    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: Tag[]) => {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.tags },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 
-      dg.afterClosed().subscribe(response => {
-        if (response.result) {
-          this.currentGrant.tags = response.selectedTags
-        }
-      });
     });
-
   }
 }

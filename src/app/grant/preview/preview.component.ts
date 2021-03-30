@@ -1,4 +1,4 @@
-import { Tag } from './../../model/dahsboard';
+import { GrantTag, OrgTag } from './../../model/dahsboard';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { AdminService } from './../../admin.service';
 import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
@@ -159,6 +159,7 @@ export class PreviewComponent implements OnInit {
   @ViewChild("previewarea") previewArea: ElementRef;
   @ViewChild("pdf") pdf;
   @ViewChild("pdf2") pdf2;
+  orgTags: OrgTag[] = [];
   //@ViewChild("pdf2Content") pdf2Content: ElementRef;
 
   constructor(
@@ -328,6 +329,11 @@ export class PreviewComponent implements OnInit {
 
     $("#createKpiModal").on("shown.bs.modal", function (event) {
       $("#kpiDescription").focus();
+    });
+
+
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
+      this.orgTags = tags;
     });
   }
 
@@ -1764,7 +1770,7 @@ export class PreviewComponent implements OnInit {
   copyGrant(grantId: number) {
 
     if (this.appComp.grantTypes.length > 1) {
-      /* const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
+      const dg = this.dialog.open(GranttypeSelectionDialogComponent, {
         data: this.appComp.grantTypes,
         panelClass: 'grant-template-class'
       });
@@ -1773,8 +1779,7 @@ export class PreviewComponent implements OnInit {
         if (result && result.result) {
           this.grantComponent.copyGrant(grantId, result.selectedGrantType.id);
         }
-      }); */
-      this.grantComponent.copyGrant(grantId, this.appComp.grantTypes.filter(a => !a.internal)[0].id);
+      });
     } else {
       this.grantComponent.copyGrant(grantId, this.appComp.grantTypes[0].id);
     }
@@ -1894,7 +1899,6 @@ export class PreviewComponent implements OnInit {
     if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
       return true;
     }
-
     const grantType = this.appComp.grantTypes.filter(gt => gt.id === this.currentGrant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;
@@ -1904,18 +1908,14 @@ export class PreviewComponent implements OnInit {
   }
 
   showGrantTags() {
-    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: Tag[]) => {
+    this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.tags },
+        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 
-      dg.afterClosed().subscribe(response => {
-        if (response.result) {
-          this.currentGrant.tags = response.selectedTags
-        }
-      });
+
     });
 
   }
