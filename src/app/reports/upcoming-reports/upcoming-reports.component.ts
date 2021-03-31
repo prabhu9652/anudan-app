@@ -330,7 +330,7 @@ export class UpcomingReportsComponent implements OnInit {
     deleteReport(report: Report) {
         this.deleteReportsClicked = true;
         const dialogRef = this.dialog.open(FieldDialogComponent, {
-            data: { title: 'Are you sure you want to delete this report?', btnMain: "Delete Report", brnSecondary: "Not Now" },
+            data: { title: 'Are you sure you want to delete this report?', btnMain: "Delete Report", btnSecondary: "Not Now" },
             panelClass: 'center-class'
         });
 
