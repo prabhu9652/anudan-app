@@ -181,9 +181,11 @@ export class ReportNotesComponent implements OnInit {
 
                                                     let hasDifferences = false;
 
-                                                    for (let i = 0; i < oldAttr.fieldTableValue.length; i++) {
-                                                        if (oldAttr.fieldTableValue[i].enteredByGrantee && oldAttr.fieldTableValue[i].reportId !== this.reportSnapshot.reportId) {
-                                                            oldAttr.fieldTableValue.splice(i, 1);
+                                                    if (oldAttr.fieldTableValue) {
+                                                        for (let i = 0; i < oldAttr.fieldTableValue.length; i++) {
+                                                            if (oldAttr.fieldTableValue[i].enteredByGrantee && oldAttr.fieldTableValue[i].reportId !== this.reportSnapshot.reportId) {
+                                                                oldAttr.fieldTableValue.splice(i, 1);
+                                                            }
                                                         }
                                                     }
 

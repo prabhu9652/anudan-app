@@ -453,7 +453,9 @@ export class AdminLayoutComponent implements OnInit {
       wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
       wfModel.type = this.appComponent.currentView;
       wfModel.grant = this.currentGrant;
-      wfModel.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentGrant.grantTypeId)[0].internal;
+      if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
+        wfModel.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentGrant.grantTypeId)[0].internal;
+      }
       wfModel.canManage =
         this.appComponent.loggedInUser.organization.organizationType ===
           "GRANTEE"
@@ -553,7 +555,9 @@ export class AdminLayoutComponent implements OnInit {
       wfModel.workflowAssignments = this.currentReport.workflowAssignments;
       wfModel.type = this.appComponent.currentView;
       wfModel.report = this.currentReport;
-      wfModel.report.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentReport.grant.grantTypeId)[0].internal;
+      if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
+        wfModel.report.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentReport.grant.grantTypeId)[0].internal;
+      }
       wfModel.canManage =
         this.appComponent.loggedInUser.organization.organizationType ===
           "GRANTEE"
@@ -647,7 +651,9 @@ export class AdminLayoutComponent implements OnInit {
           wfModel.workflowAssignments = this.currentDisbursement.assignments;
           wfModel.type = this.appComponent.currentView;
           wfModel.disbursement = this.currentDisbursement;
-          wfModel.disbursement.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentDisbursement.grant.grantTypeId)[0].internal;
+          if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
+            wfModel.disbursement.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentDisbursement.grant.grantTypeId)[0].internal;
+          }
           wfModel.canManage = this.currentDisbursement.canManage;
           const dialogRef = this.dialog.open(WfassignmentComponent, {
             data: { model: wfModel, userId: this.appComponent.loggedInUser.id },

@@ -115,14 +115,15 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
                             isAdminRole = true;
                         }
 
-                        if (((currentUserAssignment.length > 0 || (ownerUser.length > 0) || isAdminRole) && this.data.model.grant.grantStatus.internalStatus !== 'ACTIVE' && this.data.model.grant.grantStatus.internalStatus !== 'CLOSED')) {
+                        const loggedInUser: User = JSON.parse(localStorage.getItem('USER'));
+                        if (((currentUserAssignment.length > 0 || (ownerUser.length > 0) || isAdminRole) && this.data.model.grant.grantStatus.internalStatus !== 'ACTIVE' && this.data.model.grant.grantStatus.internalStatus !== 'CLOSED') && loggedInUser.organization.organizationType !== 'GRANTEE') {
                         } else {
 
 
                             this.canManage = false;
                             this.renderer.setAttribute(nodeOwner, 'disabled', 'disabled');
 
-                            if ((currentUserAssignment.length > 0 || isAdminRole) && this.data.model.grant.grantStatus.internalStatus === 'ACTIVE' && transition.internalStatus == 'ACTIVE') {
+                            if ((currentUserAssignment.length > 0 || isAdminRole) && this.data.model.grant.grantStatus.internalStatus === 'ACTIVE' && transition.internalStatus == 'ACTIVE' && loggedInUser.organization.organizationType !== 'GRANTEE') {
                                 this.canManage = true;
                                 this.renderer.removeAttribute(nodeOwner, 'disabled');
                             }
