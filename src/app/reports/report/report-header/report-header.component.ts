@@ -459,6 +459,11 @@ export class ReportHeaderComponent implements OnInit {
   }
 
   isExternalGrant(grant: Grant): boolean {
+
+    if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
+      return true;
+    }
+
     const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
     if (!grantType.internal) {
       return true;
