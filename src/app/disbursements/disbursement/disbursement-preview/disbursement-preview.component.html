@@ -50,9 +50,7 @@
             <mat-icon class="ml-1">comment</mat-icon>View Notes
           </button>
           
-          <button *ngIf="appComponent.loggedInUser.organization.organizationType!=='GRANTEE'"  [disabled]="!currentDisbursement.grant.grantTags || currentDisbursement.grant.grantTags.length===0" mat-menu-item (click)="showGrantTags()">
-            <mat-icon class="ml-1">label</mat-icon>View Tags
-          </button>
+          
           <hr>
           <button
             mat-menu-item
