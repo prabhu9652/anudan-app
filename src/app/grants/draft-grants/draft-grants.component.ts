@@ -5,6 +5,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
+  HttpParams,
   HTTP_INTERCEPTORS,
 } from "@angular/common/http";
 import { User } from "../../model/user";
@@ -206,12 +207,14 @@ export class DraftGrantsComponent implements OnInit {
       this.saveGrant(grant);
     } else {
       console.log(">>>>GRANT RETRIEVAL INITIATED>>>>" + new Date());
+      const queryParams1 = new HttpParams().set('forStatus', 'inprogress');
       const httpOptions = {
         headers: new HttpHeaders({
           "Content-Type": "application/json",
           "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
           Authorization: localStorage.getItem("AUTH_TOKEN"),
         }),
+        params: queryParams1
       };
 
       this.appComponent.loggedIn = true;
