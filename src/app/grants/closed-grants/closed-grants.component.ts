@@ -178,7 +178,7 @@ export class ClosedGrantsComponent implements OnInit {
       this.saveGrant(grant);
     } else {
       console.log("dashboard");
-      const queryParams1 = new HttpParams().set('forStatus', 'active');
+      const queryParams1 = new HttpParams().set('forStatus', 'closed');
       const httpOptions = {
         headers: new HttpHeaders({
           "Content-Type": "application/json",
