@@ -1,20 +1,20 @@
-import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders,HttpParams} from '@angular/common/http';
-import {User} from '../model/user';
-import {SerializationHelper, Tenant, Tenants} from '../model/dahsboard';
-import {AppComponent} from '../app.component';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {GrantDataService} from '../grant.data.service';
-import {SingleReportDataService} from '../single.report.data.service';
-import {DataService} from '../data.service';
-import {Grant} from '../model/dahsboard'
-import {Report} from '../model/report'
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { User } from '../model/user';
+import { SerializationHelper, Tenant, Tenants } from '../model/dahsboard';
+import { AppComponent } from '../app.component';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { GrantDataService } from '../grant.data.service';
+import { SingleReportDataService } from '../single.report.data.service';
+import { DataService } from '../data.service';
+import { Grant } from '../model/dahsboard'
+import { Report } from '../model/report'
 import * as $ from 'jquery'
-import {ToastrService} from 'ngx-toastr';
-import {GrantComponent} from "../grant/grant.component";
-import {MatBottomSheet, MatDatepickerInputEvent, MatDialog} from '@angular/material';
-import {GrantTemplateDialogComponent} from '../components/grant-template-dialog/grant-template-dialog.component';
-import {WelcomePopupComponent} from '../components/welcome-popup/welcome-popup.component';
+import { ToastrService } from 'ngx-toastr';
+import { GrantComponent } from "../grant/grant.component";
+import { MatBottomSheet, MatDatepickerInputEvent, MatDialog } from '@angular/material';
+import { GrantTemplateDialogComponent } from '../components/grant-template-dialog/grant-template-dialog.component';
+import { WelcomePopupComponent } from '../components/welcome-popup/welcome-popup.component';
 import * as inf from 'indian-number-format';
 import { Disbursement } from 'app/model/disbursement';
 import { DisbursementDataService } from 'app/disbursement.data.service';
@@ -25,7 +25,7 @@ import { DisbursementDataService } from 'app/disbursement.data.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   providers: [GrantComponent],
-    styles: [`
+  styles: [`
      ::ng-deep .mat-card-header-text {
         width:100% !important;
      }
@@ -42,61 +42,61 @@ export class DashboardComponent implements OnInit {
   kpiSubmissionTitle: string;
   currentGrantId: number;
   parameters: any;
-  grantInProgressCount:number;
-  grantActiveCount:number;
-  grantClosedCount:number;
+  grantInProgressCount: number;
+  grantActiveCount: number;
+  grantClosedCount: number;
 
   //Retain this
-  totalGrantsIssued:number=0;
-  totalGrantees:number=0;
-  totalGrantAmount:string='-';
-  totalActiveUsers:number=0;
-  portfolioData:any;
+  totalGrantsIssued: number = 0;
+  totalGrantees: number = 0;
+  totalGrantAmount: string = '-';
+  totalActiveUsers: number = 0;
+  portfolioData: any;
 
   ///////////
 
   constructor(private http: HttpClient,
-              public appComponent: AppComponent,
-              private router: Router,
-              private route: ActivatedRoute,
-              private data: GrantDataService,
-              private toastr: ToastrService,
-              public grantComponent: GrantComponent,
-              private dataService: DataService,
-              private dialog: MatDialog,
-              private singleReportDataService:SingleReportDataService,
-              private disbursementService:DisbursementDataService) {
+    public appComponent: AppComponent,
+    private router: Router,
+    private route: ActivatedRoute,
+    private data: GrantDataService,
+    private toastr: ToastrService,
+    public grantComponent: GrantComponent,
+    private dataService: DataService,
+    private dialog: MatDialog,
+    private singleReportDataService: SingleReportDataService,
+    private disbursementService: DisbursementDataService) {
 
-              this.route.queryParams.subscribe(params => {
-                      this.parameters = params;
-                  });
+    this.route.queryParams.subscribe(params => {
+      this.parameters = params;
+    });
   }
 
   ngOnInit() {
 
-    this.appComponent.subMenu = {name:''};
-    if(!this.parameters.status || (this.parameters.status && this.parameters.status==='d')){
+    this.appComponent.subMenu = { name: '' };
+    if (!this.parameters.status || (this.parameters.status && this.parameters.status === 'd')) {
       this.getDashboardSummary();
-    } else if(this.parameters.status && this.parameters.status==='n' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
+    } else if (this.parameters.status && this.parameters.status === 'n' && this.appComponent.loggedInUser.organization.type !== 'PLATFORM') {
 
-    const dialogRef = this.dialog.open(WelcomePopupComponent, {
-          data: this.appComponent.loggedInUser.firstName,
-          panelClass:'welcome-popup-class'
-        });
+      const dialogRef = this.dialog.open(WelcomePopupComponent, {
+        data: this.appComponent.loggedInUser.firstName,
+        panelClass: 'welcome-popup-class'
+      });
 
-        dialogRef.afterClosed().subscribe(result => {
-              if (result) {
-                      this.fetchReportOrGrantOrDisbursement();
-              }
-         });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.fetchReportOrGrantOrDisbursement();
+        }
+      });
 
-    }else if(this.parameters.status && this.parameters.status==='e' && this.appComponent.loggedInUser.organization.type!=='PLATFORM'){
-        this.fetchReportOrGrantOrDisbursement();
-    } else{
-        const user = JSON.parse(localStorage.getItem('USER'));
-        this.appComponent.loggedInUser = user;
-        this.fetchDashboard(user.id);
-        this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
+    } else if (this.parameters.status && this.parameters.status === 'e' && this.appComponent.loggedInUser.organization.type !== 'PLATFORM') {
+      this.fetchReportOrGrantOrDisbursement();
+    } else {
+      const user = JSON.parse(localStorage.getItem('USER'));
+      this.appComponent.loggedInUser = user;
+      this.fetchDashboard(user.id);
+      this.dataService.currentMessage.subscribe(id => this.currentGrantId = id);
     }
 
   }
@@ -116,41 +116,41 @@ export class DashboardComponent implements OnInit {
     let url = '/api/users/' + userId + '/dashboard/in-progress';
     this.http.get<number>(url, httpOptions).subscribe((count: number) => {
 
-     this.grantInProgressCount = count;
+      this.grantInProgressCount = count;
     },
-        error1 => {
-      const errorMsg = error1 as HttpErrorResponse;
-          this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-            enableHtml: true,
-            positionClass: 'toast-top-center'
-          });
-    });
+      error1 => {
+        const errorMsg = error1 as HttpErrorResponse;
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true,
+          positionClass: 'toast-top-center'
+        });
+      });
 
     url = '/api/users/' + userId + '/dashboard/active';
-        this.http.get<number>(url, httpOptions).subscribe((count: number) => {
+    this.http.get<number>(url, httpOptions).subscribe((count: number) => {
 
-         this.grantActiveCount = count;
-        },
-            error1 => {
-          const errorMsg = error1 as HttpErrorResponse;
-              this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                enableHtml: true,
-                positionClass: 'toast-top-center'
-              });
-    });
+      this.grantActiveCount = count;
+    },
+      error1 => {
+        const errorMsg = error1 as HttpErrorResponse;
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true,
+          positionClass: 'toast-top-center'
+        });
+      });
 
-     url = '/api/users/' + userId + '/dashboard/closed';
-        this.http.get<number>(url, httpOptions).subscribe((count: number) => {
+    url = '/api/users/' + userId + '/dashboard/closed';
+    this.http.get<number>(url, httpOptions).subscribe((count: number) => {
 
-         this.grantClosedCount = count;
-        },
-            error1 => {
-          const errorMsg = error1 as HttpErrorResponse;
-              this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
-                enableHtml: true,
-                positionClass: 'toast-top-center'
-              });
-    });
+      this.grantClosedCount = count;
+    },
+      error1 => {
+        const errorMsg = error1 as HttpErrorResponse;
+        this.toastr.error(errorMsg.error.message, errorMsg.error.messageTitle, {
+          enableHtml: true,
+          positionClass: 'toast-top-center'
+        });
+      });
   }
 
   manageGrant(grant: Grant) {
@@ -163,7 +163,7 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.changeMessage(grant.id);
-        this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
+        this.data.changeMessage(grant, this.appComponent.loggedInUser.id);
         this.router.navigate(['grant']);
       } else {
         dialogRef.close();
@@ -172,149 +172,149 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  fetchReportOrGrantOrDisbursement(){
+  fetchReportOrGrantOrDisbursement() {
     const type = this.parameters.type;
-    if(type==='grant'){
+    if (type === 'grant') {
       const grantCode = this.parameters.g;
       const queryParams = new HttpParams().set('g', grantCode)
       const httpOptions = {
-          headers: new HttpHeaders({
-              'Content-Type': 'application/json',
-              'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
-          }),
-          params: queryParams
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE')
+        }),
+        params: queryParams
       };
-      const url = '/api/user/'+this.appComponent.loggedInUser.id+'/grant/resolve';
+      const url = '/api/user/' + this.appComponent.loggedInUser.id + '/grant/resolve';
 
 
-      this.http.get(url,httpOptions).subscribe((grant:Grant) => {
-          this.data.changeMessage(grant,this.appComponent.loggedInUser.id);
-          this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
-          this.appComponent.currentView = 'grant';
+      this.http.get(url, httpOptions).subscribe((grant: Grant) => {
+        this.data.changeMessage(grant, this.appComponent.loggedInUser.id);
+        this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
+        this.appComponent.currentView = 'grant';
 
-          this.appComponent.selectedTemplate = grant.grantTemplate;
+        this.appComponent.selectedTemplate = grant.grantTemplate;
 
-        if((grant.workflowAssignment.filter(wf => wf.stateId===grant.grantStatus.id && wf.assignments===this.appComponent.loggedInUser.id).length>0 ) && this.appComponent.loggedInUser.organization.organizationType!=='GRANTEE' && (grant.grantStatus.internalStatus!=='ACTIVE' && grant.grantStatus.internalStatus!=='CLOSED')){
-            grant.canManage=true;
-        }else{
-            grant.canManage=false;
+        if ((grant.workflowAssignments.filter(wf => wf.stateId === grant.grantStatus.id && wf.assignments === this.appComponent.loggedInUser.id).length > 0) && this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE' && (grant.grantStatus.internalStatus !== 'ACTIVE' && grant.grantStatus.internalStatus !== 'CLOSED')) {
+          grant.canManage = true;
+        } else {
+          grant.canManage = false;
         }
-          if(grant.canManage && grant.grantStatus.internalStatus!='ACTIVE' && grant.grantStatus.internalStatus!='CLOSED'){
-              this.appComponent.subMenu = {name:'In-progress Grants',action:'dg'};
-              this.router.navigate(['grant/basic-details']);
-          } else{
-              if(grant.grantStatus.internalStatus==='ACTIVE'){
-                  this.appComponent.subMenu = {name:'Active Grants',action:'ag'};
-              } else if (grant.grantStatus.internalStatus === 'CLOSED'){
-                  this.appComponent.subMenu = {name:'Closed Grants',action:'cg'};
-              }
-              this.appComponent.action = 'preview';
-              this.router.navigate(['grant/preview']);
+        if (grant.canManage && grant.grantStatus.internalStatus != 'ACTIVE' && grant.grantStatus.internalStatus != 'CLOSED') {
+          this.appComponent.subMenu = { name: 'In-progress Grants', action: 'dg' };
+          this.router.navigate(['grant/basic-details']);
+        } else {
+          if (grant.grantStatus.internalStatus === 'ACTIVE') {
+            this.appComponent.subMenu = { name: 'Active Grants', action: 'ag' };
+          } else if (grant.grantStatus.internalStatus === 'CLOSED') {
+            this.appComponent.subMenu = { name: 'Closed Grants', action: 'cg' };
           }
-         // this.router.navigate(['grants']);
+          this.appComponent.action = 'preview';
+          this.router.navigate(['grant/preview']);
+        }
+        // this.router.navigate(['grants']);
       });
-    }else if(type==='report'){
-        const reportCode = this.parameters.r;
-          const queryParams = new HttpParams().set('r', reportCode)
-          const httpOptions = {
-              headers: new HttpHeaders({
-                  'Content-Type': 'application/json',
-                  'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                  'Authorization': localStorage.getItem('AUTH_TOKEN')
-              }),
-              params: queryParams
-          };
-          const url = '/api/user/'+this.appComponent.loggedInUser.id+'/report/resolve';
+    } else if (type === 'report') {
+      const reportCode = this.parameters.r;
+      const queryParams = new HttpParams().set('r', reportCode)
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        }),
+        params: queryParams
+      };
+      const url = '/api/user/' + this.appComponent.loggedInUser.id + '/report/resolve';
 
 
-          this.http.get(url,httpOptions).subscribe((report:Report) => {
-              this.appComponent.currentView = 'report';
-              this.singleReportDataService.changeMessage(report);
+      this.http.get(url, httpOptions).subscribe((report: Report) => {
+        this.appComponent.currentView = 'report';
+        this.singleReportDataService.changeMessage(report);
 
-               if(report.status.internalStatus==='DRAFT' || report.status.internalStatus==='ACTIVE'){
-                    this.appComponent.subMenu = {name:'Upcoming Reports',action:'ur'};
-                } else if(report.status.internalStatus==='REVIEW'){
-                    this.appComponent.subMenu = {name:'Submitted Reports',action:'sr'};
-                } else if(report.status.internalStatus==='CLOSED'){
-                    this.appComponent.subMenu = {name:'Approved Reports',action:'ar'};
-                }
-              if(report.canManage ){
-                  this.router.navigate(['report/report-header']);
-              } else{
-                  this.router.navigate(['report/report-preview']);
-              }
-             // this.router.navigate(['grants']);
-          });
-    }else if(type==='disbursement'){
+        if (report.status.internalStatus === 'DRAFT' || report.status.internalStatus === 'ACTIVE') {
+          this.appComponent.subMenu = { name: 'Upcoming Reports', action: 'ur' };
+        } else if (report.status.internalStatus === 'REVIEW') {
+          this.appComponent.subMenu = { name: 'Submitted Reports', action: 'sr' };
+        } else if (report.status.internalStatus === 'CLOSED') {
+          this.appComponent.subMenu = { name: 'Approved Reports', action: 'ar' };
+        }
+        if (report.canManage) {
+          this.router.navigate(['report/report-header']);
+        } else {
+          this.router.navigate(['report/report-preview']);
+        }
+        // this.router.navigate(['grants']);
+      });
+    } else if (type === 'disbursement') {
       const disbursementCode = this.parameters.d;
-        const queryParams = new HttpParams().set('d', disbursementCode)
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
-                'Authorization': localStorage.getItem('AUTH_TOKEN')
-            }),
-            params: queryParams
-        };
-        const url = '/api/user/'+this.appComponent.loggedInUser.id+'/disbursements/resolve';
+      const queryParams = new HttpParams().set('d', disbursementCode)
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+          'Authorization': localStorage.getItem('AUTH_TOKEN')
+        }),
+        params: queryParams
+      };
+      const url = '/api/user/' + this.appComponent.loggedInUser.id + '/disbursements/resolve';
 
 
-        this.http.get(url,httpOptions).subscribe((disbursement:Disbursement) => {
-            this.appComponent.currentView = 'disbursement';
-            this.disbursementService.changeMessage(disbursement)
+      this.http.get(url, httpOptions).subscribe((disbursement: Disbursement) => {
+        this.appComponent.currentView = 'disbursement';
+        this.disbursementService.changeMessage(disbursement)
 
-            this.disbursementService.getPermission(disbursement);
-             if(disbursement.status.internalStatus==='DRAFT' || disbursement.status.internalStatus==='REVIEW'){
-                  this.appComponent.subMenu = {name:'Approvals In-progress',action:'id'};
-              } else if(disbursement.status.internalStatus==='ACTIVE'){
-                  this.appComponent.subMenu = {name:'Approvals Active',action:'ad'};
-              } else if(disbursement.status.internalStatus==='CLOSED'){
-                  this.appComponent.subMenu = {name:'Approvals Closed',action:'cd'};
-              }
-            if(disbursement.canManage){
-                this.router.navigate(['disbursement/approval-request']);
-            } else{
-                this.router.navigate(['disbursement/preview']);
-            }
-           // this.router.navigate(['grants']);
-        });
-  }else{
-        this.fetchDashboard(this.appComponent.loggedInUser.id);
+        this.disbursementService.getPermission(disbursement);
+        if (disbursement.status.internalStatus === 'DRAFT' || disbursement.status.internalStatus === 'REVIEW') {
+          this.appComponent.subMenu = { name: 'Approvals In-progress', action: 'id' };
+        } else if (disbursement.status.internalStatus === 'ACTIVE') {
+          this.appComponent.subMenu = { name: 'Approvals Active', action: 'ad' };
+        } else if (disbursement.status.internalStatus === 'CLOSED') {
+          this.appComponent.subMenu = { name: 'Approvals Closed', action: 'cd' };
+        }
+        if (disbursement.canManage) {
+          this.router.navigate(['disbursement/approval-request']);
+        } else {
+          this.router.navigate(['disbursement/preview']);
+        }
+        // this.router.navigate(['grants']);
+      });
+    } else {
+      this.fetchDashboard(this.appComponent.loggedInUser.id);
     }
   }
 
-  viewInProgressGrants(){
+  viewInProgressGrants() {
     this.router.navigate(['grants/draft']);
   }
 
-  viewActiveGrants(){
-      this.router.navigate(['grants/active']);
+  viewActiveGrants() {
+    this.router.navigate(['grants/active']);
   }
 
-  viewClosedGrants(){
-      this.router.navigate(['grants/closed']);
+  viewClosedGrants() {
+    this.router.navigate(['grants/closed']);
   }
 
-  getDashboardSummary(){
+  getDashboardSummary() {
     const httpOptions = {
-        headers: new HttpHeaders({
+      headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
         'Authorization': localStorage.getItem('AUTH_TOKEN')
-        })
+      })
     };
 
     this.appComponent.loggedIn = true;
 
     let url = '/api/users/' + this.appComponent.loggedInUser.id + '/dashboard/summary';
 
-    this.http.get(url,httpOptions).subscribe((data:any) =>{
-        console.log(data);
-        this.totalGrantsIssued = data.summary.totalGrants;
-        this.totalGrantees = data.summary.grantees;
-        this.totalGrantAmount = '₹' + inf.format(Number(data.summary.totalGrantAmount),2);
-        this.totalActiveUsers = data.summary.activeUsers;
-        this.portfolioData = data.filters;
+    this.http.get(url, httpOptions).subscribe((data: any) => {
+      console.log(data);
+      this.totalGrantsIssued = data.summary.totalGrants;
+      this.totalGrantees = data.summary.grantees;
+      this.totalGrantAmount = '₹' + inf.format(Number(data.summary.totalGrantAmount), 2);
+      this.totalActiveUsers = data.summary.activeUsers;
+      this.portfolioData = data.filters;
     });
   }
 }

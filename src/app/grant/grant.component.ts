@@ -182,7 +182,7 @@ export class GrantComponent
 
   public checkGrantPermissions() {
     if (
-      this.currentGrant.workflowAssignment.filter(
+      this.currentGrant.workflowAssignments.filter(
         (wf) =>
           wf.stateId === this.currentGrant.grantStatus.id &&
           wf.assignments === this.appComp.loggedInUser.id
@@ -990,7 +990,7 @@ export class GrantComponent
 
     this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
       if (
-        grant.workflowAssignment.filter(
+        grant.workflowAssignments.filter(
           (wf) =>
             wf.stateId === grant.grantStatus.id &&
             wf.assignments === this.appComp.loggedInUser.id
@@ -1048,7 +1048,7 @@ export class GrantComponent
 
         this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
           if (
-            grant.workflowAssignment.filter(
+            grant.workflowAssignments.filter(
               (wf) =>
                 wf.stateId === grant.grantStatus.id &&
                 wf.assignments === this.appComp.loggedInUser.id
@@ -1112,7 +1112,7 @@ export class GrantComponent
 
         this.http.get<Grant>(url, httpOptions).subscribe((grant: Grant) => {
           if (
-            grant.workflowAssignment.filter(
+            grant.workflowAssignments.filter(
               (wf) =>
                 wf.stateId === grant.grantStatus.id &&
                 wf.assignments === this.appComp.loggedInUser.id

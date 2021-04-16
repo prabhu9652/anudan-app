@@ -476,7 +476,7 @@ export class ReportHeaderComponent implements OnInit {
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentReport.grant.grantTags, grant: this.currentReport.grant, appComp: this.appComp, type: 'report' },
+        data: { orgTags: tags, grantTags: this.currentReport.grant.tags, grant: this.currentReport.grant, appComp: this.appComp, type: 'report' },
         panelClass: "grant-template-class"
       });
 

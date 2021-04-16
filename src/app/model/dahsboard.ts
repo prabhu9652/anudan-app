@@ -257,8 +257,9 @@ export class Grant {
   grantTemplate: GrantTemplate;
   createdAt: Date;
   createdBy: string;
-  currentAssignment: User[];
-  workflowAssignment: WorkflowAssignment[];
+  currentAssignment: number;
+  workflowAssignment: WorkflowAssignments[];
+  workflowAssignments: WorkflowAssignments[];
   note: string;
   noteAdded: Date;
   noteAddedBy: string;
@@ -278,7 +279,8 @@ export class Grant {
   minEndEndate: Date;
   grantTypeId: number;
   isInternal: boolean;
-  grantTags: GrantTag[]
+  grantTags: GrantTag[];
+  tags: GrantTag[];
 }
 
 export class GrantTag {
@@ -331,14 +333,14 @@ export class GrantHistory {
   createdAt: Date;
   createdBy: string;
   currentAssignment: User[];
-  workflowAssignment: WorkflowAssignment[];
+  workflowAssignment: WorkflowAssignments[];
   note: string;
   noteAdded: Date;
   noteAddedBy: string;
   noteAddedByUser: User;
 }
 
-export class WorkflowAssignment {
+export class WorkflowAssignments {
   id: number;
   grantId: number;
   stateName: WorkflowStatus;
@@ -485,7 +487,7 @@ export class SectionInfo {
 export class WorkflowAssignmentModel {
   users: User[];
   workflowStatuses: WorkflowStatus[];
-  workflowAssignment: WorkflowAssignment[];
+  workflowAssignment: WorkflowAssignments[];
   grant: Grant;
   type: string;
   canManage: boolean;

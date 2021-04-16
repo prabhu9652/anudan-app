@@ -119,7 +119,7 @@ export class ReportingComponent implements OnInit {
   }
 
   private checkGrantPermissions() {
-    if ((this.currentGrant.workflowAssignment.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED')) {
+    if ((this.currentGrant.workflowAssignments.filter(wf => wf.stateId === this.currentGrant.grantStatus.id && wf.assignments === this.appComp.loggedInUser.id).length > 0) && this.appComp.loggedInUser.organization.organizationType !== 'GRANTEE' && (this.currentGrant.grantStatus.internalStatus !== 'ACTIVE' && this.currentGrant.grantStatus.internalStatus !== 'CLOSED')) {
       this.canManage = true;
     } else {
       this.canManage = false;

@@ -27,7 +27,7 @@
           <div *ngIf="hasTenant">
             <div
               [ngClass]="
-                grant.currentAssignment[0].user.id ===
+                grant.currentAssignment ===
                 appComponent.loggedInUser.id
                   ? [
                       'row',
