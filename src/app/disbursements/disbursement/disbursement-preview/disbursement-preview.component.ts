@@ -547,7 +547,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
     this.adminService.getOrgTags(this.appComponent.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentDisbursement.grant.grantTags, grant: this.currentDisbursement.grant, appComp: this.appComponent, type: 'disbursement' },
+        data: { orgTags: tags, grantTags: this.currentDisbursement.grant.tags, grant: this.currentDisbursement.grant, appComp: this.appComponent, type: 'disbursement' },
         panelClass: "grant-template-class"
       });
 

@@ -32,7 +32,7 @@ import {
   TemplateLibrary,
   WorkflowStatus,
   WorkflowAssignmentModel,
-  WorkflowAssignment,
+  WorkflowAssignments,
   SectionInfo,
 } from "../../model/dahsboard";
 import { Report } from "../../model/report";
@@ -351,7 +351,7 @@ export class PreviewComponent implements OnInit {
 
   private checkGrantPermissions() {
     if (
-      this.currentGrant.workflowAssignment.filter(
+      this.currentGrant.workflowAssignments.filter(
         (wf) =>
           wf.stateId === this.currentGrant.grantStatus.id &&
           wf.assignments === this.appComp.loggedInUser.id
@@ -607,7 +607,7 @@ export class PreviewComponent implements OnInit {
         (grant: Grant) => {
           this.originalGrant = JSON.parse(JSON.stringify(grant));
           if (
-            this.currentGrant.workflowAssignment.filter(
+            this.currentGrant.workflowAssignments.filter(
               (wf) =>
                 wf.stateId === this.currentGrant.grantStatus.id &&
                 wf.assignments === this.appComp.loggedInUser.id
@@ -1090,7 +1090,7 @@ export class PreviewComponent implements OnInit {
       return;
     }
 
-    for (let assignment of this.currentGrant.workflowAssignment) {
+    for (let assignment of this.currentGrant.workflowAssignments) {
       const status1 = this.appComp.appConfig.workflowStatuses.filter(
         (status) => status.id === assignment.stateId
       );
@@ -1321,7 +1321,7 @@ export class PreviewComponent implements OnInit {
         }
 
         if (
-          this.currentGrant.workflowAssignment.filter(
+          this.currentGrant.workflowAssignments.filter(
             (a) => a.assignments === this.appComp.loggedInUser.id && a.anchor
           ).length === 0
         ) {
@@ -1582,14 +1582,14 @@ export class PreviewComponent implements OnInit {
     const wfModel = new WorkflowAssignmentModel();
     wfModel.users = this.appComp.tenantUsers;
     wfModel.workflowStatuses = this.appComp.appConfig.workflowStatuses;
-    wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+    wfModel.workflowAssignment = this.currentGrant.workflowAssignments;
     wfModel.type = this.appComp.currentView;
     wfModel.grant = this.currentGrant;
     wfModel.grant.isInternal = this.appComp.grantTypes.filter(gt => this.currentGrant.grantTypeId)[0].internal;
     wfModel.canManage =
       this.appComp.loggedInUser.organization.organizationType === "GRANTEE"
         ? false
-        : this.currentGrant.workflowAssignment.filter(
+        : this.currentGrant.workflowAssignments.filter(
           (wf) =>
             wf.stateId === this.currentGrant.grantStatus.id &&
             wf.assignments === this.appComp.loggedInUser.id
@@ -1608,9 +1608,9 @@ export class PreviewComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result) => {
         if (result.result) {
-          const ass: WorkflowAssignment[] = [];
+          const ass: WorkflowAssignments[] = [];
           for (let data of result.data) {
-            const wa = new WorkflowAssignment();
+            const wa = new WorkflowAssignments();
             wa.id = data.id;
             wa.assignments = data.userId;
             wa.stateId = data.stateId;
@@ -1911,7 +1911,7 @@ export class PreviewComponent implements OnInit {
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
+        data: { orgTags: tags, grantTags: this.currentGrant.tags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 

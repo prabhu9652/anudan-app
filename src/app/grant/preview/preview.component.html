@@ -220,8 +220,8 @@
                     }}</strong>
                   </div>
                   <div class="col-12">
-                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
-                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.tags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                    <i *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && currentGrant.tags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                     <h4
                       *ngIf="!currentGrant.referenceNo"
                       class="m-0"
@@ -810,11 +810,11 @@
             <ng-container *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'">
             <hr />
             <h5>RELATED TAGS</h5>
-            <ng-container *ngIf="currentGrant.grantTags===undefined || currentGrant.grantTags.length===0">
+            <ng-container *ngIf="currentGrant.tags===undefined || currentGrant.tags.length===0">
               No tags
             </ng-container>
-            <ng-container *ngIf="currentGrant.grantTags && currentGrant.grantTags.length>0">
-            <ng-container *ngFor="let tag of currentGrant.grantTags">
+            <ng-container *ngIf="currentGrant.tags && currentGrant.tags.length>0">
+            <ng-container *ngFor="let tag of currentGrant.tags">
               <span class="ml-2 p-2 bg-light" style="border-radius: 4px;">{{tag.tagName}}</span>
             </ng-container>
           </ng-container>

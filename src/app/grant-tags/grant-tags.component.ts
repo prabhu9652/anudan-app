@@ -151,15 +151,15 @@ export class GrantTagsComponent {
           for (let tg of newTags) {
             let url = '/api/user/' + user.id + '/grant/' + this.grant.id + '/tags/' + tg.orgTagId;
             this.http.post(url, {}, httpOptions).subscribe((result: GrantTag) => {
-              this.grant.grantTags.push(result);
+              this.grant.tags.push(result);
             });
           }
 
           for (let tg of deletedTags) {
             let url = '/api/user/' + user.id + '/grant/' + this.grant.id + '/tags/' + tg.id;
             this.http.delete(url, httpOptions).subscribe((result) => {
-              const idx = this.grant.grantTags.findIndex(gt => gt.id === tg.id);
-              this.grant.grantTags.splice(idx, 1);
+              const idx = this.grant.tags.findIndex(gt => gt.id === tg.id);
+              this.grant.tags.splice(idx, 1);
             });
           }
         } else {
@@ -176,7 +176,7 @@ export class GrantTagsComponent {
     let activeOrClosedStateOwner = false;
     if (!grantNotActiveOrClosed) {
       if (this.data.type === 'grant') {
-        const idx = this.grant.workflowAssignment.findIndex(a => a.stateId === this.grant.grantStatus.id && a.assignments === this.appComp.loggedInUser.id);
+        const idx = this.grant.workflowAssignments.findIndex(a => a.stateId === this.grant.grantStatus.id && a.assignments === this.appComp.loggedInUser.id);
         if (idx >= 0) {
           activeOrClosedStateOwner = true;
         }

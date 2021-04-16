@@ -1,5 +1,5 @@
 import { User } from 'app/model/user';
-import { Grant, WorkflowStatus, Section, WorkflowAssignment, FlowAuthority, SectionDiff } from './dahsboard';
+import { Grant, WorkflowStatus, Section, WorkflowAssignments, FlowAuthority, SectionDiff } from './dahsboard';
 
 export class Report {
     id: number;

@@ -33,7 +33,7 @@ import {
   Grant,
   Notifications,
   WorkflowAssignmentModel,
-  WorkflowAssignment,
+  WorkflowAssignments,
 } from "../../model/dahsboard";
 import {
   Report,
@@ -450,7 +450,7 @@ export class AdminLayoutComponent implements OnInit {
       const wfModel = new WorkflowAssignmentModel();
       wfModel.users = this.appComponent.tenantUsers;
       wfModel.workflowStatuses = this.appComponent.grantWorkflowStatuses;
-      wfModel.workflowAssignment = this.currentGrant.workflowAssignment;
+      wfModel.workflowAssignment = this.currentGrant.workflowAssignments;
       wfModel.type = this.appComponent.currentView;
       wfModel.grant = this.currentGrant;
       if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
@@ -460,7 +460,7 @@ export class AdminLayoutComponent implements OnInit {
         this.appComponent.loggedInUser.organization.organizationType ===
           "GRANTEE"
           ? false
-          : this.currentGrant.workflowAssignment.filter(
+          : this.currentGrant.workflowAssignments.filter(
             (wf) =>
               wf.stateId === this.currentGrant.grantStatus.id &&
               wf.assignments === this.appComponent.loggedInUser.id
@@ -474,9 +474,9 @@ export class AdminLayoutComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result.result) {
-          const ass: WorkflowAssignment[] = [];
+          const ass: WorkflowAssignments[] = [];
           for (let data of result.data) {
-            const wa = new WorkflowAssignment();
+            const wa = new WorkflowAssignments();
             wa.id = data.id;
             wa.stateId = data.stateId;
             wa.assignments = data.userId;
@@ -750,7 +750,7 @@ export class AdminLayoutComponent implements OnInit {
       this.appComponent.selectedTemplate = grant.grantTemplate;
 
       if (
-        grant.workflowAssignment.filter(
+        grant.workflowAssignments.filter(
           (wf) =>
             wf.stateId === grant.grantStatus.id &&
             wf.assignments === this.appComponent.loggedInUser.id

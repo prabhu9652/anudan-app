@@ -284,34 +284,50 @@ export class ActiveGrantsComponent implements OnInit {
   }
 
   manageGrant(grant: Grant) {
-    if (
-      grant.workflowAssignment.filter(
-        (wf) =>
-          wf.stateId === grant.grantStatus.id &&
-          wf.assignments === this.appComponent.loggedInUser.id
-      ).length > 0 &&
-      this.appComponent.loggedInUser.organization.organizationType !==
-      "GRANTEE" &&
-      grant.grantStatus.internalStatus !== "ACTIVE" &&
-      grant.grantStatus.internalStatus !== "CLOSED"
-    ) {
-      grant.canManage = true;
-    } else {
-      grant.canManage = false;
-    }
-    this.dataService.changeMessage(grant.id);
-    this.data.changeMessage(grant, this.appComponent.loggedInUser.id);
-    this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
-    this.appComponent.currentView = "grant";
 
-    this.appComponent.selectedTemplate = grant.grantTemplate;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "X-TENANT-CODE": localStorage.getItem("X-TENANT-CODE"),
+        Authorization: localStorage.getItem("AUTH_TOKEN"),
+      })
+    };
 
-    if (grant.canManage) {
-      this.router.navigate(["grant/basic-details"]);
-    } else {
-      this.appComponent.action = "preview";
-      this.router.navigate(["grant/preview"]);
-    }
+    this.appComponent.loggedIn = true;
+
+    const url = "/api/user/" + this.appComponent.loggedInUser.id + "/grant/" + grant.id;
+
+    this.http.get(url, httpOptions).subscribe((grant: Grant) => {
+      if (
+        grant.workflowAssignments.filter(
+          (wf) =>
+            wf.stateId === grant.grantStatus.id &&
+            wf.assignments === this.appComponent.loggedInUser.id
+        ).length > 0 &&
+        this.appComponent.loggedInUser.organization.organizationType !==
+        "GRANTEE" &&
+        grant.grantStatus.internalStatus !== "ACTIVE" &&
+        grant.grantStatus.internalStatus !== "CLOSED"
+      ) {
+        grant.canManage = true;
+      } else {
+        grant.canManage = false;
+      }
+      this.dataService.changeMessage(grant.id);
+      this.data.changeMessage(grant, this.appComponent.loggedInUser.id);
+      this.appComponent.originalGrant = JSON.parse(JSON.stringify(grant));
+      this.appComponent.currentView = "grant";
+
+      this.appComponent.selectedTemplate = grant.grantTemplate;
+
+      if (grant.canManage) {
+        this.router.navigate(["grant/basic-details"]);
+      } else {
+        this.appComponent.action = "preview";
+        this.router.navigate(["grant/preview"]);
+      }
+    });
+
   }
 
   deleteGrant(grant: Grant) {

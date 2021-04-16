@@ -338,7 +338,7 @@ export class SectionsComponent
 
   private checkGrantPermissions() {
     if (
-      this.currentGrant.workflowAssignment.filter(
+      this.currentGrant.workflowAssignments.filter(
         (wf) =>
           wf.stateId === this.currentGrant.grantStatus.id &&
           wf.assignments === this.appComp.loggedInUser.id
@@ -601,7 +601,7 @@ export class SectionsComponent
         //this.dataService.changeMessage(grant.id);
         //this.currentGrant = grant;
         if (
-          this.currentGrant.workflowAssignment.filter(
+          this.currentGrant.workflowAssignments.filter(
             (wf) =>
               wf.stateId === this.currentGrant.grantStatus.id &&
               wf.assignments === this.appComp.loggedInUser.id
@@ -2417,7 +2417,7 @@ export class SectionsComponent
     this.adminService.getOrgTags(this.appComp.loggedInUser).then((tags: OrgTag[]) => {
 
       const dg = this.dialog.open(GrantTagsComponent, {
-        data: { orgTags: tags, grantTags: this.currentGrant.grantTags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
+        data: { orgTags: tags, grantTags: this.currentGrant.tags, grant: this.currentGrant, appComp: this.appComp, type: 'grant' },
         panelClass: "grant-template-class"
       });
 
