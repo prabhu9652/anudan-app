@@ -1,6 +1,10 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="anu-container" style="padding: 40px">
+      <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
+        <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
+        <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
+      </div>
       <div class="row">
         <div class="col-12">
           <div *ngIf="!submittedReports">
@@ -25,7 +29,7 @@
                 : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
             "
             style="cursor: pointer"
-            *ngFor="let report of submittedReports; let i = index"
+            *ngFor="let report of filteredSubmittedReports; let i = index"
             (click)="manageReport(report)"
           >
             <div class="col-12 mb-1">

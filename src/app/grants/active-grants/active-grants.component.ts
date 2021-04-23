@@ -70,9 +70,10 @@ export class ActiveGrantsComponent implements OnInit {
   currentGrant: Grant;
   currentGrantId: number;
   grantsDraft = [];
-  grantsActive = [];
+  grantsActive: Grant[] = [];
   grantsClosed = [];
   logoURL: string;
+  filteredGrants: Grant[] = [];
 
   constructor(
     private http: HttpClient,
@@ -248,6 +249,7 @@ export class ActiveGrantsComponent implements OnInit {
                 break;
               }
             }
+            this.filteredGrants = this.grantsActive;
             this.grantUpdateService.changeMessage(false);
           }
         },
@@ -460,5 +462,9 @@ export class ActiveGrantsComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  startFilter(val) {
+    this.filteredGrants = this.grantsActive.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val))));
   }
 }

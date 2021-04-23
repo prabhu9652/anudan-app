@@ -71,8 +71,9 @@ export class ClosedGrantsComponent implements OnInit {
   currentGrantId: number;
   grantsDraft = [];
   grantsActive = [];
-  grantsClosed = [];
+  grantsClosed: Grant[] = [];
   logoURL: string;
+  filteredGrants: Grant[] = [];
 
   constructor(
     private http: HttpClient,
@@ -248,6 +249,7 @@ export class ClosedGrantsComponent implements OnInit {
                 break;
               }
             }
+            this.filteredGrants = this.grantsClosed;
             this.grantUpdateService.changeMessage(false);
           }
         },
@@ -467,5 +469,9 @@ export class ClosedGrantsComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  startFilter(val) {
+    this.filteredGrants = this.grantsClosed.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val))));
   }
 }

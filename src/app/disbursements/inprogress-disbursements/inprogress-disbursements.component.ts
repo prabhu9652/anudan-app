@@ -21,6 +21,7 @@ export class InprogressDisbursementsComponent implements OnInit {
 
   disbursements: Disbursement[];
   deleteDisbursementEvent: boolean = false;
+  filteredDisbursements: Disbursement[];
 
 
   public constructor(
@@ -42,6 +43,7 @@ export class InprogressDisbursementsComponent implements OnInit {
   fetchInprogressDisbursements() {
     this.disbursementDataService.fetchInprogressDisbursements().then(list => {
       this.disbursements = list;
+      this.filteredDisbursements = this.disbursements;
       console.log(this.disbursements)
     });
   }
@@ -133,6 +135,10 @@ export class InprogressDisbursementsComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  startFilter(val) {
+    this.filteredDisbursements = this.disbursements.filter(g => ((g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
   }
 
 }

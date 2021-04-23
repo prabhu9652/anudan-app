@@ -19,7 +19,7 @@
         </mat-chip>
         
       </mat-chip-list>
-      <label *ngIf="canManageTags()" class="mt-4">Add a tag(s)</label>
+      <label #fruitInputLabel *ngIf="canManageTags()" class="mt-4">Add a tag(s)</label>
       <input class="anu-input" *ngIf="canManageTags()"
           
           #fruitInput

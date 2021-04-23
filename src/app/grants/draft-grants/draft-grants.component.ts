@@ -11,7 +11,7 @@ import {
 import { User } from "../../model/user";
 import { SerializationHelper, Tenant, Tenants } from "../../model/dahsboard";
 import { AppComponent } from "../../app.component";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { Router, ActivatedRoute, ParamMap, NavigationStart } from "@angular/router";
 import { GrantDataService } from "../../grant.data.service";
 import { DataService } from "../../data.service";
 import { GrantUpdateService } from "../../grant.update.service";
@@ -85,7 +85,8 @@ export class DraftGrantsComponent implements OnInit {
   kpiSubmissionTitle: string;
   currentGrant: Grant;
   currentGrantId: number;
-  grantsDraft = [];
+  grantsDraft: Grant[] = [];
+  filteredGrants: Grant[] = [];
   grantsActive = [];
   grantsClosed = [];
   logoURL: string;
@@ -93,6 +94,8 @@ export class DraftGrantsComponent implements OnInit {
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
   deleteGrantEvent: boolean = false;
   private t: Timer;
+  subscribers: any = {};
+  searchCriteria: string;
 
   constructor(
     private http: HttpClient,
@@ -107,7 +110,8 @@ export class DraftGrantsComponent implements OnInit {
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.appComponent.subMenu = { name: "In-progress Grants", action: "dg" };
@@ -315,6 +319,8 @@ export class DraftGrantsComponent implements OnInit {
         break;
       }
     }
+
+    this.filteredGrants = this.grantsDraft;
   }
 
   manageGrant(grant: Grant) {
@@ -501,5 +507,9 @@ export class DraftGrantsComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  startFilter(val) {
+    this.filteredGrants = this.grantsDraft.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val))));
   }
 }
