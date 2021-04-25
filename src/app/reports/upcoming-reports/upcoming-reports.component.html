@@ -1,6 +1,10 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="anu-container" style="padding: 40px">
+      <!-- <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
+        <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
+        <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
+      </div> -->
       <button
         *ngIf="appComp.loggedInUser.organization.organizationType === 'GRANTER'"
         class="btn btn-sm btn-green"
@@ -18,13 +22,13 @@
                 appComp.loggedInUser.organization.organizationType === 'GRANTER'
               "
               label="Reports Due Now ({{
-                reportsToSetup ? reportsToSetup.length : 0
+                filteredToSetupReports ? filteredToSetupReports.length : 0
               }})"
             >
               <!--div *ngIf=reportsToSetupData>
                                 <input class=" anu-input my-1" style="line-height: 100% !important; position: relative; max-height: 25px; min-height: 25px; float: right;font-size: 11px !important;color: #7f7f7f;" placeholder="Search..." [(ngModel)]="upcomingSearchCriteria" (keyup)="startFilter('upcoming',$event)" >
                             </div-->
-              <div *ngIf="!reportsToSetupData">
+              <div *ngIf="!filteredToSetupReports">
                 <img src="./assets/img/loader.gif" style="width: 10%" />
                 <p style="color: black">Loading upcoming reports...</p>
               </div>
@@ -48,7 +52,7 @@
                     : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
                 "
                 style="cursor: pointer"
-                *ngFor="let report of reportsToSetupData; let i = index"
+                *ngFor="let report of filteredToSetupReports; let i = index"
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">
@@ -215,7 +219,7 @@
             </mat-tab>
             <mat-tab
               label="Submissions Due ({{
-                reportsReadyToSubmit ? reportsReadyToSubmit.length : 0
+                filteredReadyToSubmitReports ? filteredReadyToSubmitReports.length : 0
               }})"
             >
               <div *ngIf="!reportsReadyToSubmit">
@@ -232,7 +236,7 @@
               <div
                 class="row w-100 p-3 mb-2 mx-0 grants-section"
                 style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
-                *ngFor="let report of reportsReadyToSubmit; let i = index"
+                *ngFor="let report of filteredReadyToSubmitReports; let i = index"
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">
@@ -369,7 +373,7 @@
               </div>
             </mat-tab>
             <mat-tab
-              label="All Reports ({{ allReports ? allReports.length : 0 }})"
+              label="All Reports ({{ filterAllReports ? filterAllReports.length : 0 }})"
             >
               <div *ngIf="!allReports">
                 <img src="./assets/img/loader.gif" style="width: 10%" />
@@ -381,7 +385,7 @@
               <div
                 class="row w-100 p-3 mb-2 mx-0 grants-section"
                 style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
-                *ngFor="let report of allReports; let i = index"
+                *ngFor="let report of filterAllReports; let i = index"
                 (click)="manageReport(report)"
               >
                 <div class="col-12 mb-1">

@@ -39,6 +39,9 @@ export class UpcomingReportsComponent implements OnInit {
     otherReportsClicked: boolean = false;
     deleteReportsClicked: boolean = false;
     upcomingSearchCriteria: string;
+    filteredToSetupReports: Report[];
+    filteredReadyToSubmitReports: Report[];
+    filterAllReports: Report[];
 
     constructor(
         private reportService: ReportDataService,
@@ -121,6 +124,7 @@ export class UpcomingReportsComponent implements OnInit {
             //this.processReports(reports);
             this.reportsToSetup = reports;
             this.reportsToSetupData = reports;
+            this.filteredToSetupReports = this.reportsToSetupData;
             this.processReports(reports);
         });
 
@@ -136,6 +140,7 @@ export class UpcomingReportsComponent implements OnInit {
         this.http.get<Report[]>(url, httpOptions2).subscribe((reports: Report[]) => {
             //this.processReports(reports);
             this.reportsReadyToSubmit = reports;
+            this.filteredReadyToSubmitReports = this.reportsReadyToSubmit;
             if (this.appComp.loggedInUser.organization.organizationType === 'GRANTEE') {
                 this.reportsReadyToSubmit.sort((a, b) => (a.dueDate <= b.dueDate) ? -1 : 1);
             }
@@ -153,6 +158,7 @@ export class UpcomingReportsComponent implements OnInit {
         this.http.get<Report[]>(url, httpOptions3).subscribe((reports: Report[]) => {
             //this.processReports(reports);
             this.allReports = reports;
+            this.filterAllReports = this.allReports;
         });
     }
 
@@ -331,7 +337,7 @@ export class UpcomingReportsComponent implements OnInit {
         return inf.format(amount, 2);
     }
 
-    startFilter(_for: string, ev) {
+    /* startFilter(_for: string, ev) {
         const searchCriteria = ev.target.value;
         if (_for === 'upcoming') {
             if (searchCriteria !== '') {
@@ -340,7 +346,7 @@ export class UpcomingReportsComponent implements OnInit {
                 this.reportsToSetupData = this.reportsToSetup;
             }
         }
-    }
+    } */
 
     deleteReport(report: Report) {
         this.deleteReportsClicked = true;
@@ -402,5 +408,11 @@ export class UpcomingReportsComponent implements OnInit {
         } else {
             return false;
         }
+    }
+
+    startFilter(val) {
+        this.filteredToSetupReports = this.reportsToSetupData.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+        this.filteredReadyToSubmitReports = this.reportsReadyToSubmit.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+        this.filterAllReports = this.allReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
     }
 }

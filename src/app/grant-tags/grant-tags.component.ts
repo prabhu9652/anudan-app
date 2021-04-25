@@ -7,6 +7,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { COMMA } from '@angular/cdk/keycodes';
 import { ENTER } from '@angular/cdk/keycodes';
+import { interval } from "rxjs";
 import { FormControl } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -14,7 +15,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { MessagingComponent } from './../components/messaging/messaging.component';
 import { MatAutocompleteSelectedEvent, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Component, OnInit, ElementRef, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Inject, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-grant-tags',
@@ -36,6 +37,7 @@ export class GrantTagsComponent {
 
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('fruitInputLabel') fruitInputLabel: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(private dialogRef: MatDialogRef<GrantTagsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialog, private http: HttpClient) {
@@ -88,6 +90,11 @@ export class GrantTagsComponent {
     this.selectedTags.push(JSON.parse(JSON.stringify(tg)));
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
+    this.fruitInput.nativeElement.blur();
+    interval(100).subscribe((t) => {
+      this.fruitInput.nativeElement.focus();
+    });
+    //this.fruitInputLabel.nativeElement.click();
   }
 
   private _filter(value): OrgTag[] {

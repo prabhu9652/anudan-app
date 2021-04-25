@@ -20,6 +20,7 @@ export class SubmittedReportsComponent implements OnInit {
     reports: Report[];
     submittedReports: Report[];
     subscribers: any = {};
+    filteredSubmittedReports: Report[];
 
     constructor(
         private reportService: ReportDataService,
@@ -78,20 +79,35 @@ export class SubmittedReportsComponent implements OnInit {
             reports.sort((a, b) => a.endDate > b.endDate ? 1 : -1);
             this.reportService.changeMessage(reports);
             this.submittedReports = reports;
+            this.filteredSubmittedReports = this.submittedReports;
 
         });
     }
 
     manageReport(report: Report) {
-        this.appComp.currentView = 'report';
-        this.singleReportService.changeMessage(report);
 
-        if (report.canManage && report.status.internalStatus != 'CLOSED') {
-            this.router.navigate(['report/report-header']);
-        } else {
-            this.appComp.action = 'report';
-            this.router.navigate(['report/report-preview']);
-        }
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'X-TENANT-CODE': localStorage.getItem('X-TENANT-CODE'),
+                'Authorization': localStorage.getItem('AUTH_TOKEN')
+            })
+        };
+
+        const user = JSON.parse(localStorage.getItem('USER'));
+        let url = '/api/user/' + user.id + '/report/' + report.id;
+        this.http.get<Report>(url, httpOptions).subscribe((report: Report) => {
+            this.appComp.currentView = 'report';
+            this.singleReportService.changeMessage(report);
+            if (report.canManage && report.status.internalStatus != 'CLOSED') {
+                this.router.navigate(['report/report-header']);
+            } else {
+                this.appComp.action = 'report';
+                this.router.navigate(['report/report-preview']);
+            }
+        });
+
     }
 
     getGrantAmountInWords(amount: number) {
@@ -113,5 +129,9 @@ export class SubmittedReportsComponent implements OnInit {
 
     public getGrantTypeColor(typeId): any {
         return this.appComp.grantTypes.filter(t => t.id === typeId)[0].colorCode;
+    }
+
+    startFilter(val) {
+        this.filteredSubmittedReports = this.submittedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
     }
 }
