@@ -199,7 +199,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       this.currentDisbursement.approvedActualsDibursements.length > 0
     ) {
       for (let ad of this.currentDisbursement.approvedActualsDibursements) {
-        total += ad.actualAmount;
+        total += ad.actualAmount === undefined ? 0 : ad.actualAmount;
       }
     }
     return total;
@@ -211,7 +211,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       let i = 0;
       for (let col of row.columns) {
         if (i === idx) {
-          total += Number(col.value);
+          total += Number(col.value === undefined ? 0 : col.value);
         }
         i++;
       }
