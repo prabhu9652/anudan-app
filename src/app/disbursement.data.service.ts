@@ -40,7 +40,7 @@ export class DisbursementDataService {
     private httpClient: HttpClient,
     public userService: UserService,
     public currencyService: CurrencyService
-  ) {}
+  ) { }
 
   changeMessage(message: Disbursement) {
     if (message !== undefined) {
@@ -332,12 +332,12 @@ export class DisbursementDataService {
       return this.httpClient
         .post(
           this.getUrl() +
-            "/" +
-            disbursement.id +
-            "/flow/" +
-            fromStateId +
-            "/" +
-            toStateId,
+          "/" +
+          disbursement.id +
+          "/flow/" +
+          fromStateId +
+          "/" +
+          toStateId,
           { disbursement: disbursement, note: message },
           this.getHeader()
         )
@@ -383,10 +383,10 @@ export class DisbursementDataService {
       return this.httpClient
         .delete(
           this.getUrl() +
-            "/" +
-            disbursement.id +
-            "/actual/" +
-            actualDisbursement.id,
+          "/" +
+          disbursement.id +
+          "/actual/" +
+          actualDisbursement.id,
           this.getHeader()
         )
         .toPromise()
@@ -433,7 +433,7 @@ export class DisbursementDataService {
           d.disbursementDate === null ||
           String(d.disbursementDate).trim() === ""
         ) {
-        
+
           return false;
         }
       }
@@ -444,7 +444,7 @@ export class DisbursementDataService {
   getActualDisbursementsTotal(disbursement: Disbursement): number {
     let total = 0;
     for (let ad of disbursement.approvedActualsDibursements) {
-      total += ad.actualAmount;
+      total += ad.actualAmount === undefined ? 0 : ad.actualAmount;
     }
     return total;
   }
@@ -462,11 +462,11 @@ export class DisbursementDataService {
       return this.httpClient
         .post(
           this.getUrl() +
-            "/grant/" +
-            report.grant.id +
-            "/report/" +
-            report.id +
-            "/record",
+          "/grant/" +
+          report.grant.id +
+          "/report/" +
+          report.id +
+          "/record",
           {},
           this.getHeader()
         )
