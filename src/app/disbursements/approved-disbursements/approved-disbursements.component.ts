@@ -36,6 +36,7 @@ export class ApprovedDisbursementsComponent implements OnInit {
   fetchActiveDisbursements() {
     this.disbursementDataService.fetchActiveDisbursements().then(list => {
       this.disbursements = list;
+      this.filteredDisbursements = this.disbursements;
       console.log(this.disbursements)
     });
   }

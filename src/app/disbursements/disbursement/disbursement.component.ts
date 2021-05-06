@@ -94,7 +94,7 @@ export class DisbursementComponent implements OnInit, OnDestroy {
       let i = 0;
       for (let col of row.columns) {
         if (i === idx) {
-          total += Number(col.value);
+          total += Number(col.value === undefined ? 0 : col.value);
         }
         i++;
       }

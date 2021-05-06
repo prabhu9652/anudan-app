@@ -286,6 +286,7 @@
                 type="number"
                 [ngModelOptions]="{ standAlone: true }"
                 (ngModelChange)="checkGrant()"
+                (blur)="validateAmountForAmendedGrant($event)"
                 placeholder="Enter grant amount"
                 autocomplete="false"
                 (keypress)="amountValidator.validatePositive($event)"

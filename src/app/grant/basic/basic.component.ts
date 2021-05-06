@@ -1675,4 +1675,14 @@ export class BasicComponent implements OnInit {
 
     });
   }
+
+  validateAmountForAmendedGrant(ev) {
+    if (this.currentGrant.origGrantId && ev.target.value < this.currentGrant.approvedDisbursementsTotal) {
+      const dg = this.dialog.open(MessagingComponent, {
+        data:
+          "Grant amount cannot be lesser than previously approved disbursement of ₹" + this.currentGrant.approvedDisbursementsTotal,
+        panelClass: "center-class",
+      });
+    }
+  }
 }
