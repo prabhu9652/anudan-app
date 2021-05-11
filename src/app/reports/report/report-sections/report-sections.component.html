@@ -1146,7 +1146,10 @@
                                             top: 0px;
                                           "
                                         >
-                                          {{ row.name }}
+                                        <ng-container *ngIf="row.enteredByGrantee &&
+                                        row.status && row.reportId===currentReport.id">* </ng-container>
+                                        <ng-container *ngIf="row.enteredByGrantee &&
+                                        row.status && row.reportId!==currentReport.id">** </ng-container>{{ row.name }}
                                         </p>
                                       </ng-container>
                                       <ng-container
@@ -1202,7 +1205,9 @@
                                             top: -14px;
                                           "
                                         >
-                                          {{ row.name }}
+                                        <ng-container *ngIf="row.enteredByGrantee &&
+                                        currentReport.forGranteeUse &&
+                                        row.status">* </ng-container>{{ row.name }}
                                         </p>
                                       </ng-container>
                                       <ng-container
@@ -1851,7 +1856,10 @@
                                       >
                                         <ng-container *ngIf="row.enteredByGrantee &&
                                         currentReport.forGranteeUse &&
-                                        row.status">* </ng-container>{{ row.name }}
+                                        row.status && row.reportId===currentReport.id">* </ng-container>
+                                        <ng-container *ngIf="row.enteredByGrantee &&
+                                        currentReport.forGranteeUse &&
+                                        row.status && row.reportId!==currentReport.id">** </ng-container>{{ row.name }}
                                       </p>
                                     </td>
                                     <ng-container
@@ -2113,10 +2121,6 @@
                                       </td>
                                     </ng-container>
                                   </tr>
-                                  <tr *ngIf="row.enteredByGrantee &&
-                                  currentReport.forGranteeUse &&
-                                  row.status && row.reportId!==currentReport.id">
-                                <td colspan="3" style="padding:8px;"><strong>*</strong> Indicates unapproved funds from other sources</td></tr>
                                 </ng-container>
                               </ng-container>
 
@@ -2149,7 +2153,7 @@
                                   style="position: sticky; left: 0; z-index: 1"
                                 >
                                   <label class="w-100" style="font-weight: 600"
-                                    >TOTAL:</label
+                                    >TOTAL2:</label
                                   >
                                 </td>
                                 <ng-container
@@ -2173,6 +2177,7 @@
                                   </td>
                                 </ng-container>
                               </tr>
+                              <tr *ngIf="showUnapprovedIndicator(attribute)"><td colspan="5" [innerHTML]="showUnapprovedIndicator(attribute)"></td></tr>
                             </table>
                           </div>
                         </div>
