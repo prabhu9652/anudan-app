@@ -383,7 +383,19 @@
                 <p style="color: black">No reports found</p>
               </div>
               <div
-                class="row w-100 p-3 mb-2 mx-0 grants-section"
+              [ngClass]="
+              report.canManage
+                ? [
+                    'row',
+                    'w-100',
+                    'p-3',
+                    'mb-2',
+                    'mx-0',
+                    'grants-section',
+                    'owner-highlight'
+                  ]
+                : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
+            "
                 style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
                 *ngFor="let report of filterAllReports; let i = index"
                 (click)="manageReport(report)"
