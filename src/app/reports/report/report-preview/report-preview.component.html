@@ -628,7 +628,10 @@
                                 "
                                 align="center"
                               >
-                                {{ row.name }}
+                              <ng-container *ngIf="row.enteredByGrantee &&
+                              row.status && row.reportId===currentReport.id">* </ng-container>
+                              <ng-container *ngIf="row.enteredByGrantee &&
+                              row.status && row.reportId!==currentReport.id">** </ng-container>{{ row.name }}
                               </td>
                               <ng-container
                                 *ngFor="
@@ -734,6 +737,7 @@
                             </ng-container>
                           </tr>
                         </ng-container>
+                        <tr *ngIf="showUnapprovedIndicator(attribute)"><td colspan="5" [innerHTML]="showUnapprovedIndicator(attribute)"></td></tr>
                       </table>
                     </div>
                   </ng-container>

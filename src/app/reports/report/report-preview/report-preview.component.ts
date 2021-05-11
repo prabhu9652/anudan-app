@@ -567,4 +567,25 @@ export class ReportPreviewComponent implements OnInit {
         });
 
     }
+
+
+    showUnapprovedIndicator(attr: Attribute) {
+
+        if (attr.fieldTableValue) {
+            let indicator: string[] = [];
+            for (let row of attr.fieldTableValue) {
+                if (row.enteredByGrantee && row.status && row.reportId === this.currentReport.id) {
+                    if (indicator.findIndex(a => a === '* Indicates unapproved funds from other sources') < 0) {
+                        indicator.push("* Indicates unapproved funds from other sources");
+                    }
+                } else if (row.enteredByGrantee && row.status && row.reportId !== this.currentReport.id) {
+                    if (indicator.findIndex(a => a === '') < 0) {
+                        indicator.push("");
+                    }
+                }
+            }
+            return indicator.join("<br>");
+        }
+        return null;
+    }
 }
