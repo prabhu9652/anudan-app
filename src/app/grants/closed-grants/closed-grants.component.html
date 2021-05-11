@@ -40,7 +40,8 @@
               (click)="manageGrant(grant)"
             >
               <div class="col-10 text-left">
-                
+                <i *ngIf="grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
+                <i *ngIf="grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                 <p
                   class="text-header mb-1"
                   *ngIf="!grant.referenceNo"

@@ -1474,12 +1474,12 @@ export class ReportSectionsComponent implements OnInit {
       let indicator: string[] = [];
       for (let row of attr.fieldTableValue) {
         if (row.enteredByGrantee && row.status && row.reportId === this.currentReport.id) {
-          if (indicator.findIndex(a => a === '* Indicates unapproved funds from other sources') < 0) {
-            indicator.push("* Indicates unapproved funds from other sources");
+          if (indicator.findIndex(a => a === '* Indicates unapproved project funds, will be considered as approved project funds on approval of this report.') < 0) {
+            indicator.push("* Indicates unapproved project funds, will be considered as approved project funds on approval of this report.");
           }
         } else if (row.enteredByGrantee && row.status && row.reportId !== this.currentReport.id) {
-          if (indicator.findIndex(a => a === '** Indicates unapproved other sources from another report') < 0) {
-            indicator.push("** Indicates unapproved other sources from another report");
+          if (indicator.findIndex(a => a === '** Indicates unapproved project funds from another report, will be considered as approved project funds on approval of that report. Will not be considered as project funds on approval of this report.') < 0) {
+            indicator.push("** Indicates unapproved project funds from another report, will be considered as approved project funds on approval of that report. Will not be considered as project funds on approval of this report.");
           }
         }
       }
