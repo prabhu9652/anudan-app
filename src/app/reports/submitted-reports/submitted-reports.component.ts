@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { Component, OnInit } from '@angular/core';
 import { ReportDataService } from '../../report.data.service'
 import { SingleReportDataService } from '../../single.report.data.service'
@@ -28,7 +29,8 @@ export class SubmittedReportsComponent implements OnInit {
         private http: HttpClient,
         private router: Router,
         public appComp: AppComponent,
-        private titlecasePipe: TitleCasePipe) {
+        private titlecasePipe: TitleCasePipe,
+        public uiService: UiUtilService) {
 
         this.appComp.reportUpdated.subscribe((statusUpdate) => {
             if (statusUpdate.status && statusUpdate.reportId) {

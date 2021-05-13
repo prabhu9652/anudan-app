@@ -38,19 +38,7 @@
                 <p style="color: black">No reports found</p>
               </div>
               <div
-                [ngClass]="
-                  report.canManage
-                    ? [
-                        'row',
-                        'w-100',
-                        'p-3',
-                        'mb-2',
-                        'mx-0',
-                        'grants-section',
-                        'owner-highlight'
-                      ]
-                    : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-                "
+                [ngClass]="uiService.getCardStyle(report.canManage)"
                 style="cursor: pointer"
                 *ngFor="let report of filteredToSetupReports; let i = index"
                 (click)="manageReport(report)"
@@ -383,19 +371,7 @@
                 <p style="color: black">No reports found</p>
               </div>
               <div
-              [ngClass]="
-              report.canManage
-                ? [
-                    'row',
-                    'w-100',
-                    'p-3',
-                    'mb-2',
-                    'mx-0',
-                    'grants-section',
-                    'owner-highlight'
-                  ]
-                : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-            "
+              [ngClass]="uiService.getCardStyle(report.canManage)"
                 style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
                 *ngFor="let report of filterAllReports; let i = index"
                 (click)="manageReport(report)"

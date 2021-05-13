@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { UpdateService } from './../../update.service';
 import { AppComponent } from 'app/app.component';
 import { ReportDataService } from './../../report.data.service';
@@ -30,7 +31,8 @@ export class AddnlreportsDialogComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private reportService: ReportDataService, public dialogRef: MatDialogRef<AddnlreportsDialogComponent>
     , @Inject(MAT_DIALOG_DATA) public reportsMetaData: any
-    , private http: HttpClient, private currenyService: CurrencyService) {
+    , private http: HttpClient, private currenyService: CurrencyService,
+    public uiService: UiUtilService) {
     this.data = reportsMetaData.data;
     this.appComp = reportsMetaData.appComp;
     this.dialogRef.disableClose = false;

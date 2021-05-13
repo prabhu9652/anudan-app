@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from 'app/app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -30,7 +31,8 @@ export class InprogressDisbursementsComponent implements OnInit {
     private dialog: MatDialog,
     public disbursementDataService: DisbursementDataService,
     private router: Router,
-    public currencyService: CurrencyService
+    public currencyService: CurrencyService,
+    public uiService: UiUtilService
   ) { };
 
 

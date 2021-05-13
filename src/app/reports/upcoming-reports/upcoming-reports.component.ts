@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { Component, OnInit } from '@angular/core';
 import { ReportDataService } from '../../report.data.service'
 import { SingleReportDataService } from '../../single.report.data.service'
@@ -51,7 +52,8 @@ export class UpcomingReportsComponent implements OnInit {
         public appComp: AppComponent,
         private dialog: MatDialog,
         public reportComponent: ReportComponent,
-        private titlecasePipe: TitleCasePipe) {
+        private titlecasePipe: TitleCasePipe,
+        public uiService: UiUtilService) {
         this.appComp.reportUpdated.subscribe((statusUpdate) => {
             if (statusUpdate.status && statusUpdate.reportId) {
                 let url =

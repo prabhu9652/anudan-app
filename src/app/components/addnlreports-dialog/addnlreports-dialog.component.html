@@ -46,19 +46,7 @@
   <p style="color: black">No additional reports available for this grant</p>
 </div>
 <div
-  [ngClass]="
-    report.canManage
-      ? [
-          'row',
-          'w-100',
-          'p-3',
-          'mb-2',
-          'mx-0',
-          'grants-section',
-          'owner-highlight'
-        ]
-      : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-  "
+  [ngClass]="uiService.getCardStyle(report.canManage)"
   style="cursor: pointer"
   *ngFor="let report of selectedReports; let i = index"
 >

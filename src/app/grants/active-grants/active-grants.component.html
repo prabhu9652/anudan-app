@@ -30,19 +30,7 @@
 
           <div *ngIf="hasTenant">
             <div
-              [ngClass]="
-                grant.currentAssignment ===
-                appComponent.loggedInUser.id
-                  ? [
-                      'row',
-                      'w-100',
-                      'p-3',
-                      'mb-2',
-                      'mx-0',
-                      'grants-section owner-highlight'
-                    ]
-                  : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-              "
+              [ngClass]="uiService.getCardStyle(grant.currentAssignment ===appComponent.loggedInUser.id)"
               style="border-radius: 8px; cursor: pointer"
               *ngFor="let grant of filteredGrants; let i = index"
               (click)="manageGrant(grant)"
