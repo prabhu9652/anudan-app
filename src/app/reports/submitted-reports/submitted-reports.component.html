@@ -37,13 +37,16 @@
                     ? report.grant.referenceNo + " | "
                     : "") + report.grant.name
                 }}</b>
-                &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
-                <b>{{
+                <br>Implementing Organization:
+                <b *ngIf="isExternalGrant(report.grant)">{{
                   report.grant.organization
                     ? report.grant.organization.name
                     : ""
-                }}</b
-                ><br />
+                }}</b> 
+                <b *ngIf="!isExternalGrant(report.grant)">{{
+                  report.grant.grantorOrganization.name
+                }}</b> 
+                <br />
                 Grant Amount:
                 <img src="./assets/img/rupee.png" style="width: 9px" /><b
                   >{{ getFormattedGrantAmount(report.grant.amount) }}

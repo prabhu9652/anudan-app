@@ -153,7 +153,7 @@
                   style="color: #929292; font-size: 13px; font-family: Roboto"
                   >Implementing Organization:</span
                 >
-                <div *ngIf="currentReport.grant.organization" class="ml-0 mb-3">
+                <div class="ml-0 mb-3">
                   <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && isExternalGrant(currentReport.grant)">{{ currentReport.grant.organization.name }}</b>
                   <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && !isExternalGrant(currentReport.grant)">{{ currentReport.grant.grantorOrganization.name }}</b>
                 </div>

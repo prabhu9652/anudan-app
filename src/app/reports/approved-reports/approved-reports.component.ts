@@ -1,3 +1,4 @@
+import { Grant } from './../../model/dahsboard';
 import { Component, OnInit } from '@angular/core';
 import { ReportDataService } from '../../report.data.service'
 import { SingleReportDataService } from '../../single.report.data.service'
@@ -115,5 +116,14 @@ export class ApprovedReportsComponent implements OnInit {
 
     startFilter(val) {
         this.filteredApprovedReports = this.approvedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+    }
+
+    isExternalGrant(grant: Grant): boolean {
+        const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
+        if (!grantType || !grantType.internal) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

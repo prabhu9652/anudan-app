@@ -41,13 +41,16 @@
                       ? disbursement.grant.referenceNo + " | "
                       : "") + disbursement.grant.name
                   }}</b>
-                  &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
-                  <b>{{
-                    disbursement.grant.organization
-                      ? disbursement.grant.organization.name
-                      : ""
-                  }}</b
-                  ><br />
+                  <br>Implementing Organization:
+                <b *ngIf="isExternalGrant(disbursement.grant)">{{
+                  disbursement.grant.organization
+                    ? disbursement.grant.organization.name
+                    : ""
+                }}</b> 
+                <b *ngIf="!isExternalGrant(disbursement.grant)">{{
+                  disbursement.grant.grantorOrganization.name
+                }}</b>
+                  <br />
                   Grant Amount:
                   <b
                     >{{

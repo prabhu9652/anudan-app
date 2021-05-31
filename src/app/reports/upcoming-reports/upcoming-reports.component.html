@@ -243,14 +243,13 @@
                       (report.grant.referenceNo
                         ? report.grant.referenceNo + " | "
                         : "") + report.grant.name
-                    }}</b>
-                    &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
-                    <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && isExternalGrant(report.grant)">{{
+                    }}</b><br>Implementing Organization:
+                    <b *ngIf="isExternalGrant(report.grant)">{{
                       report.grant.organization
                         ? report.grant.organization.name
                         : ""
                     }}</b> 
-                    <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && !isExternalGrant(report.grant)">{{
+                    <b *ngIf="!isExternalGrant(report.grant)">{{
                       report.grant.grantorOrganization.name
                     }}</b> 
                     <br />

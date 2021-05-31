@@ -205,11 +205,13 @@
                   style="color: #929292; font-size: 13px; font-family: Roboto"
                   >Implementing Organization:</span
                 >
-                <div
-                  *ngIf="currentDisbursement.grant.organization"
+                <div  
                   class="ml-0 mb-3"
                 >
                   <b *ngIf="isExternalGrant(currentDisbursement.grant)">{{ currentDisbursement.grant.organization.name }}</b>
+                  <b *ngIf="!isExternalGrant(currentDisbursement.grant)">{{
+                    currentDisbursement.grant.grantorOrganization.name
+                  }}</b>
                 </div>
               </div>
               <div class="col-4 mb-2">

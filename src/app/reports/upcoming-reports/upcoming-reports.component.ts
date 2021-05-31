@@ -405,7 +405,7 @@ export class UpcomingReportsComponent implements OnInit {
 
     isExternalGrant(grant: Grant): boolean {
         const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
-        if (!grantType.internal) {
+        if (!grantType || !grantType.internal) {
             return true;
         } else {
             return false;

@@ -120,6 +120,11 @@
                   <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && !isExternalGrant(currentReport.grant)">{{
                     currentReport.grant.grantorOrganization.name
                   }}</b>
+                  <b *ngIf="appComp.loggedInUser.organization.organizationType==='GRANTEE'">{{
+                    currentReport.grant.organization
+                      ? currentReport.grant.organization.name
+                      : ""
+                  }}</b>
                 </div>
               </div>
               <div class="col-12">
