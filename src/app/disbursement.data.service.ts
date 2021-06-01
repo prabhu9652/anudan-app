@@ -443,8 +443,10 @@ export class DisbursementDataService {
 
   getActualDisbursementsTotal(disbursement: Disbursement): number {
     let total = 0;
-    for (let ad of disbursement.approvedActualsDibursements) {
-      total += ad.actualAmount === undefined ? 0 : ad.actualAmount;
+    if (disbursement.approvedActualsDibursements) {
+      for (let ad of disbursement.approvedActualsDibursements) {
+        total += ad.actualAmount === undefined ? 0 : ad.actualAmount;
+      }
     }
     return total;
   }

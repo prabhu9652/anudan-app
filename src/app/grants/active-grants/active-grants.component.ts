@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { CurrencyService } from "./../../currency-service";
 import { Component, OnInit } from "@angular/core";
 import {
@@ -87,7 +88,8 @@ export class ActiveGrantsComponent implements OnInit {
     private grantUpdateService: GrantUpdateService,
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    public uiService: UiUtilService
   ) { }
 
   ngOnInit() {

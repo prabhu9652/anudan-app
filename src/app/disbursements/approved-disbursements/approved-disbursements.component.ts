@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { Grant } from './../../model/dahsboard';
 import { FieldDialogComponent } from './../../components/field-dialog/field-dialog.component';
 import { MatDialog } from '@angular/material';
@@ -24,7 +25,8 @@ export class ApprovedDisbursementsComponent implements OnInit {
     public disbursementDataService: DisbursementDataService,
     private router: Router,
     public currencyService: CurrencyService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public uiService: UiUtilService
   ) { }
 
   ngOnInit() {

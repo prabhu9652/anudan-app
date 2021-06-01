@@ -17,19 +17,7 @@
           </div>
           <div *ngIf="disbursements && disbursements.length > 0">
             <div
-              [ngClass]="
-                disbursement.canRecordActuals
-                  ? [
-                      'row',
-                      'w-100',
-                      'p-3',
-                      'mb-2',
-                      'mx-0',
-                      'grants-section',
-                      'owner-highlight'
-                    ]
-                  : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-              "
+              [ngClass]="uiService.getCardStyle(disbursement.canRecordActuals)"
               style="cursor: pointer"
               *ngFor="let disbursement of filteredDisbursements; let i = index"
             >
@@ -53,13 +41,16 @@
                       ? disbursement.grant.referenceNo + " | "
                       : "") + disbursement.grant.name
                   }}</b>
-                  &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
-                  <b>{{
-                    disbursement.grant.organization
-                      ? disbursement.grant.organization.name
-                      : ""
-                  }}</b
-                  ><br />
+                  <br>Implementing Organization:
+                <b *ngIf="isExternalGrant(disbursement.grant)">{{
+                  disbursement.grant.organization
+                    ? disbursement.grant.organization.name
+                    : ""
+                }}</b> 
+                <b *ngIf="!isExternalGrant(disbursement.grant)">{{
+                  disbursement.grant.grantorOrganization.name
+                }}</b>
+                  <br />
                   Grant Amount:
                   <b
                     >{{

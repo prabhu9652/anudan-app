@@ -38,19 +38,7 @@
                 <p style="color: black">No reports found</p>
               </div>
               <div
-                [ngClass]="
-                  report.canManage
-                    ? [
-                        'row',
-                        'w-100',
-                        'p-3',
-                        'mb-2',
-                        'mx-0',
-                        'grants-section',
-                        'owner-highlight'
-                      ]
-                    : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-                "
+                [ngClass]="uiService.getCardStyle(report.canManage)"
                 style="cursor: pointer"
                 *ngFor="let report of filteredToSetupReports; let i = index"
                 (click)="manageReport(report)"
@@ -255,14 +243,13 @@
                       (report.grant.referenceNo
                         ? report.grant.referenceNo + " | "
                         : "") + report.grant.name
-                    }}</b>
-                    &nbsp;&nbsp;|&nbsp;&nbsp; Implementing Organization:
-                    <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && isExternalGrant(report.grant)">{{
+                    }}</b><br>Implementing Organization:
+                    <b *ngIf="isExternalGrant(report.grant)">{{
                       report.grant.organization
                         ? report.grant.organization.name
                         : ""
                     }}</b> 
-                    <b *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE' && !isExternalGrant(report.grant)">{{
+                    <b *ngIf="!isExternalGrant(report.grant)">{{
                       report.grant.grantorOrganization.name
                     }}</b> 
                     <br />
@@ -383,19 +370,7 @@
                 <p style="color: black">No reports found</p>
               </div>
               <div
-              [ngClass]="
-              report.canManage
-                ? [
-                    'row',
-                    'w-100',
-                    'p-3',
-                    'mb-2',
-                    'mx-0',
-                    'grants-section',
-                    'owner-highlight'
-                  ]
-                : ['row', 'w-100', 'p-3', 'mb-2', 'mx-0', 'grants-section']
-            "
+              [ngClass]="uiService.getCardStyle(report.canManage)"
                 style="border-bottom: 1px solid #d4d4d4; cursor: pointer"
                 *ngFor="let report of filterAllReports; let i = index"
                 (click)="manageReport(report)"

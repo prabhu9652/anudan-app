@@ -1,3 +1,4 @@
+import { UiUtilService } from './../../ui-util.service';
 import { GrantType } from './../../model/dahsboard';
 import { CurrencyService } from "./../../currency-service";
 import { Component, OnInit, DoCheck, AfterViewChecked } from "@angular/core";
@@ -110,6 +111,7 @@ export class DraftGrantsComponent implements OnInit {
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService,
+    public uiService: UiUtilService
   ) {
   }
 

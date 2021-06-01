@@ -527,6 +527,10 @@ font-white {
   background: #ffbf00;
 }
 
+.state-system{
+  background: #3f51b5;
+}
+
 .state-closed {
   background: #d4d4d4;
 }

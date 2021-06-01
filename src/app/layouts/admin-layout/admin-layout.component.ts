@@ -203,7 +203,7 @@ export class AdminLayoutComponent implements OnInit {
               this.appComponent.notifications.length !== notifications.length
             ) {
               if (this.appComponent.currentTenant) {
-                for (let i = 0; i < notifications.length; i++) {
+                for (let i = 0; i < 1; i++) {
                   if (
                     !notifications[i].read &&
                     notifications[i].notificationFor === "GRANT"
@@ -241,7 +241,7 @@ export class AdminLayoutComponent implements OnInit {
               }
 
               if (this.currentGrant) {
-                for (let i = 0; i < notifications.length; i++) {
+                for (let i = 0; i < 1; i++) {
                   if (
                     !notifications[i].read &&
                     notifications[i].notificationFor === "GRANT" &&
@@ -556,7 +556,7 @@ export class AdminLayoutComponent implements OnInit {
       wfModel.type = this.appComponent.currentView;
       wfModel.report = this.currentReport;
       if (this.appComponent.loggedInUser.organization.organizationType !== 'GRANTEE') {
-        wfModel.report.grant.isInternal = this.appComponent.grantTypes.filter(gt => this.currentReport.grant.grantTypeId)[0].internal;
+        wfModel.report.grant.isInternal = this.appComponent.grantTypes.filter(gt => gt.id === this.currentReport.grant.grantTypeId)[0].internal;
       }
       wfModel.canManage =
         this.appComponent.loggedInUser.organization.organizationType ===
