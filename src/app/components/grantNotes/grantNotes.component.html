@@ -1,3 +1,7 @@
+<ng-container *ngIf="info.length>0 || error.length>0">
+  <p *ngFor="let i of info">{{i.message}}</p>
+  <p *ngFor="let i of error">{{i.message}}</p>
+</ng-container>
 <mat-card-title>Note</mat-card-title>
 <span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="close(false)">
   <mat-icon>close</mat-icon>
@@ -17,7 +21,7 @@
 <ng-container>
 
   <mat-form-field>
-    <textarea class="anu-input" matInput #inputMessage></textarea>
+    <textarea class="anu-input" matInput #inputMessage [disabled]="!canMove"></textarea>
   </mat-form-field>
   <mat-expansion-panel [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="grantDiff">
     <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
@@ -260,5 +264,5 @@
     </div>
   </mat-expansion-panel>
 
-  <button class="btn btn-sm btn-green-primary" (click)="close(true)">Proceed</button>
+  <button class="btn btn-sm btn-green-primary" (click)="close(true)" [disabled]="!canMove">Proceed</button>
 </ng-container>

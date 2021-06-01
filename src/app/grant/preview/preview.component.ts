@@ -1,3 +1,5 @@
+import { WfvalidationService } from './../../wfvalidation.service';
+import { WorkflowValidationService } from './../../workflow-validation-service';
 import { GrantTag, OrgTag } from './../../model/dahsboard';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { AdminService } from './../../admin.service';
@@ -82,7 +84,6 @@ import { Subscription } from "rxjs/Subscription";
 import { takeUntil } from "rxjs/operators";
 import { GrantValidationService } from "app/grant-validation-service";
 import { MessagingComponent } from "app/components/messaging/messaging.component";
-import { WorkflowValidationService } from "app/workflow-validation-service";
 import { CurrencyService } from "app/currency-service";
 import { ProjectDocumentsComponent } from "app/components/project-documents/project-documents.component";
 
@@ -183,7 +184,8 @@ export class PreviewComponent implements OnInit {
     private grantValidationService: GrantValidationService,
     private workflowValidationService: WorkflowValidationService,
     public currencyService: CurrencyService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private wfValidationService: WfvalidationService
   ) {
     this.colors = new Colors();
 
@@ -1044,23 +1046,46 @@ export class PreviewComponent implements OnInit {
   }
 
   submitGrant(toStateId: number) {
-    if (
-      this.workflowValidationService.getStatusByStatusIdForGrant(
-        toStateId,
-        this.appComp
-      ).internalStatus === "ACTIVE" &&
-      this.grantValidationService.checkIfHeaderHasMissingEntries(
-        this.currentGrant
-      )
-    ) {
-      const dialogRef = this.dialog.open(MessagingComponent, {
-        data: "Grant has missing header information.",
-        panelClass: "center-class",
-      });
-      return;
-    }
 
-    if (
+
+    this.wfValidationService.validateGrantWorkflow(this.currentGrant.id, this.appComp.loggedInUser.id, this.currentGrant.grantStatus.id, toStateId).then((result) => {
+      if (!result.canMove) {
+        this.openBottomSheetForGrantNotes(toStateId, result.canMove, result.info, result.error);
+        this.wfDisabled = true;
+        return;
+      } else {
+        for (let assignment of this.currentGrant.workflowAssignments) {
+          const status1 = this.appComp.appConfig.workflowStatuses.filter(
+            (status) => status.id === assignment.stateId
+          );
+          if (
+            (assignment.assignments === null ||
+              assignment.assignments === undefined ||
+              (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
+          ) {
+            this.confirm(
+              toStateId,
+              0,
+              [],
+              0,
+              "wfassignment",
+              "Would you like to assign users responsible for this workflow?",
+              "Not Now",
+              "Assign Users"
+            );
+            return;
+          }
+        }
+
+        this.openBottomSheetForGrantNotes(toStateId, result.canMove, result.info, result.error);
+        this.wfDisabled = true;
+      }
+    });
+
+
+
+
+    /* if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1074,9 +1099,9 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    }
+    } */
 
-    if (
+    /* if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1088,30 +1113,9 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    }
+    } */
 
-    for (let assignment of this.currentGrant.workflowAssignments) {
-      const status1 = this.appComp.appConfig.workflowStatuses.filter(
-        (status) => status.id === assignment.stateId
-      );
-      if (
-        (assignment.assignments === null ||
-          assignment.assignments === undefined ||
-          (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
-      ) {
-        this.confirm(
-          toStateId,
-          0,
-          [],
-          0,
-          "wfassignment",
-          "Would you like to assign users responsible for this workflow?",
-          "Not Now",
-          "Assign Users"
-        );
-        return;
-      }
-    }
+
 
     /*  const statusTransition = this.appComp.appConfig.transitions.filter(
        (transition) =>
@@ -1120,8 +1124,7 @@ export class PreviewComponent implements OnInit {
      ); */
 
     //if (statusTransition && statusTransition[0].noteRequired) {
-    this.openBottomSheetForGrantNotes(toStateId);
-    this.wfDisabled = true;
+
     //}
   }
 
@@ -1458,13 +1461,15 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  openBottomSheetForGrantNotes(toStateId: number): void {
+  openBottomSheetForGrantNotes(toStateId: number, canMove: boolean, infos: any, errors: any): void {
     const _bSheet = this.dialog.open(GrantNotesComponent, {
       hasBackdrop: false,
       data: {
         canManage: true,
         currentGrant: this.currentGrant,
         originalGrant: this.appComp.originalGrant,
+        canMove: canMove,
+        messages: { infos: infos, errors: errors }
       },
       panelClass: "grant-notes-class",
     });

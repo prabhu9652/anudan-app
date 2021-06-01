@@ -407,6 +407,8 @@ export class GrantNote {
   currentGrant: Grant;
   originalGrant: Grant;
   canManage: boolean;
+  canMove: boolean;
+  messages: any;
 }
 
 export class SerializationHelper {
