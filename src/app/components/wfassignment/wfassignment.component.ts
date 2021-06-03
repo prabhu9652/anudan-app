@@ -54,7 +54,15 @@ export class WfassignmentComponent implements OnInit, AfterViewInit {
             this.data.model.users.sort(function (a, b) { return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0); });
         }
         if (this.data.model.granteeUsers) {
-            this.data.model.granteeUsers.sort(function (a, b) { return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0); });
+            this.data.model.granteeUsers.sort(function (a, b) {
+                if (!a.firstName) {
+                    a.firstName = 'Un-registered';
+                }
+                if (!b.firstName) {
+                    b.firstName = 'Un-registered';
+                }
+                return (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : ((b.firstName.toLowerCase() > a.firstName.toLowerCase()) ? -1 : 0);
+            });
         }
 
         window.addEventListener('scroll', this.redrawOnScroll.bind(this), true);

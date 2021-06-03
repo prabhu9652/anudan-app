@@ -1,3 +1,5 @@
+import { WfvalidationService } from './../../wfvalidation.service';
+import { WorkflowValidationService } from './../../workflow-validation-service';
 import { GrantTag, OrgTag } from './../../model/dahsboard';
 import { GrantTagsComponent } from './../../grant-tags/grant-tags.component';
 import { AdminService } from './../../admin.service';
@@ -82,7 +84,6 @@ import { Subscription } from "rxjs/Subscription";
 import { takeUntil } from "rxjs/operators";
 import { GrantValidationService } from "app/grant-validation-service";
 import { MessagingComponent } from "app/components/messaging/messaging.component";
-import { WorkflowValidationService } from "app/workflow-validation-service";
 import { CurrencyService } from "app/currency-service";
 import { ProjectDocumentsComponent } from "app/components/project-documents/project-documents.component";
 
@@ -183,7 +184,8 @@ export class PreviewComponent implements OnInit {
     private grantValidationService: GrantValidationService,
     private workflowValidationService: WorkflowValidationService,
     public currencyService: CurrencyService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private wfValidationService: WfvalidationService
   ) {
     this.colors = new Colors();
 
