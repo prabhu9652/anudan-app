@@ -515,7 +515,7 @@ font-white {
   border-radius: 5px;
 }
 
-.state-draft {
+.state-draft,.state-system {
   background: #d4d4d4;
 }
 

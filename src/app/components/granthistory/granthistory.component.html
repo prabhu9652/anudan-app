@@ -27,7 +27,7 @@
           >{{ item.noteAddedByUser.firstName }}
           {{ item.noteAddedByUser.lastName }}</b
         >
-        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm:ss a" }})</small>
+        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm a" }})</small>
       </p>
       <pre class="p-1" [innerHTML]="item.note"></pre>
     </ng-container>
@@ -57,7 +57,7 @@
           >{{ item.noteAddedByUser.firstName }}
           {{ item.noteAddedByUser.lastName }}</b
         >
-        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm:ss a" }})</small>
+        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm a" }})</small>
       </p>
       <pre class="p-1">{{ item.note }}</pre>
     </ng-container>
@@ -90,7 +90,7 @@
           >{{ item.noteAddedByUser.firstName }}
           {{ item.noteAddedByUser.lastName }}</b
         >
-        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm:ss a" }})</small>
+        <small> ({{ item.noteAdded | date: "dd-MMM-yyyy hh:mm a" }})</small>
       </p>
       <p class="p-1">{{ item.note }}</p>
     </ng-container>

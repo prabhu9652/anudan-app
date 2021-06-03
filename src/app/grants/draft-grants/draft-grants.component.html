@@ -107,11 +107,8 @@
                 </div>
               </div>
               <div class="col-12 text-left">
-                <div class="text-subheader mb-2" *ngIf="isExternalGrant(grant)">
+                <div class="text-subheader mb-2">
                   {{ grant.organization ? grant.organization.name : null }}
-                </div>
-                <div class="text-subheader mb-2" *ngIf="!isExternalGrant(grant)">
-                  {{ grant.grantorOrganization.name }}
                 </div>
               </div>
               <div
