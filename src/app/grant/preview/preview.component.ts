@@ -1046,46 +1046,23 @@ export class PreviewComponent implements OnInit {
   }
 
   submitGrant(toStateId: number) {
+    if (
+      this.workflowValidationService.getStatusByStatusIdForGrant(
+        toStateId,
+        this.appComp
+      ).internalStatus === "ACTIVE" &&
+      this.grantValidationService.checkIfHeaderHasMissingEntries(
+        this.currentGrant
+      )
+    ) {
+      const dialogRef = this.dialog.open(MessagingComponent, {
+        data: "Grant has missing header information.",
+        panelClass: "center-class",
+      });
+      return;
+    }
 
-
-    this.wfValidationService.validateGrantWorkflow(this.currentGrant.id, this.appComp.loggedInUser.id, this.currentGrant.grantStatus.id, toStateId).then((result) => {
-      if (!result.canMove) {
-        this.openBottomSheetForGrantNotes(toStateId, result.canMove, result.info, result.error);
-        this.wfDisabled = true;
-        return;
-      } else {
-        for (let assignment of this.currentGrant.workflowAssignments) {
-          const status1 = this.appComp.appConfig.workflowStatuses.filter(
-            (status) => status.id === assignment.stateId
-          );
-          if (
-            (assignment.assignments === null ||
-              assignment.assignments === undefined ||
-              (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
-          ) {
-            this.confirm(
-              toStateId,
-              0,
-              [],
-              0,
-              "wfassignment",
-              "Would you like to assign users responsible for this workflow?",
-              "Not Now",
-              "Assign Users"
-            );
-            return;
-          }
-        }
-
-        this.openBottomSheetForGrantNotes(toStateId, result.canMove, result.info, result.error);
-        this.wfDisabled = true;
-      }
-    });
-
-
-
-
-    /* if (
+    if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1099,9 +1076,9 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    } */
+    }
 
-    /* if (
+    if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1113,9 +1090,30 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    } */
+    }
 
-
+    for (let assignment of this.currentGrant.workflowAssignments) {
+      const status1 = this.appComp.appConfig.workflowStatuses.filter(
+        (status) => status.id === assignment.stateId
+      );
+      if (
+        (assignment.assignments === null ||
+          assignment.assignments === undefined ||
+          (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
+      ) {
+        this.confirm(
+          toStateId,
+          0,
+          [],
+          0,
+          "wfassignment",
+          "Would you like to assign users responsible for this workflow?",
+          "Not Now",
+          "Assign Users"
+        );
+        return;
+      }
+    }
 
     /*  const statusTransition = this.appComp.appConfig.transitions.filter(
        (transition) =>
@@ -1124,7 +1122,8 @@ export class PreviewComponent implements OnInit {
      ); */
 
     //if (statusTransition && statusTransition[0].noteRequired) {
-
+    this.openBottomSheetForGrantNotes(toStateId);
+    this.wfDisabled = true;
     //}
   }
 
@@ -1461,15 +1460,13 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  openBottomSheetForGrantNotes(toStateId: number, canMove: boolean, infos: any, errors: any): void {
+  openBottomSheetForGrantNotes(toStateId: number): void {
     const _bSheet = this.dialog.open(GrantNotesComponent, {
       hasBackdrop: false,
       data: {
         canManage: true,
         currentGrant: this.currentGrant,
         originalGrant: this.appComp.originalGrant,
-        canMove: canMove,
-        messages: { infos: infos, errors: errors }
       },
       panelClass: "grant-notes-class",
     });
