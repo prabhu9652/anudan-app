@@ -189,7 +189,7 @@ export class ReportPreviewComponent implements OnInit {
     openBottomSheetForReportNotes(toStateId: number, result): void {
 
         const _bSheet = this.dialog.open(ReportNotesComponent, {
-            hasBackdrop: false,
+            hasBackdrop: true,
             data: { canManage: true, currentReport: this.currentReport, originalReport: this.appComp.originalReport, validationResult: result },
             panelClass: 'grant-notes-class'
         });

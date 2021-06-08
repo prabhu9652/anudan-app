@@ -65,7 +65,7 @@ export class ReportNotesComponent implements OnInit {
     }
 
     close(status) {
-        this._bottomSheetRef.close({ 'message': this.inputMessage.nativeElement.value, 'result': status });
+        this._bottomSheetRef.close({ 'message': this.inputMessage ? this.inputMessage.nativeElement.value : '', 'result': status });
     }
 
     _diff(newReport: Report, oldReport: ReportSnapshot): any[] {

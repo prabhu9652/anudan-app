@@ -416,7 +416,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
   } */
 
     const _bSheet = this.dialog.open(DisbursementNotesComponent, {
-      hasBackdrop: false,
+      hasBackdrop: true,
       data: {
         canManage: true,
         currentDisbursement: this.currentDisbursement,

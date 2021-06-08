@@ -63,7 +63,7 @@ export class GrantNotesComponent implements OnInit {
     }
 
     close(status) {
-        this._bottomSheetRef.close({ 'message': this.inputMessage.nativeElement.value, 'result': status });
+        this._bottomSheetRef.close({ 'message': this.inputMessage ? this.inputMessage.nativeElement.value : '', 'result': status });
     }
 
     _diff(newGrant: Grant, oldGrant: GrantSnapshot): any[] {

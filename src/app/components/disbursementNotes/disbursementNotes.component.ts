@@ -62,7 +62,7 @@ export class DisbursementNotesComponent implements OnInit {
     }
 
     close(status) {
-        this._bottomSheetRef.close({ 'message': this.inputMessage.nativeElement.value, 'result': status });
+        this._bottomSheetRef.close({ 'message': this.inputMessage ? this.inputMessage.nativeElement.value : '', 'result': status });
     }
 
     _diff(newDisbursement: Disbursement, olddisbursement: DisbursementSnapshot): any[] {

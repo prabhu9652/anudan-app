@@ -1469,7 +1469,7 @@ export class PreviewComponent implements OnInit {
 
   openBottomSheetForGrantNotes(toStateId: number, result): void {
     const _bSheet = this.dialog.open(GrantNotesComponent, {
-      hasBackdrop: false,
+      hasBackdrop: true,
       data: {
         canManage: true,
         currentGrant: this.currentGrant,

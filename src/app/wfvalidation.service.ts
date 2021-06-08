@@ -32,9 +32,7 @@ export class WfvalidationService {
         let canMove = result.canMove;
         const infoMessages = result.messages.filter(m => m.type === 'INFO');
         const errorMessages = result.messages.filter(m => m.type === 'WARN');
-        if (!canMove && errorMessages.length === 0) {
-          canMove = true;
-        }
+
 
         return { canMove: canMove, info: infoMessages, error: errorMessages };
 
