@@ -23,7 +23,7 @@ export class WfvalidationService {
 
 
   validateGrantWorkflow(id: number, _for: string, userId: number, fromStateId: number, toStateId: number, params?: ColumnData[]): Promise<any> {
-    return this.http.post('/api/admin/' + id + '/workflow/validate/' + _for + '/' + fromStateId + '/' + toStateId, params ? params : {}, this.getHeader())
+    return this.http.post('/api/admin/' + id + '/workflow/validate/' + _for + '/' + fromStateId + '/' + toStateId, params ? params : null, this.getHeader())
       .toPromise().then((result: any) => {
         if (result && Object.keys(result).length === 0 && result.constructor === Object) {
           result.canMove = true;
