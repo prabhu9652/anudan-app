@@ -1,4 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
+import { ColumnData } from './model/dahsboard';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -20,10 +21,14 @@ export class WfvalidationService {
     return httpOptions;
   }
 
-  validateGrantWorkflow(grantId: number, userId: number, fromStateId: number, toStateId: number): Promise<any> {
-    return this.http.get('/api/user/' + userId + '/grant/' + grantId + '/workflow/validate/' + fromStateId + '/' + toStateId, this.getHeader())
-      .toPromise().then((result: any) => {
 
+  validateGrantWorkflow(id: number, _for: string, userId: number, fromStateId: number, toStateId: number, params?: ColumnData[]): Promise<any> {
+    return this.http.post('/api/admin/' + id + '/workflow/validate/' + _for + '/' + fromStateId + '/' + toStateId, params ? params : {}, this.getHeader())
+      .toPromise().then((result: any) => {
+        if (result && Object.keys(result).length === 0 && result.constructor === Object) {
+          result.canMove = true;
+          result.messages = [];
+        }
         let canMove = result.canMove;
         const infoMessages = result.messages.filter(m => m.type === 'INFO');
         const errorMessages = result.messages.filter(m => m.type === 'WARN');

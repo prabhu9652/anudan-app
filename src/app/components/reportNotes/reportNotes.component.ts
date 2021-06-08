@@ -19,6 +19,7 @@ export class ReportNotesComponent implements OnInit {
     changes: any[] = [];
     reportDiff: ReportDiff;
     reportSnapshot: ReportSnapshot;
+    validationResult: any;
 
     @ViewChild("scrollContainer") scrollContainer: ElementRef;
     @ViewChild("inputMessage") inputMessage: ElementRef;
@@ -26,6 +27,7 @@ export class ReportNotesComponent implements OnInit {
     constructor(
         private _bottomSheetRef: MatDialogRef<ReportNotesComponent>
         , @Inject(MAT_DIALOG_DATA) public data: ReportNote, private http: HttpClient) {
+        this.validationResult = data.validationResult;
 
         const httpOptions = {
             headers: new HttpHeaders({

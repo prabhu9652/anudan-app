@@ -18,6 +18,7 @@ export class GrantNotesComponent implements OnInit {
     changes: any[] = [];
     grantDiff: GrantDiff;
     grantSnapshot: GrantSnapshot;
+    validationResult: any;
 
     @ViewChild("scrollContainer") scrollContainer: ElementRef;
     @ViewChild("inputMessage") inputMessage: ElementRef;
@@ -25,6 +26,7 @@ export class GrantNotesComponent implements OnInit {
     constructor(
         private _bottomSheetRef: MatDialogRef<GrantNotesComponent>
         , @Inject(MAT_DIALOG_DATA) public data: GrantNote, private http: HttpClient) {
+        this.validationResult = data.validationResult;
 
         const httpOptions = {
             headers: new HttpHeaders({

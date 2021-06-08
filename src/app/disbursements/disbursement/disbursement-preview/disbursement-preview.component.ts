@@ -1,6 +1,7 @@
+import { WfvalidationService } from './../../../wfvalidation.service';
 import { AdminService } from './../../../admin.service';
 import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
-import { Grant, OrgTag } from './../../../model/dahsboard';
+import { Grant, OrgTag, ColumnData } from './../../../model/dahsboard';
 import {
   Component,
   OnInit,
@@ -116,7 +117,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
     private datepipe: DatePipe,
     public currencyService: CurrencyService,
     public amountValidator: AmountValidator,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private wfValidationService: WfvalidationService
   ) {
     this.disbursementService.currentMessage.subscribe(
       (disbursement) => (this.currentDisbursement = disbursement)
@@ -287,7 +289,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
 
   submitDisbursement(toState: number) {
     this.disableRecordButton = true;
-    if (this.currentDisbursement.requestedAmount < this.getTotals()) {
+    /* if (this.currentDisbursement.requestedAmount < this.getTotals()) {
       this.dialog.open(FieldDialogComponent, {
         data: {
           title:
@@ -301,9 +303,9 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       });
       this.disableRecordButton = false;
       return;
-    }
+    } */
 
-    this.workflowDataService
+    /* this.workflowDataService
       .getDisbursementWorkflowStatuses(this.currentDisbursement)
       .then((workflowStatuses) => {
         this.appComponent.disbursementWorkflowStatuses = workflowStatuses;
@@ -326,7 +328,12 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
           });
           this.disableRecordButton = false;
           return;
-        }
+        } */
+
+    this.workflowDataService
+      .getDisbursementWorkflowStatuses(this.currentDisbursement)
+      .then((workflowStatuses) => {
+        this.appComponent.disbursementWorkflowStatuses = workflowStatuses;
 
         for (let assignment of this.currentDisbursement.assignments) {
           const status1 = this.appComponent.disbursementWorkflowStatuses.filter(
@@ -355,47 +362,58 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
           }
         }
 
-        for (let i = 0; i < this.appComponent.disbursementWorkflowStatuses.length; i++) {
-          if (i < this.appComponent.disbursementWorkflowStatuses.length - 1) {
-            const prev = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i].id))[0];
-            const next = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i + 1].id))[0];
-            if (prev && next && (prev.owner === next.owner)) {
-              const dialogRef = this.dialog.open(MessagingComponent, {
-                data: "Workflow Assignemnts do not look right. Please review and fix before proceeding.",
-                panelClass: "center-class",
-              });
-              return;
-            }
-          }
-        }
 
-        this.openBottomSheetForReportNotes(toState);
-        this.wfDisabled = true;
-        return;
+        const params = new ColumnData();
+        params.name = "amount_to_record";
+        params.value = String(this.getTotals());
+
+        const paramsList: ColumnData[] = [];
+        paramsList.push(params);
+
+        this.wfValidationService.validateGrantWorkflow(this.currentDisbursement.id, 'DISBURSEMENT', this.appComponent.loggedInUser.id, this.currentDisbursement.status.id, toState, paramsList).then(result => {
+          this.openBottomSheetForReportNotes(toState, result);
+          this.wfDisabled = true;
+        });
       });
+
+
+
+    /* for (let i = 0; i < this.appComponent.disbursementWorkflowStatuses.length; i++) {
+      if (i < this.appComponent.disbursementWorkflowStatuses.length - 1) {
+        const prev = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i].id))[0];
+        const next = this.currentDisbursement.assignments.filter(a => (a.stateId === this.appComponent.disbursementWorkflowStatuses[i + 1].id))[0];
+        if (prev && next && (prev.owner === next.owner)) {
+          const dialogRef = this.dialog.open(MessagingComponent, {
+            data: "Workflow Assignemnts do not look right. Please review and fix before proceeding.",
+            panelClass: "center-class",
+          });
+          return;
+        }
+      }
+    } */
   }
 
-  openBottomSheetForReportNotes(toStateId: number): void {
-    if (
+  openBottomSheetForReportNotes(toStateId: number, result): void {
+    /* if(
       this.workflowValidationService.getStatusByStatusIdForDisbursement(
         toStateId,
         this.appComponent
       ).internalStatus === "ACTIVE" &&
-      this.currentDisbursement.requestedAmount +
-      this.getApprovedActualTotals() >
-      this.currentDisbursement.grant.amount
-    ) {
-      const dialogRef = this.dialog.open(MessagingComponent, {
-        data:
-          "Total requested funds for grant cannot exceed " +
-          this.currencyService.getFormattedAmount(
-            this.currentDisbursement.grant.amount
-          ),
-        panelClass: "center-class",
-      });
-      this.disableRecordButton = false;
-      return;
-    }
+        this.currentDisbursement.requestedAmount +
+        this.getApprovedActualTotals() >
+        this.currentDisbursement.grant.amount
+      ) {
+    const dialogRef = this.dialog.open(MessagingComponent, {
+      data:
+        "Total requested funds for grant cannot exceed " +
+        this.currencyService.getFormattedAmount(
+          this.currentDisbursement.grant.amount
+        ),
+      panelClass: "center-class",
+    });
+    this.disableRecordButton = false;
+    return;
+  } */
 
     const _bSheet = this.dialog.open(DisbursementNotesComponent, {
       hasBackdrop: false,
@@ -403,6 +421,7 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
         canManage: true,
         currentDisbursement: this.currentDisbursement,
         originalDisbursement: this.originalDisbursement,
+        validationResult: result
       },
       panelClass: "grant-notes-class",
     });
