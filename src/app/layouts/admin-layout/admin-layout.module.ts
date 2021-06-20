@@ -98,6 +98,7 @@ import { DisbursementComponent } from 'app/disbursements/disbursement/disburseme
 import { DisbursementPreviewComponent } from 'app/disbursements/disbursement/disbursement-preview/disbursement-preview.component';
 import { DisbursementNotesComponent } from 'app/components/disbursementNotes/disbursementNotes.component';
 import { DataApiComponent } from 'app/data-api/data-api.component';
+import { SearchFilterComponent } from './search-filter/search-filter.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -197,7 +198,8 @@ import { DataApiComponent } from 'app/data-api/data-api.component';
         DisbursementPreviewComponent,
         DataApiComponent,
         GrantTagsComponent,
-        OrgTagsComponent
+        OrgTagsComponent,
+        SearchFilterComponent
     ],
     entryComponents: [WelcomePopupComponent, AddnlreportsDialogComponent, InviteDialogComponent, BottomsheetComponent, BottomsheetAttachmentsComponent, BottomsheetNotesComponent, GrantTemplateDialogComponent, ReportTemplateDialogComponent, GrantSelectionDialogComponent, TemplateDialogComponent, GrantNotesComponent, SectionEditComponent, ReportNotesComponent, DisbursementNotesComponent, GranttypeSelectionDialogComponent, GrantTagsComponent],
     schemas: [NO_ERRORS_SCHEMA]

@@ -1,7 +1,7 @@
 import { UiUtilService } from './../../ui-util.service';
 import { GrantType } from './../../model/dahsboard';
 import { CurrencyService } from "./../../currency-service";
-import { Component, OnInit, DoCheck, AfterViewChecked } from "@angular/core";
+import { Component, OnInit, DoCheck, AfterViewChecked, AfterViewInit, OnChanges, SimpleChanges } from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
@@ -20,6 +20,7 @@ import { Grant, GrantTemplate } from "../../model/dahsboard";
 import * as $ from "jquery";
 import { ToastrService, IndividualConfig } from "ngx-toastr";
 import { GrantComponent } from "../../grant/grant.component";
+
 import {
   MatBottomSheet,
   MatDatepickerInputEvent,
@@ -35,6 +36,13 @@ import {
   HumanizeDuration,
 } from "humanize-duration-ts";
 import { GranttypeSelectionDialogComponent } from 'app/components/granttype-selection-dialog/granttype-selection-dialog.component';
+import { splitAtColon } from '@angular/compiler/src/util';
+import { stringify } from '@angular/core/src/util';
+import { MarkerManager } from '@agm/core';
+import { MarkjsHighlightDirective } from 'ngx-markjs/lib/markjs-highlight.directive';
+
+declare var require: any;
+const Mark = require('mark.js');
 
 class Timer {
   readonly start = performance.now();
@@ -76,7 +84,7 @@ class Timer {
     `,
   ],
 })
-export class DraftGrantsComponent implements OnInit {
+export class DraftGrantsComponent implements OnInit, AfterViewInit {
   user: User;
   tenants: Tenants;
   currentTenant: Tenant;
@@ -97,6 +105,11 @@ export class DraftGrantsComponent implements OnInit {
   private t: Timer;
   subscribers: any = {};
   searchCriteria: string;
+  filterCriteria: any;
+  currentClass = 'current';
+  searchClosed = true;
+  filterReady = false;
+
 
   constructor(
     private http: HttpClient,
@@ -111,11 +124,20 @@ export class DraftGrantsComponent implements OnInit {
     private dialog: MatDialog,
     private titlecasePipe: TitleCasePipe,
     private currencyService: CurrencyService,
-    public uiService: UiUtilService
+    public uiService: UiUtilService,
   ) {
   }
 
   ngOnInit() {
+
+    /* var scriptUrl = '/assets/js/mark.min.js';
+    let node = document.createElement('script');
+    node.src = scriptUrl;
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node); */
+
     this.appComponent.subMenu = { name: "In-progress Grants", action: "dg" };
     const user = JSON.parse(localStorage.getItem("USER"));
     this.appComponent.loggedInUser = user;
@@ -143,6 +165,10 @@ export class DraftGrantsComponent implements OnInit {
 
     const tenantCode = localStorage.getItem("X-TENANT-CODE");
     this.logoURL = "/api/public/images/" + tenantCode + "/logo";
+  }
+
+  ngAfterViewInit() {
+    $('.main-content').height($('document').height() - 123);
   }
 
   getGrantTypes() {
@@ -512,6 +538,30 @@ export class DraftGrantsComponent implements OnInit {
   }
 
   startFilter(val) {
-    this.filteredGrants = this.grantsDraft.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val))));
+    this.filterCriteria = val;
+    this.filteredGrants = this.grantsDraft.filter(g => {
+      return (
+        (g.name && g.name.toLowerCase().includes(val)) ||
+        (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val)) ||
+        (g.amount.toString().startsWith(val))
+      )
+    });
+
+    this.filterReady = true;
+
   }
+
+  resetFilterFlag(val) {
+    this.filterReady = val;
+  }
+
+
+  closeSearch(ev: any) {
+    this.searchClosed = ev;
+  }
+
+  openSearch() {
+    this.searchClosed = false;
+  }
+
 }

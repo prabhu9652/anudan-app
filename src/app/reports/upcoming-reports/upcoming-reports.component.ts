@@ -43,6 +43,9 @@ export class UpcomingReportsComponent implements OnInit {
     filteredToSetupReports: Report[];
     filteredReadyToSubmitReports: Report[];
     filterAllReports: Report[];
+    searchClosed = true;
+    filterReady = false;
+    filterCriteria: any;
 
     constructor(
         private reportService: ReportDataService,
@@ -412,9 +415,32 @@ export class UpcomingReportsComponent implements OnInit {
         }
     }
 
-    startFilter(val) {
+    /* startFilter(val) {
         this.filteredToSetupReports = this.reportsToSetupData.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
         this.filteredReadyToSubmitReports = this.reportsReadyToSubmit.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
         this.filterAllReports = this.allReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+    } */
+
+    startFilter(val) {
+        this.filterCriteria = val;
+        this.filteredToSetupReports = this.reportsToSetupData.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+        this.filteredReadyToSubmitReports = this.reportsReadyToSubmit.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+        this.filterAllReports = this.allReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+
+        this.filterReady = true;
+
+    }
+
+    resetFilterFlag(val) {
+        this.filterReady = val;
+    }
+
+
+    closeSearch(ev: any) {
+        this.searchClosed = ev;
+    }
+
+    openSearch() {
+        this.searchClosed = false;
     }
 }

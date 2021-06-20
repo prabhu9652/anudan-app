@@ -1,11 +1,13 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="anu-container" style="padding: 40px">
-      <!-- <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
-        <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
-        <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
-      </div> -->
-      <div class="row">
+    <div class="row"  style="position: absolute; top: 80px; width: 100%;min-height:82px; padding: 0 27px;z-index: 2; background: rgb(229, 229, 229);">
+      <div class="col-9" style="z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: center;">
+        <app-search-filter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
+        <mat-icon *ngIf="searchClosed" (click)="openSearch()" style="position: absolute; right: 0; margin-right: 20px;">search</mat-icon>
+      </div>
+      <div  class="col-3 d-flex align-items-center justify-content-right p-0"></div>
+    </div>
+      <div class="row" style="margin-top: 40px;">
         <div class="col-12">
           <div *ngIf="!submittedReports">
             <img src="./assets/img/loader.gif" style="width: 10%" />
@@ -20,7 +22,7 @@
             *ngFor="let report of filteredSubmittedReports; let i = index"
             (click)="manageReport(report)"
           >
-            <div class="col-12 mb-1">
+            <div class="col-12 mb-1 search-context">
               <p
                 *ngIf="report.disabledByAmendment"
                 class="mb-0 text-red text-left"
@@ -56,7 +58,7 @@
                 }}</span>
               </p>
             </div>
-            <div class="col-10">
+            <div class="col-10 search-context">
               <p class="text-header text-left">
                 {{ report.name }} | {{ report.dueDate | date: "dd-MMM-yyyy" }}
               </p>
@@ -128,6 +130,5 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </div>

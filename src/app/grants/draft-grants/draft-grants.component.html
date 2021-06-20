@@ -1,11 +1,13 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row">
-      <!-- <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
-        <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
-        <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
-      </div> -->
-      <div class="col-12">
+    
+    <div class="row" style="position: absolute; top: 80px; width: 100%;min-height:82px; padding: 0 27px;z-index: 2; background: rgb(229, 229, 229);">
+      
+      <div class="col-10" style="z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: center;">
+        <app-search-filter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
+        <mat-icon *ngIf="searchClosed" (click)="openSearch()" style="position: absolute; right: 0; margin-right: 20px;">search</mat-icon>
+      </div>
+      <div class="col-2 d-flex align-items-center justify-content-right p-0">
         <ng-container *ngIf="appComponent.grantTypes && appComponent.grantTypes.length>0">
           <button
           *ngIf="
@@ -21,22 +23,24 @@
         
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="grantsContent" style="margin-top: 40px;">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div>
           <div *ngIf="!hasTenant">
             <img src="./assets/img/loader.gif" style="width: 10%" />
             <p style="color: black">Loading grants...</p>
           </div>
-
+          
           <div *ngIf="hasTenant">
             <div
               [ngClass]="uiService.getCardStyle(grant.currentAssignment !== undefined && grant.currentAssignment === appComponent.loggedInUser.id)"
               style="cursor: pointer"
-              *ngFor="let grant of filteredGrants; let i = index"
+              *ngFor="let grant of filteredGrants; let i = index; let last = last;"
               (click)="manageGrant(grant)"
             >
-              <div class="col-10 text-left">
+            
+              
+              <div class="col-10 text-left search-context">
                 <i *ngIf="grant.grantTags.length===1" class="fas fa-tag fa-xs ml-2 grant-tags"></i>
                 <i *ngIf="grant.grantTags.length>1" class="fas fa-tags fa-xs ml-2 grant-tags"></i>
                 <p
@@ -58,7 +62,7 @@
                   </span>
                   {{ grant.name }}
                 </p>
-                <p
+                  <p
                   class="text-header mb-1"
                   *ngIf="grant.referenceNo"
                   style="font-size: 18px"
@@ -93,7 +97,7 @@
                   >
                 </div>
               </div>
-              <div class="col-12 text-left">
+              <div class="col-12 text-left search-context">
                 <div class="text-subheader mb-2">
                   {{ grant.organization ? grant.organization.name : null }}
                 </div>
@@ -106,7 +110,7 @@
                   <div class="col-12">
                     <p class="mb-0">
                       ₹
-                      <span class="text-header mr-4">{{
+                      <span class="text-header mr-4 search-context">{{
                         getFormattedGrantAmount(grant.amount)
                       }}</span>
                       <small class="mb-0">{{

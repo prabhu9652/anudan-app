@@ -49,6 +49,7 @@ import { FieldDialogComponent } from './components/field-dialog/field-dialog.com
 import { OwnersPopupComponent } from './components/owners-popup/owners-popup.component';
 import { ProjectDocumentsComponent } from './components/project-documents/project-documents.component';
 import { NocookieComponent } from './nocookie/nocookie.component';
+import { NgxMarkjsModule } from 'ngx-markjs';
 
 export class AnudanErrorHandler implements ErrorHandler {
   constructor() { }
@@ -136,7 +137,8 @@ export function provideConfig() {
     MatNativeDateModule,
     MatSnackBarModule,
     MatIconModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxMarkjsModule
   ],
   providers: [
     {

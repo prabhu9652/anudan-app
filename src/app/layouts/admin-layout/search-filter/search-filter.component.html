@@ -1,0 +1,8 @@
+<!-- <input class="anu-input" placeholder="Search" > -->
+<mat-form-field class="example-form-field" style="width:400px;">
+  <mat-label></mat-label>
+  <input id="searchCompField" matInput type="text" (keyup)="startFilter($event.target.value)" class="anu-input" placeholder="Search">
+    <button matSuffix [disabled]="searchString===undefined || searchString.trim()===''" mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('forward')">expand_more</mat-icon></button>
+    <button [disabled]="searchString===undefined || searchString.trim()===''" matSuffix mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('backward')">expand_less</mat-icon></button>
+    <button matSuffix mat-icon-button (click)="closeSearch()"><mat-icon matSuffix>close</mat-icon></button>
+</mat-form-field>

@@ -23,6 +23,9 @@ export class SubmittedReportsComponent implements OnInit {
     submittedReports: Report[];
     subscribers: any = {};
     filteredSubmittedReports: Report[];
+    searchClosed = true;
+    filterReady = false;
+    filterCriteria: any;
 
     constructor(
         private reportService: ReportDataService,
@@ -134,9 +137,9 @@ export class SubmittedReportsComponent implements OnInit {
         return this.appComp.grantTypes.filter(t => t.id === typeId)[0].colorCode;
     }
 
-    startFilter(val) {
-        this.filteredSubmittedReports = this.submittedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
-    }
+    /*  startFilter(val) {
+         this.filteredSubmittedReports = this.submittedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+     } */
 
     isExternalGrant(grant: Grant): boolean {
         const grantType = this.appComp.grantTypes.filter(gt => gt.id === grant.grantTypeId)[0];
@@ -145,5 +148,26 @@ export class SubmittedReportsComponent implements OnInit {
         } else {
             return false;
         }
+    }
+
+    startFilter(val) {
+        this.filterCriteria = val;
+        this.filteredSubmittedReports = this.submittedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+
+        this.filterReady = true;
+
+    }
+
+    resetFilterFlag(val) {
+        this.filterReady = val;
+    }
+
+
+    closeSearch(ev: any) {
+        this.searchClosed = ev;
+    }
+
+    openSearch() {
+        this.searchClosed = false;
     }
 }
