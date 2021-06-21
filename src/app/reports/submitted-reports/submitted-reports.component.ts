@@ -151,8 +151,14 @@ export class SubmittedReportsComponent implements OnInit {
     }
 
     startFilter(val) {
+        val = val.toLowerCase();
         this.filterCriteria = val;
-        this.filteredSubmittedReports = this.submittedReports.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+        this.filteredSubmittedReports = this.submittedReports.filter(g => {
+            return (g.name && g.name.trim() !== '' && g.name.toLowerCase().includes(val)) ||
+                (g.grant.name.toLowerCase().includes(val)) ||
+                (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val)) ||
+                (g.grant.referenceNo && g.grant.referenceNo.toLowerCase().includes(val))
+        });
 
         this.filterReady = true;
 

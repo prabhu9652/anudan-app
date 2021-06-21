@@ -475,12 +475,13 @@ export class ClosedGrantsComponent implements OnInit {
   }
 
   startFilter(val) {
+    val = val.toLowerCase();
     this.filterCriteria = val;
     this.filteredGrants = this.grantsClosed.filter(g => {
       return (
-        (g.name && g.name.toLowerCase().includes(val)) ||
+        (g.name && g.name.trim() !== '' && g.name.toLowerCase().includes(val)) ||
         (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val)) ||
-        (g.amount.toString().startsWith(val))
+        (g.referenceNo && g.referenceNo.toLowerCase().includes(val))
       )
     });
 

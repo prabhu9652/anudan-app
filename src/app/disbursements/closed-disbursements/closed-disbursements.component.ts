@@ -72,8 +72,13 @@ export class ClosedDisbursementsComponent implements OnInit {
   } */
 
   startFilter(val) {
+    val = val.toLowerCase();
     this.filterCriteria = val;
-    this.filteredDisbursements = this.disbursements.filter(g => ((g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+    this.filteredDisbursements = this.disbursements.filter(g => {
+      return (g.grant.name.toLowerCase().includes(val)) ||
+        (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val)) ||
+        (g.grant.referenceNo && g.grant.referenceNo.toLowerCase().includes(val))
+    });
 
     this.filterReady = true;
 
