@@ -23,6 +23,9 @@ export class InprogressDisbursementsComponent implements OnInit {
   disbursements: Disbursement[];
   deleteDisbursementEvent: boolean = false;
   filteredDisbursements: Disbursement[];
+  searchClosed = true;
+  filterReady = false;
+  filterCriteria: any;
 
 
   public constructor(
@@ -139,8 +142,29 @@ export class InprogressDisbursementsComponent implements OnInit {
     }
   }
 
-  startFilter(val) {
+  /* startFilter(val) {
     this.filteredDisbursements = this.disbursements.filter(g => ((g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+  } */
+
+  startFilter(val) {
+    this.filterCriteria = val;
+    this.filteredDisbursements = this.disbursements.filter(g => ((g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+
+    this.filterReady = true;
+
+  }
+
+  resetFilterFlag(val) {
+    this.filterReady = val;
+  }
+
+
+  closeSearch(ev: any) {
+    this.searchClosed = ev;
+  }
+
+  openSearch() {
+    this.searchClosed = false;
   }
 
 }
