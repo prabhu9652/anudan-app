@@ -982,3 +982,13 @@ mark.current {
   font-size: 12px;
   display: flex;
 }
+
+app-search-filter .mat-form-field-suffix{
+  top:6px;
+}
+mat-icon:hover{
+  background: lightgrey;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.5s;
+}

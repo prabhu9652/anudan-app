@@ -494,6 +494,10 @@ export class ActiveGrantsComponent implements OnInit {
   }
 
   openSearch() {
-    this.searchClosed = false;
+    if (this.searchClosed) {
+      this.searchClosed = false;
+    } else {
+      this.searchClosed = true;
+    }
   }
 }
