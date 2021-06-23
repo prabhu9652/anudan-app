@@ -22,6 +22,7 @@ export class Disbursement {
 export class ActualDisbursement {
   id: number;
   disbursementDate: Date;
+  stDisbursementDate: string;
   actualAmount: number;
   note: string;
   disbursementId: number;

@@ -2,7 +2,7 @@
 <mat-form-field class="example-form-field" style="width:400px;">
   <mat-label></mat-label>
   <input id="searchCompField" matInput type="text" (keyup)="startFilter($event.target.value)" class="anu-input" placeholder="Search">
-    <button matSuffix [disabled]="searchString===undefined || searchString.trim()===''" mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('forward')" style="font-size: 16px;">expand_more</mat-icon></button>
-    <button [disabled]="searchString===undefined || searchString.trim()===''" matSuffix mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('backward')" style="font-size: 16px;">expand_less</mat-icon></button>
+    <button matSuffix [disabled]="searchString===undefined || searchString.trim()===''" mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('forward')" style="font-size: 20px;">expand_more</mat-icon></button>
+    <button [disabled]="searchString===undefined || searchString.trim()===''" matSuffix mat-icon-button><mat-icon matSuffix (click)="navgiateToSearch('backward')" style="font-size: 20px;">expand_less</mat-icon></button>
     <button matSuffix mat-icon-button (click)="closeSearch()"><mat-icon matSuffix  style="font-size: 16px;">close</mat-icon></button>
 </mat-form-field>

@@ -1,3 +1,4 @@
+import { Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 declare var require: any;

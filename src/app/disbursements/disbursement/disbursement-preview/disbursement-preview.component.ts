@@ -494,6 +494,8 @@ export class DisbursementPreviewComponent implements OnInit, OnDestroy {
       "dd-MMM-yyyy"
     );
     this.selectedField.disbursementDate = this.selectedDateField.target.value;
+    this.disbursementService.saveDisbursement(this.currentDisbursement);
+
   }
 
   clearDate(actual: ActualDisbursement) {

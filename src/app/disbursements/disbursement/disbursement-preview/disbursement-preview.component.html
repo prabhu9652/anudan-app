@@ -629,7 +629,7 @@
                         matInput
                         class="anu-input"
                         readonly
-                        [(ngModel)]="actual.disbursementDate"
+                        [(ngModel)]="actual.stDisbursementDate"
                         (click)="openDate(actual, $event)"
                         style="cursor: pointer"
                         [disabled]="currentDisbursement.disabledByAmendment"
@@ -683,6 +683,7 @@
                         matInput
                         class="anu-input"
                         [(ngModel)]="actual.actualAmount"
+                        (change)="disbursementService.saveDisbursement(currentDisbursement)"
                         (blur)="showFormattedAmount($event)"
                         type="number"
                         (keypress)="amountValidator.validatePositive($event)"
