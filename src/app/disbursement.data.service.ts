@@ -45,7 +45,7 @@ export class DisbursementDataService {
   ) { }
 
   changeMessage(message: Disbursement) {
-    if (message !== undefined) {
+    if (message !== undefined && message !== null) {
       this.setPermission(message);
 
       if (message.actualDisbursements && message.actualDisbursements.length > 0) {
