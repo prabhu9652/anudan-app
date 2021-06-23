@@ -265,6 +265,7 @@ body {
   padding: 5px !important;
 }
 
+
 .badge-black {
   background-color: #fff !important;
   color: #000 !important;
@@ -784,6 +785,10 @@ kendo-pdf-export {
   margin-top: 0 !important;
 }
 
+.main-content{
+  overflow-y: scroll;
+}
+
 .sidebar .nav li:hover > a {
   background: none;
   color: #fff;
@@ -953,4 +958,27 @@ li:focus {
 
 .grant-tags{
   position: absolute; left: -7px; top: 5px; color: #13b37d;
+}
+
+.search-highlight{
+  background-color: #d3bf0f;
+}
+
+mark {
+  background: yellow;
+  padding: 0;
+}
+
+mark.current {
+  background: orange;
+}
+
+.mat-form-field-suffix {
+  white-space: nowrap;
+  align-self: center;
+  position: relative;
+  top: 8px;
+  left: -60px;
+  font-size: 12px;
+  display: flex;
 }

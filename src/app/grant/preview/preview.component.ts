@@ -1046,7 +1046,35 @@ export class PreviewComponent implements OnInit {
   }
 
   submitGrant(toStateId: number) {
-    if (
+
+    for (let assignment of this.currentGrant.workflowAssignments) {
+      const status1 = this.appComp.appConfig.workflowStatuses.filter(
+        (status) => status.id === assignment.stateId
+      );
+      if (
+        (assignment.assignments === null ||
+          assignment.assignments === undefined ||
+          (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
+      ) {
+        this.confirm(
+          toStateId,
+          0,
+          [],
+          0,
+          "wfassignment",
+          "Would you like to assign users responsible for this workflow?",
+          "Not Now",
+          "Assign Users"
+        );
+        return;
+      }
+    }
+
+    this.wfValidationService.validateGrantWorkflow(this.currentGrant.id, 'GRANT', this.appComp.loggedInUser.id, this.currentGrant.grantStatus.id, toStateId).then(result => {
+      this.openBottomSheetForGrantNotes(toStateId, result);
+      this.wfDisabled = true;
+    });
+    /* if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1076,9 +1104,9 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    }
+    } */
 
-    if (
+    /* if (
       this.workflowValidationService.getStatusByStatusIdForGrant(
         toStateId,
         this.appComp
@@ -1090,30 +1118,9 @@ export class PreviewComponent implements OnInit {
         panelClass: "center-class",
       });
       return;
-    }
+    } */
 
-    for (let assignment of this.currentGrant.workflowAssignments) {
-      const status1 = this.appComp.appConfig.workflowStatuses.filter(
-        (status) => status.id === assignment.stateId
-      );
-      if (
-        (assignment.assignments === null ||
-          assignment.assignments === undefined ||
-          (assignment.assignments === 0 && !status1[0].terminal) || assignment.assignmentUser.deleted)
-      ) {
-        this.confirm(
-          toStateId,
-          0,
-          [],
-          0,
-          "wfassignment",
-          "Would you like to assign users responsible for this workflow?",
-          "Not Now",
-          "Assign Users"
-        );
-        return;
-      }
-    }
+
 
     /*  const statusTransition = this.appComp.appConfig.transitions.filter(
        (transition) =>
@@ -1122,8 +1129,8 @@ export class PreviewComponent implements OnInit {
      ); */
 
     //if (statusTransition && statusTransition[0].noteRequired) {
-    this.openBottomSheetForGrantNotes(toStateId);
-    this.wfDisabled = true;
+    /* this.openBottomSheetForGrantNotes(toStateId);
+    this.wfDisabled = true; */
     //}
   }
 
@@ -1460,13 +1467,14 @@ export class PreviewComponent implements OnInit {
     }
   }
 
-  openBottomSheetForGrantNotes(toStateId: number): void {
+  openBottomSheetForGrantNotes(toStateId: number, result): void {
     const _bSheet = this.dialog.open(GrantNotesComponent, {
-      hasBackdrop: false,
+      hasBackdrop: true,
       data: {
         canManage: true,
         currentGrant: this.currentGrant,
         originalGrant: this.appComp.originalGrant,
+        validationResult: result
       },
       panelClass: "grant-notes-class",
     });

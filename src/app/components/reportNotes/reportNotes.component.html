@@ -1,4 +1,21 @@
-<mat-card-title>Note</mat-card-title>
+<mat-card-title *ngIf="!validationResult.canMove">Unable to proceed</mat-card-title>
+<ng-container *ngIf="validationResult.error.length>0">
+  <p class="text-header-light mb-1" style="font-size:12px !important;">
+    Warnings:
+  </p>
+  <p *ngFor="let e of validationResult.error" class="d-flex align-items-center text-subheader-light" style="font-size:12px !important;"><mat-icon [inline]="true" class="material-icons-outlined text-danger mr-1">
+    error_outline
+  </mat-icon>{{e.message}}</p>
+</ng-container>
+<ng-container *ngIf="validationResult.info.length>0">
+  <p class="text-header-light mb-1" style="font-size:12px !important;">
+    Information:
+  </p>
+  <p *ngFor="let e of validationResult.info" class="d-flex align-items-center text-subheader-light" style="font-size:12px !important;"><mat-icon [inline]="true" class="material-icons-outlined text-grey mr-1">
+    info_outline
+  </mat-icon>{{e.message}}</p>
+</ng-container>
+<mat-card-title *ngIf="validationResult.canMove">Note</mat-card-title>
 <span class="" style="position:absolute; right: 10px; left: auto;top: 10px;" (click)="close(false)">
   <mat-icon>close</mat-icon>
 </span>
@@ -16,10 +33,10 @@
 </div>-->
 <ng-container>
 
-  <mat-form-field>
-    <textarea class="anu-input" matInput #inputMessage></textarea>
+  <mat-form-field *ngIf="validationResult.canMove">
+    <textarea *ngIf="validationResult.canMove" class="anu-input" matInput #inputMessage></textarea>
   </mat-form-field>
-  <mat-expansion-panel [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="reportDiff">
+  <mat-expansion-panel style="background: #f8f8f8;" [expanded]="false" class="mb-3 grants-expansion-panel" *ngIf="reportDiff">
     <mat-expansion-panel-header class="grant-expansion-panel" style="padding: 15px;">
       <mat-panel-title style="display: flex; align-items: center">
         <small>View changes</small>
@@ -250,5 +267,5 @@
     </div>
   </mat-expansion-panel>
 
-  <button class="btn btn-sm btn-green-primary" (click)="close(true)">Proceed</button>
+  <button class="btn btn-sm btn-green-primary" [disabled]="!validationResult.canMove" (click)="close(true)">Proceed</button>
 </ng-container>

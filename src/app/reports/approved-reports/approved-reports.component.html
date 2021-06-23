@@ -1,11 +1,14 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="anu-container" style="padding:40px;">
-      <!-- <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
-        <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
-        <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
-      </div> -->
-      <div class="row">
+    <div class="row"  style="position: absolute; top: 80px; width: 100%;min-height:82px; padding: 0 27px;z-index: 2; background: rgb(229, 229, 229);">
+      <div class="col-9" style="z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: center;">
+        <app-search-filter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
+        <mat-icon *ngIf="searchClosed" (click)="openSearch()" style="position: absolute; right: 0; margin-right: 20px;">search</mat-icon>
+      </div>
+      <div  class="col-3 d-flex align-items-center justify-content-right p-0"></div>
+    </div>
+
+      <div class="row" style="margin-top: 40px;">
         <div class="col-12">
           <div *ngIf="!approvedReports">
               <img src="./assets/img/loader.gif" style="width:10%;">
@@ -17,7 +20,7 @@
           <div class="row w-100 p-3 mb-2 mx-0 grants-section"
                style="border-bottom:1px solid #d4d4d4 ;cursor: pointer;"
                *ngFor="let report of filteredApprovedReports; let i = index" (click)="manageReport(report)">
-            <div class="col-12 mb-1">
+            <div class="col-12 mb-1 search-context">
               <span *ngIf="appComp.loggedInUser.organization.organizationType!=='GRANTEE'" class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(report.grant.grantTypeId)}" ><small>{{getGrantTypeName(report.grant.grantTypeId)}}</small></span>
               <p class="text-subheader text-left mb-0">Grant Name: <b>{{(report.grant.referenceNo?report.grant.referenceNo+' | ':'') + report.grant.name}}</b> <br>
               Implementing Organization: <b *ngIf="isExternalGrant(report.grant)">{{
@@ -32,7 +35,7 @@
               &nbsp;&nbsp;&nbsp;<span>{{getGrantAmountInWords(report.grant.amount)}}</span>
             </p>
             </div>
-            <div class="col-10">
+            <div class="col-10 search-context">
               <p class="text-header text-left">{{report.name}} | {{report.dueDate | date:'dd-MMM-yyyy'}}</p>
             </div>
             <div class="col-2">
@@ -82,7 +85,5 @@
           </div>
         </div>
       </div>
-
-    </div>
   </div>
 </div>

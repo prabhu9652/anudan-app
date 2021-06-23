@@ -19,6 +19,9 @@ export class ApprovedDisbursementsComponent implements OnInit {
 
   disbursements: Disbursement[];
   filteredDisbursements: Disbursement[];
+  searchClosed = true;
+  filterReady = false;
+  filterCriteria: any;
 
   constructor(
     public appComponent: AppComponent,
@@ -90,7 +93,33 @@ export class ApprovedDisbursementsComponent implements OnInit {
     }
   }
 
-  startFilter(val) {
+  /* startFilter(val) {
     this.filteredDisbursements = this.disbursements.filter(g => ((g.grant.name.toLowerCase().includes(val)) || (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val))));
+  } */
+
+  startFilter(val) {
+    val = val.toLowerCase();
+    this.filterCriteria = val;
+    this.filteredDisbursements = this.disbursements.filter(g => {
+      return (g.grant.name.toLowerCase().includes(val)) ||
+        (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val)) ||
+        (g.grant.referenceNo && g.grant.referenceNo.toLowerCase().includes(val))
+    });
+
+    this.filterReady = true;
+
+  }
+
+  resetFilterFlag(val) {
+    this.filterReady = val;
+  }
+
+
+  closeSearch(ev: any) {
+    this.searchClosed = ev;
+  }
+
+  openSearch() {
+    this.searchClosed = false;
   }
 }

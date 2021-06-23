@@ -12,6 +12,7 @@ import { UserService } from "./user.service";
 import { User } from "./model/user";
 import { CurrencyService } from "./currency-service";
 import { Report } from "./model/report";
+import { DatePipe } from "@angular/common";
 
 @Injectable({
   providedIn: "root",
@@ -39,12 +40,19 @@ export class DisbursementDataService {
   constructor(
     private httpClient: HttpClient,
     public userService: UserService,
-    public currencyService: CurrencyService
+    public currencyService: CurrencyService,
+    private dp: DatePipe,
   ) { }
 
   changeMessage(message: Disbursement) {
     if (message !== undefined) {
       this.setPermission(message);
+
+      if (message.actualDisbursements && message.actualDisbursements.length > 0) {
+        for (let ad of message.actualDisbursements) {
+          ad.stDisbursementDate = this.dp.transform(ad.disbursementDate, 'dd-MMM-yyyy');
+        }
+      }
       this.messageSource.next(message);
     }
   }
@@ -68,12 +76,35 @@ export class DisbursementDataService {
   }
 
   saveDisbursement(currentDisbursement: Disbursement): Promise<Disbursement> {
-    if (currentDisbursement !== undefined && currentDisbursement !== null) {
-      if (currentDisbursement.approvedActualsDibursements) {
-        currentDisbursement.approvedActualsDibursements = null;
+    const tmpDisbursement = JSON.parse(JSON.stringify(currentDisbursement));
+    if (tmpDisbursement !== undefined && tmpDisbursement !== null) {
+      if (tmpDisbursement.approvedActualsDibursements) {
+        tmpDisbursement.approvedActualsDibursements = null;
+      }
+
+      if (tmpDisbursement.actualDisbursements) {
+        for (let ad of tmpDisbursement.actualDisbursements) {
+          if (ad.disbursementDate && (typeof ad.disbursementDate === 'string') && !String(ad.disbursementDate).includes('T')) {
+            const dateParts = String(ad.disbursementDate).split("-");
+            const dt = new Date();
+            dt.setFullYear(Number(dateParts[2]));
+            const idx = this.months.indexOf(dateParts[1]);
+            dt.setMonth(idx != -1 ? idx : Number(dateParts[1]));
+            dt.setDate(Number(dateParts[0].substring(0, 2)));
+            ad.disbursementDate = dt;
+          } else if (ad.disbursementDate && (typeof ad.disbursementDate === 'string') && String(ad.disbursementDate).includes('T')) {
+            const dateParts = String(ad.disbursementDate).split("-");
+            const dt = new Date();
+            dt.setFullYear(Number(dateParts[0]));
+            const idx = this.months.indexOf(dateParts[1]);
+            dt.setMonth(idx != -1 ? idx : Number(dateParts[1]) - 1);
+            dt.setDate(Number(dateParts[2].substring(0, 2)));
+            ad.disbursementDate = dt;
+          }
+        }
       }
       return this.httpClient
-        .post(this.getUrl() + "/", currentDisbursement, this.getHeader())
+        .post(this.getUrl() + "/", tmpDisbursement, this.getHeader())
         .toPromise()
         .then<Disbursement>()
         .catch((err) => {

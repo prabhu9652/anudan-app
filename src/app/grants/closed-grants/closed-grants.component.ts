@@ -74,6 +74,9 @@ export class ClosedGrantsComponent implements OnInit {
   grantsClosed: Grant[] = [];
   logoURL: string;
   filteredGrants: Grant[] = [];
+  searchClosed = true;
+  filterReady = false;
+  filterCriteria: any;
 
   constructor(
     private http: HttpClient,
@@ -472,6 +475,30 @@ export class ClosedGrantsComponent implements OnInit {
   }
 
   startFilter(val) {
-    this.filteredGrants = this.grantsClosed.filter(g => ((g.name && g.name.toLowerCase().includes(val)) || (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val))));
+    val = val.toLowerCase();
+    this.filterCriteria = val;
+    this.filteredGrants = this.grantsClosed.filter(g => {
+      return (
+        (g.name && g.name.trim() !== '' && g.name.toLowerCase().includes(val)) ||
+        (g.organization && g.organization.name && g.organization.name.toLowerCase().includes(val)) ||
+        (g.referenceNo && g.referenceNo.toLowerCase().includes(val))
+      )
+    });
+
+    this.filterReady = true;
+
+  }
+
+  resetFilterFlag(val) {
+    this.filterReady = val;
+  }
+
+
+  closeSearch(ev: any) {
+    this.searchClosed = ev;
+  }
+
+  openSearch() {
+    this.searchClosed = false;
   }
 }

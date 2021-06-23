@@ -1,11 +1,14 @@
 <div class="main-content">
     <div class="container-fluid">
 
-        <div class="row">
-            <!-- <div class="col-7" style="position: absolute; top: 15px; z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: flex-end;">
-                <input class=" anu-input float-right w-50" type="search" (keyup)="startFilter($event.target.value)">
-                <mat-icon matSuffix class="float-right" style="position: absolute;right:15px;color: #808080;">search</mat-icon>
-            </div> -->
+        <div class="row"  style="position: absolute; top: 80px; width: 100%;min-height:82px; padding: 0 27px;z-index: 2; background: rgb(229, 229, 229);">
+            <div class="col-9" style="z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: center;">
+                <app-search-filter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
+                <mat-icon *ngIf="searchClosed" (click)="openSearch()" style="position: absolute; right: 0; margin-right: 20px;">search</mat-icon>
+              </div>
+              <div class="col-3 d-flex align-items-center justify-content-right p-0"></div>
+        </div>
+        <div class="row" style="margin-top: 40px;">
             <div class="col-12">
                 <div>
                     <div *ngIf="!disbursements">
@@ -25,18 +28,18 @@
                                 <span class=" badge text-black m-0 grant-type" [ngStyle]="{'background-color':getGrantTypeColor(disbursement.grant.grantTypeId)}" ><small>{{getGrantTypeName(disbursement.grant.grantTypeId)}}</small></span>
                                 <p class="text-subheader text-left mb-0">
                                     Grant Name:
-                                    <b>{{(disbursement.grant.referenceNo?disbursement.grant.referenceNo+' | ':'') + disbursement.grant.name}}</b>
+                                    <b class="search-context">{{(disbursement.grant.referenceNo?disbursement.grant.referenceNo+' | ':'') + disbursement.grant.name}}</b>
                                     <br>Implementing Organization:
-                <b *ngIf="isExternalGrant(disbursement.grant)">{{
+                <b *ngIf="isExternalGrant(disbursement.grant)" class="search-context">{{
                   disbursement.grant.organization
                     ? disbursement.grant.organization.name
                     : ""
                 }}</b> 
-                <b *ngIf="!isExternalGrant(disbursement.grant)">{{
+                <b *ngIf="!isExternalGrant(disbursement.grant)" class="search-context">{{
                   disbursement.grant.grantorOrganization.name
                 }}</b>
                 <br>
-                                    Grant Amount: <b>{{currencyService.getFormattedAmount(disbursement.grant.amount)}}
+                                    Grant Amount: <b class="search-context">{{currencyService.getFormattedAmount(disbursement.grant.amount)}}
                                     </b>
                                     &nbsp;&nbsp;<span>{{currencyService.getAmountInWords(disbursement.grant.amount)}}</span>
                                 </p>
@@ -63,6 +66,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>

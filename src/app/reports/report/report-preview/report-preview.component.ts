@@ -1,3 +1,4 @@
+import { WfvalidationService } from './../../../wfvalidation.service';
 import { AdminService } from './../../../admin.service';
 import { GrantTagsComponent } from './../../../grant-tags/grant-tags.component';
 import { Grant, OrgTag } from './../../../model/dahsboard';
@@ -69,7 +70,8 @@ export class ReportPreviewComponent implements OnInit {
         private workflowValidationService: WorkflowValidationService,
         private reportValidationService: ReportValidationService,
         private currencyService: CurrencyService,
-        private adminService: AdminService
+        private adminService: AdminService,
+        private wfValidationService: WfvalidationService
     ) {
 
         this.singleReportDataService.currentMessage.subscribe((report) => {
@@ -153,13 +155,13 @@ export class ReportPreviewComponent implements OnInit {
 
     submitReport(toStateId: number) {
 
-        if ((this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus === 'ACTIVE' || this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus === 'CLOSED') && this.reportValidationService.checkIfHeaderHasMissingEntries(this.currentReport)) {
+        /* if ((this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus === 'ACTIVE' || this.workflowValidationService.getStatusByStatusIdForReport(toStateId, this.appComp).internalStatus === 'CLOSED') && this.reportValidationService.checkIfHeaderHasMissingEntries(this.currentReport)) {
             const dialogRef = this.dialog.open(MessagingComponent, {
                 data: "Report has missing header information.",
                 panelClass: 'center-class'
             });
             return;
-        }
+        } */
 
         for (let assignment of this.currentReport.workflowAssignments) {
             const status1 = this.reportWorkflowStatuses.filter((status) => status.id === assignment.stateId);
@@ -177,20 +179,18 @@ export class ReportPreviewComponent implements OnInit {
             }
         }
 
-        //const statusTransition = this.appComp.reportTransitions.filter((transition) => transition.fromStateId === this.currentReport.status.id && transition.toStateId === toStateId);
+        this.wfValidationService.validateGrantWorkflow(this.currentReport.id, 'REPORT', this.appComp.loggedInUser.id, this.currentReport.status.id, toStateId).then(result => {
+            this.openBottomSheetForReportNotes(toStateId, result);
+            this.wfDisabled = true;
+        });
 
-        //if (statusTransition && statusTransition[0].noteRequired) {
-        this.openBottomSheetForReportNotes(toStateId);
-        this.wfDisabled = true;
-        return;
-        //}
     }
 
-    openBottomSheetForReportNotes(toStateId: number): void {
+    openBottomSheetForReportNotes(toStateId: number, result): void {
 
         const _bSheet = this.dialog.open(ReportNotesComponent, {
-            hasBackdrop: false,
-            data: { canManage: true, currentReport: this.currentReport, originalReport: this.appComp.originalReport },
+            hasBackdrop: true,
+            data: { canManage: true, currentReport: this.currentReport, originalReport: this.appComp.originalReport, validationResult: result },
             panelClass: 'grant-notes-class'
         });
 

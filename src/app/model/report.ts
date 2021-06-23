@@ -115,6 +115,7 @@ export class ReportNote {
     currentReport: Report;
     originalReport: Report;
     canManage: boolean;
+    validationResult: any;
 }
 
 export class ReportDiff {

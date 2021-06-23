@@ -46,6 +46,7 @@
               "node_modules/hammerjs/hammer.min.js",
               "src/assets/js/oauth.min.js",
               "src/assets/js/jquery.connections.js",
+              "src/assets/js/mark.min.js",
               "node_modules/jsplumb/dist/js/jsplumb.js"
             ]
           },
@@ -106,7 +107,6 @@
               "node_modules/chartist/dist/chartist.js"
             ],
             "styles": [
-
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/scss/material-dashboard.scss",
               "src/assets/css/demo.css",

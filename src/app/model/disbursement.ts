@@ -22,6 +22,7 @@ export class Disbursement {
 export class ActualDisbursement {
   id: number;
   disbursementDate: Date;
+  stDisbursementDate: string;
   actualAmount: number;
   note: string;
   disbursementId: number;
@@ -60,7 +61,7 @@ export class DisbursementWorkflowAssignmentModel {
   type: string;
   disbursement: Disbursement;
   canManage: boolean;
-  constructor() {}
+  constructor() { }
 }
 
 export class DisbursementWorkflowAssignment {
@@ -72,13 +73,14 @@ export class DisbursementWorkflowAssignment {
   customAssignments: string;
   assignmentUser: User;
   anchor: boolean;
-  constructor() {}
+  constructor() { }
 }
 
 export class DisbursementNote {
   currentDisbursement: Disbursement;
   originalDisbursement: Disbursement;
   canManage: boolean;
+  validationResult: any;
 }
 
 export class DisbursementDiff {
