@@ -35,6 +35,7 @@ export class SearchFilterComponent implements OnInit, OnChanges {
           this.ready = false;
         }
       }
+      $('#searchCompField').focus();
     }
   }
   startFilter(val) {

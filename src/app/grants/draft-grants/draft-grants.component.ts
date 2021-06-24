@@ -1,7 +1,8 @@
+import { SearchFilterComponent } from './../../layouts/admin-layout/search-filter/search-filter.component';
 import { UiUtilService } from './../../ui-util.service';
 import { GrantType } from './../../model/dahsboard';
 import { CurrencyService } from "./../../currency-service";
-import { Component, OnInit, DoCheck, AfterViewChecked, AfterViewInit, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, OnInit, DoCheck, AfterViewChecked, AfterViewInit, OnChanges, SimpleChanges, ViewChild, ElementRef } from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
@@ -109,6 +110,7 @@ export class DraftGrantsComponent implements OnInit, AfterViewInit {
   currentClass = 'current';
   searchClosed = true;
   filterReady = false;
+  @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
 
 
   constructor(
@@ -566,6 +568,7 @@ export class DraftGrantsComponent implements OnInit, AfterViewInit {
       this.searchClosed = false;
     } else {
       this.searchClosed = true;
+      this.appSearchFilter.closeSearch();
     }
   }
 

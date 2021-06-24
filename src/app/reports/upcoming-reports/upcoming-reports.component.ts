@@ -1,5 +1,5 @@
 import { UiUtilService } from './../../ui-util.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportDataService } from '../../report.data.service'
 import { SingleReportDataService } from '../../single.report.data.service'
 import { Report, ReportTemplate } from '../../model/report'
@@ -17,6 +17,7 @@ import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { FieldDialogComponent } from 'app/components/field-dialog/field-dialog.component';
+import { SearchFilterComponent } from 'app/layouts/admin-layout/search-filter/search-filter.component';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class UpcomingReportsComponent implements OnInit {
     searchClosed = true;
     filterReady = false;
     filterCriteria: any;
+    @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
 
     constructor(
         private reportService: ReportDataService,
@@ -437,7 +439,7 @@ export class UpcomingReportsComponent implements OnInit {
                 (g.grant.referenceNo && g.grant.referenceNo.toLowerCase().includes(val))
         });
         this.filterAllReports = this.allReports.filter(g => {
-            (g.name && g.name.trim() !== '' && g.name.toLowerCase().includes(val)) ||
+            return (g.name && g.name.trim() !== '' && g.name.toLowerCase().includes(val)) ||
                 (g.grant.name.toLowerCase().includes(val)) ||
                 (g.grant.organization && g.grant.organization.name && g.grant.organization.name.toLowerCase().includes(val)) ||
                 (g.grant.referenceNo && g.grant.referenceNo.toLowerCase().includes(val))
@@ -461,6 +463,7 @@ export class UpcomingReportsComponent implements OnInit {
             this.searchClosed = false;
         } else {
             this.searchClosed = true;
+            this.appSearchFilter.closeSearch();
         }
     }
 }
