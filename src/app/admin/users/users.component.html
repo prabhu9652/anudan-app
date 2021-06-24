@@ -48,9 +48,6 @@
 
                     <div [ngClass]="user.active?'col-3 pl-0 text-right':'col-4 pl-0 text-right'"
                         style="display: flex;flex-direction: row-reverse;align-items: center;color:#9f9f9f">
-                        <!-- <mat-icon *ngIf="!user.deleted" (click)="deleteUser(user)" style="cursor: pointer;">
-                            delete_outline
-                        </mat-icon> -->
                         <button *ngIf="!user.deleted" class="btn btn-sm btn-red" (click)="deleteUser(user)"><i
                                 class="fas fa-user-slash mr-2 text-red" style="cursor: pointer;"></i>Disable</button>
                         <button *ngIf="user.deleted" class="btn btn-sm btn-green" (click)="unDeleteUser(user)"><i
