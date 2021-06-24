@@ -3,7 +3,7 @@
 
         <div class="row"  style="position: absolute; top: 80px; width: 100%;min-height:82px; padding: 0 27px;z-index: 2; background: rgb(229, 229, 229);">
             <div class="col-9" style="z-index: 2; min-width: 280px;display: flex;align-items: center;justify-content: center;">
-                <app-search-filter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
+                <app-search-filter #appSearchFilter *ngIf="!searchClosed" [ready]="filterReady" (highlightDone)="resetFilterFlag($event)" (filterCriteria)="startFilter($event)" (close)="closeSearch($event)"></app-search-filter>
                 <mat-icon (click)="openSearch()" style="position: absolute; right: 0; margin-right: 20px;">search</mat-icon>
               </div>
               <div class="col-3 d-flex align-items-center justify-content-right p-0"></div>

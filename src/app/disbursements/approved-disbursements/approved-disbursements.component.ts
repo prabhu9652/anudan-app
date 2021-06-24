@@ -2,12 +2,13 @@ import { UiUtilService } from './../../ui-util.service';
 import { Grant } from './../../model/dahsboard';
 import { FieldDialogComponent } from './../../components/field-dialog/field-dialog.component';
 import { MatDialog } from '@angular/material';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Disbursement } from 'app/model/disbursement';
 import { AppComponent } from 'app/app.component';
 import { DisbursementDataService } from 'app/disbursement.data.service';
 import { Router } from '@angular/router';
 import { CurrencyService } from 'app/currency-service';
+import { SearchFilterComponent } from 'app/layouts/admin-layout/search-filter/search-filter.component';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class ApprovedDisbursementsComponent implements OnInit {
   searchClosed = true;
   filterReady = false;
   filterCriteria: any;
+  @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
+
 
   constructor(
     public appComponent: AppComponent,
@@ -124,6 +127,7 @@ export class ApprovedDisbursementsComponent implements OnInit {
       this.searchClosed = false;
     } else {
       this.searchClosed = true;
+      this.appSearchFilter.closeSearch();
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Grant } from './../../model/dahsboard';
 import { UiUtilService } from './../../ui-util.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportDataService } from '../../report.data.service'
 import { SingleReportDataService } from '../../single.report.data.service'
 import { Report } from '../../model/report'
@@ -10,6 +10,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import * as indianCurrencyInWords from 'indian-currency-in-words';
 import * as inf from 'indian-number-format';
+import { SearchFilterComponent } from 'app/layouts/admin-layout/search-filter/search-filter.component';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class SubmittedReportsComponent implements OnInit {
     searchClosed = true;
     filterReady = false;
     filterCriteria: any;
+    @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
+
 
     constructor(
         private reportService: ReportDataService,
@@ -178,6 +181,7 @@ export class SubmittedReportsComponent implements OnInit {
             this.searchClosed = false;
         } else {
             this.searchClosed = true;
+            this.appSearchFilter.closeSearch();
         }
     }
 }

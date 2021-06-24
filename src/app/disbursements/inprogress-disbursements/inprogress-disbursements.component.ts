@@ -1,5 +1,6 @@
+import { SearchFilterComponent } from './../../layouts/admin-layout/search-filter/search-filter.component';
 import { UiUtilService } from './../../ui-util.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppComponent } from 'app/app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Grant } from 'app/model/dahsboard';
@@ -26,7 +27,7 @@ export class InprogressDisbursementsComponent implements OnInit {
   searchClosed = true;
   filterReady = false;
   filterCriteria: any;
-
+  @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
 
   public constructor(
     public appComponent: AppComponent,
@@ -173,6 +174,7 @@ export class InprogressDisbursementsComponent implements OnInit {
       this.searchClosed = false;
     } else {
       this.searchClosed = true;
+      this.appSearchFilter.closeSearch();
     }
   }
 

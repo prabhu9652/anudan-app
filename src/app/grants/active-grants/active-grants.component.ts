@@ -1,6 +1,6 @@
 import { UiUtilService } from './../../ui-util.service';
 import { CurrencyService } from "./../../currency-service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
@@ -30,6 +30,7 @@ import * as indianCurrencyInWords from "indian-currency-in-words";
 import { TitleCasePipe } from "@angular/common";
 import * as inf from "indian-number-format";
 import { GranttypeSelectionDialogComponent } from "app/components/granttype-selection-dialog/granttype-selection-dialog.component";
+import { SearchFilterComponent } from 'app/layouts/admin-layout/search-filter/search-filter.component';
 
 @Component({
   selector: "app-active-grants",
@@ -78,6 +79,7 @@ export class ActiveGrantsComponent implements OnInit {
   searchClosed = true;
   filterReady = false;
   filterCriteria: any;
+  @ViewChild("appSearchFilter") appSearchFilter: SearchFilterComponent;
 
   constructor(
     private http: HttpClient,
@@ -498,6 +500,7 @@ export class ActiveGrantsComponent implements OnInit {
       this.searchClosed = false;
     } else {
       this.searchClosed = true;
+      this.appSearchFilter.closeSearch();
     }
   }
 }
