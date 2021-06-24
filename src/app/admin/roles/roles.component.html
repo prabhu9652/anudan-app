@@ -44,8 +44,11 @@
 
                 <p matLine><small *ngIf="!role.editMode"
                         style="font-size:14px;white-space: normal;">{{role.description}}</small></p>
-                <img *ngIf="!role.editMode" class="ml-5" src="./assets/img/edit.svg" (click)="editRole(role,$event)"
-                    style="cursor: pointer;">
+                <!-- <img *ngIf="!role.editMode" class="ml-5" src="./assets/img/edit.svg" (click)="editRole(role,$event)" style="cursor: pointer;"> -->
+                
+                <button mat-icon-button *ngIf="!role.editMode">
+                    <mat-icon *ngIf="!role.editMode" style="font-size: 20px;color:#9f9f9f;" (click)="editRole(role,$event)">create</mat-icon>
+                </button>
                 <button mat-icon-button *ngIf="!role.editMode" [disabled]="role.hasUsers"
                     [ngStyle]="role.hasUsers?{'cursor': 'pointer','color':'#dee2e6'}:{'cursor': 'pointer','color':'#9f9f9f'}">
                     <mat-icon (click)="deleteRole(role)">delete_outline</mat-icon>

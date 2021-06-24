@@ -55,8 +55,10 @@
                                 class="fas fa-user-slash mr-2 text-red" style="cursor: pointer;"></i>Disable</button>
                         <button *ngIf="user.deleted" class="btn btn-sm btn-green" (click)="unDeleteUser(user)"><i
                                 class=" fas fa-user-check mr-2 text-green" style="cursor: pointer;"></i>Enable</button>
-                        <img *ngIf="user.active && !user.deleted" class="mr-2" src="./assets/img/edit.svg"
-                            (click)="editUser(user,$event)" style="cursor: pointer;">
+                        
+                            <button mat-icon-button *ngIf="user.active && !user.deleted">
+                                <mat-icon style="font-size: 20px;color:#9f9f9f;" (click)="editUser(user,$event)">create</mat-icon>
+                            </button>
                         <button (click)="reInviteUser(user,$event)" class="btn btn-sm btn-green"
                             *ngIf="!user.active">Re-Invite User</button>
                     </div>
