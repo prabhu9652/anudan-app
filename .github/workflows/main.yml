@@ -1,20 +1,32 @@
 name: Jekyll site CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [ push ]
 
-jobs:
-  build:
+Source Code Checkout: 
+       runs-on: ubuntu-latest
+       steps:
+           - uses: actions/checkout@v2  
+           - name: Checkout Frontend Source code from Dev Branch 
+             run: 
+                            
+Unit and Functional Testing:
+        runs-on: ubuntu-latest
+        steps:
+           - name: Test Frontend code(Functional) 
+             run: 
+               ls        
+           - name: Test Frontend code(unit)
+             run:
+               ls
+Compile and Build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: compile and build Frontend Code
+            run: 
+              npm install
+              ng build --aot --output-hashing=all --prod
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+static Code Analysis:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Analyze Frontend Code - SONAR 
