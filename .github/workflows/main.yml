@@ -1,32 +1,30 @@
-name: Jekyll site CI
+
+name: Anudan Frontend Build
 
 on: [ push ]
 
-Source Code Checkout: 
-       runs-on: ubuntu-latest
-       steps:
-           - uses: actions/checkout@v2  
-           - name: Checkout Frontend Source code from Dev Branch 
-             run: 
-                            
-Unit and Functional Testing:
-        runs-on: ubuntu-latest
-        steps:
-           - name: Test Frontend code(Functional) 
-             run: 
-               ls        
-           - name: Test Frontend code(unit)
-             run:
-               ls
-Compile and Build:
-        runs-on: ubuntu-latest
-        steps:
-          - name: compile and build Frontend Code
-            run: 
-              npm install
-              ng build --aot --output-hashing=all --prod
 
-static Code Analysis:
+jobs:
+    run-github-actions: 
         runs-on: ubuntu-latest
         steps:
-          - name: Analyze Frontend Code - SONAR 
+          - name: Checkout Frontend Source code
+          - uses: actions/checkout@v2
+            run:
+             ls  
+
+          - name: Test Frontend code(Functional)
+            run:
+             ls
+
+          - name: Test Frontend code(unit)
+            run:
+             ls
+          - name: compile and build Frontend Code
+            run:
+               npm install
+               ng build --aot --output-hashing=all --prod
+
+          - name: Analyze Frontend Code - SONAR
+            run:
+              ls 
