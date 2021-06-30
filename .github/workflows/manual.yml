@@ -13,9 +13,10 @@ jobs:
     steps:
  
     - name: checkout source code from anudan-app
-    #  uses: actions/checkout@master
-      run: |
-        git clone git@github:GITHUB_REPOSITORY
+      uses: actions/checkout@master
+     
+     #run: |
+     #   git clone git@github:GITHUB_REPOSITORY
     - name: List Files After 
       run:        
         ls
