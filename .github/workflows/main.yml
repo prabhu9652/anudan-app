@@ -9,6 +9,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: checkout source code from master
-            uses: action/prabhu9652/anudan-app@master
+            uses: actions/prabhu9652/anudan-app@master
             run:
               ls
