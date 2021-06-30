@@ -22,5 +22,11 @@ jobs:
     - name: List Files After 
       run:        
         ls
+    - name: compile and build
+      run: |
+
+        npm install
+        ng build --aot --output-hashing=all --prod
+
 
       
