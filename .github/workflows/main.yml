@@ -8,23 +8,6 @@ jobs:
     run-github-actions: 
         runs-on: ubuntu-latest
         steps:
-          - name: Checkout Frontend Source code
-          - uses: actions/checkout@v2
+          - name: run shell commnads
             run:
-             ls  
-
-          - name: Test Frontend code(Functional)
-            run:
-             ls
-
-          - name: Test Frontend code(unit)
-            run:
-             ls
-          - name: compile and build Frontend Code
-            run:
-               npm install
-               ng build --aot --output-hashing=all --prod
-
-          - name: Analyze Frontend Code - SONAR
-            run:
-              ls 
+              ls
