@@ -2,10 +2,8 @@
 
 name: Manual workflow
 
-
 on: [ push ]
   
-
 jobs:
  
   anudan:
@@ -27,5 +25,23 @@ jobs:
         #npm audit fix
         #sudo ng build --aot --output-hashing=all --prod
 
+  Log-default-env:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Default ENV variables
+        run: |
+         echo "HOME: ${HOME}" 
+         echo "GITHUB_WORKFLOW(The name of the workflow): ${GITHUB_WORKFLOW}"  
+         echo "GITHUB_ACTION(The unique identifier (id) of the action): ${GITHUB_ACTION}"
+         echo "GITHUB_ACTION_PATH(The path where your action is located. You can use this path to access files located in the same repository as your action. This variable is only supported in composite run steps actions): ${GITHUB_ACTION_PATH}"
+         echo "GITHUB_ACTOR(The name of the person or app that initiated the workflow): ${GITHUB_ACTOR}"
+         echo "GITHUB_REPOSITORY(The owner and repository name): ${GITHUB_REPOSITORY}"
+         echo "GITHUB_EVENT_NAME(The name of the webhook event that triggered the workflow): ${GITHUB_EVENT_NAME}"
+         echo "GITHUB_WORKSPACE(The GitHub workspace directory path. The workspace directory is a copy of your repository if your workflow uses the actions/checkout action. If you don't use the actions/checkout action, the directory will be empty. For example, /home/runner/work/my-repo-name/my-repo-name): ${GITHUB_WORKSPACE}"
+         echo "GITHUB_SHA(The commit SHA that triggered the workflow. For example, ffac537e6cbbf934b08745a378932722df287a53): ${GITHUB_SHA}"
+         echo "GITHUB_REF(The branch or tag ref that triggered the workflow. For example, refs/heads/feature-branch-1. If neither a branch or tag is available for the event type, the variable will not exist): ${GITHUB_REF}"
+         echo "GITHUB_JOB(The job_id of the current job): ${GITHUB_JOB}"
+         
 
-      
+         
+
