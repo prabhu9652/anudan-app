@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@master
     - name: List Files After 
       run:
-        cd anudan-app
+        cd /home/runner/work/anudan-app/anudan-app
         pwd 
         ls
 
