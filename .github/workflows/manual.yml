@@ -26,8 +26,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install nodejs
-        #npm install
-        #ng build --aot --output-hashing=all --prod
+        sudo npm install
+        sudo ng build --aot --output-hashing=all --prod
 
 
       
