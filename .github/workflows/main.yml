@@ -10,5 +10,8 @@ jobs:
         steps:
           - name: checkout 
             uses: actions/checkout@master
+            with:
+               repository: prabhu9652/anudan-app
+               path: anudan-app
             run:
               ls
