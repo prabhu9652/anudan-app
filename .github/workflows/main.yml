@@ -8,6 +8,7 @@ jobs:
     run-github-actions: 
         runs-on: ubuntu-latest
         steps:
-          - name: run shell commnads
+          - name: checkout source code from master
+            uses: action/prabhu9652/anudan-app@1.0.56 
             run:
               ls
