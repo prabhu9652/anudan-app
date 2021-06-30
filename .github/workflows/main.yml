@@ -1,5 +1,5 @@
 
-name: Anudan Frontend Build
+name: Actions Workflow
 
 on: [ push ]
 
