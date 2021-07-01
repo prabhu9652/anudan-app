@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: ${{ secrets.MANUAL_WORKFLOW}}
+name: MANUAL_WORKFLOW
 
 on: [ push ]
   
