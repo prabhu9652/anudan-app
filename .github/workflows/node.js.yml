@@ -64,7 +64,7 @@ jobs:
          git config --global user.name "prabhu9652"
          #git fetch 
          #git checkout master 
-         #git branch --set-upstream-to=origin/master
+         git branch --set-upstream-to=origin/master
          git pull 
          ls -al
          echo $RANDOM >> random.txt
