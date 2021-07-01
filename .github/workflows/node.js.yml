@@ -34,5 +34,7 @@ jobs:
     - run: java -version
     - run: npm install --save-dev @angular-devkit/build-angular
     - run: ng build --aot --output-hashing=all --prod
+    - run: pwd
+    - run: ls -lrt
  
          
