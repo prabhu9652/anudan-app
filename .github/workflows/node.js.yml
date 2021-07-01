@@ -27,22 +27,33 @@ jobs:
         node-version: ${{ matrix.node-version }}
         run: |
        
-    - run: npm --version
-    - run: node --version
-    - run: npm install -g @angular/cli
-    - run: ng version
-    - run: java -version
-    - run: npm install --save-dev @angular-devkit/build-angular
-    - run: ng build --aot --output-hashing=all --prod
-    - run: cd dist
-    - run: ls -lrt
+   # - run: npm --version
+   # - run: node --version
+   # - run: npm install -g @angular/cli
+   #- run: ng version
+   #- run: java -version
+   # - run: npm install --save-dev @angular-devkit/build-angular
+   # - run: ng build --aot --output-hashing=all --prod
+   # - run: cd dist
+   # - run: ls -lrt
 
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@master
-      with:
-          name: anudan-frontend
-          path: |
-            dist/**
-            
+   # - name: Archive production artifacts
+    #  uses: actions/upload-artifact@master
+     # with:
+      #    name: anudan-frontend
+       #   path: |
+        #    dist/**
+  labeling to pull_request:
+    name: Pull request labeler
+
+    on: [ pull_request_target ]
+
+    permissions:
+        contents: read
+        pull-requests: write
+    steps:
+      - uses: actions/labeler@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}          
  
          
