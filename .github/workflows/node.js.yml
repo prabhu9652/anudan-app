@@ -27,8 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         run: |
        
-    - run: npm ci
-    #- run: npm run build --if-present
-    - run: ng build --aot --output-hashing=all --prod
+    #- run: npm ci
+    - run: node --version
+    #- run: ng build --aot --output-hashing=all --prod
  
          
