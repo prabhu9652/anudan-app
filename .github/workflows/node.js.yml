@@ -32,6 +32,7 @@ jobs:
     - run: npm install -g @angular/cli
     - run: ng version
     - run: java -version
+    - run: npm install --save-dev @angular-devkit/build-angular
     - run: ng build --aot --output-hashing=all --prod
     - run: cat /tmp/ng-74ECQQ/angular-errors.log
  
