@@ -31,6 +31,6 @@ jobs:
     - run: node --version
     - run: npm install -g @angular/cli
     - run: ng version
-    #- run: ng build --aot --output-hashing=all --prod
+    - run: ng build --aot --output-hashing=all --prod
  
          
