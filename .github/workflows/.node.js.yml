@@ -70,7 +70,7 @@ jobs-1:
          echo $RANDOM >> random.txt
          git add .
          git commit -m " file commited by github/action"
-         git push          
+         git push origin master         
 
       - name: Create issue using REST API
         run: |
